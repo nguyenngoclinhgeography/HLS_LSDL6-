@@ -24,12 +24,12 @@
     <div class="field"><label for="teacherPassword">Mật khẩu giáo viên</label><input id="teacherPassword" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu"></div>
     <button class="primary" onclick="unlockTeacher()">Mở Góc giáo viên</button>
     <div id="loginError" class="error">Mật khẩu chưa đúng. Vui lòng thử lại.</div>
-    <div class="security"><b>Lưu ý:</b> phiên bản GitHub Pages này dùng lớp khóa ở phía trình duyệt. Dữ liệu hiện vẫn lưu trên thiết bị; để bảo mật thực sự và xem dữ liệu từ nhiều máy, bước sau sẽ chuyển dữ liệu sang hệ thống máy chủ/Google Sheets có xác thực.</div>
+    <div class="security"><b>Trạng thái dữ liệu:</b> Dashboard ưu tiên đồng bộ Google Sheets qua Apps Script và vẫn giữ dữ liệu cục bộ làm bộ nhớ đệm/offline. Mật khẩu giáo viên hiện vẫn được kiểm tra ở phía trình duyệt; xác thực máy chủ sẽ được nâng cấp ở bước bảo mật tiếp theo.</div>
   </div>
 </section>
 
 <main id="dashboard" class="wrap hidden">
-  <div class="page-title"><div><h1>📊 Quản lí học tập</h1><p>Theo dõi tiến độ, điểm số và kết quả học tập của học sinh trên thiết bị này.</p></div><div class="actions"><button class="icon-btn" title="Cài đặt bảo mật" aria-label="Cài đặt bảo mật" onclick="openSettings()">⚙️</button><button class="secondary" onclick="refreshDashboard()">↻ Làm mới</button></div></div>
+  <div class="page-title"><div><h1>📊 Quản lí học tập</h1><p>Theo dõi tiến độ, điểm số và kết quả học tập của học sinh từ dữ liệu trực tuyến.</p></div><div class="actions"><span id="onlineBadge" class="status-pill status-neutral" style="align-self:center">☁ Đang kiểm tra dữ liệu</span><button class="icon-btn" title="Cài đặt bảo mật" aria-label="Cài đặt bảo mật" onclick="openSettings()">⚙️</button><button class="secondary" onclick="refreshDashboard()">↻ Làm mới</button></div></div>
   <div class="stats">
     <div class="stat"><b id="statStudents">0</b><span>Học sinh đã đăng nhập</span></div>
     <div class="stat"><b id="statScores">0</b><span>Lượt bài có điểm</span></div>
@@ -64,7 +64,7 @@
     <aside class="card"><h2 style="margin:0">👥 Học sinh</h2><input id="studentSearch" class="student-search" placeholder="Tìm theo tên hoặc lớp…" oninput="refreshStudentList()"><div id="studentList" class="student-list"></div><div id="noStudents" class="empty hidden">Chưa có hồ sơ học sinh trên thiết bị này.</div></aside>
     <section id="studentDetail" class="card"></section>
   </div>
-  <div class="footer-note">HLS6 Core v<span id="coreVersion"></span> • Góc giáo viên</div>
+  <div class="footer-note">HLS6 Core v<span id="coreVersion"></span> • Góc giáo viên • Google Sheets + Apps Script • offline-first</div>
 </main>
 
 <div id="settingsModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
@@ -125,7 +125,20 @@ async function changeTeacherPassword(){
   ['currentTeacherPassword','newTeacherPassword','confirmTeacherPassword'].forEach(id=>document.getElementById(id).value='');
 }
 function fmt(v){return v==null||!Number.isFinite(Number(v))?'—':Number(v).toFixed(1).replace(/\.0$/,'')+'/10'}
-function showDashboard(){document.getElementById('gate').classList.add('hidden');document.getElementById('dashboard').classList.remove('hidden');refreshDashboard();if(window.HLS6&&HLS6.syncStudentsOnline){HLS6.syncStudentsOnline().then(()=>refreshDashboard())}}
+async function showDashboard(){
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  setOnlineBadge('☁ Đang đồng bộ dữ liệu…','status-warn');
+  refreshDashboard();
+  if(window.HLS6&&HLS6.syncStudentsOnline){
+    const ok=await HLS6.syncStudentsOnline({withDetails:true});
+    setOnlineBadge(ok?'☁ Đã đồng bộ online':'⚠ Đang dùng dữ liệu lưu trên máy',ok?'status-good':'status-warn');
+    refreshDashboard();
+  } else {
+    setOnlineBadge('⚠ Không có kết nối API','status-danger');
+  }
+}
+function setOnlineBadge(text,cls){const el=document.getElementById('onlineBadge');if(!el)return;el.className='status-pill '+cls;el.textContent=text}
 function getSelectedClass(){return String(document.getElementById('classFilter')?.value||'').trim()}
 function getFilteredStudents(){
   const cls=getSelectedClass();

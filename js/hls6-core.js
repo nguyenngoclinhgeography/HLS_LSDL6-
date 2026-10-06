@@ -17,7 +17,7 @@
     const SCORES_KEY = 'hoclieu6_scores_v1';
     const STUDENTS_KEY = 'hoclieu6_students_v1';
     const LEGACY_MIGRATED_KEY = 'hoclieu6_legacy_migrated_v1';
-    const CORE_VERSION = '1.3.0-online';
+    const CORE_VERSION = '1.4.0-online-FIX10';
     const ONLINE_API_URL = 'https://script.google.com/macros/s/AKfycbxBrGoCGdnSBegBcF_8UK0fSPzfNXutFZ4MpHw4ErBZB_oq0KoGPAZuOaodOBUATS9dOw/exec';
     const ONLINE_TIMEOUT = 9000;
     let onlineBusy = false;
@@ -193,14 +193,28 @@
         }
     }
 
-    async function syncStudentsOnline() {
+    async function syncStudentsOnline(options) {
+        const withDetails = !options || options.withDetails !== false;
         try {
             const data = await jsonpGet('getStudents', {});
             if (!data || !data.success || !Array.isArray(data.students)) return false;
             const all = safeRead(STUDENTS_KEY, {});
             data.students.forEach(p => { if (p && p.studentId) all[p.studentId] = { ...(all[p.studentId] || {}), ...p }; });
             safeWrite(STUDENTS_KEY, all);
-            emit('online-students-synced', { count: data.students.length });
+
+            // FIX10: Góc giáo viên cần số liệu thật từ Google Sheets, không chỉ danh sách tên.
+            // Lấy hồ sơ chi tiết từng học sinh rồi nhập vào bộ nhớ local để dashboard
+            // có thể dùng chung toàn bộ logic thống kê/radar hiện có.
+            if (withDetails && data.students.length) {
+                const ids = data.students.map(s => s && s.studentId).filter(Boolean);
+                const results = await Promise.all(ids.map(async id => {
+                    try { return await jsonpGet('getStudent', { studentId: id }); }
+                    catch (e) { return null; }
+                }));
+                results.forEach(payload => { if (payload && payload.success && payload.profile) mergeRemoteStudent(payload); });
+            }
+
+            emit('online-students-synced', { count: data.students.length, withDetails });
             return true;
         } catch (e) {
             console.warn('[HLS6] Không tải được danh sách học sinh online:', e);
