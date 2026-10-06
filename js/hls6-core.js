@@ -17,7 +17,7 @@
     const SCORES_KEY = 'hoclieu6_scores_v1';
     const STUDENTS_KEY = 'hoclieu6_students_v1';
     const LEGACY_MIGRATED_KEY = 'hoclieu6_legacy_migrated_v1';
-    const CORE_VERSION = '1.4.0-online-FIX10';
+    const CORE_VERSION = '1.5.0-online-FIX11';
     const ONLINE_API_URL = 'https://script.google.com/macros/s/AKfycbxBrGoCGdnSBegBcF_8UK0fSPzfNXutFZ4MpHw4ErBZB_oq0KoGPAZuOaodOBUATS9dOw/exec';
     const ONLINE_TIMEOUT = 9000;
     let onlineBusy = false;
