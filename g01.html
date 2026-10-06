@@ -1,0 +1,3891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 1 - Hệ thống kinh, vĩ tuyến. Tọa độ địa lí</title>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(14,165,233,.10), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(34,211,238,.08), transparent 30%),
+        #06101f;
+    color:#e5f3ff;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 28px;
+
+    background:rgba(3,12,26,.92);
+    backdrop-filter:blur(16px);
+
+    border-bottom:1px solid rgba(56,189,248,.18);
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.35);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.brand-icon{
+    width:42px;
+    height:42px;
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(135deg,#0ea5e9,#06b6d4);
+
+    font-size:23px;
+
+    box-shadow:
+        0 0 22px rgba(14,165,233,.35);
+}
+
+.brand-text strong{
+    display:block;
+    color:#f0f9ff;
+    font-size:16px;
+}
+
+.brand-text span{
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    margin-top:2px;
+}
+
+.home-btn{
+    border:1px solid rgba(56,189,248,.25);
+    background:rgba(15,23,42,.8);
+    color:#bae6fd;
+
+    padding:9px 15px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.home-btn:hover{
+    background:#0c4a6e;
+    transform:translateY(-1px);
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    max-width:1200px;
+    margin:auto;
+
+    padding:55px 25px 35px;
+
+    text-align:center;
+}
+
+.badge{
+    display:inline-block;
+
+    padding:7px 13px;
+
+    border-radius:999px;
+
+    background:rgba(14,165,233,.1);
+    border:1px solid rgba(56,189,248,.25);
+
+    color:#67e8f9;
+
+    font-size:12px;
+    font-weight:bold;
+
+    letter-spacing:.7px;
+
+    margin-bottom:16px;
+}
+
+.hero h1{
+    margin:0;
+
+    font-size:clamp(30px,5vw,50px);
+
+    line-height:1.15;
+
+    color:#f8fafc;
+}
+
+.hero h1 span{
+    color:#38bdf8;
+}
+
+.hero p{
+    max-width:760px;
+
+    margin:17px auto 0;
+
+    color:#94a3b8;
+
+    line-height:1.7;
+
+    font-size:15px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+
+    padding:0 25px 70px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin:30px 0 18px;
+
+    font-size:21px;
+    color:#e0f2fe;
+}
+
+.section-title::before{
+    content:"";
+    width:5px;
+    height:25px;
+
+    border-radius:5px;
+
+    background:#22d3ee;
+}
+
+
+/* =========================
+   KNOWLEDGE CARDS
+========================= */
+
+.knowledge-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:14px;
+}
+
+.card{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,.96),
+            rgba(8,25,45,.92)
+        );
+
+    border:1px solid rgba(56,189,248,.13);
+
+    border-radius:16px;
+
+    padding:20px;
+
+    transition:.25s;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.18);
+}
+
+.card:hover{
+    transform:translateY(-4px);
+
+    border-color:
+        rgba(56,189,248,.35);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.3);
+}
+
+.card-icon{
+    font-size:30px;
+    margin-bottom:12px;
+}
+
+.card h3{
+    margin:0 0 8px;
+
+    color:#7dd3fc;
+
+    font-size:16px;
+}
+
+.card p{
+    margin:0;
+
+    color:#94a3b8;
+
+    line-height:1.6;
+
+    font-size:13px;
+}
+
+
+/* =========================
+   3D EARTH SECTION
+========================= */
+
+.earth-section{
+    margin-top:35px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    border:1px solid rgba(56,189,248,.2);
+
+    background:#020817;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.45);
+}
+
+.earth-header{
+    padding:18px 22px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:15px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8,47,73,.75),
+            rgba(8,25,45,.65)
+        );
+
+    border-bottom:1px solid rgba(56,189,248,.15);
+}
+
+.earth-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.earth-title-icon{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:#082f49;
+
+    font-size:23px;
+}
+
+.earth-title h2{
+    margin:0;
+
+    font-size:18px;
+
+    color:#f0f9ff;
+}
+
+.earth-title p{
+    margin:4px 0 0;
+
+    font-size:12px;
+
+    color:#64748b;
+}
+
+.earth-status{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.status-pill{
+    padding:7px 10px;
+
+    border-radius:999px;
+
+    font-size:11px;
+
+    background:rgba(14,165,233,.08);
+
+    border:1px solid rgba(56,189,248,.18);
+
+    color:#7dd3fc;
+}
+
+
+/* =========================
+   SIMULATION
+========================= */
+
+.simulation{
+    position:relative;
+
+    height:650px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(15,55,90,.45),
+            rgba(1,6,18,.95) 70%
+        );
+
+    overflow:hidden;
+}
+
+#earthCanvas{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    cursor:grab;
+}
+
+#earthCanvas.dragging{
+    cursor:grabbing;
+}
+
+
+/* stars */
+
+.star-layer{
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:.8;
+
+    background-image:
+        radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1px),
+        radial-gradient(circle,rgba(125,211,252,.5) 1px,transparent 1px);
+
+    background-size:
+        97px 97px,
+        151px 151px;
+
+    background-position:
+        20px 10px,
+        50px 70px;
+}
+
+
+/* =========================
+   CONTROL PANEL
+========================= */
+
+.control-panel{
+    position:absolute;
+
+    top:20px;
+    left:20px;
+
+    width:275px;
+
+    padding:17px;
+
+    border-radius:17px;
+
+    background:
+        rgba(4,15,30,.91);
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(56,189,248,.2);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.45);
+}
+
+.control-panel h3{
+    margin:0 0 14px;
+
+    color:#67e8f9;
+
+    font-size:14px;
+}
+
+.control-group{
+    margin-bottom:13px;
+}
+
+.control-label{
+    display:flex;
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:7px;
+
+    color:#cbd5e1;
+
+    font-size:12px;
+}
+
+.control-btn{
+    width:100%;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:10px 12px;
+
+    margin-bottom:7px;
+
+    background:#0f172a;
+
+    border:1px solid rgba(56,189,248,.16);
+
+    color:#cbd5e1;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    transition:.2s;
+}
+
+.control-btn:hover{
+    background:#082f49;
+
+    border-color:
+        rgba(56,189,248,.35);
+}
+
+.control-btn.active{
+    background:
+        rgba(14,165,233,.15);
+
+    color:#67e8f9;
+
+    border-color:#0891b2;
+}
+
+.control-btn .dot{
+    display:inline-block;
+
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:#64748b;
+
+    margin-right:7px;
+}
+
+.control-btn.active .dot{
+    background:#22d3ee;
+
+    box-shadow:
+        0 0 9px #22d3ee;
+}
+
+
+/* =========================
+   LEGEND
+========================= */
+
+.legend-panel{
+    position:absolute;
+
+    bottom:20px;
+    left:20px;
+
+    width:275px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:
+        rgba(4,15,30,.88);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(56,189,248,.16);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.35);
+}
+
+.legend-title{
+    color:#bae6fd;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+}
+
+.legend-item{
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    margin:8px 0;
+
+    color:#94a3b8;
+
+    font-size:11px;
+}
+
+.legend-line{
+    width:25px;
+    height:3px;
+
+    border-radius:4px;
+}
+
+.legend-line.eq{
+    background:#22c55e;
+}
+
+.legend-line.pm{
+    background:#facc15;
+}
+
+.legend-line.lat{
+    background:#38bdf8;
+}
+
+.legend-line.lon{
+    background:#64748b;
+}
+
+
+/* =========================
+   INFO PANEL
+========================= */
+
+.info-panel{
+    position:absolute;
+
+    right:20px;
+    top:20px;
+
+    width:290px;
+
+    padding:18px;
+
+    border-radius:17px;
+
+    background:
+        rgba(4,15,30,.92);
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(56,189,248,.2);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.45);
+}
+
+.info-panel .small{
+    font-size:10px;
+
+    color:#64748b;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+}
+
+.info-panel h3{
+    margin:7px 0;
+
+    color:#f0f9ff;
+
+    font-size:19px;
+}
+
+.info-panel p{
+    color:#94a3b8;
+
+    font-size:12px;
+
+    line-height:1.6;
+
+    margin:0;
+}
+
+.coordinate{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    margin-top:14px;
+}
+
+.coordinate-box{
+    padding:10px;
+
+    border-radius:10px;
+
+    background:#071a2d;
+
+    border:1px solid rgba(56,189,248,.1);
+}
+
+.coordinate-box span{
+    display:block;
+
+    font-size:10px;
+
+    color:#64748b;
+
+    margin-bottom:4px;
+}
+
+.coordinate-box strong{
+    color:#67e8f9;
+
+    font-size:14px;
+}
+
+
+/* =========================
+   EARTH HINT
+========================= */
+
+.drag-hint{
+    position:absolute;
+
+    bottom:20px;
+    right:20px;
+
+    padding:9px 13px;
+
+    border-radius:999px;
+
+    background:rgba(2,8,23,.72);
+
+    border:1px solid rgba(56,189,248,.15);
+
+    color:#64748b;
+
+    font-size:11px;
+
+    pointer-events:none;
+}
+
+
+/* =========================
+   CONCEPT SECTION
+========================= */
+
+.concept-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:15px;
+
+    margin-top:15px;
+}
+
+.concept-card{
+    padding:20px;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,47,73,.65),
+            rgba(15,23,42,.95)
+        );
+
+    border:1px solid rgba(56,189,248,.15);
+}
+
+.concept-card h3{
+    margin:0 0 10px;
+
+    color:#67e8f9;
+}
+
+.concept-card p{
+    margin:0;
+
+    color:#94a3b8;
+
+    line-height:1.7;
+
+    font-size:13px;
+}
+
+.highlight{
+    color:#facc15;
+
+    font-weight:bold;
+}
+
+
+/* =========================
+   COORDINATE TABLE
+========================= */
+
+.coordinate-table{
+    margin-top:20px;
+
+    overflow-x:auto;
+
+    border-radius:15px;
+
+    border:1px solid rgba(56,189,248,.13);
+}
+
+table{
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:rgba(4,15,30,.7);
+}
+
+th,td{
+    padding:13px 15px;
+
+    text-align:left;
+
+    border-bottom:1px solid rgba(56,189,248,.08);
+
+    font-size:13px;
+}
+
+th{
+    background:#082f49;
+
+    color:#bae6fd;
+}
+
+td{
+    color:#94a3b8;
+}
+
+tr:last-child td{
+    border-bottom:none;
+}
+
+.place-name{
+    color:#e0f2fe;
+
+    font-weight:bold;
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-section{
+    margin-top:35px;
+
+    padding:24px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,47,73,.55),
+            rgba(15,23,42,.9)
+        );
+
+    border:1px solid rgba(56,189,248,.16);
+}
+
+.quiz-header{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.quiz-header h2{
+    margin:0;
+
+    color:#f0f9ff;
+
+    font-size:20px;
+}
+
+.quiz-header p{
+    margin:4px 0 0;
+
+    color:#64748b;
+
+    font-size:12px;
+}
+
+.quiz-start{
+    border:none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #2563eb
+        );
+
+    color:white;
+
+    padding:11px 18px;
+
+    border-radius:11px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.quiz-start:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(14,165,233,.3);
+}
+
+.quiz-content{
+    display:none;
+}
+
+.quiz-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:12px;
+}
+
+.question-number{
+    color:#67e8f9;
+
+    font-size:12px;
+
+    font-weight:bold;
+}
+
+.timer{
+    color:#facc15;
+
+    font-weight:bold;
+
+    font-size:13px;
+}
+
+.question{
+    padding:18px;
+
+    border-radius:13px;
+
+    background:#071a2d;
+
+    color:#e0f2fe;
+
+    font-size:16px;
+
+    line-height:1.6;
+
+    margin-bottom:14px;
+}
+
+.options{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+}
+
+.option{
+    padding:13px 15px;
+
+    border-radius:11px;
+
+    border:1px solid rgba(56,189,248,.13);
+
+    background:#0b1729;
+
+    color:#cbd5e1;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    transition:.2s;
+}
+
+.option:hover{
+    background:#082f49;
+
+    border-color:#0891b2;
+}
+
+.option.correct{
+    background:rgba(22,163,74,.18);
+
+    border-color:#22c55e;
+
+    color:#86efac;
+}
+
+.option.wrong{
+    background:rgba(220,38,38,.18);
+
+    border-color:#ef4444;
+
+    color:#fca5a5;
+}
+
+.feedback{
+    min-height:42px;
+
+    margin-top:14px;
+
+    padding:11px 13px;
+
+    border-radius:10px;
+
+    display:none;
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+.quiz-next{
+    margin-top:13px;
+
+    display:none;
+
+    border:none;
+
+    background:#0891b2;
+
+    color:white;
+
+    padding:10px 17px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+.quiz-result{
+    display:none;
+
+    text-align:center;
+
+    padding:30px 15px;
+}
+
+.result-icon{
+    font-size:52px;
+
+    margin-bottom:10px;
+}
+
+.result-title{
+    color:#67e8f9;
+
+    font-size:23px;
+
+    font-weight:bold;
+}
+
+.result-score{
+    color:#facc15;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    margin:12px;
+}
+
+.result-text{
+    color:#94a3b8;
+
+    font-size:13px;
+}
+
+
+/* =========================
+   FINISH
+========================= */
+
+.finish-box{
+    margin-top:30px;
+
+    padding:24px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,47,73,.65),
+            rgba(15,23,42,.9)
+        );
+
+    border:1px solid rgba(56,189,248,.15);
+}
+
+.finish-box h3{
+    margin:0 0 8px;
+
+    color:#e0f2fe;
+}
+
+.finish-box p{
+    color:#64748b;
+
+    font-size:13px;
+}
+
+.finish-btn{
+    margin-top:10px;
+
+    border:none;
+
+    padding:12px 22px;
+
+    border-radius:10px;
+
+    background:#16a34a;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+    .knowledge-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .simulation{
+        height:720px;
+    }
+
+    .control-panel{
+        width:235px;
+    }
+
+    .info-panel{
+        width:250px;
+    }
+}
+
+@media(max-width:760px){
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .hero{
+        padding:38px 18px 25px;
+    }
+
+    .container{
+        padding:0 15px 50px;
+    }
+
+    .knowledge-grid{
+        grid-template-columns:1fr;
+    }
+
+    .concept-grid{
+        grid-template-columns:1fr;
+    }
+
+    .simulation{
+        height:720px;
+    }
+
+    .control-panel{
+        top:12px;
+        left:12px;
+        width:210px;
+        padding:12px;
+    }
+
+    .info-panel{
+        top:12px;
+        right:12px;
+        width:205px;
+        padding:13px;
+    }
+
+    .legend-panel{
+        bottom:12px;
+        left:12px;
+        width:210px;
+    }
+
+    .drag-hint{
+        bottom:12px;
+        right:12px;
+        font-size:9px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .earth-status{
+        display:none;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+<!-- =========================
+     TOP BAR
+========================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🌍
+        </div>
+
+        <div class="brand-text">
+            <strong>HỌC LIỆU SỐ 6</strong>
+            <span>LỊCH SỬ & ĐỊA LÍ · LỚP 6</span>
+        </div>
+
+    </div>
+
+    <button class="home-btn" onclick="goHome()">
+        🏠 Trang chủ
+    </button>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="badge">
+        🌎 ĐỊA LÍ 6 · CHƯƠNG 1
+    </div>
+
+    <h1>
+        BÀI 1 - Hệ thống kinh, vĩ tuyến.<br>
+        <span>Tọa độ địa lí</span>
+    </h1>
+
+    <p>
+        Khám phá Trái Đất trong không gian 3D,
+        tìm hiểu kinh tuyến, vĩ tuyến, Xích đạo,
+        kinh tuyến gốc và cách xác định tọa độ địa lí.
+    </p>
+
+</section>
+
+
+<main class="container">
+
+
+<!-- =========================
+     MỤC TIÊU
+========================= -->
+
+<h2 class="section-title">
+    🎯 Mục tiêu bài học
+</h2>
+
+<div class="knowledge-grid">
+
+    <div class="card">
+        <div class="card-icon">🌐</div>
+
+        <h3>Kinh tuyến</h3>
+
+        <p>
+            Nhận biết các đường kinh tuyến,
+            kinh tuyến gốc và xác định
+            kinh độ của một địa điểm.
+        </p>
+    </div>
+
+
+    <div class="card">
+        <div class="card-icon">🧭</div>
+
+        <h3>Vĩ tuyến</h3>
+
+        <p>
+            Nhận biết các đường vĩ tuyến,
+            đường Xích đạo và xác định
+            vĩ độ của một địa điểm.
+        </p>
+    </div>
+
+
+    <div class="card">
+        <div class="card-icon">📍</div>
+
+        <h3>Tọa độ địa lí</h3>
+
+        <p>
+            Hiểu tọa độ địa lí là sự kết hợp
+            giữa kinh độ và vĩ độ của
+            một địa điểm trên Trái Đất.
+        </p>
+    </div>
+
+
+    <div class="card">
+        <div class="card-icon">🌍</div>
+
+        <h3>Quan sát 3D</h3>
+
+        <p>
+            Tương tác trực tiếp với mô hình
+            Trái Đất để quan sát hệ thống
+            kinh tuyến và vĩ tuyến.
+        </p>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     3D EARTH
+========================= -->
+
+<h2 class="section-title">
+    🌍 Khám phá Trái Đất 3D
+</h2>
+
+
+<section class="earth-section">
+
+    <div class="earth-header">
+
+        <div class="earth-title">
+
+            <div class="earth-title-icon">
+                🌎
+            </div>
+
+            <div>
+                <h2>Mô phỏng hệ thống kinh – vĩ tuyến</h2>
+
+                <p>
+                    Kéo để xoay · Cuộn để phóng to · Click để khám phá
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="earth-status">
+
+            <div class="status-pill">
+                ● 3D
+            </div>
+
+            <div class="status-pill">
+                ● TƯƠNG TÁC
+            </div>
+
+            <div class="status-pill">
+                ● KINH – VĨ TUYẾN
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="simulation">
+
+        <div class="star-layer"></div>
+
+        <canvas id="earthCanvas"></canvas>
+
+
+        <!-- CONTROL -->
+
+        <div class="control-panel">
+
+            <h3>⚙️ ĐIỀU KHIỂN MÔ HÌNH</h3>
+
+
+            <div class="control-group">
+
+                <button
+                    class="control-btn active"
+                    id="spinBtn"
+                    onclick="toggleSpin()"
+                >
+                    <span class="dot"></span>
+                    🔄 Tự động xoay
+                </button>
+
+
+                <button
+                    class="control-btn"
+                    onclick="resetEarth()"
+                >
+                    <span class="dot"></span>
+                    ↺ Đặt lại góc nhìn
+                </button>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <div class="control-label">
+                    <span>Hiển thị lớp</span>
+                </div>
+
+
+                <button
+                    class="control-btn active"
+                    id="equatorBtn"
+                    onclick="toggleLayer('equator')"
+                >
+                    <span class="dot"></span>
+                    🟢 Đường Xích đạo
+                </button>
+
+
+                <button
+                    class="control-btn active"
+                    id="primeBtn"
+                    onclick="toggleLayer('prime')"
+                >
+                    <span class="dot"></span>
+                    🟡 Kinh tuyến gốc
+                </button>
+
+
+                <button
+                    class="control-btn active"
+                    id="gridBtn"
+                    onclick="toggleLayer('grid')"
+                >
+                    <span class="dot"></span>
+                    🔵 Kinh – vĩ tuyến
+                </button>
+
+
+                <button
+                    class="control-btn active"
+                    id="placeBtn"
+                    onclick="toggleLayer('places')"
+                >
+                    <span class="dot"></span>
+                    📍 Địa điểm
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- INFO -->
+
+        <div class="info-panel">
+
+            <div class="small">
+                THÔNG TIN TƯƠNG TÁC
+            </div>
+
+            <h3 id="infoTitle">
+                🌍 Trái Đất
+            </h3>
+
+            <p id="infoText">
+                Hãy kéo mô hình để xoay Trái Đất.
+                Bạn có thể click vào các đường
+                kinh tuyến, vĩ tuyến hoặc địa điểm
+                để tìm hiểu thêm.
+            </p>
+
+
+            <div class="coordinate">
+
+                <div class="coordinate-box">
+
+                    <span>VĨ ĐỘ</span>
+
+                    <strong id="infoLat">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="coordinate-box">
+
+                    <span>KINH ĐỘ</span>
+
+                    <strong id="infoLon">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LEGEND -->
+
+        <div class="legend-panel">
+
+            <div class="legend-title">
+                CHÚ GIẢI
+            </div>
+
+
+            <div class="legend-item">
+                <span class="legend-line eq"></span>
+                Đường Xích đạo – 0°
+            </div>
+
+
+            <div class="legend-item">
+                <span class="legend-line pm"></span>
+                Kinh tuyến gốc – 0°
+            </div>
+
+
+            <div class="legend-item">
+                <span class="legend-line lat"></span>
+                Các đường vĩ tuyến
+            </div>
+
+
+            <div class="legend-item">
+                <span class="legend-line lon"></span>
+                Các đường kinh tuyến
+            </div>
+
+        </div>
+
+
+        <div class="drag-hint">
+            🖱️ Kéo chuột để xoay Trái Đất
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     KIẾN THỨC
+========================= -->
+
+<h2 class="section-title">
+    📚 Kiến thức trọng tâm
+</h2>
+
+
+<div class="concept-grid">
+
+
+    <div class="concept-card">
+
+        <h3>🌐 1. Kinh tuyến</h3>
+
+        <p>
+            Kinh tuyến là những đường nối liền
+            hai cực của Trái Đất.
+            Mỗi kinh tuyến có một giá trị kinh độ
+            xác định từ <span class="highlight">0° đến 180°</span>
+            về phía Đông hoặc phía Tây.
+        </p>
+
+    </div>
+
+
+    <div class="concept-card">
+
+        <h3>🟢 2. Vĩ tuyến</h3>
+
+        <p>
+            Vĩ tuyến là những vòng tròn trên bề mặt
+            Trái Đất, song song với Xích đạo.
+            Vĩ độ được xác định từ
+            <span class="highlight">0° đến 90°</span>
+            về phía Bắc hoặc phía Nam.
+        </p>
+
+    </div>
+
+
+    <div class="concept-card">
+
+        <h3>🟡 3. Kinh tuyến gốc</h3>
+
+        <p>
+            Kinh tuyến đi qua đài thiên văn
+            Greenwich ở Luân Đôn được quy ước
+            là <span class="highlight">kinh tuyến gốc 0°</span>.
+            Từ đó xác định kinh độ Đông và Tây.
+        </p>
+
+    </div>
+
+
+    <div class="concept-card">
+
+        <h3>📍 4. Tọa độ địa lí</h3>
+
+        <p>
+            Tọa độ địa lí của một địa điểm được
+            xác định bởi <span class="highlight">vĩ độ</span>
+            và <span class="highlight">kinh độ</span>
+            của địa điểm đó.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     COORDINATE TABLE
+========================= -->
+
+<h2 class="section-title">
+    📍 Một số địa điểm trên Trái Đất
+</h2>
+
+
+<div class="coordinate-table">
+
+<table>
+
+<thead>
+
+<tr>
+    <th>Địa điểm</th>
+    <th>Vĩ độ</th>
+    <th>Kinh độ</th>
+    <th>Vị trí khái quát</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+    <td class="place-name">🇻🇳 Hà Nội</td>
+    <td>21,03° B</td>
+    <td>105,85° Đ</td>
+    <td>Châu Á</td>
+</tr>
+
+<tr>
+    <td class="place-name">🇬🇧 Luân Đôn</td>
+    <td>51,51° B</td>
+    <td>0,13° T</td>
+    <td>Châu Âu</td>
+</tr>
+
+<tr>
+    <td class="place-name">🇰🇪 Nairobi</td>
+    <td>1,29° N</td>
+    <td>36,82° Đ</td>
+    <td>Châu Phi</td>
+</tr>
+
+<tr>
+    <td class="place-name">🇯🇵 Tokyo</td>
+    <td>35,68° B</td>
+    <td>139,65° Đ</td>
+    <td>Châu Á</td>
+</tr>
+
+<tr>
+    <td class="place-name">🇺🇸 New York</td>
+    <td>40,71° B</td>
+    <td>74,01° T</td>
+    <td>Bắc Mỹ</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- =========================
+     QUIZ
+========================= -->
+
+<section class="quiz-section">
+
+    <div class="quiz-header">
+
+        <div>
+            <h2>🎮 Thử thách nhanh</h2>
+
+            <p>
+                8 câu hỏi · 10 giây/câu ·
+                Kiểm tra kiến thức sau bài học
+            </p>
+        </div>
+
+
+        <button
+            class="quiz-start"
+            id="startQuizBtn"
+            onclick="startQuiz()"
+        >
+            🚀 Bắt đầu
+        </button>
+
+    </div>
+
+
+    <div class="quiz-content" id="quizContent">
+
+        <div class="quiz-top">
+
+            <div
+                class="question-number"
+                id="questionNumber"
+            >
+                CÂU 1/8
+            </div>
+
+            <div
+                class="timer"
+                id="timer"
+            >
+                ⏱ 10s
+            </div>
+
+        </div>
+
+
+        <div
+            class="question"
+            id="questionText"
+        >
+        </div>
+
+
+        <div
+            class="options"
+            id="options"
+        >
+        </div>
+
+
+        <div
+            class="feedback"
+            id="feedback"
+        >
+        </div>
+
+
+        <button
+            class="quiz-next"
+            id="nextBtn"
+            onclick="nextQuestion()"
+        >
+            Câu tiếp theo →
+        </button>
+
+    </div>
+
+
+    <div
+        class="quiz-result"
+        id="quizResult"
+    >
+
+        <div class="result-icon">
+            🏆
+        </div>
+
+        <div class="result-title">
+            Hoàn thành thử thách!
+        </div>
+
+        <div
+            class="result-score"
+            id="resultScore"
+        >
+            0/8
+        </div>
+
+        <div
+            class="result-text"
+            id="resultText"
+        >
+        </div>
+
+        <br>
+
+        <button
+            class="quiz-start"
+            onclick="startQuiz()"
+        >
+            🔄 Làm lại
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FINISH
+========================= -->
+
+<div class="finish-box">
+
+    <h3>
+        🎓 Bạn đã hoàn thành Bài 1?
+    </h3>
+
+    <p>
+        Sau khi học xong và hoàn thành phần luyện tập,
+        hãy đánh dấu bài học đã hoàn thành.
+    </p>
+
+    <button
+        class="finish-btn"
+        onclick="finishLesson()"
+    >
+        ✓ Đánh dấu đã hoàn thành
+    </button>
+
+</div>
+
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   1. TRANG CHỦ
+========================================================= */
+
+function goHome(){
+
+    window.location.href="index.html";
+
+}
+
+
+/* =========================================================
+   2. THREE.JS - KHỞI TẠO KHÔNG GIAN
+========================================================= */
+
+const canvas =
+    document.getElementById("earthCanvas");
+
+const scene =
+    new THREE.Scene();
+
+const camera =
+    new THREE.PerspectiveCamera(
+        42,
+        canvas.clientWidth / canvas.clientHeight,
+        0.1,
+        1000
+    );
+
+camera.position.set(
+    0,
+    1.2,
+    15
+);
+
+
+const renderer =
+    new THREE.WebGLRenderer({
+        canvas:canvas,
+        antialias:true,
+        alpha:true
+    });
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio,2)
+);
+
+renderer.setSize(
+    canvas.clientWidth,
+    canvas.clientHeight,
+    false
+);
+
+
+/* =========================================================
+   3. ĐIỀU KHIỂN CAMERA
+========================================================= */
+
+const controls =
+    new THREE.OrbitControls(
+        camera,
+        renderer.domElement
+    );
+
+controls.enableDamping = true;
+controls.dampingFactor = .055;
+
+controls.enablePan = false;
+
+controls.minDistance = 7;
+controls.maxDistance = 24;
+
+controls.rotateSpeed = .55;
+
+
+/* =========================================================
+   4. ÁNH SÁNG
+========================================================= */
+
+const ambient =
+    new THREE.AmbientLight(
+        0x7dd3fc,
+        .38
+    );
+
+scene.add(ambient);
+
+
+const sun =
+    new THREE.DirectionalLight(
+        0xffffff,
+        2.4
+    );
+
+sun.position.set(
+    -8,
+    5,
+    10
+);
+
+scene.add(sun);
+
+
+const rimLight =
+    new THREE.DirectionalLight(
+        0x38bdf8,
+        .8
+    );
+
+rimLight.position.set(
+    8,
+    -3,
+    -8
+);
+
+scene.add(rimLight);
+
+
+/* =========================================================
+   5. SAO NỀN
+========================================================= */
+
+const starGeometry =
+    new THREE.BufferGeometry();
+
+const starCount = 1800;
+
+const starPositions =
+    new Float32Array(
+        starCount * 3
+    );
+
+for(let i=0;i<starCount;i++){
+
+    const i3=i*3;
+
+    starPositions[i3] =
+        (Math.random()-.5)*300;
+
+    starPositions[i3+1] =
+        (Math.random()-.5)*200;
+
+    starPositions[i3+2] =
+        (Math.random()-.5)*300;
+
+}
+
+starGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+        starPositions,
+        3
+    )
+);
+
+const starMaterial =
+    new THREE.PointsMaterial({
+        color:0xffffff,
+        size:.35,
+        transparent:true,
+        opacity:.75
+    });
+
+const stars =
+    new THREE.Points(
+        starGeometry,
+        starMaterial
+    );
+
+scene.add(stars);
+
+
+/* =========================================================
+   6. TẠO TEXTURE TRÁI ĐẤT
+========================================================= */
+
+const textureCanvas =
+    document.createElement("canvas");
+
+textureCanvas.width = 2048;
+textureCanvas.height = 1024;
+
+const ctx =
+    textureCanvas.getContext("2d");
+
+
+/* Đại dương */
+
+const ocean =
+    ctx.createRadialGradient(
+        900,
+        450,
+        50,
+        1024,
+        512,
+        1000
+    );
+
+ocean.addColorStop(
+    0,
+    "#1e88e5"
+);
+
+ocean.addColorStop(
+    .45,
+    "#075985"
+);
+
+ocean.addColorStop(
+    1,
+    "#031b35"
+);
+
+ctx.fillStyle=ocean;
+
+ctx.fillRect(
+    0,
+    0,
+    2048,
+    1024
+);
+
+
+/* =========================================================
+   7. HÀM VẼ CHÂU LỤC
+========================================================= */
+
+function polygon(points,fill,stroke){
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        points[0][0],
+        points[0][1]
+    );
+
+    for(let i=1;i<points.length;i++){
+
+        ctx.lineTo(
+            points[i][0],
+            points[i][1]
+        );
+
+    }
+
+    ctx.closePath();
+
+    ctx.fillStyle=fill;
+
+    ctx.fill();
+
+    if(stroke){
+
+        ctx.strokeStyle=stroke;
+
+        ctx.lineWidth=3;
+
+        ctx.stroke();
+
+    }
+
+}
+
+
+/* =========================================================
+   8. BẮC MỸ
+========================================================= */
+
+polygon([
+
+    [180,210],
+    [230,160],
+    [310,125],
+    [400,120],
+    [470,150],
+    [510,205],
+    [475,260],
+    [420,280],
+    [405,335],
+    [350,360],
+    [320,325],
+    [280,330],
+    [240,285],
+    [190,270]
+
+],"#4f9d52","#6fcf65");
+
+
+/* Greenland */
+
+polygon([
+
+    [570,100],
+    [650,75],
+    [720,105],
+    [735,170],
+    [690,210],
+    [610,190],
+    [575,150]
+
+],"#dbeafe","#f8fafc");
+
+
+/* =========================================================
+   9. NAM MỸ
+========================================================= */
+
+polygon([
+
+    [430,400],
+    [480,375],
+    [535,405],
+    [570,470],
+    [560,545],
+    [530,620],
+    [490,705],
+    [450,790],
+    [425,770],
+    [420,690],
+    [390,620],
+    [380,540],
+    [395,460]
+
+],"#4f9d52","#6fcf65");
+
+
+/* =========================================================
+   10. CHÂU ÂU
+========================================================= */
+
+polygon([
+
+    [820,245],
+    [865,220],
+    [920,225],
+    [955,250],
+    [930,280],
+    [880,285],
+    [840,275]
+
+],"#68a85d","#8bd17d");
+
+
+/* =========================================================
+   11. CHÂU Á
+========================================================= */
+
+polygon([
+
+    [900,205],
+    [1010,170],
+    [1130,155],
+    [1260,175],
+    [1390,170],
+    [1530,210],
+    [1650,270],
+    [1725,330],
+    [1690,390],
+    [1600,410],
+    [1510,390],
+    [1430,425],
+    [1350,390],
+    [1260,370],
+    [1180,340],
+    [1080,345],
+    [1000,315],
+    [930,285]
+
+],"#65a653","#8bd17d");
+
+
+/* =========================================================
+   12. CHÂU PHI
+========================================================= */
+
+polygon([
+
+    [830,345],
+    [900,330],
+    [970,350],
+    [1030,405],
+    [1045,490],
+    [1015,590],
+    [970,680],
+    [920,725],
+    [875,650],
+    [835,560],
+    [805,470],
+    [810,395]
+
+],"#d49b45","#e6b865");
+
+
+/* =========================================================
+   13. ẤN ĐỘ
+========================================================= */
+
+polygon([
+
+    [1170,350],
+    [1210,390],
+    [1240,455],
+    [1200,500],
+    [1160,450],
+    [1140,395]
+
+],"#d49b45","#e6b865");
+
+
+/* =========================================================
+   14. ĐÔNG NAM Á
+========================================================= */
+
+polygon([
+
+    [1280,365],
+    [1320,380],
+    [1340,420],
+    [1325,455],
+    [1300,435],
+    [1280,395]
+
+],"#4f9d52","#6fcf65");
+
+
+/* =========================================================
+   15. AUSTRALIA
+========================================================= */
+
+polygon([
+
+    [1450,610],
+    [1520,580],
+    [1610,590],
+    [1680,640],
+    [1690,710],
+    [1640,765],
+    [1540,770],
+    [1470,730],
+    [1430,670]
+
+],"#d49b45","#e6b865");
+
+
+/* =========================================================
+   16. NHẬT BẢN
+========================================================= */
+
+polygon([
+
+    [1590,315],
+    [1610,330],
+    [1600,355],
+    [1585,345]
+
+],"#68a85d","#8bd17d");
+
+
+/* =========================================================
+   17. NAM CỰC
+========================================================= */
+
+ctx.fillStyle="#f1f5f9";
+
+ctx.beginPath();
+
+ctx.ellipse(
+    1024,
+    995,
+    800,
+    70,
+    0,
+    0,
+    Math.PI*2
+);
+
+ctx.fill();
+
+
+/* =========================================================
+   18. HIỆU ỨNG MÂY
+========================================================= */
+
+ctx.fillStyle="rgba(255,255,255,.06)";
+
+for(let i=0;i<45;i++){
+
+    const x=Math.random()*2048;
+    const y=120+Math.random()*650;
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        y,
+        25+Math.random()*45,
+        6+Math.random()*12,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   19. TEXTURE
+========================================================= */
+
+const earthTexture =
+    new THREE.CanvasTexture(
+        textureCanvas
+    );
+
+earthTexture.wrapS =
+    THREE.RepeatWrapping;
+
+
+/* =========================================================
+   20. TRÁI ĐẤT
+========================================================= */
+
+const earthRadius=5;
+
+const earth =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            earthRadius,
+            96,
+            96
+        ),
+
+        new THREE.MeshPhongMaterial({
+
+            map:earthTexture,
+
+            shininess:12,
+
+            specular:
+                new THREE.Color("#164e63")
+
+        })
+
+    );
+
+scene.add(earth);
+
+
+/* =========================================================
+   21. KHÍ QUYỂN
+========================================================= */
+
+const atmosphere =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            5.08,
+            96,
+            96
+        ),
+
+        new THREE.MeshBasicMaterial({
+
+            color:0x38bdf8,
+
+            transparent:true,
+
+            opacity:.075,
+
+            side:THREE.BackSide
+
+        })
+
+    );
+
+scene.add(atmosphere);
+
+
+/* =========================================================
+   22. NHÓM KINH VĨ TUYẾN
+========================================================= */
+
+const gridGroup =
+    new THREE.Group();
+
+earth.add(gridGroup);
+
+
+/* =========================================================
+   23. VĨ TUYẾN
+========================================================= */
+
+function makeLatitude(
+    latitude,
+    color,
+    opacity=.65
+){
+
+    const lat =
+        latitude*Math.PI/180;
+
+    const y =
+        earthRadius*Math.sin(lat);
+
+    const r =
+        earthRadius*Math.cos(lat);
+
+    const points=[];
+
+    for(let i=0;i<=128;i++){
+
+        const a=
+            i/128*Math.PI*2;
+
+        points.push(
+
+            new THREE.Vector3(
+                r*Math.cos(a),
+                y,
+                r*Math.sin(a)
+            )
+
+        );
+
+    }
+
+    const geometry =
+        new THREE.BufferGeometry()
+            .setFromPoints(points);
+
+    const material =
+        new THREE.LineBasicMaterial({
+
+            color:color,
+
+            transparent:true,
+
+            opacity:opacity
+
+        });
+
+    return new THREE.Line(
+        geometry,
+        material
+    );
+
+}
+
+
+/* =========================================================
+   24. KINH TUYẾN
+========================================================= */
+
+function makeLongitude(
+    longitude,
+    color,
+    opacity=.5
+){
+
+    const lon =
+        longitude*Math.PI/180;
+
+    const points=[];
+
+    for(let i=0;i<=128;i++){
+
+        const lat =
+            -Math.PI/2 +
+            i/128*Math.PI;
+
+        const x =
+            earthRadius*
+            Math.cos(lat)*
+            Math.cos(lon);
+
+        const y =
+            earthRadius*
+            Math.sin(lat);
+
+        const z =
+            earthRadius*
+            Math.cos(lat)*
+            Math.sin(lon);
+
+        points.push(
+            new THREE.Vector3(
+                x,y,z
+            )
+        );
+
+    }
+
+    const geometry =
+        new THREE.BufferGeometry()
+            .setFromPoints(points);
+
+    const material =
+        new THREE.LineBasicMaterial({
+
+            color:color,
+
+            transparent:true,
+
+            opacity:opacity
+
+        });
+
+    return new THREE.Line(
+        geometry,
+        material
+    );
+
+}
+
+
+/* =========================================================
+   25. TẠO LƯỚI
+========================================================= */
+
+const latitudeLines=[];
+const longitudeLines=[];
+
+
+/* Vĩ tuyến */
+
+for(
+    let lat=-75;
+    lat<=75;
+    lat+=15
+){
+
+    if(lat===0) continue;
+
+    const line =
+        makeLatitude(
+            lat,
+            0x38bdf8,
+            .42
+        );
+
+    latitudeLines.push(line);
+
+    gridGroup.add(line);
+}
+
+
+/* Kinh tuyến */
+
+for(
+    let lon=-165;
+    lon<=180;
+    lon+=15
+){
+
+    if(lon===0) continue;
+
+    const line =
+        makeLongitude(
+            lon,
+            0x64748b,
+            .34
+        );
+
+    longitudeLines.push(line);
+
+    gridGroup.add(line);
+}
+
+
+/* =========================================================
+   26. XÍCH ĐẠO
+========================================================= */
+
+const equator =
+    makeLatitude(
+        0,
+        0x22c55e,
+        1
+    );
+
+gridGroup.add(equator);
+
+
+/* =========================================================
+   27. KINH TUYẾN GỐC
+========================================================= */
+
+const primeMeridian =
+    makeLongitude(
+        0,
+        0xfacc15,
+        1
+    );
+
+gridGroup.add(
+    primeMeridian
+);
+
+
+/* =========================================================
+   28. ĐIỂM ĐỊA LÍ
+========================================================= */
+
+const locations=[
+
+    {
+        name:"Hà Nội",
+        lat:21.03,
+        lon:105.85,
+        desc:"Thủ đô Việt Nam, thuộc châu Á.",
+        color:0x22c55e
+    },
+
+    {
+        name:"Luân Đôn",
+        lat:51.51,
+        lon:-0.13,
+        desc:"Thành phố nằm gần kinh tuyến gốc.",
+        color:0xfacc15
+    },
+
+    {
+        name:"Nairobi",
+        lat:-1.29,
+        lon:36.82,
+        desc:"Thủ đô Kenya, thuộc châu Phi.",
+        color:0xfb923c
+    },
+
+    {
+        name:"Tokyo",
+        lat:35.68,
+        lon:139.65,
+        desc:"Thủ đô Nhật Bản, thuộc châu Á.",
+        color:0xf472b6
+    },
+
+    {
+        name:"New York",
+        lat:40.71,
+        lon:-74.01,
+        desc:"Thành phố lớn của Hoa Kỳ, thuộc Bắc Mỹ.",
+        color:0x60a5fa
+    }
+
+];
+
+
+const placeGroup =
+    new THREE.Group();
+
+earth.add(placeGroup);
+
+
+/* =========================================================
+   29. HÀM TỌA ĐỘ 3D
+========================================================= */
+
+function latLonToVector3(
+    lat,
+    lon,
+    radius
+){
+
+    const phi =
+        (90-lat)*
+        Math.PI/180;
+
+    const theta =
+        (lon+180)*
+        Math.PI/180;
+
+    return new THREE.Vector3(
+
+        -radius*
+        Math.sin(phi)*
+        Math.cos(theta),
+
+        radius*
+        Math.cos(phi),
+
+        radius*
+        Math.sin(phi)*
+        Math.sin(theta)
+
+    );
+
+}
+
+
+/* =========================================================
+   30. TẠO MARKER
+========================================================= */
+
+locations.forEach(loc=>{
+
+    const pos =
+        latLonToVector3(
+            loc.lat,
+            loc.lon,
+            earthRadius+.08
+        );
+
+
+    const marker =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .095,
+                16,
+                16
+            ),
+
+            new THREE.MeshBasicMaterial({
+                color:loc.color
+            })
+
+        );
+
+
+    marker.position.copy(pos);
+
+    marker.userData={
+        type:"place",
+        data:loc
+    };
+
+    placeGroup.add(marker);
+
+
+    /* vòng sáng */
+
+    const ring =
+        new THREE.Mesh(
+
+            new THREE.RingGeometry(
+                .13,
+                .18,
+                24
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:loc.color,
+
+                transparent:true,
+
+                opacity:.55,
+
+                side:THREE.DoubleSide
+
+            })
+
+        );
+
+
+    ring.position.copy(pos);
+
+    ring.lookAt(
+        pos.clone().multiplyScalar(2)
+    );
+
+    ring.userData={
+        type:"place",
+        data:loc
+    };
+
+    placeGroup.add(ring);
+
+});
+
+
+/* =========================================================
+   31. TRẠNG THÁI LỚP
+========================================================= */
+
+const layers={
+    equator:true,
+    prime:true,
+    grid:true,
+    places:true
+};
+
+
+/* =========================================================
+   32. TỰ ĐỘNG XOAY
+========================================================= */
+
+let autoSpin=true;
+
+function toggleSpin(){
+
+    autoSpin=!autoSpin;
+
+    const btn=
+        document.getElementById(
+            "spinBtn"
+        );
+
+    if(autoSpin){
+
+        btn.classList.add("active");
+
+        btn.innerHTML=
+            '<span class="dot"></span> 🔄 Tự động xoay';
+
+    }else{
+
+        btn.classList.remove("active");
+
+        btn.innerHTML=
+            '<span class="dot"></span> ⏸️ Tạm dừng xoay';
+
+    }
+
+}
+
+
+/* =========================================================
+   33. RESET
+========================================================= */
+
+function resetEarth(){
+
+    earth.rotation.set(
+        0,
+        -0.65,
+        0
+    );
+
+    camera.position.set(
+        0,
+        1.2,
+        15
+    );
+
+    controls.target.set(
+        0,
+        0,
+        0
+    );
+
+    controls.update();
+
+}
+
+
+/* =========================================================
+   34. BẬT/TẮT LỚP
+========================================================= */
+
+function toggleLayer(type){
+
+    layers[type]=!layers[type];
+
+    const map={
+        equator:"equatorBtn",
+        prime:"primeBtn",
+        grid:"gridBtn",
+        places:"placeBtn"
+    };
+
+    const btn=
+        document.getElementById(
+            map[type]
+        );
+
+    if(layers[type]){
+
+        btn.classList.add("active");
+
+    }else{
+
+        btn.classList.remove("active");
+
+    }
+
+
+    updateLayers();
+
+}
+
+
+function updateLayers(){
+
+    equator.visible=
+        layers.equator;
+
+    primeMeridian.visible=
+        layers.prime;
+
+    latitudeLines.forEach(
+        line=>line.visible=layers.grid
+    );
+
+    longitudeLines.forEach(
+        line=>line.visible=layers.grid
+    );
+
+    placeGroup.visible=
+        layers.places;
+
+}
+
+
+updateLayers();
+
+
+/* =========================================================
+   35. THÔNG TIN CLICK
+========================================================= */
+
+const infoTitle =
+    document.getElementById(
+        "infoTitle"
+    );
+
+const infoText =
+    document.getElementById(
+        "infoText"
+    );
+
+const infoLat =
+    document.getElementById(
+        "infoLat"
+    );
+
+const infoLon =
+    document.getElementById(
+        "infoLon"
+    );
+
+
+function showInfo(
+    title,
+    text,
+    lat="—",
+    lon="—"
+){
+
+    infoTitle.innerHTML=
+        title;
+
+    infoText.innerHTML=
+        text;
+
+    infoLat.innerText=
+        lat;
+
+    infoLon.innerText=
+        lon;
+
+}
+
+
+/* =========================================================
+   36. CLICK VÀO MÔ HÌNH
+========================================================= */
+
+const raycaster =
+    new THREE.Raycaster();
+
+const mouse =
+    new THREE.Vector2();
+
+
+canvas.addEventListener(
+    "click",
+    function(event){
+
+        const rect=
+            canvas.getBoundingClientRect();
+
+        mouse.x=
+            ((event.clientX-rect.left)/
+            rect.width)*2-1;
+
+        mouse.y=
+            -((event.clientY-rect.top)/
+            rect.height)*2+1;
+
+
+        raycaster.setFromCamera(
+            mouse,
+            camera
+        );
+
+
+        const objects=[];
+
+        if(layers.places){
+
+            placeGroup.traverse(
+                obj=>{
+                    if(obj.isMesh)
+                        objects.push(obj);
+                }
+            );
+
+        }
+
+
+        const placeHits =
+            raycaster.intersectObjects(
+                objects,
+                true
+            );
+
+
+        if(placeHits.length){
+
+            const loc =
+                placeHits[0]
+                    .object
+                    .userData
+                    .data;
+
+            showInfo(
+
+                "📍 "+loc.name,
+
+                loc.desc,
+
+                loc.lat.toFixed(2)+"° "+
+                (loc.lat>=0?"B":"N"),
+
+                Math.abs(loc.lon).toFixed(2)+"° "+
+                (loc.lon>=0?"Đ":"T")
+
+            );
+
+            return;
+
+        }
+
+
+        const earthHit =
+            raycaster.intersectObject(
+                earth,
+                false
+            );
+
+
+        if(!earthHit.length){
+
+            return;
+
+        }
+
+
+        const local =
+            earth.worldToLocal(
+                earthHit[0].point.clone()
+            );
+
+
+        const lat =
+            Math.asin(
+                local.y/earthRadius
+            )*
+            180/Math.PI;
+
+
+        let lon =
+            Math.atan2(
+                local.z,
+                -local.x
+            )*
+            180/Math.PI;
+
+
+        if(lon>180)
+            lon-=360;
+
+        if(lon<-180)
+            lon+=360;
+
+
+        const roundedLat=
+            Math.round(lat*10)/10;
+
+        const roundedLon=
+            Math.round(lon*10)/10;
+
+
+        if(Math.abs(roundedLat)<2){
+
+            showInfo(
+
+                "🟢 Đường Xích đạo",
+
+                "Đường Xích đạo có vĩ độ <b>0°</b>, chia Trái Đất thành hai bán cầu Bắc và Nam.",
+
+                "0°",
+
+                "—"
+
+            );
+
+            return;
+
+        }
+
+
+        if(Math.abs(roundedLon)<2){
+
+            showInfo(
+
+                "🟡 Kinh tuyến gốc",
+
+                "Kinh tuyến gốc có kinh độ <b>0°</b>, đi qua Greenwich và là cơ sở xác định kinh độ Đông và Tây.",
+
+                roundedLat+"°",
+
+                "0°"
+
+            );
+
+            return;
+
+        }
+
+
+        showInfo(
+
+            "🌐 Vị trí trên Trái Đất",
+
+            "Điểm bạn vừa chọn nằm trên một vị trí thuộc hệ thống kinh – vĩ tuyến. Hãy đọc giá trị vĩ độ và kinh độ để xác định tọa độ địa lí.",
+
+            Math.abs(roundedLat).toFixed(1)+"° "+
+            (roundedLat>=0?"B":"N"),
+
+            Math.abs(roundedLon).toFixed(1)+"° "+
+            (roundedLon>=0?"Đ":"T")
+
+        );
+
+    }
+);
+
+
+/* =========================================================
+   37. ANIMATION
+========================================================= */
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    if(
+        autoSpin &&
+        !controls.state
+    ){
+
+        earth.rotation.y +=
+            0.0018;
+
+    }
+
+
+    controls.update();
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+animate();
+
+
+/* =========================================================
+   38. RESIZE
+========================================================= */
+
+function resize(){
+
+    const width=
+        canvas.clientWidth;
+
+    const height=
+        canvas.clientHeight;
+
+
+    camera.aspect=
+        width/height;
+
+    camera.updateProjectionMatrix();
+
+
+    renderer.setSize(
+        width,
+        height,
+        false
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resize
+);
+
+resize();
+
+
+/* =========================================================
+   39. TRẮC NGHIỆM
+========================================================= */
+
+const quizData=[
+
+    {
+        q:"Đường nào chia Trái Đất thành hai bán cầu Bắc và Nam?",
+        a:[
+            "Kinh tuyến gốc",
+            "Đường Xích đạo",
+            "Chí tuyến Bắc",
+            "Vòng cực Bắc"
+        ],
+        correct:1,
+        explain:"Đường Xích đạo có vĩ độ 0° và chia Trái Đất thành bán cầu Bắc và bán cầu Nam."
+    },
+
+    {
+        q:"Kinh tuyến gốc có giá trị kinh độ bao nhiêu?",
+        a:[
+            "0°",
+            "90°",
+            "180°",
+            "45°"
+        ],
+        correct:0,
+        explain:"Kinh tuyến gốc được quy ước là kinh tuyến 0°."
+    },
+
+    {
+        q:"Vĩ độ của một địa điểm được xác định dựa vào khoảng cách từ địa điểm đó đến đâu?",
+        a:[
+            "Kinh tuyến gốc",
+            "Cực Bắc",
+            "Đường Xích đạo",
+            "Greenwich"
+        ],
+        correct:2,
+        explain:"Vĩ độ được xác định từ Xích đạo về phía Bắc hoặc phía Nam."
+    },
+
+    {
+        q:"Kinh độ được xác định dựa vào khoảng cách từ địa điểm đến:",
+        a:[
+            "Đường Xích đạo",
+            "Kinh tuyến gốc",
+            "Cực Bắc",
+            "Chí tuyến"
+        ],
+        correct:1,
+        explain:"Kinh độ được xác định từ kinh tuyến gốc về phía Đông hoặc phía Tây."
+    },
+
+    {
+        q:"Hà Nội có tọa độ khoảng 21°B và 106°Đ. Trong đó 21°B là:",
+        a:[
+            "Kinh độ",
+            "Vĩ độ",
+            "Kinh tuyến",
+            "Xích đạo"
+        ],
+        correct:1,
+        explain:"Ký hiệu B cho biết vị trí về phía Bắc Xích đạo, vì vậy đây là vĩ độ."
+    },
+
+    {
+        q:"Các đường kinh tuyến có đặc điểm nào sau đây?",
+        a:[
+            "Song song với Xích đạo",
+            "Nối liền hai cực",
+            "Chỉ xuất hiện ở bán cầu Bắc",
+            "Có hướng Đông – Tây"
+        ],
+        correct:1,
+        explain:"Kinh tuyến là những nửa đường tròn nối liền hai cực của Trái Đất."
+    },
+
+    {
+        q:"Các đường vĩ tuyến có đặc điểm nào sau đây?",
+        a:[
+            "Nối hai cực",
+            "Song song với Xích đạo",
+            "Đều đi qua Greenwich",
+            "Chỉ có ở bán cầu Nam"
+        ],
+        correct:1,
+        explain:"Vĩ tuyến là những vòng tròn song song với Xích đạo."
+    },
+
+    {
+        q:"Tọa độ địa lí của một địa điểm được xác định bởi:",
+        a:[
+            "Kinh độ và vĩ độ",
+            "Kinh tuyến và Xích đạo",
+            "Phương hướng và khoảng cách",
+            "Độ cao và nhiệt độ"
+        ],
+        correct:0,
+        explain:"Tọa độ địa lí gồm hai thành phần: vĩ độ và kinh độ."
+    }
+
+];
+
+
+let quizIndex=0;
+let quizScore=0;
+let quizCompleted=false;
+let timerValue=10;
+let timerInterval=null;
+let answered=false;
+
+
+/* =========================================================
+   40. START QUIZ
+========================================================= */
+
+function startQuiz(){
+
+    quizIndex=0;
+
+    quizScore=0;
+    quizCompleted=false;
+
+    answered=false;
+
+    clearInterval(timerInterval);
+
+
+    document
+        .getElementById("startQuizBtn")
+        .style.display="none";
+
+
+    document
+        .getElementById("quizResult")
+        .style.display="none";
+
+
+    document
+        .getElementById("quizContent")
+        .style.display="block";
+
+
+    loadQuestion();
+
+}
+
+
+/* =========================================================
+   41. LOAD QUESTION
+========================================================= */
+
+function loadQuestion(){
+
+    answered=false;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const data=
+        quizData[quizIndex];
+
+
+    document
+        .getElementById(
+            "questionNumber"
+        )
+        .innerText=
+            `CÂU ${quizIndex+1}/${quizData.length}`;
+
+
+    document
+        .getElementById(
+            "questionText"
+        )
+        .innerText=
+            data.q;
+
+
+    const options=
+        document.getElementById(
+            "options"
+        );
+
+    options.innerHTML="";
+
+
+    data.a.forEach(
+        (answer,index)=>{
+
+            const button=
+                document.createElement(
+                    "button"
+                );
+
+            button.className=
+                "option";
+
+            button.innerText=
+                `${String.fromCharCode(65+index)}. ${answer}`;
+
+            button.onclick=
+                ()=>checkAnswer(
+                    index,
+                    button
+                );
+
+            options.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+    feedback.style.display="none";
+
+    feedback.innerHTML="";
+
+
+    document
+        .getElementById(
+            "nextBtn"
+        )
+        .style.display="none";
+
+
+    startTimer();
+
+}
+
+
+/* =========================================================
+   42. TIMER
+========================================================= */
+
+function startTimer(){
+
+    timerValue=10;
+
+    const timer=
+        document.getElementById(
+            "timer"
+        );
+
+    timer.innerText=
+        "⏱ 10s";
+
+
+    timerInterval=
+        setInterval(()=>{
+
+            timerValue--;
+
+            timer.innerText=
+                `⏱ ${timerValue}s`;
+
+
+            if(timerValue<=0){
+
+                clearInterval(
+                    timerInterval
+                );
+
+                if(!answered){
+
+                    timeOut();
+
+                }
+
+            }
+
+        },1000);
+
+}
+
+
+/* =========================================================
+   43. TIME OUT
+========================================================= */
+
+function timeOut(){
+
+    answered=true;
+
+    const data=
+        quizData[quizIndex];
+
+    const buttons=
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        btn=>{
+            btn.disabled=true;
+        }
+    );
+
+
+    buttons[data.correct]
+        .classList.add(
+            "correct"
+        );
+
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.style.display=
+        "block";
+
+    feedback.style.background=
+        "rgba(220,38,38,.12)";
+
+    feedback.style.color=
+        "#fca5a5";
+
+    feedback.innerHTML=
+        `⏰ Hết thời gian! ${data.explain}`;
+
+
+    document
+        .getElementById(
+            "nextBtn"
+        )
+        .style.display="inline-block";
+
+}
+
+
+/* =========================================================
+   44. CHECK ANSWER
+========================================================= */
+
+function checkAnswer(
+    selected,
+    button
+){
+
+    if(answered)
+        return;
+
+
+    answered=true;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const data=
+        quizData[quizIndex];
+
+
+    const buttons=
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        btn=>{
+            btn.disabled=true;
+        }
+    );
+
+
+    if(selected===data.correct){
+
+        quizScore++;
+
+        button.classList.add(
+            "correct"
+        );
+
+
+    }else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+        buttons[data.correct]
+            .classList.add(
+                "correct"
+            );
+
+    }
+
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.style.display=
+        "block";
+
+
+    if(selected===data.correct){
+
+        feedback.style.background=
+            "rgba(22,163,74,.13)";
+
+        feedback.style.color=
+            "#86efac";
+
+        feedback.innerHTML=
+            `✅ Chính xác! ${data.explain}`;
+
+    }else{
+
+        feedback.style.background=
+            "rgba(220,38,38,.13)";
+
+        feedback.style.color=
+            "#fca5a5";
+
+        feedback.innerHTML=
+            `❌ Chưa chính xác. ${data.explain}`;
+
+    }
+
+
+    document
+        .getElementById(
+            "nextBtn"
+        )
+        .style.display="inline-block";
+
+}
+
+
+/* =========================================================
+   45. NEXT QUESTION
+========================================================= */
+
+function nextQuestion(){
+
+    quizIndex++;
+
+
+    if(
+        quizIndex<
+        quizData.length
+    ){
+
+        loadQuestion();
+
+    }else{
+
+        finishQuiz();
+
+    }
+
+}
+
+
+/* =========================================================
+   46. RESULT
+========================================================= */
+
+function finishQuiz(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document
+        .getElementById(
+            "quizContent"
+        )
+        .style.display="none";
+
+
+    document
+        .getElementById(
+            "quizResult"
+        )
+        .style.display="block";
+
+
+    document
+        .getElementById(
+            "resultScore"
+        )
+        .innerText=
+            `${quizScore}/${quizData.length} câu đúng • ${((quizScore/quizData.length)*10).toFixed(1).replace(/\.0$/, '')}/10 điểm`;
+
+
+    let text="";
+
+
+    if(quizScore===quizData.length){
+
+        text=
+            "🌟 Xuất sắc! Bạn đã nắm rất chắc kiến thức về kinh tuyến, vĩ tuyến và tọa độ địa lí.";
+
+    }else if(quizScore/quizData.length>=0.75){
+
+        text=
+            "👏 Rất tốt! Bạn đã hiểu phần lớn nội dung của bài học.";
+
+    }else if(quizScore/quizData.length>=0.5){
+
+        text=
+            "💪 Khá tốt! Hãy xem lại phần kinh độ, vĩ độ và thử lại nhé.";
+
+    }else{
+
+        text=
+            "📚 Bạn nên xem lại phần kiến thức trọng tâm rồi thử lại.";
+
+    }
+
+
+    document
+        .getElementById(
+            "resultText"
+        )
+        .innerText=text;
+
+    // Lưu đúng kết quả ngay khi học sinh thực sự hoàn thành quiz.
+    // Không chờ nút "Đánh dấu đã hoàn thành" để tránh ghi đè điểm bằng 0.
+    quizCompleted=true;
+    if(window.HLS6){
+        HLS6.saveQuizResult("g01", quizScore, quizData.length, {
+            subject: "geo",
+            title: "Bài 1. Hệ thống kinh, vĩ tuyến. Tọa độ địa lí"
+        });
+    }
+
+}
+
+
+/* =========================================================
+   47. HOÀN THÀNH BÀI
+========================================================= */
+
+function finishLesson(){
+
+    /* HLS6 CORE: chỉ đánh dấu hoàn thành ở nút này. Điểm đã được lưu ở finishQuiz(). */
+    if(window.HLS6){
+        HLS6.completeLesson("g01", {
+            score: quizCompleted ? quizScore : null,
+            total: quizData.length,
+            subject: "geo"
+        });
+    }else{
+        const key="hoclieu6_progress_v1";
+        let progress={};
+        try{progress=JSON.parse(localStorage.getItem(key)||"{}");}catch(e){progress={};}
+        progress.g01=true;
+        localStorage.setItem(key,JSON.stringify(progress));
+    }
+
+    alert("🎉 Tuyệt vời! Bạn đã hoàn thành Bài 1 Địa lí 6. Kết quả đã được lưu vào hồ sơ học tập.");
+}
+
+
+/* =========================================================
+   48. PHÍM TẮT
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key==="r"){
+
+            resetEarth();
+
+        }
+
+        if(e.key===" "){
+
+            e.preventDefault();
+
+            toggleSpin();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

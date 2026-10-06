@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 25 - Sự phân bố các đới thiên nhiên trên Trái Đất</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#07111f;
+    --bg2:#0b1728;
+    --card:#102239;
+    --card2:#142b45;
+    --border:rgba(130,190,220,.18);
+    --text:#e9f4ff;
+    --muted:#9db5c9;
+    --cyan:#55d6ff;
+    --blue:#4f8cff;
+    --green:#48d597;
+    --yellow:#ffd166;
+    --orange:#ff9f5a;
+    --red:#ff6b6b;
+}
+
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:
+        radial-gradient(circle at 20% 0%,rgba(40,110,160,.22),transparent 30%),
+        radial-gradient(circle at 85% 15%,rgba(40,80,160,.18),transparent 28%),
+        linear-gradient(180deg,#07111f,#091726 45%,#06101c);
+    color:var(--text);
+    line-height:1.6;
+    min-height:100vh;
+}
+
+button,
+a{
+    font-family:inherit;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(5,15,28,.88);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+}
+
+.topbar-inner{
+    max-width:1180px;
+    margin:auto;
+    padding:13px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:800;
+    color:#fff;
+}
+
+.logo-icon{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#187aa3,#2450a6);
+    font-size:21px;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:#dff5ff;
+    border:1px solid rgba(110,210,245,.25);
+    background:rgba(40,120,160,.12);
+    padding:9px 15px;
+    border-radius:10px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:rgba(40,150,190,.25);
+    transform:translateY(-1px);
+}
+
+.container{
+    max-width:1180px;
+    margin:auto;
+    padding:28px 20px 60px;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:38px 32px;
+    border:1px solid var(--border);
+    border-radius:24px;
+    background:
+        linear-gradient(135deg,rgba(20,72,102,.75),rgba(12,30,51,.92)),
+        radial-gradient(circle at 90% 20%,rgba(75,190,255,.15),transparent 35%);
+    box-shadow:0 18px 55px rgba(0,0,0,.22);
+}
+
+.hero::after{
+    content:"🌍";
+    position:absolute;
+    right:35px;
+    top:12px;
+    font-size:130px;
+    opacity:.09;
+    transform:rotate(-10deg);
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 12px;
+    border-radius:999px;
+    background:rgba(80,210,245,.1);
+    border:1px solid rgba(80,210,245,.2);
+    color:#8de6ff;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.3px;
+}
+
+.hero h1{
+    margin-top:16px;
+    font-size:clamp(28px,4vw,48px);
+    line-height:1.15;
+    max-width:850px;
+}
+
+.hero p{
+    margin-top:15px;
+    max-width:800px;
+    color:#b9cfdf;
+    font-size:16px;
+}
+
+.objectives{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:25px;
+}
+
+.objective{
+    padding:15px;
+    border-radius:15px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.objective strong{
+    display:block;
+    color:#fff;
+    margin-bottom:5px;
+}
+
+.objective span{
+    color:var(--muted);
+    font-size:14px;
+}
+
+.section{
+    margin-top:28px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.section-title .num{
+    width:35px;
+    height:35px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:rgba(70,185,225,.13);
+    color:#7ee5ff;
+    font-weight:900;
+}
+
+.section-title h2{
+    font-size:25px;
+}
+
+.section-desc{
+    color:var(--muted);
+    margin-bottom:16px;
+}
+
+/* LATITUDE MAP */
+.zone-map{
+    border:1px solid var(--border);
+    border-radius:22px;
+    background:linear-gradient(180deg,#0b1d30,#081525);
+    padding:22px;
+    overflow:hidden;
+}
+
+.earth-strip{
+    position:relative;
+    height:220px;
+    border-radius:16px;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            to bottom,
+            #d9efff 0%,
+            #d9efff 5%,
+            #9fd3e6 5%,
+            #9fd3e6 20%,
+            #e7c57a 20%,
+            #e7c57a 40%,
+            #66c78d 40%,
+            #66c78d 60%,
+            #e7c57a 60%,
+            #e7c57a 80%,
+            #9fd3e6 80%,
+            #9fd3e6 95%,
+            #d9efff 95%
+        );
+    border:1px solid rgba(255,255,255,.14);
+}
+
+.earth-strip::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 9.8%,
+            rgba(30,60,75,.16) 10%,
+            transparent 10.4%
+        );
+}
+
+.zone{
+    position:absolute;
+    left:0;
+    right:0;
+    cursor:pointer;
+    transition:.25s;
+    border:1px solid rgba(255,255,255,.16);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#08121c;
+    font-weight:900;
+}
+
+.zone:hover{
+    filter:brightness(1.08);
+}
+
+.zone.active{
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.75);
+    transform:scaleX(.985);
+    z-index:3;
+}
+
+.zone-hot{
+    top:40%;
+    height:20%;
+    background:linear-gradient(90deg,#ee9d48,#f6cf63,#ee9d48);
+}
+
+.zone-temperate-n{
+    top:20%;
+    height:20%;
+    background:linear-gradient(90deg,#6fc98e,#9edb87);
+}
+
+.zone-temperate-s{
+    top:60%;
+    height:20%;
+    background:linear-gradient(90deg,#9edb87,#6fc98e);
+}
+
+.zone-cold-n{
+    top:5%;
+    height:15%;
+    background:linear-gradient(90deg,#a8dce9,#dff5fa);
+}
+
+.zone-cold-s{
+    top:80%;
+    height:15%;
+    background:linear-gradient(90deg,#dff5fa,#a8dce9);
+}
+
+.pole{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    font-size:12px;
+    font-weight:800;
+    color:#254557;
+    z-index:4;
+}
+
+.pole.north{
+    top:6px;
+}
+
+.pole.south{
+    bottom:6px;
+}
+
+.latitude-label{
+    position:absolute;
+    left:10px;
+    font-size:11px;
+    color:rgba(20,50,65,.7);
+    font-weight:800;
+    z-index:5;
+}
+
+.lat-23n{top:19%;}
+.lat-23s{top:59%;}
+.lat-66n{top:4%;}
+.lat-66s{top:79%;}
+
+.map-legend{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-top:15px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+}
+
+.dot.hot{background:#eeb34e;}
+.dot.temp{background:#78c98d;}
+.dot.cold{background:#b8e4ee;}
+
+.zone-info{
+    margin-top:15px;
+    padding:17px;
+    border-radius:15px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.07);
+    min-height:90px;
+}
+
+.zone-info h3{
+    color:#8de6ff;
+    margin-bottom:5px;
+}
+
+.zone-info p{
+    color:#b7cada;
+}
+
+/* CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.card{
+    background:linear-gradient(180deg,rgba(18,42,67,.92),rgba(11,29,47,.96));
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.13);
+}
+
+.zone-card{
+    cursor:pointer;
+    transition:.22s;
+    position:relative;
+    overflow:hidden;
+}
+
+.zone-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(100,210,245,.35);
+}
+
+.zone-card.active{
+    border-color:rgba(100,220,255,.6);
+    box-shadow:0 0 0 2px rgba(80,210,255,.1),0 14px 35px rgba(0,0,0,.2);
+}
+
+.zone-icon{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+.card h3{
+    font-size:20px;
+    margin-bottom:7px;
+}
+
+.card .small{
+    color:var(--muted);
+    font-size:14px;
+}
+
+.feature-list{
+    list-style:none;
+    margin-top:15px;
+}
+
+.feature-list li{
+    padding:8px 0;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:#c4d5e2;
+    font-size:14px;
+}
+
+.feature-list li::before{
+    content:"✓";
+    color:#69dcff;
+    font-weight:900;
+    margin-right:8px;
+}
+
+/* DETAIL */
+.detail-panel{
+    margin-top:16px;
+    padding:20px;
+    border-radius:18px;
+    border:1px solid rgba(95,205,245,.18);
+    background:linear-gradient(135deg,rgba(31,87,112,.18),rgba(15,36,58,.65));
+}
+
+.detail-panel h3{
+    color:#8ce8ff;
+    margin-bottom:8px;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:14px;
+}
+
+.detail-item{
+    padding:13px;
+    border-radius:12px;
+    background:rgba(255,255,255,.035);
+}
+
+.detail-item b{
+    display:block;
+    font-size:12px;
+    color:#7da3ba;
+    text-transform:uppercase;
+    margin-bottom:4px;
+}
+
+.detail-item span{
+    color:#d9e9f4;
+    font-size:14px;
+}
+
+/* TABLE */
+.table-wrap{
+    overflow-x:auto;
+    border-radius:18px;
+    border:1px solid var(--border);
+}
+
+.compare{
+    width:100%;
+    border-collapse:collapse;
+    min-width:760px;
+    background:rgba(10,27,45,.75);
+}
+
+.compare th,
+.compare td{
+    padding:14px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    border-right:1px solid rgba(255,255,255,.05);
+    vertical-align:top;
+    text-align:left;
+}
+
+.compare th{
+    background:#122a43;
+    color:#91e8ff;
+    font-size:14px;
+}
+
+.compare td{
+    color:#bfd0dd;
+    font-size:14px;
+}
+
+.compare tr:last-child td{
+    border-bottom:none;
+}
+
+.compare .row-title{
+    color:#fff;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+/* VISUAL CARDS */
+.visual-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.visual-card{
+    border-radius:18px;
+    padding:20px;
+    min-height:205px;
+    border:1px solid rgba(255,255,255,.08);
+    position:relative;
+    overflow:hidden;
+}
+
+.visual-card.hot{
+    background:linear-gradient(145deg,rgba(192,108,45,.25),rgba(22,49,60,.75));
+}
+
+.visual-card.temp{
+    background:linear-gradient(145deg,rgba(74,146,99,.25),rgba(20,48,58,.75));
+}
+
+.visual-card.cold{
+    background:linear-gradient(145deg,rgba(82,149,177,.22),rgba(16,36,58,.8));
+}
+
+.visual-emoji{
+    font-size:52px;
+    margin-bottom:10px;
+}
+
+.visual-card h3{
+    margin-bottom:6px;
+}
+
+.visual-card p{
+    color:#b9ccda;
+    font-size:14px;
+}
+
+/* VIETNAM */
+.vn-box{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.vn-main{
+    padding:24px;
+    border-radius:20px;
+    background:
+        radial-gradient(circle at 80% 20%,rgba(255,205,80,.12),transparent 30%),
+        linear-gradient(145deg,#113f4d,#10263c);
+    border:1px solid rgba(100,210,220,.18);
+}
+
+.vn-main .flag{
+    font-size:55px;
+}
+
+.vn-main h3{
+    margin-top:5px;
+    font-size:25px;
+}
+
+.vn-main p{
+    color:#bcd1dd;
+    margin-top:8px;
+}
+
+.vn-points{
+    display:grid;
+    gap:10px;
+}
+
+.vn-point{
+    padding:16px;
+    border-radius:15px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.07);
+}
+
+.vn-point strong{
+    display:block;
+    color:#fff;
+    margin-bottom:3px;
+}
+
+.vn-point span{
+    color:#aebfcd;
+    font-size:14px;
+}
+
+/* MEMORY */
+.memory{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.memory-step{
+    padding:14px 18px;
+    border-radius:14px;
+    background:#10263e;
+    border:1px solid var(--border);
+    text-align:center;
+    min-width:145px;
+}
+
+.memory-step strong{
+    display:block;
+    font-size:16px;
+}
+
+.memory-step span{
+    font-size:12px;
+    color:#8faabd;
+}
+
+.arrow{
+    color:#62dfff;
+    font-size:22px;
+}
+
+/* QUIZ */
+.quiz-box{
+    border:1px solid var(--border);
+    border-radius:22px;
+    background:linear-gradient(180deg,#0e233a,#091727);
+    overflow:hidden;
+}
+
+.quiz-top{
+    padding:18px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.quiz-progress{
+    color:#91b5ca;
+    font-size:14px;
+}
+
+.timer{
+    min-width:72px;
+    text-align:center;
+    padding:7px 10px;
+    border-radius:10px;
+    background:rgba(255,160,80,.1);
+    color:#ffc27e;
+    font-weight:900;
+}
+
+.quiz-body{
+    padding:25px;
+}
+
+.start-screen{
+    text-align:center;
+    padding:25px 10px;
+}
+
+.start-screen .big-icon{
+    font-size:65px;
+}
+
+.start-screen h3{
+    margin-top:8px;
+    font-size:25px;
+}
+
+.start-screen p{
+    color:var(--muted);
+    max-width:650px;
+    margin:8px auto 18px;
+}
+
+.start-btn,
+.next-btn,
+.finish-btn,
+.retry-btn{
+    border:none;
+    border-radius:11px;
+    padding:11px 19px;
+    font-weight:800;
+    cursor:pointer;
+    color:#07131d;
+    background:linear-gradient(135deg,#5ddcff,#4e9eff);
+    transition:.2s;
+}
+
+.start-btn:hover,
+.next-btn:hover,
+.finish-btn:hover,
+.retry-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.06);
+}
+
+.question{
+    font-size:21px;
+    font-weight:800;
+    line-height:1.4;
+    margin-bottom:18px;
+}
+
+.options{
+    display:grid;
+    gap:10px;
+}
+
+.option{
+    width:100%;
+    padding:13px 15px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.09);
+    background:rgba(255,255,255,.035);
+    color:#d9e7f0;
+    text-align:left;
+    cursor:pointer;
+    transition:.18s;
+}
+
+.option:hover{
+    background:rgba(75,180,220,.09);
+    border-color:rgba(90,210,245,.3);
+}
+
+.option.correct{
+    background:rgba(60,200,135,.13);
+    border-color:rgba(60,220,145,.55);
+    color:#8cf0ba;
+}
+
+.option.wrong{
+    background:rgba(255,100,100,.11);
+    border-color:rgba(255,100,100,.45);
+    color:#ffaaa8;
+}
+
+.feedback{
+    margin-top:15px;
+    padding:13px 15px;
+    border-radius:12px;
+    background:rgba(255,255,255,.035);
+    color:#bcd0dc;
+    font-size:14px;
+}
+
+.quiz-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:18px;
+}
+
+.result{
+    text-align:center;
+    padding:25px 10px;
+}
+
+.result-score{
+    font-size:55px;
+    font-weight:900;
+    color:#6ee0ff;
+}
+
+.result p{
+    color:var(--muted);
+    margin:6px auto 18px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* FOOTER */
+footer{
+    max-width:1180px;
+    margin:auto;
+    padding:0 20px 35px;
+    text-align:center;
+    color:#6e899d;
+    font-size:13px;
+}
+
+/* RESPONSIVE */
+@media(max-width:850px){
+    .objectives,
+    .cards,
+    .visual-grid{
+        grid-template-columns:1fr;
+    }
+
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+    .vn-box{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:28px 22px;
+    }
+
+    .hero::after{
+        font-size:90px;
+        right:15px;
+    }
+}
+
+@media(max-width:560px){
+    .container{
+        padding:20px 13px 45px;
+    }
+
+    .topbar-inner{
+        padding:10px 13px;
+    }
+
+    .logo span{
+        display:none;
+    }
+
+    .home-btn{
+        font-size:13px;
+    }
+
+    .hero h1{
+        font-size:29px;
+    }
+
+    .hero p{
+        font-size:14px;
+    }
+
+    .earth-strip{
+        height:185px;
+    }
+
+    .zone{
+        font-size:12px;
+    }
+
+    .section-title h2{
+        font-size:21px;
+    }
+
+    .quiz-body{
+        padding:18px;
+    }
+
+    .question{
+        font-size:18px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="logo">
+            <div class="logo-icon">🌍</div>
+            <span>HỌC LIỆU SỐ LỊCH SỬ & ĐỊA LÍ 6</span>
+        </div>
+
+        <a class="home-btn" href="index.html">
+            🏠 Trang chủ
+        </a>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+        <span class="badge">🌎 ĐỊA LÍ 6 • CHƯƠNG 6</span>
+
+        <h1>
+            Bài 25: Sự phân bố các đới thiên nhiên trên Trái Đất
+        </h1>
+
+        <p>
+            Khám phá sự phân bố và những đặc điểm khác nhau của
+            đới nóng, đới ôn hòa và đới lạnh trên Trái Đất.
+        </p>
+
+        <div class="objectives">
+
+            <div class="objective">
+                <strong>🗺️ Xác định</strong>
+                <span>Nhận biết phạm vi phân bố các đới thiên nhiên.</span>
+            </div>
+
+            <div class="objective">
+                <strong>🌡️ So sánh</strong>
+                <span>Trình bày đặc điểm khí hậu và cảnh quan.</span>
+            </div>
+
+            <div class="objective">
+                <strong>🌱 Liên hệ</strong>
+                <span>Nhận biết đặc điểm thiên nhiên Việt Nam.</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- LƯỢC ĐỒ -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">1</div>
+            <h2>🌍 Các đới thiên nhiên trên Trái Đất</h2>
+        </div>
+
+        <p class="section-desc">
+            Các đới thiên nhiên phân bố thành những dải tương đối rõ theo vĩ độ.
+            Bấm vào từng khu vực để khám phá.
+        </p>
+
+        <div class="zone-map">
+
+            <div class="earth-strip">
+
+                <div class="pole north">CỰC BẮC</div>
+                <div class="pole south">CỰC NAM</div>
+
+                <div class="latitude-label lat-66n">66°33'B</div>
+                <div class="latitude-label lat-23n">23°27'B</div>
+                <div class="latitude-label lat-23s">23°27'N</div>
+                <div class="latitude-label lat-66s">66°33'N</div>
+
+                <div class="zone zone-cold-n"
+                     data-zone="cold">
+                    ❄️ ĐỚI LẠNH
+                </div>
+
+                <div class="zone zone-temperate-n"
+                     data-zone="temperate">
+                    🌳 ĐỚI ÔN HÒA
+                </div>
+
+                <div class="zone zone-hot"
+                     data-zone="hot">
+                    🌴 ĐỚI NÓNG
+                </div>
+
+                <div class="zone zone-temperate-s"
+                     data-zone="temperate">
+                    🌳 ĐỚI ÔN HÒA
+                </div>
+
+                <div class="zone zone-cold-s"
+                     data-zone="cold">
+                    ❄️ ĐỚI LẠNH
+                </div>
+
+            </div>
+
+            <div class="map-legend">
+                <div class="legend-item">
+                    <span class="dot hot"></span>
+                    Đới nóng
+                </div>
+
+                <div class="legend-item">
+                    <span class="dot temp"></span>
+                    Đới ôn hòa
+                </div>
+
+                <div class="legend-item">
+                    <span class="dot cold"></span>
+                    Đới lạnh
+                </div>
+            </div>
+
+            <div class="zone-info" id="zoneInfo">
+                <h3>💡 Hãy chọn một đới thiên nhiên</h3>
+                <p>
+                    Bấm vào các khu vực trên lược đồ để xem phạm vi,
+                    khí hậu và cảnh quan đặc trưng.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 3 ĐỚI -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">2</div>
+            <h2>🌱 Ba đới thiên nhiên chính</h2>
+        </div>
+
+        <p class="section-desc">
+            Mỗi đới có những đặc điểm riêng về khí hậu, thực vật và động vật.
+        </p>
+
+        <div class="cards">
+
+            <div class="card zone-card" data-card="hot">
+                <div class="zone-icon">🌴</div>
+
+                <h3>Đới nóng</h3>
+
+                <p class="small">
+                    Khu vực có nền nhiệt độ cao.
+                </p>
+
+                <ul class="feature-list">
+                    <li>Khoảng từ chí tuyến Bắc đến chí tuyến Nam.</li>
+                    <li>Khí hậu có nền nhiệt độ cao.</li>
+                    <li>Cảnh quan thay đổi chủ yếu theo chế độ mưa.</li>
+                    <li>Thực vật và động vật rất đa dạng.</li>
+                </ul>
+            </div>
+
+
+            <div class="card zone-card" data-card="temperate">
+                <div class="zone-icon">🌳</div>
+
+                <h3>Đới ôn hòa</h3>
+
+                <p class="small">
+                    Khí hậu mang tính trung gian.
+                </p>
+
+                <ul class="feature-list">
+                    <li>Từ chí tuyến đến vòng cực ở hai bán cầu.</li>
+                    <li>Khí hậu trung gian giữa nóng và lạnh.</li>
+                    <li>Thiên nhiên thay đổi rõ rệt theo mùa.</li>
+                    <li>Cảnh quan thay đổi theo vĩ độ.</li>
+                </ul>
+            </div>
+
+
+            <div class="card zone-card" data-card="cold">
+                <div class="zone-icon">❄️</div>
+
+                <h3>Đới lạnh</h3>
+
+                <p class="small">
+                    Xứ sở của băng tuyết.
+                </p>
+
+                <ul class="feature-list">
+                    <li>Từ vòng cực về hai cực.</li>
+                    <li>Khí hậu vô cùng khắc nghiệt.</li>
+                    <li>Đài nguyên là cảnh quan tiêu biểu.</li>
+                    <li>Thực vật và động vật kém phong phú hơn.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+
+            <h3>🔎 Khám phá từng đới</h3>
+
+            <p>
+                Chọn một thẻ phía trên để xem đặc điểm nổi bật
+                của đới thiên nhiên đó.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRỰC QUAN -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">3</div>
+            <h2>👀 Quan sát sự khác nhau</h2>
+        </div>
+
+        <p class="section-desc">
+            Từ đới nóng đến đới lạnh, điều kiện tự nhiên thay đổi,
+            tạo nên những cảnh quan và sinh vật khác nhau.
+        </p>
+
+        <div class="visual-grid">
+
+            <div class="visual-card hot">
+                <div class="visual-emoji">🌴🦜🐒</div>
+                <h3>Đới nóng</h3>
+                <p>
+                    Nhiệt độ cao, sinh vật phong phú.
+                    Có rừng nhiệt đới, xavan và nhiều loài động vật.
+                </p>
+            </div>
+
+            <div class="visual-card temp">
+                <div class="visual-emoji">🍂🦌🐻</div>
+                <h3>Đới ôn hòa</h3>
+                <p>
+                    Thiên nhiên thay đổi rõ rệt theo mùa,
+                    có rừng lá kim, rừng hỗn hợp, rừng lá rộng và thảo nguyên.
+                </p>
+            </div>
+
+            <div class="visual-card cold">
+                <div class="visual-emoji">❄️🐻‍❄️🦭</div>
+                <h3>Đới lạnh</h3>
+                <p>
+                    Băng tuyết và giá lạnh, thực vật thấp lùn,
+                    chủ yếu có rêu, địa y và các loài thích nghi với lạnh.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BẢNG SO SÁNH -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">4</div>
+            <h2>📊 So sánh ba đới thiên nhiên</h2>
+        </div>
+
+        <div class="table-wrap">
+
+            <table class="compare">
+
+                <thead>
+                    <tr>
+                        <th>Tiêu chí</th>
+                        <th>🌴 Đới nóng</th>
+                        <th>🌳 Đới ôn hòa</th>
+                        <th>❄️ Đới lạnh</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td class="row-title">Phạm vi</td>
+
+                        <td>
+                            Khoảng từ chí tuyến Bắc
+                            đến chí tuyến Nam.
+                        </td>
+
+                        <td>
+                            Từ chí tuyến đến vòng cực
+                            ở hai bán cầu.
+                        </td>
+
+                        <td>
+                            Từ vòng cực về hai cực.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="row-title">Khí hậu</td>
+
+                        <td>
+                            Nền nhiệt độ cao.
+                            Cảnh quan thay đổi chủ yếu theo chế độ mưa.
+                        </td>
+
+                        <td>
+                            Khí hậu trung gian giữa
+                            đới nóng và đới lạnh.
+                        </td>
+
+                        <td>
+                            Khí hậu vô cùng khắc nghiệt,
+                            lạnh giá, băng tuyết.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="row-title">Thực vật</td>
+
+                        <td>
+                            Rất phong phú, đa dạng;
+                            rừng nhiệt đới, xavan,...
+                        </td>
+
+                        <td>
+                            Rừng lá kim, rừng hỗn hợp,
+                            rừng lá rộng, thảo nguyên,...
+                        </td>
+
+                        <td>
+                            Nghèo nàn; chủ yếu rêu,
+                            địa y và cây thân thảo thấp lùn.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="row-title">Động vật</td>
+
+                        <td>
+                            Rất đa dạng và phong phú.
+                        </td>
+
+                        <td>
+                            Đa dạng; nhiều loài
+                            thích nghi với sự thay đổi mùa.
+                        </td>
+
+                        <td>
+                            Các loài thích nghi
+                            với khí hậu lạnh.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="row-title">Cảnh quan</td>
+
+                        <td>
+                            Rừng nhiệt đới, xavan,
+                            hoang mạc và bán hoang mạc.
+                        </td>
+
+                        <td>
+                            Cảnh quan thay đổi theo mùa
+                            và theo vĩ độ.
+                        </td>
+
+                        <td>
+                            Đài nguyên, băng tuyết.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- VIỆT NAM -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">5</div>
+            <h2> Việt Nam thuộc đới thiên nhiên nào?</h2>
+        </div>
+
+        <div class="vn-box">
+
+            <div class="vn-main">
+                <h3>Việt Nam → Đới nóng</h3>
+
+                <p>
+                    Việt Nam nằm trong khu vực đới nóng,
+                    vì vậy thiên nhiên nước ta mang những đặc điểm
+                    cơ bản của đới nóng.
+                </p>
+
+            </div>
+
+            <div class="vn-points">
+
+                <div class="vn-point">
+                    <strong>🌦️ Khí hậu</strong>
+                    <span>
+                        Nhiệt đới gió mùa ẩm, nóng ẩm và mưa nhiều.
+                    </span>
+                </div>
+
+                <div class="vn-point">
+                    <strong>🌱 Thực vật</strong>
+                    <span>
+                        Thực vật đa dạng, trong đó có kiểu rừng nhiệt đới.
+                    </span>
+                </div>
+
+                <div class="vn-point">
+                    <strong>🐒 Động vật</strong>
+                    <span>
+                        Động vật phong phú và đa dạng.
+                    </span>
+                </div>
+
+                <div class="vn-point">
+                    <strong>🌏 Cảnh quan</strong>
+                    <span>
+                        Mang đặc trưng của thiên nhiên nhiệt đới gió mùa.
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NGUYÊN NHÂN -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">6</div>
+            <h2>☀️ Vì sao thiên nhiên lại phân hóa thành các đới?</h2>
+        </div>
+
+        <div class="card">
+
+            <p style="color:#c7d8e3;font-size:16px;">
+                Sự khác nhau về điều kiện khí hậu giữa các khu vực,
+                đặc biệt là sự phân bố nhiệt và lượng mưa theo vĩ độ,
+                tạo nên những đặc điểm khác nhau của đất, sinh vật
+                và cảnh quan. Từ đó hình thành các đới thiên nhiên
+                khác nhau trên Trái Đất.
+            </p>
+
+            <div class="memory" style="margin-top:20px;">
+
+                <div class="memory-step">
+                    <strong>☀️ Vị trí địa lí</strong>
+                    <span>khác nhau theo vĩ độ</span>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="memory-step">
+                    <strong>🌡️ Khí hậu</strong>
+                    <span>nhiệt và mưa khác nhau</span>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="memory-step">
+                    <strong>🌱 Đất & sinh vật</strong>
+                    <span>có đặc điểm khác nhau</span>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="memory-step">
+                    <strong>🌍 Đới thiên nhiên</strong>
+                    <span>hình thành và phân hóa</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GHI NHỚ -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">7</div>
+            <h2>🧠 Sơ đồ ghi nhớ</h2>
+        </div>
+
+        <div class="memory">
+
+            <div class="memory-step">
+                <strong>🌴 ĐỚI NÓNG</strong>
+                <span>Nhiệt độ cao</span>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="memory-step">
+                <strong>🌳 ĐỚI ÔN HÒA</strong>
+                <span>Trung gian • 4 mùa</span>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="memory-step">
+                <strong>❄️ ĐỚI LẠNH</strong>
+                <span>Băng tuyết • khắc nghiệt</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUIZ -->
+    <section class="section">
+
+        <div class="section-title">
+            <div class="num">8</div>
+            <h2>🎯 Kiểm tra nhanh</h2>
+        </div>
+
+        <div class="quiz-box">
+
+            <div class="quiz-top">
+
+                <div class="quiz-progress" id="quizProgress">
+                    Chưa bắt đầu
+                </div>
+
+                <div class="timer" id="timer">
+                    10s
+                </div>
+
+            </div>
+
+            <div class="quiz-body">
+
+                <!-- START -->
+                <div class="start-screen" id="startScreen">
+
+                    <div class="big-icon">🌍</div>
+
+                    <h3>
+                        Thử sức với Bài 25
+                    </h3>
+
+                    <p>
+                        10 câu hỏi về phạm vi, khí hậu,
+                        thực vật, động vật và đặc điểm
+                        của các đới thiên nhiên.
+                    </p>
+
+                    <button class="start-btn" id="startQuiz">
+                        ▶️ Bắt đầu
+                    </button>
+
+                </div>
+
+
+                <!-- QUESTION -->
+                <div id="questionScreen" class="hidden">
+
+                    <div class="question" id="questionText"></div>
+
+                    <div class="options" id="options"></div>
+
+                    <div class="feedback hidden" id="feedback"></div>
+
+                    <div class="quiz-actions">
+
+                        <button
+                            class="next-btn hidden"
+                            id="nextQuestion">
+                            Câu tiếp theo →
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESULT -->
+                <div id="resultScreen" class="hidden">
+
+                    <div class="result">
+
+                        <div class="big-icon">🏆</div>
+
+                        <div class="result-score" id="resultScore">
+                            0/10
+                        </div>
+
+                        <h3 id="resultTitle">
+                            Hoàn thành!
+                        </h3>
+
+                        <p id="resultText"></p>
+
+                        <button class="retry-btn" id="retryQuiz">
+                            🔄 Làm lại
+                        </button>
+
+                        <button class="finish-btn" id="finishLesson"
+                                style="margin-left:8px;">
+                            ✅ Hoàn thành bài
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Học liệu số Lịch sử & Địa lí 6 • Bài 25
+</footer>
+
+
+<script>
+
+/* =========================
+   LƯỢC ĐỒ ĐỚI THIÊN NHIÊN
+========================= */
+
+const zoneInfo = {
+
+    hot:{
+        title:"🌴 Đới nóng",
+        text:
+        "Đới nóng nằm khoảng từ chí tuyến Bắc đến chí tuyến Nam. " +
+        "Đây là nơi có nền nhiệt độ cao; cảnh quan thiên nhiên " +
+        "thay đổi chủ yếu phụ thuộc vào chế độ mưa. " +
+        "Giới thực vật và động vật hết sức đa dạng, phong phú."
+    },
+
+    temperate:{
+        title:"🌳 Đới ôn hòa",
+        text:
+        "Đới ôn hòa nằm khoảng từ chí tuyến Bắc đến vòng cực Bắc " +
+        "và từ chí tuyến Nam đến vòng cực Nam. Khí hậu mang tính " +
+        "trung gian giữa đới nóng và đới lạnh. Thiên nhiên thay đổi " +
+        "rõ rệt theo mùa, cảnh quan thay đổi theo vĩ độ và ảnh hưởng " +
+        "của dòng biển nóng cùng gió Tây ôn đới."
+    },
+
+    cold:{
+        title:"❄️ Đới lạnh",
+        text:
+        "Đới lạnh nằm từ vòng cực Bắc về cực Bắc và từ vòng cực Nam " +
+        "về cực Nam. Đây là xứ sở của băng tuyết, khí hậu vô cùng " +
+        "khắc nghiệt. Cảnh quan chủ yếu là đài nguyên; thực vật thấp " +
+        "lùn, chủ yếu là rêu, địa y và các loại cây thân thảo."
+    }
+
+};
+
+const zoneInfoBox = document.getElementById("zoneInfo");
+
+document.querySelectorAll(".zone").forEach(zone=>{
+
+    zone.addEventListener("click",()=>{
+
+        const type = zone.dataset.zone;
+        const info = zoneInfo[type];
+
+        document.querySelectorAll(".zone").forEach(z=>{
+            z.classList.remove("active");
+        });
+
+        document
+            .querySelectorAll(`[data-zone="${type}"]`)
+            .forEach(z=>z.classList.add("active"));
+
+        zoneInfoBox.innerHTML = `
+            <h3>${info.title}</h3>
+            <p>${info.text}</p>
+        `;
+
+    });
+
+});
+
+
+/* =========================
+   3 THẺ ĐỚI THIÊN NHIÊN
+========================= */
+
+const cardDetails = {
+
+    hot:{
+        title:"🌴 Đới nóng – nơi có nền nhiệt độ cao",
+        items:[
+            ["Phạm vi","Khoảng từ chí tuyến Bắc đến chí tuyến Nam."],
+            ["Khí hậu","Có nền nhiệt độ cao; cảnh quan thay đổi chủ yếu theo chế độ mưa."],
+            ["Sinh vật","Giới thực vật và động vật hết sức đa dạng, phong phú."]
+        ]
+    },
+
+    temperate:{
+        title:"🌳 Đới ôn hòa – thiên nhiên thay đổi theo mùa",
+        items:[
+            ["Phạm vi","Khoảng từ chí tuyến đến vòng cực ở hai bán cầu."],
+            ["Khí hậu","Mang tính trung gian giữa đới nóng và đới lạnh."],
+            ["Sinh vật","Cảnh quan thay đổi theo mùa, theo vĩ độ và ảnh hưởng của dòng biển, gió Tây ôn đới."]
+        ]
+    },
+
+    cold:{
+        title:"❄️ Đới lạnh – xứ sở của băng tuyết",
+        items:[
+            ["Phạm vi","Từ vòng cực về hai cực."],
+            ["Khí hậu","Khí hậu vô cùng khắc nghiệt, lạnh giá."],
+            ["Sinh vật","Thực vật thấp lùn, chủ yếu rêu, địa y và cây thân thảo; động vật thích nghi với lạnh."]
+        ]
+    }
+
+};
+
+const detailPanel = document.getElementById("detailPanel");
+
+document.querySelectorAll(".zone-card").forEach(card=>{
+
+    card.addEventListener("click",()=>{
+
+        const type = card.dataset.card;
+        const info = cardDetails[type];
+
+        document.querySelectorAll(".zone-card")
+            .forEach(c=>c.classList.remove("active"));
+
+        card.classList.add("active");
+
+        detailPanel.innerHTML = `
+            <h3>${info.title}</h3>
+
+            <div class="detail-grid">
+
+                ${info.items.map(item=>`
+                    <div class="detail-item">
+                        <b>${item[0]}</b>
+                        <span>${item[1]}</span>
+                    </div>
+                `).join("")}
+
+            </div>
+        `;
+
+    });
+
+});
+
+
+/* =========================
+   QUIZ
+========================= */
+
+const quizData = [
+
+    {
+        q:"Đới nóng nằm khoảng từ đâu đến đâu?",
+        options:[
+            "Từ chí tuyến Bắc đến chí tuyến Nam",
+            "Từ vòng cực Bắc đến vòng cực Nam",
+            "Từ xích đạo đến hai cực",
+            "Từ hai cực đến vòng cực"
+        ],
+        answer:0,
+        explain:
+        "Đới nóng nằm khoảng từ chí tuyến Bắc đến chí tuyến Nam."
+    },
+
+    {
+        q:"Đặc điểm nổi bật về khí hậu của đới nóng là gì?",
+        options:[
+            "Nhiệt độ thấp quanh năm",
+            "Có nền nhiệt độ cao",
+            "Băng tuyết bao phủ",
+            "Bốn mùa rất lạnh"
+        ],
+        answer:1,
+        explain:
+        "Đới nóng là nơi có nền nhiệt độ cao."
+    },
+
+    {
+        q:"Thiên nhiên đới nóng thay đổi chủ yếu phụ thuộc vào yếu tố nào?",
+        options:[
+            "Chế độ mưa",
+            "Độ cao địa hình",
+            "Khoảng cách tới Mặt Trăng",
+            "Độ dài ngày"
+        ],
+        answer:0,
+        explain:
+        "Theo nội dung bài học, cảnh quan đới nóng thay đổi chủ yếu phụ thuộc vào chế độ mưa."
+    },
+
+    {
+        q:"Đới ôn hòa nằm ở khu vực nào?",
+        options:[
+            "Từ chí tuyến đến vòng cực ở hai bán cầu",
+            "Từ xích đạo đến chí tuyến",
+            "Từ vòng cực đến hai cực",
+            "Chỉ ở bán cầu Bắc"
+        ],
+        answer:0,
+        explain:
+        "Hai đới ôn hòa nằm từ chí tuyến Bắc đến vòng cực Bắc và từ chí tuyến Nam đến vòng cực Nam."
+    },
+
+    {
+        q:"Thiên nhiên đới ôn hòa có đặc điểm nổi bật nào?",
+        options:[
+            "Không có sự thay đổi",
+            "Thay đổi rõ rệt theo mùa",
+            "Luôn có băng tuyết",
+            "Chỉ có rừng nhiệt đới"
+        ],
+        answer:1,
+        explain:
+        "Thiên nhiên đới ôn hòa thay đổi rõ rệt theo mùa."
+    },
+
+    {
+        q:"Đới lạnh nằm ở đâu?",
+        options:[
+            "Giữa hai chí tuyến",
+            "Từ chí tuyến đến vòng cực",
+            "Từ vòng cực về hai cực",
+            "Chỉ quanh xích đạo"
+        ],
+        answer:2,
+        explain:
+        "Đới lạnh nằm từ vòng cực Bắc về cực Bắc và từ vòng cực Nam về cực Nam."
+    },
+
+    {
+        q:"Cảnh quan tiêu biểu của đới lạnh là gì?",
+        options:[
+            "Rừng mưa nhiệt đới",
+            "Xavan",
+            "Đài nguyên và băng tuyết",
+            "Rừng lá rộng"
+        ],
+        answer:2,
+        explain:
+        "Đới lạnh là xứ sở của băng tuyết; cảnh quan chủ yếu là đài nguyên."
+    },
+
+    {
+        q:"Thực vật ở đới lạnh chủ yếu là gì?",
+        options:[
+            "Cây thân gỗ cao lớn",
+            "Rêu, địa y và cây thân thảo thấp lùn",
+            "Rừng nhiệt đới nhiều tầng",
+            "Cây dừa và cây cao su"
+        ],
+        answer:1,
+        explain:
+        "Thực vật đới lạnh thấp lùn, chủ yếu là rêu, địa y và các loại cây thân thảo."
+    },
+
+    {
+        q:"Việt Nam thuộc đới thiên nhiên nào?",
+        options:[
+            "Đới lạnh",
+            "Đới ôn hòa",
+            "Đới nóng",
+            "Không thuộc đới nào"
+        ],
+        answer:2,
+        explain:
+        "Việt Nam nằm trong khu vực đới nóng."
+    },
+
+    {
+        q:"Đặc điểm nào phù hợp với thiên nhiên Việt Nam?",
+        options:[
+            "Khí hậu nhiệt đới gió mùa ẩm",
+            "Băng tuyết quanh năm",
+            "Khí hậu cực địa",
+            "Thực vật nghèo nàn"
+        ],
+        answer:0,
+        explain:
+        "Thiên nhiên Việt Nam mang tính chất nhiệt đới gió mùa ẩm."
+    }
+
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let selected = false;
+let timerValue = 10;
+let timerInterval = null;
+
+const startScreen = document.getElementById("startScreen");
+const questionScreen = document.getElementById("questionScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const questionText = document.getElementById("questionText");
+const optionsBox = document.getElementById("options");
+const feedback = document.getElementById("feedback");
+
+const nextButton = document.getElementById("nextQuestion");
+const startButton = document.getElementById("startQuiz");
+const retryButton = document.getElementById("retryQuiz");
+const finishButton = document.getElementById("finishLesson");
+
+const quizProgress = document.getElementById("quizProgress");
+const timer = document.getElementById("timer");
+
+const resultScore = document.getElementById("resultScore");
+const resultTitle = document.getElementById("resultTitle");
+const resultText = document.getElementById("resultText");
+
+
+function startQuiz(){
+
+    currentQuestion = 0;
+    score = 0;
+
+    startScreen.classList.add("hidden");
+    resultScreen.classList.add("hidden");
+    questionScreen.classList.remove("hidden");
+
+    showQuestion();
+}
+
+
+function showQuestion(){
+
+    selected = false;
+
+    const item = quizData[currentQuestion];
+
+    quizProgress.textContent =
+        `Câu ${currentQuestion + 1}/${quizData.length}`;
+
+    questionText.textContent = item.q;
+
+    optionsBox.innerHTML = "";
+
+    feedback.classList.add("hidden");
+    feedback.innerHTML = "";
+
+    nextButton.classList.add("hidden");
+
+    item.options.forEach((option,index)=>{
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+        button.textContent = option;
+
+        button.addEventListener("click",()=>{
+
+            if(selected) return;
+
+            selected = true;
+
+            checkAnswer(index,button);
+
+        });
+
+        optionsBox.appendChild(button);
+
+    });
+
+    startTimer();
+}
+
+
+function startTimer(){
+
+    clearInterval(timerInterval);
+
+    timerValue = 10;
+    timer.textContent = timerValue + "s";
+
+    timerInterval = setInterval(()=>{
+
+        timerValue--;
+
+        timer.textContent = timerValue + "s";
+
+        if(timerValue <= 0){
+
+            clearInterval(timerInterval);
+
+            if(!selected){
+
+                selected = true;
+
+                revealAnswer(-1);
+
+            }
+
+        }
+
+    },1000);
+
+}
+
+
+function checkAnswer(index,button){
+
+    clearInterval(timerInterval);
+
+    const correct =
+        quizData[currentQuestion].answer;
+
+    if(index === correct){
+
+        score++;
+
+        button.classList.add("correct");
+
+    }else{
+
+        button.classList.add("wrong");
+
+    }
+
+    revealAnswer(index);
+}
+
+
+function revealAnswer(selectedIndex){
+
+    const item = quizData[currentQuestion];
+
+    const correct = item.answer;
+
+    document
+        .querySelectorAll(".option")
+        .forEach((button,index)=>{
+
+            button.disabled = true;
+
+            if(index === correct){
+                button.classList.add("correct");
+            }
+
+        });
+
+    if(selectedIndex === correct){
+
+        feedback.innerHTML =
+            `✅ <strong>Chính xác!</strong> ${item.explain}`;
+
+    }else if(selectedIndex === -1){
+
+        feedback.innerHTML =
+            `⏰ <strong>Hết giờ!</strong> Đáp án đúng là:
+             <strong>${item.options[correct]}</strong>.
+             ${item.explain}`;
+
+    }else{
+
+        feedback.innerHTML =
+            `❌ <strong>Chưa chính xác.</strong>
+             Đáp án đúng là:
+             <strong>${item.options[correct]}</strong>.
+             ${item.explain}`;
+
+    }
+
+    feedback.classList.remove("hidden");
+
+    nextButton.textContent =
+        currentQuestion === quizData.length - 1
+        ? "Xem kết quả 🏆"
+        : "Câu tiếp theo →";
+
+    nextButton.classList.remove("hidden");
+}
+
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion >= quizData.length){
+
+        showResult();
+
+    }else{
+
+        showQuestion();
+
+    }
+
+}
+
+
+function showResult(){
+
+    clearInterval(timerInterval);
+
+    questionScreen.classList.add("hidden");
+    resultScreen.classList.remove("hidden");
+
+    resultScore.textContent =
+        `${score}/${quizData.length}`;
+
+    let title = "";
+    let text = "";
+
+    if(score >= 9){
+
+        title = "🌟 Xuất sắc!";
+        text =
+            "Bạn đã nắm rất chắc kiến thức về các đới thiên nhiên.";
+
+    }else if(score >= 7){
+
+        title = "👏 Rất tốt!";
+        text =
+            "Bạn đã hiểu khá tốt bài học. Hãy xem lại những câu sai để nhớ lâu hơn.";
+
+    }else if(score >= 5){
+
+        title = "👍 Khá ổn!";
+        text =
+            "Bạn đã có nền tảng cơ bản. Hãy ôn lại bảng so sánh ba đới thiên nhiên.";
+
+    }else{
+
+        title = "📚 Cần ôn thêm!";
+        text =
+            "Hãy xem lại phạm vi và đặc điểm của đới nóng, đới ôn hòa và đới lạnh rồi thử lại nhé.";
+
+    }
+
+    resultTitle.textContent = title;
+    resultText.textContent = text;
+
+    quizProgress.textContent = "Hoàn thành";
+    timer.textContent = "✓";
+
+}
+
+
+startButton.addEventListener("click",startQuiz);
+
+nextButton.addEventListener("click",nextQuestion);
+
+retryButton.addEventListener("click",()=>{
+
+    startScreen.classList.remove("hidden");
+    resultScreen.classList.add("hidden");
+    questionScreen.classList.add("hidden");
+
+    quizProgress.textContent = "Chưa bắt đầu";
+    timer.textContent = "10s";
+
+});
+
+
+/* =========================
+   LƯU TIẾN ĐỘ
+========================= */
+
+const PROGRESS_KEY = "hoclieu6_progress_v1";
+
+finishButton.addEventListener("click",()=>{
+
+    const p =
+        JSON.parse(
+            localStorage.getItem(PROGRESS_KEY) || "{}"
+        );
+
+    p.g25 = true;
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(p)
+    );
+
+    finishButton.textContent = "✓ Đã hoàn thành";
+
+    finishButton.disabled = true;
+
+    finishButton.style.opacity = ".65";
+
+});
+
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g25");</script>
+</body>
+</html>

@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mô phỏng hệ thống sông - Bài 20</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#06111f;
+    --bg2:#0a1b2d;
+    --panel:#0d2238;
+    --panel2:#102b44;
+    --border:#1d4968;
+    --blue:#29b6f6;
+    --blue2:#0288d1;
+    --cyan:#4dd0e1;
+    --text:#e8f7ff;
+    --muted:#9bb8cc;
+    --green:#4caf8a;
+    --yellow:#ffd166;
+    --orange:#ff9f43;
+    --red:#ff6b6b;
+}
+
+body{
+    font-family:Segoe UI,Arial,sans-serif;
+    background:
+        radial-gradient(circle at 50% 0%,#12395a 0%,#071727 42%,#040b14 100%);
+    color:var(--text);
+    min-height:100vh;
+}
+
+/* HEADER */
+header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    background:rgba(4,14,25,.94);
+    border-bottom:1px solid rgba(41,182,246,.25);
+    backdrop-filter:blur(12px);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:800;
+    font-size:18px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#075985,#0284c7);
+    box-shadow:0 0 22px rgba(41,182,246,.25);
+    font-size:22px;
+}
+
+.back-btn{
+    text-decoration:none;
+    color:#dff6ff;
+    padding:10px 16px;
+    border:1px solid #24516e;
+    border-radius:10px;
+    background:#0b2033;
+    transition:.2s;
+}
+
+.back-btn:hover{
+    background:#12334d;
+    border-color:#29b6f6;
+}
+
+/* MAIN */
+.container{
+    width:min(1450px,94%);
+    margin:0 auto;
+    padding:28px 0 50px;
+}
+
+.hero{
+    text-align:center;
+    padding:20px 10px 26px;
+}
+
+.hero .tag{
+    display:inline-block;
+    padding:6px 13px;
+    border-radius:999px;
+    background:rgba(41,182,246,.12);
+    border:1px solid rgba(41,182,246,.3);
+    color:#66d7ff;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.hero h1{
+    font-size:clamp(28px,4vw,46px);
+    margin-bottom:10px;
+    background:linear-gradient(90deg,#e6f9ff,#4dd0e1,#29b6f6);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:850px;
+    margin:auto;
+    line-height:1.7;
+}
+
+/* SIMULATION LAYOUT */
+.sim-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 330px;
+    gap:18px;
+    align-items:stretch;
+}
+
+.sim-card{
+    background:linear-gradient(145deg,#0b1d30,#071524);
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+.sim-header{
+    min-height:64px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:14px 18px;
+    background:rgba(13,39,61,.75);
+    border-bottom:1px solid #173e58;
+}
+
+.sim-title{
+    font-weight:800;
+}
+
+.sim-sub{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.status{
+    padding:7px 11px;
+    border-radius:999px;
+    font-size:12px;
+    background:#09263a;
+    color:#73d8ff;
+    border:1px solid #1d526e;
+    white-space:nowrap;
+}
+
+.canvas-wrap{
+    position:relative;
+    background:#071522;
+    min-height:600px;
+}
+
+canvas{
+    display:block;
+    width:100%;
+    height:600px;
+    cursor:pointer;
+}
+
+/* LEGEND */
+.legend{
+    position:absolute;
+    left:18px;
+    top:18px;
+    padding:12px 14px;
+    border-radius:12px;
+    background:rgba(4,16,28,.78);
+    border:1px solid rgba(87,166,202,.3);
+    backdrop-filter:blur(8px);
+    font-size:12px;
+    line-height:1.8;
+    pointer-events:none;
+}
+
+.legend-title{
+    font-weight:800;
+    margin-bottom:4px;
+}
+
+.legend-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.dot.main{background:#36bdf2;}
+.dot.tributary{background:#55d6c2;}
+.dot.distributary{background:#7dd3fc;}
+.dot.boundary{background:#ffd166;}
+
+/* CONTROLS */
+.controls{
+    position:absolute;
+    left:18px;
+    right:18px;
+    bottom:18px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    border-radius:14px;
+    background:rgba(4,15,26,.88);
+    border:1px solid rgba(60,130,165,.35);
+    backdrop-filter:blur(12px);
+}
+
+button{
+    border:none;
+    font:inherit;
+    cursor:pointer;
+}
+
+.control-btn{
+    min-height:40px;
+    padding:9px 14px;
+    border-radius:9px;
+    color:#e9f9ff;
+    background:#10324b;
+    border:1px solid #225875;
+    transition:.2s;
+}
+
+.control-btn:hover{
+    background:#174765;
+    border-color:#39c5f5;
+}
+
+.control-btn.active{
+    background:#075985;
+    border-color:#36c5f4;
+}
+
+.slider-box{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#a8c7d9;
+    font-size:12px;
+}
+
+input[type=range]{
+    width:125px;
+    accent-color:#29b6f6;
+}
+
+/* INFO PANEL */
+.info-panel{
+    background:linear-gradient(145deg,#0d243a,#081827);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+    min-height:100%;
+}
+
+.info-top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.info-icon{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#0a3c5b;
+    font-size:23px;
+}
+
+.info-title{
+    font-size:19px;
+    font-weight:800;
+}
+
+.info-type{
+    color:#65d7fa;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.info-content{
+    color:#bad0dd;
+    line-height:1.75;
+    font-size:14px;
+}
+
+.info-content strong{
+    color:#e8f8ff;
+}
+
+.info-list{
+    margin-top:12px;
+    padding-left:18px;
+}
+
+.info-list li{
+    margin:7px 0;
+}
+
+.tip{
+    margin-top:20px;
+    padding:13px;
+    border-radius:12px;
+    background:rgba(41,182,246,.08);
+    border:1px solid rgba(41,182,246,.2);
+    color:#a9dff3;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.clear-btn{
+    width:100%;
+    margin-top:15px;
+    padding:11px;
+    border-radius:10px;
+    color:#dcefff;
+    background:#102c43;
+    border:1px solid #24536d;
+}
+
+.clear-btn:hover{
+    background:#153b56;
+}
+
+/* BELOW */
+.section{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.concept-card{
+    background:#0b1f33;
+    border:1px solid #173f59;
+    border-radius:14px;
+    padding:17px;
+    transition:.2s;
+}
+
+.concept-card:hover{
+    transform:translateY(-2px);
+    border-color:#2c87b0;
+}
+
+.concept-icon{
+    font-size:25px;
+    margin-bottom:9px;
+}
+
+.concept-card h3{
+    font-size:15px;
+    margin-bottom:7px;
+}
+
+.concept-card p{
+    color:#9fb9c9;
+    font-size:12px;
+    line-height:1.65;
+}
+
+.flow-note{
+    margin-top:18px;
+    padding:18px;
+    border-radius:15px;
+    background:linear-gradient(90deg,rgba(9,64,91,.35),rgba(8,35,54,.4));
+    border:1px solid #1d536e;
+    text-align:center;
+}
+
+.flow-note h2{
+    font-size:18px;
+    margin-bottom:9px;
+}
+
+.flow{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    color:#72d9fa;
+    font-weight:700;
+    font-size:14px;
+}
+
+.flow span{
+    padding:6px 10px;
+    border-radius:8px;
+    background:#0b2c43;
+}
+
+.arrow{
+    color:#5e8ca2;
+}
+
+/* RESPONSIVE */
+@media(max-width:1050px){
+    .sim-layout{
+        grid-template-columns:1fr;
+    }
+
+    .info-panel{
+        min-height:auto;
+    }
+
+    .section{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:650px){
+    header{
+        padding:0 13px;
+    }
+
+    .logo{
+        font-size:14px;
+    }
+
+    .logo-icon{
+        width:36px;
+        height:36px;
+    }
+
+    .container{
+        width:96%;
+        padding-top:15px;
+    }
+
+    .canvas-wrap,
+    canvas{
+        height:520px;
+        min-height:520px;
+    }
+
+    .legend{
+        font-size:10px;
+        padding:9px;
+    }
+
+    .controls{
+        left:10px;
+        right:10px;
+        bottom:10px;
+    }
+
+    .section{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">🌊</div>
+        <div>
+            <div>Mô phỏng Địa lí 6</div>
+            <div style="font-size:11px;color:#7896a9;font-weight:500;">
+                Bài 20 · Sông và hồ
+            </div>
+        </div>
+    </div>
+
+    <a class="back-btn" href="g20.html">← Quay lại Bài 20</a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div class="tag">🌊 MÔ PHỎNG TƯƠNG TÁC</div>
+
+        <h1>Hệ thống sông</h1>
+
+        <p>
+            Quan sát sự phân bố của <strong>lưu vực sông</strong>,
+            <strong>phụ lưu</strong>, <strong>sông chính</strong>,
+            <strong>chi lưu</strong> và <strong>cửa sông</strong>.
+            Bấm vào từng bộ phận để tìm hiểu chức năng và mối quan hệ
+            trong một hệ thống sông.
+        </p>
+    </section>
+
+    <section class="sim-layout">
+
+        <!-- ================= CANVAS ================= -->
+        <div class="sim-card">
+
+            <div class="sim-header">
+                <div>
+                    <div class="sim-title">🗺️ Mô hình hệ thống sông</div>
+                    <div class="sim-sub">
+                        Bấm trực tiếp vào các bộ phận trên mô hình
+                    </div>
+                </div>
+
+                <div class="status" id="status">
+                    ● Đang mô phỏng
+                </div>
+            </div>
+
+            <div class="canvas-wrap">
+
+                <canvas id="riverCanvas"></canvas>
+
+                <div class="legend">
+                    <div class="legend-title">CHÚ GIẢI</div>
+
+                    <div class="legend-row">
+                        <span class="dot main"></span>
+                        Sông chính
+                    </div>
+
+                    <div class="legend-row">
+                        <span class="dot tributary"></span>
+                        Phụ lưu
+                    </div>
+
+                    <div class="legend-row">
+                        <span class="dot distributary"></span>
+                        Chi lưu
+                    </div>
+
+                    <div class="legend-row">
+                        <span class="dot boundary"></span>
+                        Ranh giới lưu vực
+                    </div>
+                </div>
+
+                <div class="controls">
+
+                    <button
+                        class="control-btn active"
+                        id="autoBtn">
+                        ⏸ Tạm dừng dòng chảy
+                    </button>
+
+                    <button
+                        class="control-btn"
+                        id="rainBtn">
+                        🌧️ Bật mưa
+                    </button>
+
+                    <button
+                        class="control-btn"
+                        id="resetBtn">
+                        ↻ Đặt lại
+                    </button>
+
+                    <div class="slider-box">
+                        <span>💧 Tốc độ</span>
+                        <input
+                            id="speedSlider"
+                            type="range"
+                            min="0.3"
+                            max="3"
+                            step="0.1"
+                            value="1">
+                        <span id="speedValue">1.0×</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= INFO ================= -->
+        <aside class="info-panel">
+
+            <div class="info-top">
+
+                <div class="info-icon" id="infoIcon">
+                    🌊
+                </div>
+
+                <div>
+                    <div class="info-title" id="infoTitle">
+                        Hệ thống sông
+                    </div>
+
+                    <div class="info-type" id="infoType">
+                        Bấm vào mô hình để tìm hiểu
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="info-content" id="infoContent">
+
+                <p>
+                    Một <strong>hệ thống sông</strong> gồm
+                    <strong>sông chính, phụ lưu và chi lưu</strong>.
+                    Các bộ phận này có mối quan hệ với nhau và cùng
+                    nằm trong một <strong>lưu vực sông</strong>.
+                </p>
+
+                <div class="tip">
+                    💡 <strong>Cách sử dụng:</strong><br>
+                    Bấm vào các dòng sông hoặc khu vực trên mô hình.
+                    Các hạt màu xanh chuyển động thể hiện hướng
+                    dòng chảy của nước.
+                </div>
+
+            </div>
+
+            <button
+                class="clear-btn"
+                id="clearInfo">
+                ↺ Xem lại thông tin chung
+            </button>
+
+        </aside>
+
+    </section>
+
+
+    <!-- ================= CONCEPTS ================= -->
+
+    <section class="section">
+
+        <div class="concept-card">
+            <div class="concept-icon">🏔️</div>
+            <h3>Lưu vực sông</h3>
+            <p>
+                Vùng đất cung cấp nước thường xuyên cho một con sông.
+                Trên mô hình, khu vực này được giới hạn bởi đường
+                màu vàng.
+            </p>
+        </div>
+
+        <div class="concept-card">
+            <div class="concept-icon">💧</div>
+            <h3>Phụ lưu</h3>
+            <p>
+                Sông hoặc dòng chảy đổ nước vào sông chính,
+                góp phần cung cấp nước cho sông chính.
+            </p>
+        </div>
+
+        <div class="concept-card">
+            <div class="concept-icon">🌊</div>
+            <h3>Sông chính</h3>
+            <p>
+                Dòng sông lớn nhận nước từ các phụ lưu và
+                đưa nước về phía hạ lưu.
+            </p>
+        </div>
+
+        <div class="concept-card">
+            <div class="concept-icon">🔀</div>
+            <h3>Chi lưu</h3>
+            <p>
+                Nhánh sông tách ra từ sông chính, đưa nước
+                theo những hướng khác nhau về phía hạ lưu.
+            </p>
+        </div>
+
+    </section>
+
+
+    <div class="flow-note">
+
+        <h2>🔄 Mối quan hệ trong hệ thống sông</h2>
+
+        <div class="flow">
+            <span>🌧️ Nguồn cung cấp nước</span>
+            <span class="arrow">→</span>
+            <span>💧 Phụ lưu</span>
+            <span class="arrow">→</span>
+            <span>🌊 Sông chính</span>
+            <span class="arrow">→</span>
+            <span>🔀 Chi lưu</span>
+            <span class="arrow">→</span>
+            <span>🌅 Cửa sông</span>
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+/* ============================================================
+   MÔ PHỎNG HỆ THỐNG SÔNG
+   Không sử dụng thư viện bên ngoài
+============================================================ */
+
+const canvas = document.getElementById("riverCanvas");
+const ctx = canvas.getContext("2d");
+
+const infoTitle = document.getElementById("infoTitle");
+const infoType = document.getElementById("infoType");
+const infoIcon = document.getElementById("infoIcon");
+const infoContent = document.getElementById("infoContent");
+
+const autoBtn = document.getElementById("autoBtn");
+const rainBtn = document.getElementById("rainBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+const speedSlider = document.getElementById("speedSlider");
+const speedValue = document.getElementById("speedValue");
+
+const status = document.getElementById("status");
+const clearInfo = document.getElementById("clearInfo");
+
+let W = 900;
+let H = 600;
+
+let running = true;
+let raining = false;
+let speed = 1;
+
+let particles = [];
+let rainDrops = [];
+
+let selected = null;
+
+const regions = [];
+
+
+/* ============================================================
+   RESIZE
+============================================================ */
+
+function resizeCanvas(){
+
+    const rect = canvas.getBoundingClientRect();
+
+    const dpr = Math.min(window.devicePixelRatio || 1,2);
+
+    W = Math.max(600,rect.width);
+    H = Math.max(500,rect.height);
+
+    canvas.width = W*dpr;
+    canvas.height = H*dpr;
+
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+window.addEventListener("resize",resizeCanvas);
+
+
+/* ============================================================
+   HELPERS
+============================================================ */
+
+function lerp(a,b,t){
+    return a+(b-a)*t;
+}
+
+function distance(x1,y1,x2,y2){
+    return Math.hypot(x2-x1,y2-y1);
+}
+
+function clamp(v,a,b){
+    return Math.max(a,Math.min(b,v));
+}
+
+
+/* ============================================================
+   RIVER GEOMETRY
+============================================================ */
+
+/*
+    Main river:
+    bắt đầu ở vùng núi phía trên,
+    chảy xuống hạ lưu và ra cửa sông.
+*/
+
+function mainRiver(t){
+
+    const x0 = W*0.50;
+    const y0 = H*0.08;
+
+    const x1 = W*0.46;
+    const y1 = H*0.27;
+
+    const x2 = W*0.53;
+    const y2 = H*0.46;
+
+    const x3 = W*0.47;
+    const y3 = H*0.66;
+
+    const x4 = W*0.55;
+    const y4 = H*0.90;
+
+    let x,y;
+
+    if(t<.25){
+
+        let u=t/.25;
+
+        x=lerp(x0,x1,u);
+        y=lerp(y0,y1,u);
+
+    }else if(t<.5){
+
+        let u=(t-.25)/.25;
+
+        x=lerp(x1,x2,u);
+        y=lerp(y1,y2,u);
+
+    }else if(t<.75){
+
+        let u=(t-.5)/.25;
+
+        x=lerp(x2,x3,u);
+        y=lerp(y2,y3,u);
+
+    }else{
+
+        let u=(t-.75)/.25;
+
+        x=lerp(x3,x4,u);
+        y=lerp(y3,y4,u);
+    }
+
+    return {x,y};
+}
+
+
+/* ============================================================
+   TRIBUTARIES
+============================================================ */
+
+function tributary1(t){
+
+    const start={x:W*.10,y:H*.15};
+    const end={x:W*.505,y:H*.355};
+
+    let u=t;
+
+    const x=lerp(start.x,end.x,u)
+        +Math.sin(u*Math.PI)*W*.03;
+
+    const y=lerp(start.y,end.y,u);
+
+    return {x,y};
+}
+
+function tributary2(t){
+
+    const start={x:W*.08,y:H*.42};
+    const end={x:W*.505,y:H*.47};
+
+    let u=t;
+
+    const x=lerp(start.x,end.x,u);
+    const y=lerp(start.y,end.y,u)
+        -Math.sin(u*Math.PI)*H*.025;
+
+    return {x,y};
+}
+
+function tributary3(t){
+
+    const start={x:W*.88,y:H*.24};
+    const end={x:W*.525,y:H*.56};
+
+    let u=t;
+
+    const x=lerp(start.x,end.x,u);
+    const y=lerp(start.y,end.y,u);
+
+    return {x,y};
+}
+
+
+/* ============================================================
+   DISTRIBUTARIES
+============================================================ */
+
+function distributary1(t){
+
+    const start={x:W*.475,y:H*.69};
+    const end={x:W*.27,y:H*.91};
+
+    let u=t;
+
+    const x=lerp(start.x,end.x,u);
+    const y=lerp(start.y,end.y,u);
+
+    return {x,y};
+}
+
+function distributary2(t){
+
+    const start={x:W*.485,y:H*.72};
+    const end={x:W*.72,y:H*.94};
+
+    let u=t;
+
+    const x=lerp(start.x,end.x,u);
+    const y=lerp(start.y,end.y,u);
+
+    return {x,y};
+}
+
+
+/* ============================================================
+   RIVER PATH
+============================================================ */
+
+function drawPath(points,style,width){
+
+    ctx.beginPath();
+
+    points.forEach((p,i)=>{
+
+        if(i===0){
+            ctx.moveTo(p.x,p.y);
+        }else{
+            ctx.lineTo(p.x,p.y);
+        }
+
+    });
+
+    ctx.strokeStyle=style;
+    ctx.lineWidth=width;
+    ctx.lineCap="round";
+    ctx.lineJoin="round";
+    ctx.stroke();
+}
+
+
+/* ============================================================
+   LANDSCAPE
+============================================================ */
+
+function drawLandscape(){
+
+    /*
+        nền địa hình
+    */
+
+    const gradient=ctx.createLinearGradient(0,0,0,H);
+
+    gradient.addColorStop(0,"#173b3d");
+    gradient.addColorStop(.35,"#153a35");
+    gradient.addColorStop(.7,"#1a4037");
+    gradient.addColorStop(1,"#0e2c30");
+
+    ctx.fillStyle=gradient;
+    ctx.fillRect(0,0,W,H);
+
+
+    /*
+        các mảng địa hình
+    */
+
+    ctx.fillStyle="rgba(74,116,76,.18)";
+
+    for(let i=0;i<15;i++){
+
+        const x=(i*137)%W;
+        const y=90+((i*83)%(H-160));
+
+        ctx.beginPath();
+        ctx.arc(x,y,50+(i%4)*15,0,Math.PI*2);
+        ctx.fill();
+    }
+
+
+    /*
+        vùng hạ lưu
+    */
+
+    ctx.fillStyle="rgba(78,137,105,.15)";
+    ctx.fillRect(0,H*.68,W,H*.32);
+
+
+    /*
+        núi ở thượng nguồn
+    */
+
+    drawMountain(W*.50,H*.09,90,120);
+    drawMountain(W*.38,H*.13,75,90);
+    drawMountain(W*.63,H*.14,80,100);
+}
+
+
+function drawMountain(x,y,w,h){
+
+    ctx.beginPath();
+
+    ctx.moveTo(x-w/2,y+h);
+    ctx.lineTo(x,y);
+    ctx.lineTo(x+w/2,y+h);
+    ctx.closePath();
+
+    const g=ctx.createLinearGradient(x,y,x,y+h);
+
+    g.addColorStop(0,"#71866d");
+    g.addColorStop(.45,"#4e665c");
+    g.addColorStop(1,"#263e3d");
+
+    ctx.fillStyle=g;
+    ctx.fill();
+
+    /*
+        tuyết
+    */
+
+    ctx.beginPath();
+
+    ctx.moveTo(x,y);
+    ctx.lineTo(x-15,y+22);
+    ctx.lineTo(x-4,y+18);
+    ctx.lineTo(x+5,y+30);
+    ctx.lineTo(x+15,y+21);
+    ctx.closePath();
+
+    ctx.fillStyle="rgba(225,242,241,.75)";
+    ctx.fill();
+}
+
+
+/* ============================================================
+   RIVER BASIN BOUNDARY
+============================================================ */
+
+function drawBasin(){
+
+    ctx.save();
+
+    ctx.beginPath();
+
+    ctx.moveTo(W*.05,H*.05);
+
+    ctx.bezierCurveTo(
+        W*.22,H*.02,
+        W*.32,H*.08,
+        W*.50,H*.04
+    );
+
+    ctx.bezierCurveTo(
+        W*.72,H*.03,
+        W*.84,H*.12,
+        W*.94,H*.22
+    );
+
+    ctx.bezierCurveTo(
+        W*.89,H*.40,
+        W*.88,H*.58,
+        W*.82,H*.73
+    );
+
+    ctx.bezierCurveTo(
+        W*.76,H*.88,
+        W*.66,H*.97,
+        W*.54,H*.98
+    );
+
+    ctx.bezierCurveTo(
+        W*.36,H*.98,
+        W*.20,H*.89,
+        W*.08,H*.73
+    );
+
+    ctx.bezierCurveTo(
+        W*.03,H*.55,
+        W*.02,H*.30,
+        W*.05,H*.05
+    );
+
+    ctx.closePath();
+
+    ctx.setLineDash([9,7]);
+    ctx.lineWidth=2;
+    ctx.strokeStyle="#ffd166";
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    /*
+        nền trong lưu vực
+    */
+
+    ctx.globalAlpha=.04;
+    ctx.fillStyle="#ffd166";
+    ctx.fill();
+
+    ctx.restore();
+
+    /*
+        label
+    */
+
+    drawLabel(
+        "RANH GIỚI LƯU VỰC SÔNG",
+        W*.07,
+        H*.10,
+        "#ffd166"
+    );
+}
+
+
+/* ============================================================
+   DRAW RIVERS
+============================================================ */
+
+function drawRivers(){
+
+    /*
+        glow
+    */
+
+    ctx.save();
+
+    ctx.shadowBlur=18;
+    ctx.shadowColor="#1e9fd0";
+
+    /*
+        phụ lưu
+    */
+
+    drawPath(
+        samplePath(tributary1),
+        "#55d6c2",
+        9
+    );
+
+    drawPath(
+        samplePath(tributary2),
+        "#55d6c2",
+        9
+    );
+
+    drawPath(
+        samplePath(tributary3),
+        "#55d6c2",
+        9
+    );
+
+    /*
+        sông chính
+    */
+
+    drawPath(
+        samplePath(mainRiver),
+        "#159bd4",
+        25
+    );
+
+    /*
+        highlight
+    */
+
+    ctx.shadowBlur=0;
+
+    drawPath(
+        samplePath(mainRiver),
+        "#39bff1",
+        11
+    );
+
+    /*
+        chi lưu
+    */
+
+    drawPath(
+        samplePath(distributary1),
+        "#7dd3fc",
+        9
+    );
+
+    drawPath(
+        samplePath(distributary2),
+        "#7dd3fc",
+        9
+    );
+
+    ctx.restore();
+}
+
+
+function samplePath(fn){
+
+    const arr=[];
+
+    for(let i=0;i<=50;i++){
+
+        arr.push(
+            fn(i/50)
+        );
+
+    }
+
+    return arr;
+}
+
+
+/* ============================================================
+   LABELS
+============================================================ */
+
+function drawLabel(text,x,y,color="#dff7ff"){
+
+    ctx.save();
+
+    ctx.font="700 12px Segoe UI,Arial";
+
+    const padX=9;
+    const padY=6;
+
+    const width=ctx.measureText(text).width+padX*2;
+
+    ctx.fillStyle="rgba(3,15,25,.82)";
+
+    roundRect(
+        ctx,
+        x,
+        y,
+        width,
+        26,
+        7
+    );
+
+    ctx.fill();
+
+    ctx.strokeStyle=color;
+    ctx.globalAlpha=.55;
+    ctx.stroke();
+
+    ctx.globalAlpha=1;
+
+    ctx.fillStyle=color;
+
+    ctx.fillText(
+        text,
+        x+padX,
+        y+17
+    );
+
+    ctx.restore();
+}
+
+
+function roundRect(ctx,x,y,w,h,r){
+
+    ctx.beginPath();
+
+    ctx.moveTo(x+r,y);
+
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+
+    ctx.closePath();
+}
+
+
+/* ============================================================
+   DRAW STATIC LABELS
+============================================================ */
+
+function drawRiverLabels(){
+
+    drawLabel(
+        "PHỤ LƯU",
+        W*.12,
+        H*.27,
+        "#55d6c2"
+    );
+
+    drawLabel(
+        "PHỤ LƯU",
+        W*.69,
+        H*.34,
+        "#55d6c2"
+    );
+
+    drawLabel(
+        "SÔNG CHÍNH",
+        W*.56,
+        H*.47,
+        "#4dd0e1"
+    );
+
+    drawLabel(
+        "CHI LƯU",
+        W*.17,
+        H*.76,
+        "#7dd3fc"
+    );
+
+    drawLabel(
+        "CHI LƯU",
+        W*.65,
+        H*.80,
+        "#7dd3fc"
+    );
+
+    drawLabel(
+        "CỬA SÔNG",
+        W*.50,
+        H*.91,
+        "#d7f5ff"
+    );
+}
+
+
+/* ============================================================
+   FLOW PARTICLES
+============================================================ */
+
+function createParticles(){
+
+    particles=[];
+
+    /*
+        sông chính
+    */
+
+    for(let i=0;i<55;i++){
+
+        particles.push({
+            river:"main",
+            t:Math.random(),
+            speed:.0015+Math.random()*.002,
+            size:1.5+Math.random()*2
+        });
+    }
+
+    /*
+        phụ lưu
+    */
+
+    for(let i=0;i<28;i++){
+
+        particles.push({
+            river:"t1",
+            t:Math.random(),
+            speed:.0013+Math.random()*.002,
+            size:1.3+Math.random()*1.8
+        });
+
+        particles.push({
+            river:"t2",
+            t:Math.random(),
+            speed:.0013+Math.random()*.002,
+            size:1.3+Math.random()*1.8
+        });
+
+        particles.push({
+            river:"t3",
+            t:Math.random(),
+            speed:.0013+Math.random()*.002,
+            size:1.3+Math.random()*1.8
+        });
+    }
+
+    /*
+        chi lưu
+    */
+
+    for(let i=0;i<18;i++){
+
+        particles.push({
+            river:"d1",
+            t:Math.random(),
+            speed:.0012+Math.random()*.0018,
+            size:1.3+Math.random()*1.7
+        });
+
+        particles.push({
+            river:"d2",
+            t:Math.random(),
+            speed:.0012+Math.random()*.0018,
+            size:1.3+Math.random()*1.7
+        });
+    }
+}
+
+
+function getParticlePosition(p){
+
+    if(p.river==="main"){
+        return mainRiver(p.t);
+    }
+
+    if(p.river==="t1"){
+        return tributary1(p.t);
+    }
+
+    if(p.river==="t2"){
+        return tributary2(p.t);
+    }
+
+    if(p.river==="t3"){
+        return tributary3(p.t);
+    }
+
+    if(p.river==="d1"){
+        return distributary1(p.t);
+    }
+
+    if(p.river==="d2"){
+        return distributary2(p.t);
+    }
+}
+
+
+function updateParticles(){
+
+    if(!running) return;
+
+    particles.forEach(p=>{
+
+        p.t += p.speed*speed;
+
+        if(p.t>1){
+            p.t=0;
+        }
+
+    });
+}
+
+
+function drawParticles(){
+
+    ctx.save();
+
+    particles.forEach(p=>{
+
+        const pos=getParticlePosition(p);
+
+        const alpha=.5+Math.sin(Date.now()/200+p.t*10)*.25;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            pos.x,
+            pos.y,
+            p.size,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle=
+            p.river==="main"
+            ? `rgba(220,248,255,${alpha})`
+            : `rgba(202,255,245,${alpha})`;
+
+        ctx.fill();
+    });
+
+    ctx.restore();
+}
+
+
+/* ============================================================
+   RAIN
+============================================================ */
+
+function createRain(){
+
+    rainDrops=[];
+
+    for(let i=0;i<100;i++){
+
+        rainDrops.push({
+            x:W*.05+Math.random()*W*.9,
+            y:Math.random()*H*.55,
+            length:5+Math.random()*8,
+            speed:2+Math.random()*4
+        });
+    }
+}
+
+
+function updateRain(){
+
+    if(!raining) return;
+
+    rainDrops.forEach(drop=>{
+
+        drop.y+=drop.speed*speed;
+
+        if(drop.y>H*.65){
+
+            drop.y=-10;
+            drop.x=W*.05+Math.random()*W*.9;
+        }
+
+    });
+}
+
+
+function drawRain(){
+
+    if(!raining) return;
+
+    ctx.save();
+
+    ctx.strokeStyle="rgba(114,211,255,.48)";
+    ctx.lineWidth=1;
+
+    rainDrops.forEach(drop=>{
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            drop.x,
+            drop.y
+        );
+
+        ctx.lineTo(
+            drop.x-2,
+            drop.y+drop.length
+        );
+
+        ctx.stroke();
+
+    });
+
+    ctx.restore();
+}
+
+
+/* ============================================================
+   CLOUDS
+============================================================ */
+
+function drawClouds(){
+
+    const clouds=[
+        {x:W*.18,y:H*.10,s:1},
+        {x:W*.75,y:H*.15,s:.9},
+        {x:W*.58,y:H*.23,s:.8}
+    ];
+
+    clouds.forEach(c=>{
+
+        ctx.save();
+
+        ctx.globalAlpha=.58;
+
+        ctx.fillStyle="#dceff5";
+
+        const s=c.s*22;
+
+        [
+            [-1.1,0],
+            [-.45,-.28],
+            [0,-.48],
+            [.52,-.2],
+            [1.1,0]
+        ].forEach(v=>{
+
+            ctx.beginPath();
+
+            ctx.arc(
+                c.x+v[0]*s,
+                c.y+v[1]*s,
+                s*.58,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        });
+
+        ctx.restore();
+    });
+}
+
+
+/* ============================================================
+   MOUNTAIN WATER ARROWS
+============================================================ */
+
+function drawFlowArrows(){
+
+    if(!running) return;
+
+    ctx.save();
+
+    ctx.strokeStyle="rgba(185,241,255,.55)";
+    ctx.fillStyle="rgba(185,241,255,.7)";
+    ctx.lineWidth=2;
+
+    /*
+        mũi tên trên sông chính
+    */
+
+    const arrows=[
+        {x:W*.50,y:H*.21,dx:0,dy:28},
+        {x:W*.51,y:H*.40,dx:0,dy:28},
+        {x:W*.49,y:H*.61,dx:0,dy:28},
+        {x:W*.52,y:H*.79,dx:0,dy:28},
+
+        {x:W*.28,y:H*.32,dx:35,dy:14},
+        {x:W*.26,y:H*.46,dx:40,dy:2},
+        {x:W*.73,y:H*.35,dx:-35,dy:25},
+
+        {x:W*.40,y:H*.76,dx:-30,dy:30},
+        {x:W*.58,y:H*.80,dx:35,dy:30}
+    ];
+
+    arrows.forEach(a=>{
+
+        ctx.beginPath();
+
+        ctx.moveTo(a.x,a.y);
+
+        ctx.lineTo(
+            a.x+a.dx,
+            a.y+a.dy
+        );
+
+        ctx.stroke();
+
+        const ang=Math.atan2(a.dy,a.dx);
+
+        const size=7;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            a.x+a.dx,
+            a.y+a.dy
+        );
+
+        ctx.lineTo(
+            a.x+a.dx-size*Math.cos(ang-.5),
+            a.y+a.dy-size*Math.sin(ang-.5)
+        );
+
+        ctx.lineTo(
+            a.x+a.dx-size*Math.cos(ang+.5),
+            a.y+a.dy-size*Math.sin(ang+.5)
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+    });
+
+    ctx.restore();
+}
+
+
+/* ============================================================
+   BASIN CLICK AREAS
+============================================================ */
+
+function buildRegions(){
+
+    regions.length=0;
+
+    /*
+        Lưu vực
+    */
+
+    regions.push({
+        id:"basin",
+        type:"basin",
+        x:W*.07,
+        y:H*.05,
+        w:W*.86,
+        h:H*.88
+    });
+
+    /*
+        phụ lưu
+    */
+
+    regions.push({
+        id:"tributary1",
+        type:"tributary",
+        points:samplePath(tributary1)
+    });
+
+    regions.push({
+        id:"tributary2",
+        type:"tributary",
+        points:samplePath(tributary2)
+    });
+
+    regions.push({
+        id:"tributary3",
+        type:"tributary",
+        points:samplePath(tributary3)
+    });
+
+    /*
+        sông chính
+    */
+
+    regions.push({
+        id:"main",
+        type:"main",
+        points:samplePath(mainRiver)
+    });
+
+    /*
+        chi lưu
+    */
+
+    regions.push({
+        id:"distributary1",
+        type:"distributary",
+        points:samplePath(distributary1)
+    });
+
+    regions.push({
+        id:"distributary2",
+        type:"distributary",
+        points:samplePath(distributary2)
+    });
+
+    /*
+        cửa sông
+    */
+
+    regions.push({
+        id:"mouth",
+        type:"mouth",
+        x:W*.43,
+        y:H*.84,
+        w:W*.18,
+        h:H*.16
+    });
+}
+
+
+/* ============================================================
+   DISTANCE TO PATH
+============================================================ */
+
+function distanceToSegment(px,py,x1,y1,x2,y2){
+
+    const dx=x2-x1;
+    const dy=y2-y1;
+
+    if(dx===0 && dy===0){
+        return distance(px,py,x1,y1);
+    }
+
+    let t=
+        ((px-x1)*dx+(py-y1)*dy)
+        /(dx*dx+dy*dy);
+
+    t=clamp(t,0,1);
+
+    const x=x1+t*dx;
+    const y=y1+t*dy;
+
+    return distance(px,py,x,y);
+}
+
+
+function distanceToPath(px,py,points){
+
+    let min=Infinity;
+
+    for(let i=0;i<points.length-1;i++){
+
+        const d=distanceToSegment(
+            px,
+            py,
+            points[i].x,
+            points[i].y,
+            points[i+1].x,
+            points[i+1].y
+        );
+
+        min=Math.min(min,d);
+    }
+
+    return min;
+}
+
+
+/* ============================================================
+   CLICK
+============================================================ */
+
+canvas.addEventListener("click",function(e){
+
+    const rect=canvas.getBoundingClientRect();
+
+    const x=(e.clientX-rect.left)
+        *(W/rect.width);
+
+    const y=(e.clientY-rect.top)
+        *(H/rect.height);
+
+    let closest=null;
+    let best=Infinity;
+
+    /*
+        ưu tiên sông
+    */
+
+    for(const r of regions){
+
+        let d=Infinity;
+
+        if(r.points){
+
+            d=distanceToPath(
+                x,
+                y,
+                r.points
+            );
+
+        }else{
+
+            if(
+                x>=r.x &&
+                x<=r.x+r.w &&
+                y>=r.y &&
+                y<=r.y+r.h
+            ){
+                d=0;
+            }
+
+        }
+
+        const threshold=
+            r.type==="main" ? 22 :
+            r.type==="tributary" ? 20 :
+            r.type==="distributary" ? 20 :
+            r.type==="mouth" ? 40 :
+            0;
+
+        if(d<threshold && d<best){
+
+            best=d;
+            closest=r;
+        }
+    }
+
+    if(closest){
+
+        showInfo(closest.type);
+
+    }
+
+});
+
+
+/* ============================================================
+   INFO CONTENT
+============================================================ */
+
+function showInfo(type){
+
+    selected=type;
+
+    const data={
+
+        basin:{
+            icon:"🏞️",
+            title:"Lưu vực sông",
+            type:"KHU VỰC CUNG CẤP NƯỚC",
+            html:`
+                <p>
+                    <strong>Lưu vực sông</strong> là vùng đất cung cấp
+                    nước thường xuyên cho một con sông.
+                </p>
+
+                <ul class="info-list">
+                    <li>Bao gồm khu vực thu nước cho hệ thống sông.</li>
+                    <li>Các dòng chảy trong lưu vực có quan hệ với nhau.</li>
+                    <li>Ranh giới lưu vực thường được xác định theo
+                    địa hình và đường phân thủy.</li>
+                </ul>
+
+                <div class="tip">
+                    🟡 Trên mô hình, <strong>đường nét màu vàng</strong>
+                    biểu thị ranh giới của lưu vực sông.
+                </div>
+            `
+        },
+
+        tributary:{
+            icon:"💧",
+            title:"Phụ lưu",
+            type:"DÒNG SÔNG ĐỔ VÀO SÔNG CHÍNH",
+            html:`
+                <p>
+                    <strong>Phụ lưu</strong> là sông hoặc dòng chảy
+                    đổ nước vào sông chính.
+                </p>
+
+                <ul class="info-list">
+                    <li>Cung cấp thêm nước cho sông chính.</li>
+                    <li>Có thể có nhiều phụ lưu trong một hệ thống sông.</li>
+                    <li>Trên mô hình, nước từ phụ lưu chảy về
+                    phía sông chính.</li>
+                </ul>
+
+                <div class="tip">
+                    💧 Hãy quan sát các hạt nước màu xanh ngọc:
+                    chúng đang di chuyển từ phụ lưu vào sông chính.
+                </div>
+            `
+        },
+
+        main:{
+            icon:"🌊",
+            title:"Sông chính",
+            type:"DÒNG SÔNG LỚN CỦA HỆ THỐNG",
+            html:`
+                <p>
+                    <strong>Sông chính</strong> là dòng sông lớn
+                    nhận nước từ các phụ lưu và đưa nước về hạ lưu.
+                </p>
+
+                <ul class="info-list">
+                    <li>Là trục chính của hệ thống sông.</li>
+                    <li>Nhận nước từ các phụ lưu.</li>
+                    <li>Dòng nước tiếp tục chảy về phía cửa sông.</li>
+                </ul>
+
+                <div class="tip">
+                    🔵 Dòng màu xanh sáng ở trung tâm mô hình
+                    biểu diễn sông chính.
+                </div>
+            `
+        },
+
+        distributary:{
+            icon:"🔀",
+            title:"Chi lưu",
+            type:"NHÁNH TÁCH RA TỪ SÔNG CHÍNH",
+            html:`
+                <p>
+                    <strong>Chi lưu</strong> là nhánh sông tách ra
+                    từ sông chính và đưa nước theo hướng khác.
+                </p>
+
+                <ul class="info-list">
+                    <li>Nằm về phía hạ lưu của hệ thống.</li>
+                    <li>Nước từ sông chính phân chia vào các chi lưu.</li>
+                    <li>Góp phần phân phối nước ra các khu vực khác.</li>
+                </ul>
+
+                <div class="tip">
+                    🔀 Hãy quan sát hướng chuyển động của các hạt nước
+                    ở phần hạ lưu để thấy nước được phân chia.
+                </div>
+            `
+        },
+
+        mouth:{
+            icon:"🌅",
+            title:"Cửa sông",
+            type:"NƠI SÔNG ĐỔ RA BIỂN / HỒ",
+            html:`
+                <p>
+                    <strong>Cửa sông</strong> là nơi dòng sông
+                    kết thúc và đổ nước vào biển, hồ hoặc một dòng sông khác.
+                </p>
+
+                <ul class="info-list">
+                    <li>Nằm ở khu vực hạ lưu.</li>
+                    <li>Là nơi nước của hệ thống sông thoát ra ngoài.</li>
+                    <li>Có thể hình thành vùng cửa sông và châu thổ.</li>
+                </ul>
+
+                <div class="tip">
+                    🌅 Phần cuối của mô hình mô phỏng khu vực
+                    cửa sông và vùng nước nhận dòng chảy.
+                </div>
+            `
+        }
+
+    };
+
+    const d=data[type];
+
+    if(!d) return;
+
+    infoIcon.textContent=d.icon;
+    infoTitle.textContent=d.title;
+    infoType.textContent=d.type;
+    infoContent.innerHTML=d.html;
+
+    status.textContent="● Đang xem: "+d.title;
+
+    /*
+        highlight
+    */
+
+    canvas.style.cursor="pointer";
+}
+
+
+/* ============================================================
+   CLEAR INFO
+============================================================ */
+
+clearInfo.addEventListener("click",function(){
+
+    selected=null;
+
+    infoIcon.textContent="🌊";
+
+    infoTitle.textContent="Hệ thống sông";
+
+    infoType.textContent=
+        "Bấm vào mô hình để tìm hiểu";
+
+    infoContent.innerHTML=`
+        <p>
+            Một <strong>hệ thống sông</strong> gồm
+            <strong>sông chính, phụ lưu và chi lưu</strong>.
+            Các bộ phận này có mối quan hệ với nhau và cùng
+            nằm trong một <strong>lưu vực sông</strong>.
+        </p>
+
+        <div class="tip">
+            💡 <strong>Cách sử dụng:</strong><br>
+            Bấm vào các dòng sông hoặc khu vực trên mô hình.
+            Các hạt màu xanh chuyển động thể hiện hướng
+            dòng chảy của nước.
+        </div>
+    `;
+
+    status.textContent="● Đang mô phỏng";
+});
+
+
+/* ============================================================
+   CONTROL BUTTONS
+============================================================ */
+
+autoBtn.addEventListener("click",function(){
+
+    running=!running;
+
+    if(running){
+
+        autoBtn.textContent="⏸ Tạm dừng dòng chảy";
+        autoBtn.classList.add("active");
+        status.textContent="● Đang mô phỏng";
+
+    }else{
+
+        autoBtn.textContent="▶ Tiếp tục dòng chảy";
+        autoBtn.classList.remove("active");
+        status.textContent="● Đã tạm dừng";
+
+    }
+
+});
+
+
+rainBtn.addEventListener("click",function(){
+
+    raining=!raining;
+
+    if(raining){
+
+        rainBtn.textContent="🌧️ Tắt mưa";
+        rainBtn.classList.add("active");
+
+        status.textContent="● Đang có mưa";
+
+    }else{
+
+        rainBtn.textContent="🌧️ Bật mưa";
+        rainBtn.classList.remove("active");
+
+        status.textContent="● Đang mô phỏng";
+
+    }
+
+});
+
+
+resetBtn.addEventListener("click",function(){
+
+    running=true;
+    raining=false;
+    speed=1;
+
+    speedSlider.value=1;
+    speedValue.textContent="1.0×";
+
+    autoBtn.textContent="⏸ Tạm dừng dòng chảy";
+    autoBtn.classList.add("active");
+
+    rainBtn.textContent="🌧️ Bật mưa";
+    rainBtn.classList.remove("active");
+
+    selected=null;
+
+    status.textContent="● Đang mô phỏng";
+
+    createParticles();
+    createRain();
+});
+
+
+speedSlider.addEventListener("input",function(){
+
+    speed=parseFloat(this.value);
+
+    speedValue.textContent=
+        speed.toFixed(1)+"×";
+
+});
+
+
+/* ============================================================
+   MAIN DRAW
+============================================================ */
+
+function draw(){
+
+    ctx.clearRect(0,0,W,H);
+
+    drawLandscape();
+
+    drawClouds();
+
+    drawBasin();
+
+    drawRivers();
+
+    drawFlowArrows();
+
+    drawRiverLabels();
+
+    drawRain();
+
+    drawParticles();
+
+    updateParticles();
+
+    updateRain();
+
+    requestAnimationFrame(draw);
+}
+
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+resizeCanvas();
+
+createParticles();
+
+createRain();
+
+buildRegions();
+
+draw();
+
+
+/*
+    Rebuild click regions khi thay đổi kích thước
+*/
+
+window.addEventListener("resize",function(){
+
+    setTimeout(()=>{
+        buildRegions();
+    },50);
+
+});
+</script>
+
+</body>
+</html>

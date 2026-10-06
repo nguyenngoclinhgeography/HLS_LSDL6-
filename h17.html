@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bài 17 – Cuộc đấu tranh bảo tồn và phát triển văn hóa dân tộc của người Việt</title>
+<style>
+:root{
+  --bg:#071827;--panel:#0d2436;--panel2:#102d42;--line:#28536c;
+  --cyan:#67d8ff;--gold:#e8b86b;--cream:#f5ead5;--text:#eaf6fb;
+  --muted:#a9c2cf;--green:#68d391;--red:#ff8585;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:
+radial-gradient(circle at 15% 5%,rgba(52,145,190,.18),transparent 30%),
+radial-gradient(circle at 85% 10%,rgba(226,166,75,.12),transparent 28%),var(--bg);color:var(--text);line-height:1.65}
+a{text-decoration:none;color:inherit}.top{position:sticky;top:0;z-index:20;background:rgba(5,18,29,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:900;letter-spacing:.5px}.home{border:1px solid #47758d;padding:7px 13px;border-radius:10px;color:#ccecf7}
+.wrap{max-width:1180px;margin:auto;padding:30px 20px 70px}
+.hero{padding:38px 32px;border:1px solid #316078;border-radius:24px;background:linear-gradient(135deg,rgba(14,52,73,.95),rgba(15,31,45,.98));box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.kicker{color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;font-size:13px}
+h1{font-size:clamp(30px,5vw,52px);line-height:1.12;margin:10px 0 14px}.lead{color:#c4d9e2;max-width:850px;font-size:17px}
+.pills{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}.pill{padding:7px 12px;border:1px solid #3d687d;border-radius:999px;color:#ccecf7;background:#0b2131}
+h2{margin:42px 0 18px;font-size:27px;color:#fff}.section{background:rgba(11,34,51,.82);border:1px solid var(--line);border-radius:20px;padding:24px;margin-top:20px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:linear-gradient(145deg,#102e43,#0b2030);border:1px solid #315c71;border-radius:17px;padding:19px;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#65bfdc}
+.icon{font-size:34px}.card h3{margin:8px 0;color:#f6d59c}.muted{color:var(--muted)}
+.flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin-top:18px}.flow .node{flex:1;min-width:190px;padding:18px;border-radius:15px;text-align:center;border:1px solid #4a7183;background:#0c2638}.arrow{align-self:center;color:var(--gold);font-size:25px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}.compare .box{padding:20px;border-radius:18px;border:1px solid #365e70}.keep{background:linear-gradient(145deg,rgba(30,75,67,.45),rgba(10,37,47,.8))}.adopt{background:linear-gradient(145deg,rgba(86,61,31,.42),rgba(25,36,38,.85))}
+.tag{display:inline-block;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:800;margin:3px;background:#153a4c;color:#bceeff}.tag.gold{background:#49371f;color:#f4d28f}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.tab{cursor:pointer;padding:9px 13px;border-radius:10px;border:1px solid #386177;background:#0b2233;color:#c9e4ed;font-weight:700}.tab.active{background:#17445b;color:white;border-color:#66cce9}
+.contentBox{padding:20px;border-radius:16px;background:#091d2b;border:1px solid #2b5368;min-height:150px}
+.timeline{position:relative;margin:24px 0;padding-left:28px}.timeline:before{content:"";position:absolute;left:8px;top:0;bottom:0;width:3px;background:#37647a}.event{position:relative;margin:0 0 20px;padding:15px 18px;border:1px solid #315b70;border-radius:14px;background:#0d293b}.event:before{content:"";position:absolute;left:-26px;top:21px;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px #102c3c}
+.memory{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.memory .m{padding:17px;border-radius:16px;text-align:center;background:#102d40;border:1px solid #365f72}.m b{display:block;color:var(--gold);font-size:18px;margin-bottom:5px}
+.quiz{background:linear-gradient(145deg,#0b2334,#091b29);border:1px solid #356278;border-radius:20px;padding:24px}.start{display:flex;justify-content:center;padding:35px}.btn{cursor:pointer;border:0;border-radius:12px;padding:11px 17px;font-weight:800;background:linear-gradient(135deg,#1598c4,#4268d9);color:#fff;box-shadow:0 8px 25px rgba(35,148,202,.22)}.btn.secondary{background:#18384a;border:1px solid #416d80}.btn:disabled{opacity:.5;cursor:not-allowed}
+.qmeta{display:flex;justify-content:space-between;gap:10px;color:#a8c8d5;margin-bottom:12px}.timer{color:#ffd17a;font-weight:900}.question{font-size:20px;font-weight:800;margin:10px 0 18px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}.ans{cursor:pointer;text-align:left;padding:13px 15px;border-radius:12px;border:1px solid #365e72;background:#0e2a3c;color:#e9f6fb}.ans:hover{border-color:#67cce9}.ans.correct{border-color:#62d391;background:rgba(37,117,78,.3)}.ans.wrong{border-color:#ff8181;background:rgba(131,47,47,.3)}.feedback{margin-top:15px;padding:14px;border-radius:12px;background:#0b2030;border-left:4px solid var(--cyan)}.result{text-align:center;padding:20px}.score{font-size:42px;color:var(--gold);font-weight:900}.hidden{display:none!important}.completion{margin-top:18px;padding:18px;border:1px solid #4d8368;background:rgba(35,104,70,.2);border-radius:14px;color:#bdf0d0}
+footer{text-align:center;color:#7895a3;margin-top:35px;font-size:13px}
+@media(max-width:850px){.grid,.memory{grid-template-columns:1fr 1fr}.compare,.grid2{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.arrow{display:none}}
+@media(max-width:560px){.grid,.memory{grid-template-columns:1fr}.hero{padding:26px 20px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+<div class="top"><div class="nav"><div class="brand">🏺 HỌC LIỆU SỐ 6 · LỊCH SỬ</div><a class="home" href="index.html">⌂ Trang chủ</a></div></div>
+
+<main class="wrap">
+<section class="hero">
+<div class="kicker">Chương 5 · Việt Nam từ khoảng thế kỉ VII TCN đến đầu thế kỉ X</div>
+<h1>Bài 17 – Cuộc đấu tranh bảo tồn và phát triển văn hóa dân tộc của người Việt</h1>
+<p class="lead">Trong thời kì Bắc thuộc, người Việt vừa giữ gìn những giá trị văn hóa bản địa, vừa chủ động tiếp thu có chọn lọc một số yếu tố văn hóa Trung Hoa để làm phong phú và phát triển văn hóa dân tộc.</p>
+<div class="pills"><span class="pill">🛡️ Bảo tồn</span><span class="pill">🌱 Phát triển</span><span class="pill">🔤 Chữ viết</span><span class="pill">🕯️ Tín ngưỡng</span><span class="pill">🧭 Tiếp thu có chọn lọc</span></div>
+</section>
+
+<h2>🎯 Em sẽ học được gì?</h2>
+<section class="grid">
+<div class="card"><div class="icon">🛡️</div><h3>Giữ gìn văn hóa</h3><p class="muted">Nhận biết những biểu hiện cho thấy người Việt vẫn bảo tồn văn hóa bản địa trong thời kì Bắc thuộc.</p></div>
+<div class="card"><div class="icon">🧭</div><h3>Tiếp thu có chọn lọc</h3><p class="muted">Nhận biết cách người Việt tiếp nhận một số yếu tố văn hóa Trung Hoa nhưng vận dụng phù hợp với đời sống của mình.</p></div>
+<div class="card"><div class="icon">🌱</div><h3>Phát triển văn hóa dân tộc</h3><p class="muted">Hiểu rằng giao lưu văn hóa không đồng nghĩa với đánh mất bản sắc; người Việt vừa tiếp nhận vừa duy trì bản sắc riêng.</p></div>
+</section>
+
+<h2>1. 🛡️ Sức sống của nền văn hóa bản địa</h2>
+<section class="section">
+<p>Trong thời kì Bắc thuộc, người Việt vẫn có ý thức giữ gìn những giá trị văn hóa của cộng đồng. Những giá trị này được duy trì trong đời sống hằng ngày và truyền từ thế hệ này sang thế hệ khác.</p>
+<div class="grid">
+<div class="card"><div class="icon">🗣️</div><h3>Tiếng Việt</h3><p class="muted">Người Việt vẫn truyền dạy và sử dụng tiếng mẹ đẻ trong đời sống.</p></div>
+<div class="card"><div class="icon">🙏</div><h3>Tín ngưỡng</h3><p class="muted">Thờ cúng tổ tiên và thờ các vị thần tự nhiên tiếp tục được duy trì.</p></div>
+<div class="card"><div class="icon">🍃</div><h3>Phong tục</h3><p class="muted">Búi tóc, xăm mình, nhuộm răng đen, ăn trầu... được lưu truyền trong cộng đồng.</p></div>
+</div>
+</section>
+
+<h2>2. 🧭 Tiếp thu có chọn lọc văn hóa Trung Hoa</h2>
+<section class="section">
+<p>Người Việt không tiếp nhận mọi yếu tố bên ngoài một cách máy móc. Một số yếu tố văn hóa Trung Hoa được tiếp thu, vận dụng và hòa nhập với truyền thống bản địa.</p>
+<div class="tabs">
+<button class="tab active" onclick="showCulture('tech')">⚙️ Kĩ thuật</button>
+<button class="tab" onclick="showCulture('tet')">🎊 Lễ tết</button>
+<button class="tab" onclick="showCulture('chu')">🔤 Chữ & lễ nghĩa</button>
+<button class="tab" onclick="showCulture('ton')">🕯️ Tôn giáo</button>
+</div>
+<div id="cultureBox" class="contentBox"></div>
+</section>
+
+<h2>3. ⚖️ Bảo tồn và tiếp thu: hai quá trình song hành</h2>
+<section class="compare">
+<div class="box keep"><span class="tag">BẢO TỒN</span><h3>🛡️ Giữ bản sắc</h3>
+<p>Tiếng Việt, tín ngưỡng thờ cúng tổ tiên, thờ thần tự nhiên và nhiều phong tục tập quán tiếp tục được duy trì.</p>
+</div>
+<div class="box adopt"><span class="tag gold">TIẾP THU CÓ CHỌN LỌC</span><h3>🧭 Tiếp nhận để phát triển</h3>
+<p>Chữ Hán, một số lễ tết, lễ nghĩa, kĩ thuật, Đạo giáo và một số dòng Phật giáo được tiếp nhận với những mức độ khác nhau.</p>
+</div>
+</section>
+<div class="flow">
+<div class="node"><b>🌿 Văn hóa bản địa</b><br><span class="muted">Giữ gìn qua đời sống cộng đồng</span></div><div class="arrow">→</div>
+<div class="node"><b>🧭 Giao lưu</b><br><span class="muted">Tiếp xúc với văn hóa bên ngoài</span></div><div class="arrow">→</div>
+<div class="node"><b>🌱 Dung hợp & phát triển</b><br><span class="muted">Làm văn hóa thêm đa dạng</span></div>
+</div>
+
+<h2>4. 🧩 Ghép đúng: “Giữ gìn” hay “Tiếp thu”?</h2>
+<section class="section">
+<p class="muted">Bấm vào mỗi thẻ để kiểm tra cách phân loại. Một số nội dung cần hiểu theo hướng “tiếp thu có chọn lọc”, không phải thay thế hoàn toàn văn hóa bản địa.</p>
+<div class="grid2">
+<button class="card" onclick="classify('Giữ gìn','🗣️ Tiếng Việt – tiếp tục được truyền dạy và sử dụng.')"><div class="icon">🗣️</div><h3>Tiếng Việt</h3><p class="muted">Bấm để xem đáp án</p></button>
+<button class="card" onclick="classify('Giữ gìn','🙏 Thờ cúng tổ tiên – một tín ngưỡng truyền thống tiếp tục được duy trì.')"><div class="icon">🙏</div><h3>Thờ cúng tổ tiên</h3><p class="muted">Bấm để xem đáp án</p></button>
+<button class="card" onclick="classify('Tiếp thu có chọn lọc','🔤 Chữ Hán – được tiếp nhận cùng với một số cách dùng và quy tắc lễ nghĩa.')"><div class="icon">🔤</div><h3>Chữ Hán</h3><p class="muted">Bấm để xem đáp án</p></button>
+<button class="card" onclick="classify('Tiếp thu có chọn lọc','🕯️ Đạo giáo – được tiếp nhận và hòa nhập với tín ngưỡng dân gian.')"><div class="icon">🕯️</div><h3>Đạo giáo</h3><p class="muted">Bấm để xem đáp án</p></button>
+</div>
+<div id="classifyBox" class="contentBox hidden" style="margin-top:15px"></div>
+</section>
+
+<h2>5. 🧠 Ghi nhớ nhanh</h2>
+<section class="memory">
+<div class="m"><b>🛡️ GIỮ GÌN</b><span>Tiếng Việt<br>Tín ngưỡng<br>Phong tục</span></div>
+<div class="m"><b>🧭 TIẾP THU</b><span>Kĩ thuật<br>Chữ Hán<br>Lễ tết</span></div>
+<div class="m"><b>🕯️ GIAO LƯU</b><span>Đạo giáo<br>Phật giáo<br>Lễ nghĩa</span></div>
+<div class="m"><b>🌱 KẾT QUẢ</b><span>Bảo tồn bản sắc<br>Đồng thời phát triển<br>văn hóa dân tộc</span></div>
+</section>
+
+<h2>📝 Thử thách cuối bài</h2>
+<section class="quiz">
+<div id="startScreen">
+<div class="start"><button class="btn" onclick="startQuiz()">▶ Bắt đầu làm bài</button></div>
+<p class="muted" style="text-align:center">10 câu · 10 giây/câu · Mỗi câu 1 điểm</p>
+</div>
+<div id="quizArea" class="hidden">
+<div class="qmeta"><span id="qCount"></span><span class="timer">⏱️ <span id="time">10</span>s</span></div>
+<div id="question" class="question"></div><div id="answers" class="answers"></div>
+<div id="feedback" class="feedback hidden"></div>
+<div style="display:flex;justify-content:flex-end;margin-top:16px"><button id="nextBtn" class="btn hidden" onclick="nextQuestion()">Câu tiếp theo →</button></div>
+</div>
+<div id="result" class="result hidden">
+<div>🎉 Hoàn thành!</div><div class="score" id="score"></div><p id="resultText"></p>
+<button class="btn secondary" onclick="restartQuiz()">↻ Làm lại</button>
+<button class="btn" id="finishBtn" onclick="finishLesson()" style="margin-left:8px">✓ Hoàn thành bài học</button>
+<div id="completion" class="completion hidden">✓ Bài 17 đã được lưu vào tiến độ học tập.</div>
+</div>
+</section>
+<footer>Học liệu số Lịch sử và Địa lí 6 · Bài 17</footer>
+</main>
+
+<script>
+const PROGRESS_KEY='hoclieu6_progress_v1', LESSON_ID='h17';
+const cultureData={
+ tech:{title:'⚙️ Một số phát minh, kĩ thuật',html:'Người Việt tiếp thu một số phát minh, kĩ thuật như <b>làm giấy</b>, <b>chế tạo đồ thủy tinh</b>...'},
+ tet:{title:'🎊 Một số lễ tết',html:'Một số lễ tết như <b>Tết Nguyên đán, Trung thu</b> được tiếp nhận nhưng có sự vận dụng phù hợp với văn hóa của người Việt.'},
+ chu:{title:'🔤 Chữ Hán và lễ nghĩa',html:'Người Việt tiếp thu <b>chữ Hán</b>, một số quy tắc lễ nghĩa và cách đặt tên họ giống người Hán; đồng thời vẫn giữ truyền thống tôn trọng người già và phụ nữ.'},
+ ton:{title:'🕯️ Đạo giáo và Phật giáo',html:'<b>Đạo giáo</b> được tiếp nhận và hòa nhập với tín ngưỡng dân gian. Người Việt cũng đón nhận một số dòng <b>Phật giáo</b>; xuất hiện nhiều vị cao tăng nổi tiếng.'}
+};
+function showCulture(k){
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ event.target.classList.add('active');
+ const d=cultureData[k]; document.getElementById('cultureBox').innerHTML='<h3>'+d.title+'</h3><p>'+d.html+'</p>';
+}
+document.getElementById('cultureBox').innerHTML='<h3>'+cultureData.tech.title+'</h3><p>'+cultureData.tech.html+'</p>';
+function classify(type,text){
+ const b=document.getElementById('classifyBox'); b.classList.remove('hidden');
+ b.innerHTML='<b style="color:'+(type==='Giữ gìn'?'#68d391':'#e8b86b')+'">'+type+'</b><p style="margin-bottom:0">'+text+'</p>';
+}
+const questions=[
+{q:'Biểu hiện nào cho thấy người Việt vẫn giữ được văn hóa bản địa trong thời kì Bắc thuộc?',a:['Sử dụng hoàn toàn tiếng Hán','Duy trì tiếng Việt và nhiều phong tục, tín ngưỡng truyền thống','Bỏ các tín ngưỡng dân gian','Chỉ sử dụng lễ nghi của người Hán'],c:1,e:'Người Việt vẫn sử dụng tiếng mẹ đẻ và duy trì nhiều tín ngưỡng, phong tục truyền thống.'},
+{q:'Tín ngưỡng nào được SGK nêu là tiếp tục được duy trì?',a:['Thờ cúng tổ tiên','Chỉ thờ hoàng đế Trung Hoa','Chỉ thờ các vị thần Hy Lạp','Không còn tín ngưỡng'],c:0,e:'Thờ cúng tổ tiên và thờ các vị thần tự nhiên tiếp tục được duy trì.'},
+{q:'Nội dung nào thể hiện rõ nhất “tiếp thu có chọn lọc”?',a:['Loại bỏ hoàn toàn văn hóa bản địa','Tiếp nhận mọi yếu tố bên ngoài không thay đổi','Tiếp nhận một số yếu tố rồi vận dụng phù hợp với văn hóa Việt','Không giao lưu với bên ngoài'],c:2,e:'Tiếp thu có chọn lọc là tiếp nhận một số yếu tố và vận dụng phù hợp với văn hóa của người Việt.'},
+{q:'Yếu tố nào sau đây được người Việt tiếp thu trong thời kì Bắc thuộc?',a:['Chữ Hán','Chữ La-tinh','Chữ Hy Lạp','Chữ Ai Cập'],c:0,e:'Chữ Hán là một trong những yếu tố văn hóa Trung Hoa được người Việt tiếp thu.'},
+{q:'Tết Nguyên đán và Trung thu được tiếp nhận như thế nào?',a:['Bị loại bỏ hoàn toàn','Được tiếp nhận nhưng có sự vận dụng phù hợp với văn hóa Việt','Chỉ được tổ chức trong cung đình','Không xuất hiện trong văn hóa Việt'],c:1,e:'SGK nêu rõ các lễ tết này được tiếp nhận nhưng có sự vận dụng phù hợp với văn hóa của người Việt.'},
+{q:'Đạo giáo khi được tiếp nhận ở Việt Nam có đặc điểm nào?',a:['Hoàn toàn tách khỏi tín ngưỡng dân gian','Hòa nhập với tín ngưỡng dân gian','Thay thế toàn bộ tín ngưỡng bản địa','Chỉ tồn tại trong quân đội'],c:1,e:'Đạo giáo được tiếp nhận và có sự hòa nhập với tín ngưỡng dân gian.'},
+{q:'Nhận định nào phù hợp nhất với quá trình văn hóa của người Việt thời Bắc thuộc?',a:['Chỉ bảo tồn, không tiếp thu gì','Chỉ tiếp thu văn hóa bên ngoài','Vừa bảo tồn bản sắc vừa tiếp thu có chọn lọc','Đánh mất hoàn toàn văn hóa bản địa'],c:2,e:'Hai quá trình bảo tồn và tiếp thu có chọn lọc diễn ra song song, góp phần phát triển văn hóa dân tộc.'},
+{q:'Truyền thống nào được SGK nhấn mạnh vẫn được duy trì?',a:['Tôn trọng người già và phụ nữ','Từ bỏ mọi phong tục bản địa','Không dùng tiếng mẹ đẻ','Chỉ dùng tên họ theo người Hán'],c:0,e:'Dù chịu ảnh hưởng của tư tưởng gia trưởng, phụ quyền, người Việt vẫn giữ truyền thống tôn trọng người già và phụ nữ.'},
+{q:'Mục đích của việc học Bài 17 quan trọng nhất là gì?',a:['Ghi nhớ càng nhiều tên người càng tốt','Hiểu cách người Việt bảo tồn và phát triển văn hóa trong hoàn cảnh Bắc thuộc','Học cách xây dựng bản đồ cổ đại','Chỉ học về tôn giáo Trung Hoa'],c:1,e:'Trọng tâm bài là sức sống của văn hóa bản địa và việc tiếp thu có chọn lọc để phát triển văn hóa dân tộc.'},
+{q:'Có thể khái quát quá trình văn hóa trong bài bằng chuỗi nào?',a:['Đóng cửa → cô lập → biến mất','Bảo tồn → giao lưu → tiếp thu có chọn lọc → phát triển','Chinh phục → đồng hóa → mất bản sắc','Tiếp thu toàn bộ → thay thế văn hóa cũ'],c:1,e:'Đây là cách khái quát phù hợp nhất với nội dung Bài 17.'}
+];
+let qi=0,score=0,timeLeft=10,timer=null,answered=false,quizFinished=false;
+const $=id=>document.getElementById(id);
+function startQuiz(){qi=0;score=0;quizFinished=false;$('startScreen').classList.add('hidden');$('result').classList.add('hidden');$('quizArea').classList.remove('hidden');renderQuestion();}
+function renderQuestion(){
+ answered=false; timeLeft=10;$('time').textContent=timeLeft;$('qCount').textContent=`Câu ${qi+1}/${questions.length}`;$('feedback').classList.add('hidden');$('nextBtn').classList.add('hidden');
+ const x=questions[qi];$('question').textContent=x.q;$('answers').innerHTML='';
+ x.a.forEach((t,i)=>{const b=document.createElement('button');b.className='ans';b.textContent=String.fromCharCode(65+i)+'. '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)});
+ clearInterval(timer);timer=setInterval(()=>{timeLeft--; $('time').textContent=timeLeft;if(timeLeft<=0){clearInterval(timer);if(!answered) answer(-1,null)}},1000);
+}
+function answer(i,btn){
+ if(answered)return;answered=true;clearInterval(timer);const x=questions[qi];const bs=[...document.querySelectorAll('.ans')];
+ bs.forEach((b,j)=>{b.disabled=true;if(j===x.c)b.classList.add('correct')});if(btn&&i!==x.c)btn.classList.add('wrong');
+ if(i===x.c)score++;
+ const f=$('feedback');f.classList.remove('hidden');f.innerHTML=i===x.c?'<b style="color:#68d391">✓ Chính xác!</b> '+x.e:'<b style="color:#ff8585">✗ Chưa đúng.</b> '+x.e;
+ $('nextBtn').classList.remove('hidden');$('nextBtn').textContent=qi===questions.length-1?'Xem kết quả →':'Câu tiếp theo →';
+}
+function nextQuestion(){if(!answered)return;if(qi<questions.length-1){qi++;renderQuestion()}else showResult()}
+function showResult(){clearInterval(timer);quizFinished=true;$('quizArea').classList.add('hidden');$('result').classList.remove('hidden');$('score').textContent=score+'/10';$('resultText').textContent=score>=8?'Rất tốt! Bạn đã nắm khá chắc nội dung bài học.':score>=5?'Khá tốt! Hãy xem lại những câu chưa chắc.':'Bạn nên đọc lại phần Ghi nhớ nhanh rồi thử lại.';checkLessonProgress()}
+function restartQuiz(){$('result').classList.add('hidden');$('startScreen').classList.remove('hidden');}
+function finishLesson(){if(!quizFinished)return;const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');p[LESSON_ID]=true;localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));$('completion').classList.remove('hidden');$('finishBtn').disabled=true;$('finishBtn').textContent='✓ Đã hoàn thành';}
+function checkLessonProgress(){const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');if(p[LESSON_ID]===true){$('completion').classList.remove('hidden');$('finishBtn').disabled=true;$('finishBtn').textContent='✓ Đã hoàn thành';}}
+checkLessonProgress();
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("h17");</script>
+</body>
+</html>'''

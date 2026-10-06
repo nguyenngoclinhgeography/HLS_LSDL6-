@@ -1,0 +1,3592 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 17 - Thời tiết và khí hậu. Biến đổi khí hậu</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            #123c59 0,
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            #163e55 0,
+            transparent 30%
+        ),
+        #061522;
+    color:#eaf7ff;
+    line-height:1.6;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+
+    min-height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:12px 5%;
+
+    background:
+        rgba(5,20,33,.94);
+
+    border-bottom:
+        1px solid
+        rgba(102,196,238,.18);
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 8px 30px
+        rgba(0,0,0,.25);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-weight:800;
+    letter-spacing:.4px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #164b6b,
+            #0d2d45
+        );
+
+    border:
+        1px solid
+        rgba(105,204,246,.25);
+
+    font-size:22px;
+}
+
+.home-btn{
+    border:
+        1px solid
+        rgba(101,193,235,.22);
+
+    background:#0c2b43;
+
+    color:#dff4ff;
+
+    padding:9px 14px;
+
+    border-radius:10px;
+
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#124664;
+    transform:translateY(-1px);
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+    width:min(1250px,92%);
+
+    margin:28px auto 20px;
+
+    padding:35px 38px;
+
+    position:relative;
+    overflow:hidden;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(14,55,80,.95),
+            rgba(7,31,49,.96)
+        );
+
+    border:
+        1px solid
+        rgba(102,196,238,.2);
+
+    box-shadow:
+        0 22px 55px
+        rgba(0,0,0,.3);
+}
+
+.hero::after{
+    content:"🌦️";
+
+    position:absolute;
+
+    right:42px;
+    bottom:-18px;
+
+    font-size:150px;
+
+    opacity:.08;
+
+    pointer-events:none;
+}
+
+.badge{
+    display:inline-flex;
+
+    align-items:center;
+    gap:7px;
+
+    padding:6px 10px;
+
+    border-radius:20px;
+
+    background:#0c3854;
+
+    border:
+        1px solid
+        rgba(96,198,241,.2);
+
+    color:#82d0ef;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    letter-spacing:.7px;
+}
+
+.hero h1{
+    margin:
+        14px 0 10px;
+
+    max-width:850px;
+
+    font-size:
+        clamp(
+            28px,
+            4vw,
+            46px
+        );
+
+    line-height:1.12;
+
+    letter-spacing:-1px;
+}
+
+.hero p{
+    max-width:850px;
+
+    margin:0;
+
+    color:#a9c9da;
+
+    font-size:15px;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.container{
+    width:min(1250px,92%);
+
+    margin:auto;
+}
+
+.section{
+    margin:
+        18px auto;
+}
+
+.section-title{
+    margin-bottom:6px;
+
+    font-size:24px;
+
+    font-weight:850;
+
+    letter-spacing:-.3px;
+}
+
+.section-subtitle{
+    margin-top:0;
+
+    color:#8eafc2;
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   OBJECTIVES
+===================================================== */
+
+.objective-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:12px;
+}
+
+.objective-card{
+    padding:18px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b2941,
+            #081d2e
+        );
+
+    border:
+        1px solid
+        rgba(90,184,231,.15);
+
+    min-height:135px;
+}
+
+.objective-icon{
+    width:42px;
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:#103a56;
+
+    font-size:22px;
+
+    margin-bottom:10px;
+}
+
+.objective-card h3{
+    margin:
+        0 0 5px;
+
+    font-size:14px;
+}
+
+.objective-card p{
+    margin:0;
+
+    color:#91b0c0;
+
+    font-size:12px;
+}
+
+
+/* =====================================================
+   WEATHER / CLIMATE COMPARISON
+===================================================== */
+
+.compare{
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap:15px;
+}
+
+.compare-card{
+    padding:23px;
+
+    border-radius:18px;
+
+    background:#091f31;
+
+    border:
+        1px solid
+        rgba(92,185,232,.16);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.compare-card.weather{
+    border-top:
+        4px solid
+        #53bde8;
+}
+
+.compare-card.climate{
+    border-top:
+        4px solid
+        #8ab6cc;
+}
+
+.big-icon{
+    font-size:45px;
+
+    margin-bottom:6px;
+}
+
+.compare-card h3{
+    margin:
+        0 0 8px;
+
+    font-size:20px;
+}
+
+.definition{
+    color:#b1cad8;
+
+    font-size:13px;
+
+    min-height:70px;
+}
+
+.feature-list{
+    display:grid;
+
+    gap:7px;
+
+    margin-top:13px;
+}
+
+.feature{
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:9px;
+
+    padding:9px;
+
+    border-radius:10px;
+
+    background:#071a2a;
+
+    color:#99b7c7;
+
+    font-size:12px;
+}
+
+.feature span{
+    font-size:15px;
+}
+
+
+/* =====================================================
+   VISUAL DIFFERENCE
+===================================================== */
+
+.visual-strip{
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        70px
+        1fr;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-top:15px;
+}
+
+.visual-box{
+    padding:17px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    background:#081b2b;
+
+    border:
+        1px solid
+        rgba(90,181,229,.12);
+}
+
+.visual-box .icon{
+    font-size:40px;
+}
+
+.visual-box strong{
+    display:block;
+
+    margin-top:5px;
+}
+
+.visual-box small{
+    display:block;
+
+    margin-top:3px;
+
+    color:#829faf;
+
+    font-size:11px;
+}
+
+.vs{
+    width:58px;
+    height:58px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:#0e3852;
+
+    border:
+        1px solid
+        rgba(101,194,237,.25);
+
+    color:#74c8eb;
+
+    font-weight:900;
+}
+
+
+/* =====================================================
+   WEATHER ELEMENTS
+===================================================== */
+
+.elements-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:10px;
+}
+
+.element{
+    padding:17px 10px;
+
+    text-align:center;
+
+    border-radius:14px;
+
+    background:#091f30;
+
+    border:
+        1px solid
+        rgba(85,179,226,.13);
+
+    transition:.2s;
+}
+
+.element:hover{
+    transform:translateY(-3px);
+
+    border-color:
+        rgba(100,202,245,.35);
+
+    background:#0c2b42;
+}
+
+.element-icon{
+    font-size:32px;
+}
+
+.element-name{
+    margin-top:6px;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+.element-note{
+    color:#7897a9;
+
+    font-size:10px;
+}
+
+
+/* =====================================================
+   CLIMATE ZONES
+===================================================== */
+
+.zone-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:13px;
+}
+
+.zone-card{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:21px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b273d,
+            #081c2d
+        );
+
+    border:
+        1px solid
+        rgba(91,184,230,.15);
+}
+
+.zone-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+    height:130px;
+
+    border-radius:50%;
+
+    right:-55px;
+    top:-55px;
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.zone-icon{
+    font-size:43px;
+}
+
+.zone-card h3{
+    margin:
+        8px 0 5px;
+
+    font-size:19px;
+}
+
+.zone-card p{
+    margin:0 0 12px;
+
+    color:#91b2c4;
+
+    font-size:12px;
+}
+
+.zone-stat{
+    display:grid;
+
+    gap:6px;
+}
+
+.stat{
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:8px;
+
+    padding:8px;
+
+    border-radius:9px;
+
+    background:#071a29;
+
+    color:#a5c2d0;
+
+    font-size:11px;
+}
+
+.stat b{
+    color:#d7f1fc;
+}
+
+.zone-hot{
+    border-top:
+        4px solid
+        #e6a95c;
+}
+
+.zone-mild{
+    border-top:
+        4px solid
+        #69b5d7;
+}
+
+.zone-cold{
+    border-top:
+        4px solid
+        #a7d9ee;
+}
+
+
+/* =====================================================
+   CLIMATE BELT VISUAL
+===================================================== */
+
+.earth-bands{
+    margin-top:15px;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #081c2e,
+            #071a29
+        );
+
+    border:
+        1px solid
+        rgba(90,182,228,.14);
+}
+
+.earth-bands-title{
+    text-align:center;
+
+    font-size:14px;
+
+    font-weight:800;
+
+    margin-bottom:17px;
+}
+
+.bands{
+    display:grid;
+
+    gap:5px;
+}
+
+.band{
+    min-height:42px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:8px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    color:#082033;
+}
+
+.band.polar{
+    background:#b9e4ef;
+}
+
+.band.temperate{
+    background:#6db6d5;
+}
+
+.band.tropical{
+    background:#d7ad5c;
+}
+
+.band-label{
+    text-align:center;
+
+    margin-top:11px;
+
+    color:#7797a9;
+
+    font-size:11px;
+}
+
+
+/* =====================================================
+   CLIMATE CHANGE
+===================================================== */
+
+.change-flow{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
+
+    align-items:stretch;
+}
+
+.change-card{
+    padding:18px;
+
+    border-radius:16px;
+
+    background:#091f31;
+
+    border:
+        1px solid
+        rgba(92,185,230,.14);
+
+    position:relative;
+}
+
+.change-card:not(:last-child)::after{
+    content:"→";
+
+    position:absolute;
+
+    right:-16px;
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    color:#56bce7;
+
+    font-size:20px;
+
+    z-index:2;
+}
+
+.change-icon{
+    font-size:36px;
+}
+
+.change-card h3{
+    margin:
+        8px 0 5px;
+
+    font-size:15px;
+}
+
+.change-card p{
+    margin:0;
+
+    color:#8faebe;
+
+    font-size:11px;
+
+    line-height:1.55;
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.action-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:13px;
+}
+
+.action-card{
+    padding:20px;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0a273c,
+            #081b2b
+        );
+
+    border:
+        1px solid
+        rgba(88,184,230,.15);
+}
+
+.action-icon{
+    width:46px;
+    height:46px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:#103b55;
+
+    font-size:23px;
+}
+
+.action-card h3{
+    margin:
+        10px 0 6px;
+
+    font-size:16px;
+}
+
+.action-card ul{
+    margin:0;
+
+    padding-left:17px;
+
+    color:#91afbf;
+
+    font-size:12px;
+}
+
+.action-card li{
+    margin:5px 0;
+}
+
+
+/* =====================================================
+   DISASTER 3 STAGES
+===================================================== */
+
+.disaster{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:12px;
+}
+
+.disaster-step{
+    padding:19px;
+
+    border-radius:16px;
+
+    background:#091e2f;
+
+    border:
+        1px solid
+        rgba(90,182,229,.13);
+
+    text-align:center;
+}
+
+.disaster-number{
+    width:36px;
+    height:36px;
+
+    margin:0 auto 8px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#12425e;
+
+    color:#83d2f0;
+
+    font-weight:900;
+}
+
+.disaster-step h3{
+    margin:
+        5px 0;
+
+    font-size:14px;
+}
+
+.disaster-step p{
+    margin:0;
+
+    color:#8eacbb;
+
+    font-size:11px;
+}
+
+
+/* =====================================================
+   MEMORY
+===================================================== */
+
+.memory{
+    padding:23px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b3049,
+            #092236
+        );
+
+    border:
+        1px solid
+        rgba(95,193,237,.2);
+}
+
+.memory h3{
+    margin:
+        0 0 12px;
+
+    font-size:17px;
+}
+
+.memory-flow{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+}
+
+.memory-item{
+    padding:10px 13px;
+
+    border-radius:10px;
+
+    background:#071b2b;
+
+    border:
+        1px solid
+        rgba(89,181,226,.14);
+
+    color:#b5d2df;
+
+    font-size:11px;
+
+    font-weight:700;
+}
+
+.memory-arrow{
+    color:#59c0e8;
+
+    font-weight:900;
+}
+
+
+/* =====================================================
+   QUIZ
+===================================================== */
+
+.quiz{
+    margin-top:20px;
+
+    padding:23px;
+
+    border-radius:19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b273d,
+            #081b2b
+        );
+
+    border:
+        1px solid
+        rgba(94,190,235,.17);
+}
+
+.quiz-head{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin-bottom:16px;
+}
+
+.quiz-title{
+    font-size:21px;
+
+    font-weight:850;
+}
+
+.quiz-start{
+    padding:10px 16px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:#146080;
+
+    color:white;
+
+    font-weight:800;
+}
+
+.quiz-start:hover{
+    background:#1a769c;
+}
+
+.quiz-info{
+    color:#89a9bb;
+
+    font-size:12px;
+}
+
+.quiz-box{
+    display:none;
+}
+
+.quiz-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:12px;
+}
+
+.question-count{
+    color:#8fb1c2;
+
+    font-size:12px;
+}
+
+.timer{
+    min-width:65px;
+
+    text-align:center;
+
+    padding:6px 10px;
+
+    border-radius:9px;
+
+    background:#0a1b2a;
+
+    color:#79d0ef;
+
+    font-weight:900;
+
+    font-size:13px;
+}
+
+.question{
+    margin-bottom:14px;
+
+    font-size:17px;
+
+    font-weight:800;
+}
+
+.options{
+    display:grid;
+
+    gap:9px;
+}
+
+.option-btn{
+    width:100%;
+
+    padding:12px 13px;
+
+    text-align:left;
+
+    border-radius:11px;
+
+    border:
+        1px solid
+        rgba(89,178,224,.14);
+
+    background:#071b2b;
+
+    color:#b5cfdb;
+
+    transition:.2s;
+}
+
+.option-btn:hover:not(:disabled){
+    background:#0d3048;
+
+    border-color:
+        rgba(91,193,239,.35);
+}
+
+.option-btn.correct{
+    background:#103e39;
+
+    border-color:#3eb89c;
+
+    color:#d5fff4;
+}
+
+.option-btn.wrong{
+    background:#44262b;
+
+    border-color:#c36a73;
+
+    color:#ffe3e5;
+}
+
+.option-btn:disabled{
+    cursor:default;
+}
+
+.explanation{
+    display:none;
+
+    margin-top:12px;
+
+    padding:11px;
+
+    border-radius:10px;
+
+    background:#071a29;
+
+    color:#98b7c6;
+
+    font-size:11px;
+}
+
+.next-wrap{
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-top:13px;
+}
+
+.next-btn{
+    display:none;
+
+    padding:9px 14px;
+
+    border:0;
+
+    border-radius:9px;
+
+    background:#135b79;
+
+    color:white;
+
+    font-weight:800;
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+.result{
+    display:none;
+
+    text-align:center;
+
+    padding:25px 10px;
+}
+
+.result .big{
+    font-size:54px;
+}
+
+.result h3{
+    margin:6px 0;
+
+    font-size:23px;
+}
+
+.score{
+    margin:10px 0;
+
+    font-size:30px;
+
+    font-weight:900;
+
+    color:#6fd0ef;
+}
+
+.result p{
+    color:#91afbf;
+
+    font-size:13px;
+}
+
+.result-actions{
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:17px;
+}
+
+.retry-btn,
+.finish-btn{
+    border:0;
+
+    padding:10px 16px;
+
+    border-radius:10px;
+
+    font-weight:800;
+}
+
+.retry-btn{
+    background:#173b50;
+
+    color:#cce7f2;
+}
+
+.finish-btn{
+    background:#176582;
+
+    color:white;
+}
+
+.completion{
+    display:none;
+
+    text-align:center;
+
+    padding:30px 10px;
+}
+
+.completion .icon{
+    font-size:58px;
+}
+
+.completion h2{
+    margin:
+        8px 0;
+
+    font-size:24px;
+}
+
+.completion p{
+    color:#91afbf;
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer{
+    margin-top:35px;
+
+    padding:24px;
+
+    text-align:center;
+
+    color:#638394;
+
+    font-size:11px;
+
+    border-top:
+        1px solid
+        rgba(87,172,216,.1);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1000px){
+
+    .objective-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .elements-grid{
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .change-flow{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .change-card:not(:last-child)::after{
+        display:none;
+    }
+
+}
+
+@media(max-width:750px){
+
+    .compare,
+    .zone-grid,
+    .action-grid,
+    .disaster{
+        grid-template-columns:1fr;
+    }
+
+    .visual-strip{
+        grid-template-columns:1fr;
+    }
+
+    .vs{
+        width:44px;
+        height:44px;
+    }
+
+    .elements-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .change-flow{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:27px 23px;
+    }
+
+    .hero::after{
+        display:none;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .topbar{
+        padding:
+            10px 14px;
+    }
+
+    .logo{
+        font-size:12px;
+    }
+
+    .logo-icon{
+        width:37px;
+        height:37px;
+    }
+
+    .home-btn{
+        font-size:11px;
+        padding:8px 10px;
+    }
+
+    .objective-grid{
+        grid-template-columns:1fr;
+    }
+
+    .elements-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .section-title{
+        font-size:21px;
+    }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🌦️
+        </div>
+
+        <span>
+            HỌC LIỆU SỐ ĐỊA LÍ 6
+        </span>
+
+    </div>
+
+
+    <button
+        class="home-btn"
+        onclick="goHome()"
+    >
+        🏠 Trang chủ
+    </button>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="badge">
+        🌎 ĐỊA LÍ 6 · BÀI 17
+    </div>
+
+
+    <h1>
+        Thời tiết và khí hậu.<br>
+        Biến đổi khí hậu
+    </h1>
+
+
+    <p>
+        Cùng phân biệt thời tiết và khí hậu,
+        khám phá các đới khí hậu trên Trái Đất
+        và tìm hiểu những biểu hiện, tác động
+        cũng như cách ứng phó với biến đổi khí hậu.
+    </p>
+
+</section>
+
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     OBJECTIVES
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🎯 Mục tiêu bài học
+    </div>
+
+    <p class="section-subtitle">
+        Sau bài học, em có thể:
+    </p>
+
+
+    <div class="objective-grid">
+
+
+        <article class="objective-card">
+
+            <div class="objective-icon">
+                🌤️
+            </div>
+
+            <h3>
+                Phân biệt
+            </h3>
+
+            <p>
+                Phân biệt được thời tiết
+                và khí hậu.
+            </p>
+
+        </article>
+
+
+        <article class="objective-card">
+
+            <div class="objective-icon">
+                🌍
+            </div>
+
+            <h3>
+                Đới khí hậu
+            </h3>
+
+            <p>
+                Trình bày khái quát đặc điểm
+                của một đới khí hậu.
+            </p>
+
+        </article>
+
+
+        <article class="objective-card">
+
+            <div class="objective-icon">
+                🌡️
+            </div>
+
+            <h3>
+                Biến đổi khí hậu
+            </h3>
+
+            <p>
+                Nêu được một số biểu hiện
+                của biến đổi khí hậu.
+            </p>
+
+        </article>
+
+
+        <article class="objective-card">
+
+            <div class="objective-icon">
+                🌱
+            </div>
+
+            <h3>
+                Ứng phó
+            </h3>
+
+            <p>
+                Biết một số biện pháp
+                phòng tránh thiên tai
+                và ứng phó với biến đổi khí hậu.
+            </p>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     1. WEATHER AND CLIMATE
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🌦️ 1. Thời tiết và khí hậu
+    </div>
+
+    <p class="section-subtitle">
+        Hai khái niệm có liên quan nhưng khác nhau
+        về thời gian và phạm vi biểu hiện.
+    </p>
+
+
+    <div class="compare">
+
+
+        <!-- WEATHER -->
+
+        <article class="compare-card weather">
+
+            <div class="big-icon">
+                🌦️
+            </div>
+
+            <h3>
+                Thời tiết
+            </h3>
+
+            <div class="definition">
+
+                Là trạng thái của khí quyển
+                tại một thời điểm và khu vực cụ thể,
+                được xác định bằng nhiệt độ,
+                độ ẩm, mưa, mây, gió,...
+
+            </div>
+
+
+            <div class="feature-list">
+
+                <div class="feature">
+
+                    <span>⏱️</span>
+
+                    <div>
+                        <b>Thời gian:</b>
+                        trong thời gian ngắn.
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span>📍</span>
+
+                    <div>
+                        <b>Không gian:</b>
+                        một địa điểm cụ thể.
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span>🔄</span>
+
+                    <div>
+                        <b>Đặc điểm:</b>
+                        luôn thay đổi.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- CLIMATE -->
+
+        <article class="compare-card climate">
+
+            <div class="big-icon">
+                🌍
+            </div>
+
+            <h3>
+                Khí hậu
+            </h3>
+
+            <div class="definition">
+
+                Là tổng hợp các yếu tố thời tiết
+                của một nơi trong một thời gian dài
+                và đã trở thành quy luật.
+
+            </div>
+
+
+            <div class="feature-list">
+
+                <div class="feature">
+
+                    <span>📅</span>
+
+                    <div>
+                        <b>Thời gian:</b>
+                        trong thời gian dài.
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span>📍</span>
+
+                    <div>
+                        <b>Không gian:</b>
+                        đặc trưng cho một khu vực.
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span>📐</span>
+
+                    <div>
+                        <b>Đặc điểm:</b>
+                        có tính quy luật.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+
+    <div class="visual-strip">
+
+        <div class="visual-box">
+
+            <div class="icon">
+                🌧️
+            </div>
+
+            <strong>
+                “Hôm nay trời mưa”
+            </strong>
+
+            <small>
+                → Thời tiết
+            </small>
+
+        </div>
+
+
+        <div class="vs">
+            VS
+        </div>
+
+
+        <div class="visual-box">
+
+            <div class="icon">
+                🌴☀️
+            </div>
+
+            <strong>
+                “Khu vực quanh năm nóng”
+            </strong>
+
+            <small>
+                → Đặc điểm khí hậu
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     WEATHER ELEMENTS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🔎 Các yếu tố biểu hiện thời tiết
+    </div>
+
+    <p class="section-subtitle">
+        Khi theo dõi thời tiết, chúng ta thường quan sát nhiều yếu tố
+        của khí quyển.
+    </p>
+
+
+    <div class="elements-grid">
+
+        <div class="element">
+
+            <div class="element-icon">
+                🌡️
+            </div>
+
+            <div class="element-name">
+                Nhiệt độ
+            </div>
+
+            <div class="element-note">
+                Nóng / lạnh
+            </div>
+
+        </div>
+
+
+        <div class="element">
+
+            <div class="element-icon">
+                💧
+            </div>
+
+            <div class="element-name">
+                Độ ẩm
+            </div>
+
+            <div class="element-note">
+                Hơi nước trong không khí
+            </div>
+
+        </div>
+
+
+        <div class="element">
+
+            <div class="element-icon">
+                🌧️
+            </div>
+
+            <div class="element-name">
+                Mưa
+            </div>
+
+            <div class="element-note">
+                Lượng mưa
+            </div>
+
+        </div>
+
+
+        <div class="element">
+
+            <div class="element-icon">
+                ☁️
+            </div>
+
+            <div class="element-name">
+                Mây
+            </div>
+
+            <div class="element-note">
+                Trạng thái bầu trời
+            </div>
+
+        </div>
+
+
+        <div class="element">
+
+            <div class="element-icon">
+                💨
+            </div>
+
+            <div class="element-name">
+                Gió
+            </div>
+
+            <div class="element-note">
+                Hướng và tốc độ
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     2. CLIMATE ZONES
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🌍 2. Các đới khí hậu trên Trái Đất
+    </div>
+
+    <p class="section-subtitle">
+        Trên Trái Đất có <b>5 đới khí hậu</b>:
+        một đới nóng, hai đới ôn hòa và hai đới lạnh.
+    </p>
+
+
+    <div class="zone-grid">
+
+
+        <!-- HOT -->
+
+        <article class="zone-card zone-hot">
+
+            <div class="zone-icon">
+                ☀️
+            </div>
+
+            <h3>
+                Đới nóng
+            </h3>
+
+            <p>
+                Nhiệt đới
+            </p>
+
+
+            <div class="zone-stat">
+
+                <div class="stat">
+                    🌡️
+                    <span>
+                        <b>Nhiệt độ:</b>
+                        quanh năm nóng,
+                        trung bình năm không thấp hơn 20°C.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    🌧️
+                    <span>
+                        <b>Mưa:</b>
+                        trung bình năm từ
+                        1000 mm đến trên 2000 mm.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    💨
+                    <span>
+                        <b>Gió:</b>
+                        gió Mậu dịch.
+                    </span>
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- TEMPERATE -->
+
+        <article class="zone-card zone-mild">
+
+            <div class="zone-icon">
+                🍂
+            </div>
+
+            <h3>
+                Hai đới ôn hòa
+            </h3>
+
+            <p>
+                Ôn đới
+            </p>
+
+
+            <div class="zone-stat">
+
+                <div class="stat">
+                    🌡️
+                    <span>
+                        <b>Nhiệt độ:</b>
+                        trung bình năm dưới 20°C;
+                        tháng nóng nhất không thấp hơn 10°C.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    🍁
+                    <span>
+                        <b>Mùa:</b>
+                        các mùa trong năm
+                        rất rõ rệt.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    🌧️
+                    <span>
+                        <b>Mưa:</b>
+                        khoảng 500–1000 mm/năm.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    💨
+                    <span>
+                        <b>Gió:</b>
+                        gió Tây ôn đới.
+                    </span>
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- COLD -->
+
+        <article class="zone-card zone-cold">
+
+            <div class="zone-icon">
+                ❄️
+            </div>
+
+            <h3>
+                Hai đới lạnh
+            </h3>
+
+            <p>
+                Hàn đới
+            </p>
+
+
+            <div class="zone-stat">
+
+                <div class="stat">
+                    🌡️
+                    <span>
+                        <b>Nhiệt độ:</b>
+                        tất cả các tháng
+                        đều dưới 10°C.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    🧊
+                    <span>
+                        <b>Cảnh quan:</b>
+                        băng tuyết hầu như
+                        quanh năm.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    🌧️
+                    <span>
+                        <b>Mưa:</b>
+                        dưới 500 mm/năm.
+                    </span>
+                </div>
+
+
+                <div class="stat">
+                    💨
+                    <span>
+                        <b>Gió:</b>
+                        gió Đông cực.
+                    </span>
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+
+    <!-- VISUAL BANDS -->
+
+    <div class="earth-bands">
+
+        <div class="earth-bands-title">
+            🧭 Sơ đồ khái quát các đới khí hậu
+        </div>
+
+
+        <div class="bands">
+
+            <div class="band polar">
+                ❄️ ĐỚI LẠNH – BẮC
+            </div>
+
+            <div class="band temperate">
+                🍂 ĐỚI ÔN HÒA – BẮC
+            </div>
+
+            <div class="band tropical">
+                ☀️ ĐỚI NÓNG
+            </div>
+
+            <div class="band temperate">
+                🍂 ĐỚI ÔN HÒA – NAM
+            </div>
+
+            <div class="band polar">
+                ❄️ ĐỚI LẠNH – NAM
+            </div>
+
+        </div>
+
+
+        <div class="band-label">
+            Các đới khí hậu phân bố thành những dải
+            từ xích đạo về hai cực.
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     3. CLIMATE CHANGE
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🌡️ 3. Biến đổi khí hậu
+    </div>
+
+    <p class="section-subtitle">
+        Hãy nhìn biến đổi khí hậu theo chuỗi:
+        <b>nguyên nhân → biểu hiện → tác động → ứng phó</b>.
+    </p>
+
+
+    <div class="change-flow">
+
+
+        <article class="change-card">
+
+            <div class="change-icon">
+                🏭
+            </div>
+
+            <h3>
+                Nguyên nhân
+            </h3>
+
+            <p>
+                Có nhiều nguyên nhân tự nhiên
+                và do hoạt động của con người.
+                Sự gia tăng khí nhà kính
+                trong khí quyển là nguyên nhân
+                quan trọng hiện nay.
+            </p>
+
+        </article>
+
+
+        <article class="change-card">
+
+            <div class="change-icon">
+                🌡️
+            </div>
+
+            <h3>
+                Biểu hiện
+            </h3>
+
+            <p>
+                Nóng lên toàn cầu,
+                mực nước biển dâng
+                và gia tăng các hiện tượng
+                khí tượng thủy văn cực đoan.
+            </p>
+
+        </article>
+
+
+        <article class="change-card">
+
+            <div class="change-icon">
+                🌊
+            </div>
+
+            <h3>
+                Tác động
+            </h3>
+
+            <p>
+                Thiên tai có xu hướng
+                xảy ra ngày càng nhiều
+                và khốc liệt hơn,
+                gây nhiều khó khăn cho
+                con người và môi trường.
+            </p>
+
+        </article>
+
+
+        <article class="change-card">
+
+            <div class="change-icon">
+                🌱
+            </div>
+
+            <h3>
+                Ứng phó
+            </h3>
+
+            <p>
+                Tiết kiệm năng lượng,
+                trồng cây, bảo vệ rừng,
+                sử dụng giao thông công cộng
+                và chủ động phòng tránh thiên tai.
+            </p>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CLIMATE CHANGE VISUALS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🔥 Những biểu hiện dễ nhận biết
+    </div>
+
+
+    <div class="action-grid">
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🌡️
+            </div>
+
+            <h3>
+                Trái Đất nóng lên
+            </h3>
+
+            <ul>
+
+                <li>
+                    Nhiệt độ trung bình toàn cầu tăng.
+                </li>
+
+                <li>
+                    Các đợt nóng có thể gia tăng.
+                </li>
+
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🧊
+            </div>
+
+            <h3>
+                Băng tan
+            </h3>
+
+            <ul>
+
+                <li>
+                    Băng ở vùng cực bị tan.
+                </li>
+
+                <li>
+                    Góp phần làm mực nước biển dâng.
+                </li>
+
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🌊
+            </div>
+
+            <h3>
+                Mực nước biển dâng
+            </h3>
+
+            <ul>
+
+                <li>
+                    Tác động đến các vùng ven biển.
+                </li>
+
+                <li>
+                    Làm tăng nguy cơ ngập ở một số khu vực.
+                </li>
+
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🌪️
+            </div>
+
+            <h3>
+                Hiện tượng cực đoan
+            </h3>
+
+            <ul>
+
+                <li>
+                    Bão, hạn hán, mưa lớn...
+                    có thể diễn biến bất thường.
+                </li>
+
+                <li>
+                    Thiên tai có thể khốc liệt hơn.
+                </li>
+
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🏜️
+            </div>
+
+            <h3>
+                Khô hạn
+            </h3>
+
+            <ul>
+
+                <li>
+                    Một số khu vực có nguy cơ
+                    thiếu nước và hạn hán.
+                </li>
+
+                <li>
+                    Ảnh hưởng đến sản xuất
+                    và đời sống.
+                </li>
+
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🌳
+            </div>
+
+            <h3>
+                Môi trường chịu tác động
+            </h3>
+
+            <ul>
+
+                <li>
+                    Hệ sinh thái và sinh vật
+                    có thể bị ảnh hưởng.
+                </li>
+
+                <li>
+                    Cần tăng cường bảo vệ môi trường.
+                </li>
+
+            </ul>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DISASTER RESPONSE
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🛡️ Chủ động phòng tránh thiên tai
+    </div>
+
+    <p class="section-subtitle">
+        Có thể ghi nhớ theo 3 thời điểm:
+        <b>trước – trong – sau</b> thiên tai.
+    </p>
+
+
+    <div class="disaster">
+
+
+        <article class="disaster-step">
+
+            <div class="disaster-number">
+                1
+            </div>
+
+            <h3>
+                🏠 Trước thiên tai
+            </h3>
+
+            <p>
+                Chủ động phòng ngừa;
+                gia cố nhà cửa,
+                bảo quản đồ đạc,
+                chuẩn bị phương án sơ tán
+                người và tài sản.
+            </p>
+
+        </article>
+
+
+        <article class="disaster-step">
+
+            <div class="disaster-number">
+                2
+            </div>
+
+            <h3>
+                📢 Khi thiên tai xảy ra
+            </h3>
+
+            <p>
+                Theo dõi thông tin,
+                ứng phó kịp thời
+                và đặt an toàn cá nhân
+                lên hàng đầu.
+            </p>
+
+        </article>
+
+
+        <article class="disaster-step">
+
+            <div class="disaster-number">
+                3
+            </div>
+
+            <h3>
+                🧹 Sau thiên tai
+            </h3>
+
+            <p>
+                Khắc phục hậu quả,
+                dọn dẹp vệ sinh,
+                phòng chống dịch bệnh
+                và hỗ trợ cộng đồng.
+            </p>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ACTIONS FOR STUDENTS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        🌱 Em có thể làm gì?
+    </div>
+
+    <p class="section-subtitle">
+        Những hành động nhỏ nhưng thiết thực
+        góp phần giảm nhẹ biến đổi khí hậu.
+    </p>
+
+
+    <div class="action-grid">
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                💡
+            </div>
+
+            <h3>
+                Tiết kiệm năng lượng
+            </h3>
+
+            <ul>
+                <li>Tắt điện khi không sử dụng.</li>
+                <li>Sử dụng năng lượng hiệu quả.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🚌
+            </div>
+
+            <h3>
+                Giao thông xanh
+            </h3>
+
+            <ul>
+                <li>Ưu tiên phương tiện công cộng.</li>
+                <li>Đi bộ hoặc đạp xe khi phù hợp.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🛍️
+            </div>
+
+            <h3>
+                Hạn chế túi ni-lông
+            </h3>
+
+            <ul>
+                <li>Dùng túi có thể tái sử dụng.</li>
+                <li>Hạn chế đồ dùng một lần.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🌳
+            </div>
+
+            <h3>
+                Trồng và bảo vệ cây
+            </h3>
+
+            <ul>
+                <li>Tích cực trồng cây xanh.</li>
+                <li>Bảo vệ rừng và môi trường.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                📣
+            </div>
+
+            <h3>
+                Tuyên truyền
+            </h3>
+
+            <ul>
+                <li>Chia sẻ kiến thức với bạn bè.</li>
+                <li>Cùng cộng đồng bảo vệ môi trường.</li>
+            </ul>
+
+        </article>
+
+
+        <article class="action-card">
+
+            <div class="action-icon">
+                🧠
+            </div>
+
+            <h3>
+                Chủ động ứng phó
+            </h3>
+
+            <ul>
+                <li>Theo dõi cảnh báo thiên tai.</li>
+                <li>Biết cách bảo vệ bản thân.</li>
+            </ul>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MEMORY
+===================================================== -->
+
+<section class="section">
+
+    <div class="memory">
+
+        <h3>
+            🧠 Sơ đồ ghi nhớ nhanh
+        </h3>
+
+
+        <div class="memory-flow">
+
+            <div class="memory-item">
+                🌦️ Thời tiết
+            </div>
+
+            <div class="memory-arrow">
+                ↔
+            </div>
+
+            <div class="memory-item">
+                🌍 Khí hậu
+            </div>
+
+            <div class="memory-arrow">
+                →
+            </div>
+
+            <div class="memory-item">
+                🌡️ 5 đới khí hậu
+            </div>
+
+            <div class="memory-arrow">
+                →
+            </div>
+
+            <div class="memory-item">
+                🔥 Biến đổi khí hậu
+            </div>
+
+            <div class="memory-arrow">
+                →
+            </div>
+
+            <div class="memory-item">
+                🌱 Ứng phó
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUIZ
+===================================================== -->
+
+<section class="section">
+
+<div class="quiz">
+
+    <div class="quiz-head">
+
+        <div>
+
+            <div class="quiz-title">
+                🧩 Thử thách Bài 17
+            </div>
+
+            <div class="quiz-info">
+                10 câu hỏi · 10 giây/câu · trả lời ngay có giải thích
+            </div>
+
+        </div>
+
+
+        <button
+            class="quiz-start"
+            id="startBtn"
+            onclick="startQuiz()"
+        >
+            ▶ Bắt đầu
+        </button>
+
+    </div>
+
+
+    <div
+        class="quiz-box"
+        id="quizBox"
+    >
+
+        <div class="quiz-top">
+
+            <div
+                class="question-count"
+                id="questionCount"
+            >
+                Câu 1 / 10
+            </div>
+
+            <div
+                class="timer"
+                id="timer"
+            >
+                10s
+            </div>
+
+        </div>
+
+
+        <div
+            class="question"
+            id="question"
+        ></div>
+
+
+        <div
+            class="options"
+            id="options"
+        ></div>
+
+
+        <div
+            class="explanation"
+            id="explanation"
+        ></div>
+
+
+        <div class="next-wrap">
+
+            <button
+                class="next-btn"
+                id="nextBtn"
+                onclick="nextQuestion()"
+            >
+                Câu tiếp theo →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+        class="result"
+        id="result"
+    >
+
+        <div class="big">
+            🎉
+        </div>
+
+        <h3>
+            Hoàn thành thử thách!
+        </h3>
+
+        <div
+            class="score"
+            id="score"
+        >
+            0 / 10
+        </div>
+
+        <p
+            id="feedback"
+        ></p>
+
+
+        <div class="result-actions">
+
+            <button
+                class="retry-btn"
+                onclick="restartQuiz()"
+            >
+                ↻ Làm lại
+            </button>
+
+
+            <button
+                class="finish-btn"
+                onclick="finishLesson()"
+            >
+                ✓ Hoàn thành bài học
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPLETION -->
+
+    <div
+        class="completion"
+        id="completion"
+    >
+
+        <div class="icon">
+            🎊
+        </div>
+
+        <h2>
+            Chúc mừng em đã hoàn thành Bài 17!
+        </h2>
+
+        <p>
+            Tiến độ học tập đã được lưu.
+            Em có thể quay về danh sách bài học
+            để tiếp tục khám phá Bài 18.
+        </p>
+
+
+        <button
+            class="finish-btn"
+            onclick="goHome()"
+        >
+            🏠 Về trang chủ
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+
+<footer>
+    Học liệu số – Lịch sử và Địa lí 6 • Bài 17
+</footer>
+
+
+
+<script>
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const PROGRESS_KEY =
+    'hoclieu6_progress_v1';
+
+
+/* =====================================================
+   HOME
+===================================================== */
+
+function goHome(){
+
+    window.location.href =
+        'index.html';
+
+}
+
+
+/* =====================================================
+   QUIZ DATA
+===================================================== */
+
+const questions = [
+
+    {
+        q:
+            'Thời tiết là gì?',
+
+        o:[
+            'Trạng thái của khí quyển tại một thời điểm và khu vực cụ thể.',
+            'Tổng hợp thời tiết của một nơi trong nhiều năm.',
+            'Quy luật khí hậu của toàn Trái Đất.',
+            'Sự thay đổi nhiệt độ theo vĩ độ.'
+        ],
+
+        a:0,
+
+        e:
+            'Thời tiết là trạng thái của khí quyển tại một thời điểm và khu vực cụ thể, được xác định bằng nhiệt độ, độ ẩm, mưa, mây, gió,...'
+    },
+
+
+    {
+        q:
+            'Đặc điểm nổi bật của thời tiết là gì?',
+
+        o:[
+            'Luôn thay đổi.',
+            'Luôn giống nhau.',
+            'Chỉ thay đổi theo mùa.',
+            'Không phụ thuộc thời gian.'
+        ],
+
+        a:0,
+
+        e:
+            'Thời tiết luôn thay đổi theo thời gian và địa điểm.'
+    },
+
+
+    {
+        q:
+            'Khí hậu ở một nơi là gì?',
+
+        o:[
+            'Tổng hợp các yếu tố thời tiết của nơi đó trong thời gian dài và đã trở thành quy luật.',
+            'Thời tiết của một ngày.',
+            'Một hiện tượng mưa lớn.',
+            'Nhiệt độ cao nhất trong ngày.'
+        ],
+
+        a:0,
+
+        e:
+            'Khí hậu là tổng hợp các yếu tố thời tiết của một nơi trong thời gian dài và đã trở thành quy luật.'
+    },
+
+
+    {
+        q:
+            'Trên Trái Đất có bao nhiêu đới khí hậu?',
+
+        o:[
+            '3 đới.',
+            '4 đới.',
+            '5 đới.',
+            '7 đới.'
+        ],
+
+        a:2,
+
+        e:
+            'Trên Trái Đất có 5 đới khí hậu: 1 đới nóng, 2 đới ôn hòa và 2 đới lạnh.'
+    },
+
+
+    {
+        q:
+            'Đới nóng có đặc điểm nhiệt độ trung bình năm như thế nào?',
+
+        o:[
+            'Không thấp hơn 20°C.',
+            'Dưới 20°C.',
+            'Tất cả các tháng dưới 10°C.',
+            'Luôn dưới 0°C.'
+        ],
+
+        a:0,
+
+        e:
+            'Đới nóng quanh năm nóng, nhiệt độ trung bình năm không thấp hơn 20°C.'
+    },
+
+
+    {
+        q:
+            'Gió thổi thường xuyên ở hai đới ôn hòa là gì?',
+
+        o:[
+            'Gió Mậu dịch.',
+            'Gió Tây ôn đới.',
+            'Gió Đông cực.',
+            'Gió biển.'
+        ],
+
+        a:1,
+
+        e:
+            'Hai đới ôn hòa có gió Tây ôn đới thổi thường xuyên.'
+    },
+
+
+    {
+        q:
+            'Biểu hiện nào sau đây là biểu hiện của biến đổi khí hậu?',
+
+        o:[
+            'Nóng lên toàn cầu.',
+            'Chỉ có mưa vào mùa hè.',
+            'Ngày và đêm luân phiên.',
+            'Mặt Trời mọc ở phía đông.'
+        ],
+
+        a:0,
+
+        e:
+            'Biến đổi khí hậu biểu hiện bởi sự nóng lên toàn cầu, mực nước biển dâng và gia tăng các hiện tượng khí tượng thủy văn cực đoan.'
+    },
+
+
+    {
+        q:
+            'Theo bài học, nguyên nhân quan trọng làm biến đổi khí hậu diễn ra ngày càng nhanh hiện nay là gì?',
+
+        o:[
+            'Con người đưa ngày càng nhiều khí nhà kính vào khí quyển.',
+            'Trái Đất tự quay quanh trục.',
+            'Mặt Trăng quay quanh Trái Đất.',
+            'Sự thay đổi ngày và đêm.'
+        ],
+
+        a:0,
+
+        e:
+            'Bài học nhấn mạnh rằng biến đổi khí hậu hiện nay diễn ra ngày càng nhanh do con người đưa vào khí quyển ngày càng nhiều khí nhà kính.'
+    },
+
+
+    {
+        q:
+            'Hành động nào góp phần giảm nhẹ biến đổi khí hậu?',
+
+        o:[
+            'Sử dụng tiết kiệm và hiệu quả năng lượng.',
+            'Tăng sử dụng túi ni-lông.',
+            'Phá rừng để mở rộng diện tích.',
+            'Lãng phí điện.'
+        ],
+
+        a:0,
+
+        e:
+            'Tiết kiệm và sử dụng hiệu quả năng lượng là một trong những hành động góp phần giảm lượng khí nhà kính.'
+    },
+
+
+    {
+        q:
+            'Khi thiên tai xảy ra, việc nào cần được ưu tiên?',
+
+        o:[
+            'Theo dõi thông tin và ứng phó kịp thời để đảm bảo an toàn cá nhân.',
+            'Tiếp tục hoạt động bình thường.',
+            'Không cần quan tâm cảnh báo.',
+            'Chờ thiên tai kết thúc rồi mới tìm hiểu thông tin.'
+        ],
+
+        a:0,
+
+        e:
+            'Trong khi thiên tai xảy ra, cần theo dõi thông tin và ứng phó kịp thời, đặt an toàn cá nhân lên hàng đầu.'
+    }
+
+];
+
+
+/* =====================================================
+   QUIZ STATE
+===================================================== */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timer = 10;
+
+let timerId = null;
+
+let answered = false;
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    answered = false;
+
+
+    document
+        .getElementById('startBtn')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('result')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('completion')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('quizBox')
+        .style.display =
+        'block';
+
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   LOAD
+===================================================== */
+
+function loadQuestion(){
+
+    clearInterval(timerId);
+
+
+    answered = false;
+
+    timer = 10;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    document
+        .getElementById('questionCount')
+        .textContent =
+        `Câu ${currentQuestion+1} / ${questions.length}`;
+
+
+    document
+        .getElementById('question')
+        .textContent =
+        q.q;
+
+
+    const options =
+        document.getElementById(
+            'options'
+        );
+
+
+    options.innerHTML =
+        '';
+
+
+    q.o.forEach(
+        (text,index)=>{
+
+            const btn =
+                document.createElement(
+                    'button'
+                );
+
+
+            btn.className =
+                'option-btn';
+
+
+            btn.textContent =
+                text;
+
+
+            btn.onclick =
+                ()=>answer(index);
+
+
+            options.appendChild(
+                btn
+            );
+
+        }
+    );
+
+
+    document
+        .getElementById('explanation')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('nextBtn')
+        .style.display =
+        'none';
+
+
+    updateTimer();
+
+
+    timerId =
+        setInterval(
+            tick,
+            1000
+        );
+
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function updateTimer(){
+
+    document
+        .getElementById('timer')
+        .textContent =
+        timer + 's';
+
+}
+
+
+function tick(){
+
+    timer--;
+
+    updateTimer();
+
+
+    if(timer<=0){
+
+        clearInterval(
+            timerId
+        );
+
+        answer(
+            -1
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ANSWER
+===================================================== */
+
+function answer(index){
+
+    if(answered){
+
+        return;
+
+    }
+
+
+    answered = true;
+
+    clearInterval(
+        timerId
+    );
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(
+            '.option-btn'
+        );
+
+
+    buttons.forEach(
+        (btn,i)=>{
+
+            btn.disabled =
+                true;
+
+
+            if(
+                i===q.a
+            ){
+
+                btn.classList.add(
+                    'correct'
+                );
+
+            }
+
+
+            if(
+                i===index &&
+                index!==q.a
+            ){
+
+                btn.classList.add(
+                    'wrong'
+                );
+
+            }
+
+        }
+    );
+
+
+    if(index===q.a){
+
+        score++;
+
+    }
+
+
+    const explanation =
+        document.getElementById(
+            'explanation'
+        );
+
+
+    explanation.style.display =
+        'block';
+
+
+    if(index===q.a){
+
+        explanation.innerHTML =
+            '✅ <b>Chính xác!</b> '
+            +
+            q.e;
+
+    }else if(index===-1){
+
+        explanation.innerHTML =
+            '⏰ <b>Hết giờ!</b> '
+            +
+            'Đáp án đúng là: <b>'
+            +
+            q.o[q.a]
+            +
+            '</b>. '
+            +
+            q.e;
+
+    }else{
+
+        explanation.innerHTML =
+            '❌ <b>Chưa chính xác.</b> '
+            +
+            q.e;
+
+    }
+
+
+    document
+        .getElementById('nextBtn')
+        .style.display =
+        'inline-block';
+
+}
+
+
+/* =====================================================
+   NEXT
+===================================================== */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+
+    if(
+        currentQuestion>=
+        questions.length
+    ){
+
+        showResult();
+
+        return;
+
+    }
+
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+function showResult(){
+
+    clearInterval(
+        timerId
+    );
+
+
+    document
+        .getElementById('quizBox')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('result')
+        .style.display =
+        'block';
+
+
+    document
+        .getElementById('score')
+        .textContent =
+        `${score} / ${questions.length}`;
+
+
+    let feedback = '';
+
+
+    if(score>=9){
+
+        feedback =
+            '🌟 Xuất sắc! Em đã nắm rất chắc nội dung Bài 17.';
+
+    }else if(score>=7){
+
+        feedback =
+            '👏 Rất tốt! Em đã hiểu phần lớn kiến thức của bài.';
+
+    }else if(score>=5){
+
+        feedback =
+            '💪 Khá tốt! Em hãy xem lại một vài nội dung còn nhầm lẫn.';
+
+    }else{
+
+        feedback =
+            '📚 Em nên đọc lại phần lý thuyết rồi thử sức lại nhé!';
+
+    }
+
+
+    document
+        .getElementById('feedback')
+        .textContent =
+        feedback;
+
+}
+
+
+/* =====================================================
+   RESTART
+===================================================== */
+
+function restartQuiz(){
+
+    document
+        .getElementById('result')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('startBtn')
+        .style.display =
+        'inline-block';
+
+
+    startQuiz();
+
+}
+
+
+/* =====================================================
+   FINISH LESSON
+===================================================== */
+
+function finishLesson(){
+
+    try{
+
+        const progress =
+            JSON.parse(
+                localStorage.getItem(
+                    PROGRESS_KEY
+                ) || '{}'
+            );
+
+
+        progress.g17 =
+            true;
+
+
+        localStorage.setItem(
+            PROGRESS_KEY,
+            JSON.stringify(
+                progress
+            )
+        );
+
+    }catch(error){
+
+        console.warn(
+            'Không thể lưu tiến độ:',
+            error
+        );
+
+    }
+
+
+    document
+        .getElementById('result')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('quizBox')
+        .style.display =
+        'none';
+
+
+    document
+        .getElementById('completion')
+        .style.display =
+        'block';
+
+}
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g17");</script>
+</body>
+</html>

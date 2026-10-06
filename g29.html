@@ -1,0 +1,2340 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 29 - Bảo vệ tự nhiên và khai thác thông minh tài nguyên thiên nhiên</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#06111f;
+    --bg2:#0a192a;
+    --panel:#0d2034;
+    --panel2:#10283f;
+    --border:#1f405d;
+    --text:#e8f1fa;
+    --muted:#9db2c6;
+    --blue:#3b82f6;
+    --cyan:#22d3ee;
+    --green:#34d399;
+    --yellow:#fbbf24;
+    --red:#fb7185;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(
+            circle at top right,
+            #123252 0%,
+            var(--bg) 48%,
+            #030912 100%
+        );
+    min-height:100vh;
+}
+
+button,
+input,
+textarea{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.container{
+    width:min(1180px,94%);
+    margin:auto;
+    padding:22px 0 55px;
+}
+
+/* ================= TOP ================= */
+
+.topbar{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.back-btn{
+    border:1px solid var(--border);
+    background:#0d2034;
+    color:#dceafa;
+    border-radius:11px;
+    padding:11px 16px;
+    font-size:14px;
+    transition:.2s;
+}
+
+.back-btn:hover{
+    background:#153452;
+    transform:translateY(-1px);
+}
+
+.title-area{
+    flex:1;
+    min-width:250px;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:999px;
+    background:#102d47;
+    color:#9fd8ff;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:9px;
+}
+
+h1{
+    margin:0;
+    font-size:clamp(26px,4vw,40px);
+    line-height:1.15;
+    color:#f3f8fd;
+}
+
+.subtitle{
+    margin-top:9px;
+    color:var(--muted);
+    line-height:1.65;
+    max-width:900px;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress-wrap{
+    background:rgba(13,32,52,.92);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:20px;
+}
+
+.progress-top{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    color:#b9cde0;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.progress-bar{
+    width:100%;
+    height:7px;
+    border-radius:20px;
+    overflow:hidden;
+    background:#152d43;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    transition:.4s;
+}
+
+/* ================= CARDS ================= */
+
+.card{
+    background:rgba(13,32,52,.95);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+
+.card h2{
+    margin:0 0 13px;
+    font-size:22px;
+}
+
+.card h3{
+    margin:0 0 8px;
+}
+
+.card p{
+    color:#b5c7d8;
+    line-height:1.7;
+}
+
+.section-label{
+    color:#7ecbff;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.4px;
+    margin-bottom:7px;
+}
+
+/* ================= INTRO ================= */
+
+.hero{
+    display:grid;
+    grid-template-columns:1.35fr .65fr;
+    gap:18px;
+    align-items:stretch;
+}
+
+.hero-main{
+    padding:25px;
+    border-radius:18px;
+    border:1px solid var(--border);
+    background:
+        linear-gradient(
+            135deg,
+            #102c47,
+            #0b1e31
+        );
+}
+
+.hero-main h2{
+    font-size:27px;
+    margin:0 0 13px;
+}
+
+.hero-main p{
+    margin:0;
+    line-height:1.75;
+    color:#b8cadd;
+}
+
+.hero-side{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:22px;
+    border-radius:18px;
+    border:1px solid var(--border);
+    background:#0b1c2e;
+}
+
+.earth-icon{
+    font-size:65px;
+    margin-bottom:8px;
+}
+
+.hero-side strong{
+    font-size:18px;
+}
+
+/* ================= KNOWLEDGE ================= */
+
+.definition{
+    padding:19px;
+    border-left:4px solid var(--cyan);
+    background:#0a2033;
+    border-radius:10px;
+    color:#dcecf8;
+    line-height:1.75;
+}
+
+.definition strong{
+    color:#7dd3fc;
+}
+
+/* ================= IMPACT ================= */
+
+.impact-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+    margin-top:17px;
+}
+
+.impact-card{
+    padding:17px;
+    border-radius:14px;
+    background:#0b2034;
+    border:1px solid #1c3b56;
+}
+
+.impact-icon{
+    font-size:29px;
+    margin-bottom:8px;
+}
+
+.impact-card h3{
+    font-size:16px;
+}
+
+.impact-card p{
+    font-size:14px;
+    margin:0;
+    line-height:1.6;
+}
+
+/* ================= RESOURCE EXPLORER ================= */
+
+.resource-intro{
+    color:var(--muted);
+    line-height:1.65;
+}
+
+.resource-tabs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:18px;
+}
+
+.resource-btn{
+    border:1px solid #254862;
+    background:#0b2034;
+    color:#dcebf8;
+    padding:17px 12px;
+    border-radius:13px;
+    text-align:left;
+    transition:.2s;
+}
+
+.resource-btn:hover{
+    border-color:#39719a;
+    background:#102b43;
+}
+
+.resource-btn.active{
+    border-color:var(--blue);
+    background:#102d49;
+    box-shadow:0 0 0 1px rgba(59,130,246,.18);
+}
+
+.resource-btn .icon{
+    font-size:27px;
+    display:block;
+    margin-bottom:7px;
+}
+
+.resource-btn strong{
+    display:block;
+    margin-bottom:3px;
+}
+
+.resource-btn small{
+    color:#91a8bd;
+}
+
+.resource-detail{
+    margin-top:15px;
+    padding:20px;
+    border-radius:14px;
+    background:#091a2c;
+    border:1px solid #1c3954;
+    min-height:190px;
+}
+
+.resource-detail h3{
+    color:#eaf4fc;
+    margin-bottom:8px;
+}
+
+.resource-detail p{
+    margin-top:0;
+}
+
+.resource-example{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:13px;
+}
+
+.example-box{
+    padding:13px;
+    border-radius:10px;
+    line-height:1.55;
+    font-size:14px;
+}
+
+.example-good{
+    background:rgba(52,211,153,.08);
+    border:1px solid rgba(52,211,153,.25);
+}
+
+.example-good strong{
+    color:#6ee7b7;
+}
+
+.example-note{
+    background:rgba(251,191,36,.07);
+    border:1px solid rgba(251,191,36,.22);
+}
+
+.example-note strong{
+    color:#fcd34d;
+}
+
+/* ================= SUSTAINABLE TRIAD ================= */
+
+.triad{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+    margin-top:17px;
+}
+
+.triad-card{
+    padding:18px;
+    border-radius:14px;
+    background:#0b2034;
+    border:1px solid #1c3b56;
+    text-align:center;
+}
+
+.triad-card .big{
+    font-size:36px;
+    margin-bottom:8px;
+}
+
+.triad-card h3{
+    font-size:16px;
+}
+
+.triad-card p{
+    font-size:14px;
+    margin:0;
+}
+
+/* ================= DAILY ACTION ================= */
+
+.action-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.action{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:14px;
+    border-radius:12px;
+    background:#0b2034;
+    border:1px solid #1c3b56;
+}
+
+.action input{
+    width:18px;
+    height:18px;
+    margin-top:3px;
+    accent-color:var(--blue);
+}
+
+.action span{
+    color:#d6e4f0;
+    line-height:1.55;
+}
+
+/* ================= LOCAL PRACTICE ================= */
+
+.practice-box{
+    background:#0a1c2e;
+    border:1px solid #1d3c57;
+    border-radius:14px;
+    padding:18px;
+}
+
+.practice-box textarea{
+    width:100%;
+    min-height:130px;
+    resize:vertical;
+    margin-top:10px;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid #31516c;
+    background:#071523;
+    color:#e5eff8;
+    outline:none;
+    line-height:1.6;
+}
+
+.practice-box textarea:focus{
+    border-color:var(--blue);
+}
+
+.save-note{
+    margin-top:10px;
+    border:0;
+    border-radius:10px;
+    background:#1d4ed8;
+    color:white;
+    padding:11px 16px;
+    font-weight:700;
+}
+
+.note-result{
+    margin-top:12px;
+    color:#8ee7bf;
+    display:none;
+}
+
+/* ================= QUIZ ================= */
+
+.quiz-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+}
+
+.quiz-progress{
+    color:#9db2c6;
+    font-size:13px;
+}
+
+.question-box{
+    padding:18px;
+    border-radius:14px;
+    background:#0a1d30;
+    border:1px solid #1d3c58;
+}
+
+.question{
+    font-size:18px;
+    line-height:1.55;
+    font-weight:700;
+}
+
+.options{
+    display:grid;
+    gap:10px;
+    margin-top:16px;
+}
+
+.option{
+    width:100%;
+    border:1px solid #294963;
+    background:#0b2034;
+    color:#dbe9f5;
+    padding:14px;
+    border-radius:11px;
+    text-align:left;
+    line-height:1.5;
+    transition:.18s;
+}
+
+.option:hover:not(:disabled){
+    background:#102c45;
+    border-color:#3b6b91;
+}
+
+.option.correct{
+    background:rgba(52,211,153,.11);
+    border-color:#34d399;
+    color:#b7f7dc;
+}
+
+.option.wrong{
+    background:rgba(251,113,133,.10);
+    border-color:#fb7185;
+    color:#fecdd3;
+}
+
+.option:disabled{
+    cursor:default;
+}
+
+.feedback{
+    margin-top:13px;
+    padding:14px;
+    border-radius:11px;
+    line-height:1.6;
+    display:none;
+}
+
+.feedback.correct{
+    display:block;
+    background:rgba(52,211,153,.08);
+    border:1px solid rgba(52,211,153,.28);
+    color:#b9f5d9;
+}
+
+.feedback.wrong{
+    display:block;
+    background:rgba(251,113,133,.08);
+    border:1px solid rgba(251,113,133,.28);
+    color:#ffd2d9;
+}
+
+.next-btn{
+    margin-top:13px;
+    border:0;
+    border-radius:10px;
+    background:#2563eb;
+    color:#fff;
+    padding:11px 17px;
+    font-weight:700;
+    display:none;
+}
+
+.quiz-result{
+    display:none;
+    text-align:center;
+    padding:30px 20px;
+}
+
+.quiz-result .score{
+    font-size:50px;
+    font-weight:800;
+    color:#7dd3fc;
+    margin:8px 0;
+}
+
+.retry-btn{
+    border:0;
+    background:#2563eb;
+    color:white;
+    border-radius:10px;
+    padding:12px 18px;
+    font-weight:700;
+    margin-top:12px;
+}
+
+/* ================= COMPLETE ================= */
+
+.complete{
+    display:none;
+    padding:22px;
+    border-radius:16px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(52,211,153,.12),
+            rgba(34,211,238,.07)
+        );
+    border:1px solid rgba(52,211,153,.3);
+    margin-bottom:20px;
+}
+
+.complete h2{
+    margin:0 0 7px;
+}
+
+.complete p{
+    color:#b8cddd;
+    line-height:1.6;
+    margin-bottom:0;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+    color:#70869a;
+    font-size:12px;
+    line-height:1.6;
+    padding-top:8px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:850px){
+
+    .hero{
+        grid-template-columns:1fr;
+    }
+
+    .impact-grid,
+    .triad{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .container{
+        width:95%;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .impact-grid,
+    .triad,
+    .resource-tabs,
+    .action-grid{
+        grid-template-columns:1fr;
+    }
+
+    .resource-example{
+        grid-template-columns:1fr;
+    }
+
+    .hero-main{
+        padding:19px;
+    }
+
+    .hero-main h2{
+        font-size:23px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- ================= TOP ================= -->
+
+    <div class="topbar">
+
+        <button class="back-btn" id="backBtn">
+            ← Trang chủ
+        </button>
+
+        <div class="title-area">
+
+            <div class="badge">
+                🌎 ĐỊA LÍ 6 · CHƯƠNG 7
+            </div>
+
+            <h1>
+                Bài 29. Bảo vệ tự nhiên và khai thác thông minh
+                các tài nguyên thiên nhiên vì sự phát triển bền vững
+            </h1>
+
+            <div class="subtitle">
+                Tìm hiểu thế nào là phát triển bền vững,
+                vì sao cần bảo vệ tự nhiên và cách khai thác
+                tài nguyên thiên nhiên một cách hợp lí, tiết kiệm.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= PROGRESS ================= -->
+
+    <div class="progress-wrap">
+
+        <div class="progress-top">
+
+            <span>
+                Tiến trình học tập
+            </span>
+
+            <span id="progressText">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= HERO ================= -->
+
+    <div class="hero">
+
+        <div class="hero-main">
+
+            <div class="section-label">
+                MỞ ĐẦU
+            </div>
+
+            <h2>
+                🌱 Chúng ta sẽ trao lại Trái Đất như thế nào?
+            </h2>
+
+            <p>
+                Thiên nhiên cung cấp không gian sống và các nguồn tài nguyên
+                cần thiết cho con người. Nhưng nếu khai thác quá mức,
+                sử dụng lãng phí hoặc làm ô nhiễm môi trường,
+                khả năng đáp ứng nhu cầu của các thế hệ tương lai
+                sẽ bị ảnh hưởng.
+            </p>
+
+            <p>
+                Bài học này giúp em hiểu cách bảo vệ tự nhiên
+                và khai thác thông minh tài nguyên thiên nhiên
+                để hướng tới sự phát triển bền vững.
+            </p>
+
+        </div>
+
+
+        <div class="hero-side">
+
+            <div class="earth-icon">
+                🌍
+            </div>
+
+            <strong>
+                Một Trái Đất cho hôm nay
+                và cả ngày mai
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= 1. PHÁT TRIỂN BỀN VỮNG ================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            01 · KIẾN THỨC TRỌNG TÂM
+        </div>
+
+        <h2>
+            Thế nào là phát triển bền vững?
+        </h2>
+
+        <div class="definition">
+
+            <strong>
+                Phát triển bền vững
+            </strong>
+            là sự phát triển nhằm đáp ứng các nhu cầu
+            của thế hệ hiện tại mà không làm tổn hại
+            đến nhu cầu của các thế hệ tương lai.
+
+        </div>
+
+
+        <div class="impact-grid">
+
+            <div class="impact-card">
+
+                <div class="impact-icon">
+                    ⛏️
+                </div>
+
+                <h3>
+                    Khai thác quá mức
+                </h3>
+
+                <p>
+                    Làm suy giảm nguồn tài nguyên,
+                    ảnh hưởng đến khả năng sử dụng
+                    tài nguyên trong tương lai.
+                </p>
+
+            </div>
+
+
+            <div class="impact-card">
+
+                <div class="impact-icon">
+                    🌳
+                </div>
+
+                <h3>
+                    Tàn phá rừng
+                </h3>
+
+                <p>
+                    Làm suy giảm diện tích và chất lượng
+                    rừng, ảnh hưởng đến môi trường tự nhiên.
+                </p>
+
+            </div>
+
+
+            <div class="impact-card">
+
+                <div class="impact-icon">
+                    🏭
+                </div>
+
+                <h3>
+                    Ô nhiễm môi trường
+                </h3>
+
+                <p>
+                    Làm suy giảm chất lượng môi trường,
+                    ảnh hưởng đến không gian sống của con người.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= 2. BẢO VỆ TỰ NHIÊN ================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            02 · BẢO VỆ TỰ NHIÊN
+        </div>
+
+        <h2>
+            Vì sao cần bảo vệ tự nhiên?
+        </h2>
+
+        <p>
+            Bảo vệ tự nhiên có ý nghĩa trong việc giữ gìn
+            sự đa dạng sinh học, ngăn chặn ô nhiễm và suy thoái
+            môi trường tự nhiên.
+        </p>
+
+        <div class="triad">
+
+            <div class="triad-card">
+
+                <div class="big">
+                    🐾
+                </div>
+
+                <h3>
+                    Đa dạng sinh học
+                </h3>
+
+                <p>
+                    Góp phần giữ gìn sự đa dạng của
+                    các loài sinh vật và hệ sinh thái.
+                </p>
+
+            </div>
+
+
+            <div class="triad-card">
+
+                <div class="big">
+                    🌿
+                </div>
+
+                <h3>
+                    Môi trường tự nhiên
+                </h3>
+
+                <p>
+                    Góp phần ngăn chặn ô nhiễm
+                    và suy thoái môi trường.
+                </p>
+
+            </div>
+
+
+            <div class="triad-card">
+
+                <div class="big">
+                    🏠
+                </div>
+
+                <h3>
+                    Không gian sống
+                </h3>
+
+                <p>
+                    Bảo vệ không gian sống trong lành,
+                    thuận lợi cho con người.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= 3. KHAI THÁC THÔNG MINH ================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            03 · KHÁM PHÁ TƯƠNG TÁC
+        </div>
+
+        <h2>
+            🔎 Khai thác thông minh tài nguyên thiên nhiên
+        </h2>
+
+        <p class="resource-intro">
+            Hãy chọn từng nhóm tài nguyên để xem nguyên tắc
+            sử dụng phù hợp. Nội dung dưới đây dựa trên sơ đồ
+            khai thác thông minh trong bài học.
+        </p>
+
+
+        <div class="resource-tabs">
+
+            <button
+                class="resource-btn active"
+                data-resource="land">
+
+                <span class="icon">
+                    🌱
+                </span>
+
+                <strong>
+                    Đất trồng
+                </strong>
+
+                <small>
+                    Sử dụng và phục hồi
+                </small>
+
+            </button>
+
+
+            <button
+                class="resource-btn"
+                data-resource="animals">
+
+                <span class="icon">
+                    🐾
+                </span>
+
+                <strong>
+                    Động, thực vật
+                </strong>
+
+                <small>
+                    Khai thác gắn với tái tạo
+                </small>
+
+            </button>
+
+
+            <button
+                class="resource-btn"
+                data-resource="water">
+
+                <span class="icon">
+                    💧
+                </span>
+
+                <strong>
+                    Nước, không khí
+                </strong>
+
+                <small>
+                    Tránh ô nhiễm
+                </small>
+
+            </button>
+
+
+            <button
+                class="resource-btn"
+                data-resource="energy">
+
+                <span class="icon">
+                    ☀️
+                </span>
+
+                <strong>
+                    Năng lượng mặt trời
+                </strong>
+
+                <small>
+                    Khai thác nguồn năng lượng
+                </small>
+
+            </button>
+
+
+            <button
+                class="resource-btn"
+                data-resource="space">
+
+                <span class="icon">
+                    🏞️
+                </span>
+
+                <strong>
+                    Khoảng sân / không gian
+                </strong>
+
+                <small>
+                    Sử dụng tiết kiệm
+                </small>
+
+            </button>
+
+
+            <button
+                class="resource-btn"
+                data-resource="general">
+
+                <span class="icon">
+                    ♻️
+                </span>
+
+                <strong>
+                    Nguyên tắc chung
+                </strong>
+
+                <small>
+                    Hợp lí và tiết kiệm
+                </small>
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="resource-detail"
+            id="resourceDetail">
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= 4. NGUYÊN TẮC ================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            04 · GHI NHỚ
+        </div>
+
+        <h2>
+            ♻️ Khai thác thông minh nghĩa là gì?
+        </h2>
+
+        <div class="definition">
+
+            Khai thác thông minh các tài nguyên thiên nhiên
+            có ý nghĩa trong việc
+            <strong>
+                sử dụng tài nguyên hợp lí, tiết kiệm
+            </strong>
+            nhằm hạn chế sự suy giảm tài nguyên
+            cả về số lượng và chất lượng,
+            đảm bảo nguồn tài nguyên cho sinh hoạt
+            và sản xuất của con người trong hiện tại
+            cũng như trong tương lai.
+
+        </div>
+
+
+        <div class="triad">
+
+            <div class="triad-card">
+
+                <div class="big">
+                    ⚖️
+                </div>
+
+                <h3>
+                    Sử dụng hợp lí
+                </h3>
+
+                <p>
+                    Không khai thác và sử dụng
+                    tài nguyên một cách tùy tiện.
+                </p>
+
+            </div>
+
+
+            <div class="triad-card">
+
+                <div class="big">
+                    💡
+                </div>
+
+                <h3>
+                    Tiết kiệm
+                </h3>
+
+                <p>
+                    Hạn chế lãng phí tài nguyên
+                    trong sinh hoạt và sản xuất.
+                </p>
+
+            </div>
+
+
+            <div class="triad-card">
+
+                <div class="big">
+                    🌏
+                </div>
+
+                <h3>
+                    Hướng tới tương lai
+                </h3>
+
+                <p>
+                    Đảm bảo tài nguyên cho
+                    thế hệ hiện tại và tương lai.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= 5. VIỆC LÀM HẰNG NGÀY ================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            05 · VẬN DỤNG
+        </div>
+
+        <h2>
+            🏠 Em có thể làm gì mỗi ngày?
+        </h2>
+
+        <p>
+            Hãy đánh dấu những việc em có thể thực hiện
+            để góp phần bảo vệ môi trường.
+        </p>
+
+
+        <div class="action-grid">
+
+            <label class="action">
+
+                <input
+                    type="checkbox"
+                    class="action-check">
+
+                <span>
+                    Tắt điện khi không sử dụng.
+                </span>
+
+            </label>
+
+
+            <label class="action">
+
+                <input
+                    type="checkbox"
+                    class="action-check">
+
+                <span>
+                    Sử dụng nước tiết kiệm.
+                </span>
+
+            </label>
+
+
+            <label class="action">
+
+                <input
+                    type="checkbox"
+                    class="action-check">
+
+                <span>
+                    Hạn chế sử dụng những sản phẩm gây lãng phí.
+                </span>
+
+            </label>
+
+
+            <label class="action">
+
+                <input
+                    type="checkbox"
+                    class="action-check">
+
+                <span>
+                    Không xả rác bừa bãi.
+                </span>
+
+            </label>
+
+
+            <label class="action">
+
+                <input
+                    type="checkbox"
+                    class="action-check">
+
+                <span>
+                    Giữ gìn cây xanh và môi trường xung quanh.
+                </span>
+
+            </label>
+
+
+            <label class="action">
+
+                <input
+                    type="checkbox"
+                    class="action-check">
+
+                <span>
+                    Tuyên truyền và nhắc nhở mọi người
+                    cùng bảo vệ môi trường.
+                </span>
+
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= 6. ĐỊA PHƯƠNG ================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            06 · KẾT NỐI ĐỊA PHƯƠNG
+        </div>
+
+        <h2>
+            📍 Tài nguyên ở địa phương em
+        </h2>
+
+        <p>
+            Hãy thử ghi lại một ví dụ về việc khai thác
+            hoặc sử dụng tài nguyên thiên nhiên ở địa phương
+            và đề xuất một cách để sử dụng bền vững hơn.
+        </p>
+
+
+        <div class="practice-box">
+
+            <strong>
+                ✍️ Ý tưởng của em
+            </strong>
+
+            <textarea
+                id="localNote"
+                placeholder="Ví dụ: nguồn nước, đất, rừng, khoáng sản, sinh vật...">
+            </textarea>
+
+            <button
+                class="save-note"
+                id="saveNote">
+                💾 Lưu câu trả lời
+            </button>
+
+            <div
+                class="note-result"
+                id="noteResult">
+                ✅ Câu trả lời đã được ghi nhận trong bài học này.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= COMPLETE BOX ================= -->
+
+    <div
+        class="complete"
+        id="completeBox">
+
+        <h2>
+            🎉 Em đã hoàn thành Bài 29!
+        </h2>
+
+        <p>
+            Em đã tìm hiểu về phát triển bền vững,
+            ý nghĩa của việc bảo vệ tự nhiên và nguyên tắc
+            khai thác thông minh tài nguyên thiên nhiên.
+        </p>
+
+    </div>
+
+
+    <!-- ================= 7. QUIZ ================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            07 · KIỂM TRA CUỐI BÀI
+        </div>
+
+        <div class="quiz-head">
+
+            <div>
+
+                <h2>
+                    📝 Thử sức với 10 câu hỏi
+                </h2>
+
+                <div class="quiz-progress"
+                     id="quizProgress">
+                    Câu 1 / 10
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="quizArea">
+
+            <div class="question-box">
+
+                <div
+                    class="question"
+                    id="questionText">
+                </div>
+
+                <div
+                    class="options"
+                    id="options">
+                </div>
+
+                <div
+                    class="feedback"
+                    id="feedback">
+                </div>
+
+                <button
+                    class="next-btn"
+                    id="nextBtn">
+                    Câu tiếp theo →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="quiz-result"
+            id="quizResult">
+
+            <div>
+                🎓 Hoàn thành bài kiểm tra
+            </div>
+
+            <div
+                class="score"
+                id="scoreText">
+                0/10
+            </div>
+
+            <div
+                id="scoreMessage">
+            </div>
+
+            <button
+                class="retry-btn"
+                id="retryBtn">
+                ↻ Làm lại
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <div class="footer">
+        Học liệu số Địa lí 6 · Bài 29
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+const PROGRESS_KEY = "hoclieu6_progress_v1";
+
+let progress = {};
+
+try{
+
+    progress =
+        JSON.parse(
+            localStorage.getItem(PROGRESS_KEY) || "{}"
+        );
+
+}catch(e){
+
+    progress = {};
+
+}
+
+
+/* =========================================================
+   TIẾN TRÌNH
+========================================================= */
+
+function updateProgress(){
+
+    const checks =
+        document.querySelectorAll(".action-check");
+
+    let completed = 0;
+
+    checks.forEach(function(check){
+
+        if(check.checked){
+            completed++;
+        }
+
+    });
+
+    /*
+     * 6 việc + phần khám phá tài nguyên + quiz
+     */
+
+    const resourceDone =
+        document.querySelector(".resource-btn.active")
+        ? 1
+        : 0;
+
+    const quizDone =
+        progress.g29_quiz
+        ? 1
+        : 0;
+
+    const localDone =
+        progress.g29_note
+        ? 1
+        : 0;
+
+    const total =
+        6 + 1 + 1 + 1;
+
+    const done =
+        completed +
+        resourceDone +
+        quizDone +
+        localDone;
+
+    const percent =
+        Math.min(
+            100,
+            Math.round(done / total * 100)
+        );
+
+    document.getElementById("progressFill").style.width =
+        percent + "%";
+
+    document.getElementById("progressText").textContent =
+        percent + "%";
+
+}
+
+
+/* =========================================================
+   RESOURCE EXPLORER
+========================================================= */
+
+const resourceData = {
+
+    land:{
+
+        title:"🌱 Đất trồng",
+
+        text:
+            "Đất trồng là tài nguyên cần được sử dụng hợp lí " +
+            "để phục vụ sản xuất và đời sống.",
+
+        good:
+            "Vừa sử dụng vừa chú ý khôi phục, tái tạo.",
+
+        note:
+            "Ví dụ: sử dụng đất phù hợp với mục đích và hạn chế làm suy thoái đất."
+
+    },
+
+
+    animals:{
+
+        title:"🐾 Động, thực vật",
+
+        text:
+            "Động vật và thực vật là những thành phần quan trọng " +
+            "của tự nhiên và đa dạng sinh học.",
+
+        good:
+            "Vừa sử dụng vừa khôi phục, tái tạo.",
+
+        note:
+            "Cần khai thác hợp lí, tránh làm suy giảm nguồn sinh vật."
+
+    },
+
+
+    water:{
+
+        title:"💧 Nước và không khí",
+
+        text:
+            "Nước và không khí có vai trò thiết yếu đối với đời sống " +
+            "và sản xuất của con người.",
+
+        good:
+            "Tránh làm ô nhiễm, giảm chất lượng.",
+
+        note:
+            "Sử dụng nước tiết kiệm và hạn chế các hoạt động gây ô nhiễm nguồn nước, không khí."
+
+    },
+
+
+    energy:{
+
+        title:"☀️ Năng lượng mặt trời",
+
+        text:
+            "Năng lượng mặt trời là một nguồn năng lượng có thể " +
+            "được khai thác phục vụ đời sống và sản xuất.",
+
+        good:
+            "Khai thác nguồn năng lượng phù hợp và hạn chế tác động xấu đến môi trường.",
+
+        note:
+            "Hình ảnh pin năng lượng mặt trời trong bài học là một ví dụ về khai thác nguồn năng lượng này."
+
+    },
+
+
+    space:{
+
+        title:"🏞️ Khoảng sân / không gian",
+
+        text:
+            "Không gian cũng cần được sử dụng hợp lí, tránh lãng phí.",
+
+        good:
+            "Sử dụng tiết kiệm, đồng thời sản xuất các vật liệu thay thế khi phù hợp.",
+
+        note:
+            "Mục tiêu là đáp ứng nhu cầu hiện tại mà không gây tổn hại đến khả năng đáp ứng nhu cầu trong tương lai."
+
+    },
+
+
+    general:{
+
+        title:"♻️ Nguyên tắc chung",
+
+        text:
+            "Khai thác thông minh hướng tới việc sử dụng tài nguyên " +
+            "hợp lí và tiết kiệm.",
+
+        good:
+            "Hạn chế sự suy giảm tài nguyên cả về số lượng và chất lượng.",
+
+        note:
+            "Qua đó đảm bảo nguồn tài nguyên cho sinh hoạt và sản xuất của con người trong hiện tại cũng như tương lai."
+
+    }
+
+};
+
+
+const resourceDetail =
+    document.getElementById("resourceDetail");
+
+const resourceButtons =
+    document.querySelectorAll(".resource-btn");
+
+
+function showResource(key){
+
+    const data =
+        resourceData[key];
+
+    if(!data){
+        return;
+    }
+
+    resourceButtons.forEach(function(btn){
+
+        btn.classList.toggle(
+            "active",
+            btn.dataset.resource === key
+        );
+
+    });
+
+
+    resourceDetail.innerHTML = `
+
+        <h3>
+            ${data.title}
+        </h3>
+
+        <p>
+            ${data.text}
+        </p>
+
+        <div class="resource-example">
+
+            <div class="example-box example-good">
+
+                <strong>
+                    🌿 Cách khai thác thông minh
+                </strong>
+
+                <div>
+                    ${data.good}
+                </div>
+
+            </div>
+
+            <div class="example-box example-note">
+
+                <strong>
+                    💡 Gợi ý
+                </strong>
+
+                <div>
+                    ${data.note}
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    updateProgress();
+
+}
+
+
+resourceButtons.forEach(function(btn){
+
+    btn.addEventListener(
+        "click",
+        function(){
+
+            showResource(
+                btn.dataset.resource
+            );
+
+        }
+    );
+
+});
+
+
+/* Hiển thị mặc định */
+
+showResource("land");
+
+
+/* =========================================================
+   CHECKLIST
+========================================================= */
+
+document.querySelectorAll(
+    ".action-check"
+).forEach(function(check){
+
+    check.addEventListener(
+        "change",
+        updateProgress
+    );
+
+});
+
+
+/* =========================================================
+   GHI CHÚ ĐỊA PHƯƠNG
+========================================================= */
+
+const localNote =
+    document.getElementById("localNote");
+
+const saveNote =
+    document.getElementById("saveNote");
+
+const noteResult =
+    document.getElementById("noteResult");
+
+
+saveNote.addEventListener(
+    "click",
+    function(){
+
+        const value =
+            localNote.value.trim();
+
+        if(value.length < 3){
+
+            noteResult.style.display =
+                "block";
+
+            noteResult.style.color =
+                "#fbbf24";
+
+            noteResult.textContent =
+                "⚠️ Em hãy nhập ít nhất một ý tưởng.";
+
+            return;
+
+        }
+
+
+        progress.g29_note = true;
+
+        localStorage.setItem(
+            PROGRESS_KEY,
+            JSON.stringify(progress)
+        );
+
+
+        noteResult.style.display =
+            "block";
+
+        noteResult.style.color =
+            "#8ee7bf";
+
+        noteResult.textContent =
+            "✅ Câu trả lời đã được ghi nhận trong bài học này.";
+
+        updateProgress();
+
+    }
+);
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const quizData = [
+
+    {
+        q:
+            "Phát triển bền vững là sự phát triển như thế nào?",
+
+        options:[
+            "Đáp ứng nhu cầu hiện tại mà không làm tổn hại đến nhu cầu của thế hệ tương lai.",
+            "Khai thác tài nguyên càng nhiều càng tốt.",
+            "Chỉ tập trung phát triển kinh tế.",
+            "Chỉ bảo vệ tự nhiên và không sử dụng tài nguyên."
+        ],
+
+        answer:0,
+
+        explanation:
+            "Đúng. Phát triển bền vững là sự phát triển nhằm đáp ứng nhu cầu của thế hệ hiện tại mà không làm tổn hại đến nhu cầu của các thế hệ tương lai."
+    },
+
+
+    {
+        q:
+            "Một tác động nào của con người có thể ảnh hưởng đến khả năng đáp ứng nhu cầu của các thế hệ mai sau?",
+
+        options:[
+            "Sử dụng tài nguyên hợp lí.",
+            "Khai thác tài nguyên quá mức.",
+            "Bảo vệ rừng.",
+            "Tiết kiệm nước."
+        ],
+
+        answer:1,
+
+        explanation:
+            "Khai thác tài nguyên quá mức có thể làm suy giảm tài nguyên và ảnh hưởng đến khả năng sử dụng của các thế hệ sau."
+    },
+
+
+    {
+        q:
+            "Bảo vệ tự nhiên có ý nghĩa quan trọng nào sau đây?",
+
+        options:[
+            "Làm tăng khai thác tài nguyên.",
+            "Giữ gìn đa dạng sinh học và ngăn chặn ô nhiễm, suy thoái môi trường.",
+            "Làm giảm không gian sống của con người.",
+            "Chỉ phục vụ hoạt động du lịch."
+        ],
+
+        answer:1,
+
+        explanation:
+            "Bảo vệ tự nhiên góp phần giữ gìn đa dạng sinh học, ngăn chặn ô nhiễm và suy thoái môi trường tự nhiên."
+    },
+
+
+    {
+        q:
+            "Khai thác thông minh tài nguyên thiên nhiên nhằm mục đích chủ yếu nào?",
+
+        options:[
+            "Sử dụng tài nguyên hợp lí, tiết kiệm.",
+            "Khai thác càng nhanh càng tốt.",
+            "Sử dụng hết tài nguyên hiện có.",
+            "Chỉ phục vụ sản xuất công nghiệp."
+        ],
+
+        answer:0,
+
+        explanation:
+            "Khai thác thông minh hướng tới sử dụng tài nguyên hợp lí, tiết kiệm nhằm hạn chế sự suy giảm tài nguyên."
+    },
+
+
+    {
+        q:
+            "Đối với đất trồng, cách khai thác thông minh được nêu trong bài là gì?",
+
+        options:[
+            "Khai thác đến khi đất không còn khả năng sử dụng.",
+            "Vừa sử dụng vừa khôi phục, tái tạo.",
+            "Không được sử dụng đất.",
+            "Chỉ sử dụng cho xây dựng."
+        ],
+
+        answer:1,
+
+        explanation:
+            "Đối với đất trồng, cần vừa sử dụng vừa khôi phục, tái tạo để duy trì nguồn tài nguyên."
+    },
+
+
+    {
+        q:
+            "Đối với động vật và thực vật, nguyên tắc sử dụng thông minh là gì?",
+
+        options:[
+            "Khai thác tối đa.",
+            "Không cần bảo vệ.",
+            "Vừa sử dụng vừa khôi phục, tái tạo.",
+            "Chỉ sử dụng cho nghiên cứu."
+        ],
+
+        answer:2,
+
+        explanation:
+            "SGK nêu nguyên tắc vừa sử dụng vừa khôi phục, tái tạo đối với đất trồng; động, thực vật."
+    },
+
+
+    {
+        q:
+            "Đối với năng lượng mặt trời, không khí và nước, cần làm gì?",
+
+        options:[
+            "Sử dụng càng nhiều càng tốt.",
+            "Tránh làm ô nhiễm, giảm chất lượng.",
+            "Không được sử dụng.",
+            "Chỉ sử dụng trong sản xuất."
+        ],
+
+        answer:1,
+
+        explanation:
+            "Đối với năng lượng mặt trời, không khí, nước,... cần tránh làm ô nhiễm và giảm chất lượng."
+    },
+
+
+    {
+        q:
+            "Ý nghĩa của việc khai thác thông minh tài nguyên là gì?",
+
+        options:[
+            "Đảm bảo tài nguyên chỉ cho thế hệ hiện tại.",
+            "Hạn chế sự suy giảm tài nguyên và đảm bảo nguồn tài nguyên cho hiện tại, tương lai.",
+            "Tăng tốc độ khai thác.",
+            "Loại bỏ hoàn toàn việc sử dụng tài nguyên."
+        ],
+
+        answer:1,
+
+        explanation:
+            "Khai thác thông minh giúp hạn chế sự suy giảm tài nguyên cả về số lượng và chất lượng, đảm bảo tài nguyên cho hiện tại và tương lai."
+    },
+
+
+    {
+        q:
+            "Việc nào sau đây phù hợp với trách nhiệm bảo vệ môi trường?",
+
+        options:[
+            "Xả rác xuống sông.",
+            "Sử dụng tài nguyên lãng phí.",
+            "Hạn chế gây ô nhiễm và sử dụng tài nguyên hợp lí.",
+            "Khai thác tài nguyên không cần phục hồi."
+        ],
+
+        answer:2,
+
+        explanation:
+            "Mỗi người cần có những hành động cụ thể để bảo vệ môi trường và sử dụng tài nguyên một cách hợp lí."
+    },
+
+
+    {
+        q:
+            "Mục tiêu quan trọng của bảo vệ tự nhiên và khai thác thông minh tài nguyên là gì?",
+
+        options:[
+            "Đáp ứng nhu cầu hiện tại đồng thời đảm bảo khả năng đáp ứng nhu cầu của thế hệ tương lai.",
+            "Khai thác toàn bộ tài nguyên thiên nhiên.",
+            "Chỉ phát triển sản xuất.",
+            "Hạn chế mọi hoạt động của con người."
+        ],
+
+        answer:0,
+
+        explanation:
+            "Đây chính là tinh thần của phát triển bền vững: đáp ứng nhu cầu hiện tại nhưng không làm tổn hại đến nhu cầu của thế hệ tương lai."
+    }
+
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+
+const questionText =
+    document.getElementById("questionText");
+
+const options =
+    document.getElementById("options");
+
+const feedback =
+    document.getElementById("feedback");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+const quizProgress =
+    document.getElementById("quizProgress");
+
+const quizArea =
+    document.getElementById("quizArea");
+
+const quizResult =
+    document.getElementById("quizResult");
+
+const scoreText =
+    document.getElementById("scoreText");
+
+const scoreMessage =
+    document.getElementById("scoreMessage");
+
+const retryBtn =
+    document.getElementById("retryBtn");
+
+
+function loadQuestion(){
+
+    answered = false;
+
+    const q =
+        quizData[currentQuestion];
+
+    quizProgress.textContent =
+        "Câu " +
+        (currentQuestion + 1) +
+        " / " +
+        quizData.length;
+
+    questionText.textContent =
+        q.q;
+
+    options.innerHTML = "";
+
+    feedback.className =
+        "feedback";
+
+    feedback.innerHTML = "";
+
+    nextBtn.style.display =
+        "none";
+
+
+    q.options.forEach(
+        function(text,index){
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "option";
+
+            button.textContent =
+                String.fromCharCode(65 + index) +
+                ". " +
+                text;
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    checkAnswer(index);
+
+                }
+            );
+
+            options.appendChild(button);
+
+        }
+    );
+
+}
+
+
+function checkAnswer(index){
+
+    if(answered){
+        return;
+    }
+
+    answered = true;
+
+    const q =
+        quizData[currentQuestion];
+
+    const optionButtons =
+        options.querySelectorAll(".option");
+
+
+    optionButtons.forEach(
+        function(button,i){
+
+            button.disabled = true;
+
+            if(i === q.answer){
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    if(index === q.answer){
+
+        score++;
+
+        feedback.className =
+            "feedback correct";
+
+        feedback.innerHTML =
+            "✅ <strong>Chính xác!</strong> " +
+            q.explanation;
+
+    }else{
+
+        optionButtons[index]
+            .classList.add("wrong");
+
+        feedback.className =
+            "feedback wrong";
+
+        feedback.innerHTML =
+            "❌ <strong>Chưa chính xác.</strong> " +
+            q.explanation;
+
+    }
+
+
+    feedback.style.display =
+        "block";
+
+
+    if(currentQuestion <
+        quizData.length - 1){
+
+        nextBtn.textContent =
+            "Câu tiếp theo →";
+
+    }else{
+
+        nextBtn.textContent =
+            "Xem kết quả →";
+
+    }
+
+    nextBtn.style.display =
+        "inline-block";
+
+}
+
+
+nextBtn.addEventListener(
+    "click",
+    function(){
+
+        if(currentQuestion <
+            quizData.length - 1){
+
+            currentQuestion++;
+
+            loadQuestion();
+
+        }else{
+
+            finishQuiz();
+
+        }
+
+    }
+);
+
+
+function finishQuiz(){
+
+    quizArea.style.display =
+        "none";
+
+    quizResult.style.display =
+        "block";
+
+
+    scoreText.textContent =
+        score + "/" + quizData.length;
+
+
+    let message = "";
+
+
+    if(score >= 9){
+
+        message =
+            "🌟 Xuất sắc! Em đã nắm rất chắc nội dung Bài 29.";
+
+    }else if(score >= 7){
+
+        message =
+            "👏 Rất tốt! Em đã hiểu phần lớn kiến thức của bài.";
+
+    }else if(score >= 5){
+
+        message =
+            "👍 Đạt yêu cầu. Em nên xem lại một số nội dung quan trọng.";
+
+    }else{
+
+        message =
+            "💡 Em hãy đọc lại phần kiến thức và thử làm lại nhé.";
+
+    }
+
+
+    scoreMessage.textContent =
+        message;
+
+
+    progress.g29_quiz = true;
+
+    progress.g29 = true;
+
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(progress)
+    );
+
+
+    document.getElementById(
+        "completeBox"
+    ).style.display =
+        "block";
+
+
+    updateProgress();
+
+}
+
+
+retryBtn.addEventListener(
+    "click",
+    function(){
+
+        currentQuestion = 0;
+
+        score = 0;
+
+        quizArea.style.display =
+            "block";
+
+        quizResult.style.display =
+            "none";
+
+        loadQuestion();
+
+    }
+);
+
+
+/* =========================================================
+   QUAY VỀ TRANG CHỦ
+========================================================= */
+
+document.getElementById(
+    "backBtn"
+).addEventListener(
+    "click",
+    function(){
+
+        window.location.href =
+            "index.html";
+
+    }
+);
+
+
+/* =========================================================
+   KHỞI TẠO
+========================================================= */
+
+loadQuestion();
+
+updateProgress();
+
+
+/* =========================================================
+   NẾU ĐÃ HOÀN THÀNH
+========================================================= */
+
+if(progress.g29){
+
+    document.getElementById(
+        "completeBox"
+    ).style.display =
+        "block";
+
+}
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g29");</script>
+</body>
+</html>

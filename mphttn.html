@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full bg-slate-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mô phỏng 3D Hiện tượng Tạo núi - Địa lý GDPT 2018</title>
+
+  <!-- External Libraries CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            fold: '#3b82f6',
+            fault: '#eab308',
+            volcano: '#ef4444',
+            geoDark: '#0b1120',
+          },
+          animation: {
+            'pulse-glow': 'pulseGlow 2s infinite ease-in-out',
+            'wave-bar': 'waveBar 0.8s infinite ease-in-out alternate',
+          },
+          keyframes: {
+            pulseGlow: {
+              '0%, 100%': { boxShadow: '0 0 15px rgba(239, 68, 68, 0.4)' },
+              '50%': { boxShadow: '0 0 30px rgba(239, 68, 68, 0.8)' },
+            },
+            waveBar: {
+              '0%': { height: '20%' },
+              '100%': { height: '100%' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    
+    .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.5);
+      border-radius: 4px;
+    }
+
+    /* Floating Hotspot Badges Styling */
+    .hotspot-badge {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      pointer-events: auto;
+      transition: opacity 0.2s ease, transform 0.1s ease-out;
+      will-change: transform;
+      z-index: 20;
+    }
+
+    .hotspot-pointer {
+      width: 2px;
+      height: 22px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+      margin: 0 auto;
+    }
+
+    .sound-wave-bar {
+      width: 3px;
+      background-color: #38bdf8;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .tab-active-fold {
+      background: rgba(59, 130, 246, 0.2) !important;
+      border-color: #3b82f6 !important;
+      color: #93c5fd !important;
+    }
+    .tab-active-fault {
+      background: rgba(234, 179, 8, 0.2) !important;
+      border-color: #eab308 !important;
+      color: #fef08a !important;
+    }
+    .tab-active-volcano {
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 flex flex-col font-sans">
+
+  <header class="relative z-30 flex-none h-16 glass-panel px-4 lg:px-6 flex items-center justify-between border-b border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-amber-500 to-red-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <i class="fa-solid fa-mountain text-slate-950 font-bold text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-base md:text-lg tracking-tight text-white flex items-center gap-2">
+          Mô phỏng 3D Hiện tượng Tạo núi
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+            Địa lý GDPT 2018
+          </span>
+        </h1>
+        <p class="text-xs text-slate-400 hidden sm:block">Kiến tạo Mảng • Uốn nếp • Đứt gãy • Phun trào Núi lửa</p>
+      </div>
+    </div>
+
+    <!-- Header Control Toolbar -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Mode Selection Tabs (Top Bar) -->
+      <div class="hidden md:flex p-1 bg-slate-900/90 rounded-xl border border-slate-800 text-xs font-semibold gap-1">
+        <button id="top-tab-fold" onclick="switchMode('fold')" class="px-3 py-1.5 rounded-lg border border-transparent transition flex items-center gap-1.5">
+          <i class="fa-solid fa-[#3b82f6] fa-water text-blue-400"></i> Uốn nếp
+        </button>
+        <button id="top-tab-fault" onclick="switchMode('fault')" class="px-3 py-1.5 rounded-lg border border-transparent transition flex items-center gap-1.5">
+          <i class="fa-solid fa-arrows-up-down text-amber-400"></i> Đứt gãy
+        </button>
+        <button id="top-tab-volcano" onclick="switchMode('volcano')" class="px-3 py-1.5 rounded-lg border border-transparent transition flex items-center gap-1.5">
+          <i class="fa-solid fa-volcano text-red-400"></i> Núi lửa
+        </button>
+      </div>
+
+      <!-- Auto Tour Button -->
+      <button id="btn-auto-tour" onclick="toggleAutoTour()" class="px-3 py-1.5 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-xs font-semibold flex items-center gap-2 transition border border-indigo-400/30 shadow-md">
+        <i id="icon-tour" class="fa-solid fa-play"></i>
+        <span class="hidden lg:inline">Trình chiếu tự động</span>
+      </button>
+
+      <!-- Subtitles Toggle Button -->
+      <button id="btn-toggle-sub" onclick="toggleSubtitles()" class="px-3 py-1.5 rounded-lg bg-emerald-600/80 hover:bg-emerald-500 text-xs font-semibold flex items-center gap-2 transition border border-emerald-400/30">
+        <i class="fa-solid fa-closed-captioning text-sm"></i>
+        <span id="label-sub" class="hidden lg:inline">Phụ Đề</span>
+      </button>
+
+      <!-- Speech Audio Toggle Button -->
+      <button id="btn-toggle-voice" onclick="toggleVoiceSpeech()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold flex items-center gap-2 transition border border-slate-700 text-slate-200">
+        <i id="icon-voice" class="fa-solid fa-volume-high text-amber-400"></i>
+        <span id="label-voice" class="hidden xl:inline">Giọng đọc</span>
+      </button>
+
+      <!-- X-Ray Cross Section Toggle -->
+      <button id="btn-xray" onclick="toggleXRayMode()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold flex items-center gap-2 transition border border-slate-700 text-slate-200">
+        <i class="fa-solid fa-x-ray text-cyan-400"></i>
+        <span class="hidden lg:inline">Cắt lớp X-Ray</span>
+      </button>
+
+      <!-- Reset View -->
+      <button onclick="resetCameraView()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700" title="Đặt lại góc nhìn">
+        <i class="fa-solid fa-rotate-left"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="relative flex-1 w-full h-full overflow-hidden flex">
+
+    <!-- 3D WebGL Canvas Container -->
+    <div id="canvas-container" class="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"></div>
+
+    <!-- 3D FLOATING HOTSPOT OVERLAY LAYER -->
+    <div id="hotspots-layer" class="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+      <!-- HTML Hotspot Badges with stem pointers will be dynamically generated & tracked here -->
+    </div>
+
+    <!-- LEFT SIDEBAR: Simulation Controls & Sliders -->
+    <aside id="left-sidebar" class="absolute top-4 left-4 z-20 w-80 max-h-[calc(100%-2rem)] flex flex-col gap-3 pointer-events-auto transition-all duration-300">
+      <div class="glass-panel p-4 rounded-2xl shadow-xl flex flex-col gap-4">
+        
+        <!-- Mode Switcher Mobile / Small screens -->
+        <div class="md:hidden flex p-1 bg-slate-900/90 rounded-xl border border-slate-800 text-xs font-semibold gap-1">
+          <button id="mob-tab-fold" onclick="switchMode('fold')" class="flex-1 py-1.5 rounded-lg text-center transition">Uốn nếp</button>
+          <button id="mob-tab-fault" onclick="switchMode('fault')" class="flex-1 py-1.5 rounded-lg text-center transition">Đứt gãy</button>
+          <button id="mob-tab-volcano" onclick="switchMode('volcano')" class="flex-1 py-1.5 rounded-lg text-center transition">Núi lửa</button>
+        </div>
+
+        <!-- Mode Header & Description -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <div class="flex items-center gap-2">
+            <span id="mode-icon-badge" class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-500/30">
+              <i class="fa-solid fa-water"></i>
+            </span>
+            <div>
+              <h3 id="mode-title" class="font-bold text-sm text-white">Chế độ 1: Tạo núi Uốn nếp</h3>
+              <p id="mode-subtitle" class="text-[11px] text-slate-400">Do lực nén ép xô vào nhau</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DYNAMIC SLIDERS FOR CURRENT MODE -->
+        <div id="sliders-container" class="space-y-4">
+          <!-- Dynamically populated controls -->
+        </div>
+
+        <!-- Play/Pause Animation Loop -->
+        <div class="flex items-center gap-2 border-t border-slate-800 pt-3">
+          <button id="btn-play-anim" onclick="toggleAnimLoop()" class="flex-1 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold text-xs text-white transition flex items-center justify-center gap-2 shadow-md">
+            <i id="icon-play-anim" class="fa-solid fa-play"></i>
+            <span id="label-play-anim">Tự động biến dạng</span>
+          </button>
+          <button onclick="resetSliders()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700 text-xs" title="Tái lập thông số">
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+        </div>
+
+        <!-- Layer Legend Guide -->
+        <div class="border-t border-slate-800 pt-3">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+            <i class="fa-solid fa-layer-group text-indigo-400 mr-1"></i> Chú giải tầng địa chất
+          </span>
+          <div class="grid grid-cols-2 gap-1.5 text-[11px]">
+            <div class="flex items-center gap-1.5 bg-slate-900/60 p-1.5 rounded-lg border border-slate-800">
+              <span class="w-3 h-3 rounded bg-emerald-500 flex-none"></span>
+              <span class="text-slate-300 truncate">Lớp phủ & Thảm thực vật</span>
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900/60 p-1.5 rounded-lg border border-slate-800">
+              <span class="w-3 h-3 rounded bg-amber-600 flex-none"></span>
+              <span class="text-slate-300 truncate">Tầng Đá sa thạch</span>
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900/60 p-1.5 rounded-lg border border-slate-800">
+              <span class="w-3 h-3 rounded bg-sky-600 flex-none"></span>
+              <span class="text-slate-300 truncate">Tầng Đá vôi trầm tích</span>
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-900/60 p-1.5 rounded-lg border border-slate-800">
+              <span class="w-3 h-3 rounded bg-red-600 flex-none"></span>
+              <span class="text-slate-300 truncate">Tầng Manti / Magma</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- RIGHT SIDEBAR: GDPT 2018 Educational Knowledge Panel -->
+    <aside id="right-sidebar" class="absolute top-4 right-4 z-20 w-80 lg:w-96 max-h-[calc(100%-2rem)] flex flex-col gap-3 pointer-events-auto transition-all duration-300">
+      <div class="glass-panel p-4 rounded-2xl shadow-xl flex flex-col gap-3.5 overflow-y-auto">
+        
+        <!-- Knowledge Title & Category Badge -->
+        <div class="flex flex-col gap-1.5 border-b border-slate-800 pb-3">
+          <div class="flex items-center justify-between">
+            <span id="kp-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30">
+              UỐN NẾP KIẾN TẠO
+            </span>
+            <span id="kp-number" class="text-xs font-mono text-slate-400">GDPT 2018 • Địa lý 10</span>
+          </div>
+          <h2 id="kp-title" class="text-lg font-bold text-white leading-tight">
+            Quá trình Tạo núi Uốn nếp
+          </h2>
+        </div>
+
+        <!-- GDPT 2018 Pedagogical Content -->
+        <div class="space-y-3 text-xs leading-relaxed text-slate-300">
+          <div>
+            <span class="font-bold text-amber-400 block mb-1">⚡ Bản chất & Cơ chế hình thành:</span>
+            <p id="kp-nature" class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 text-slate-300 leading-normal">
+              Do tác động của lực nén ép ngang (chuyển động xô vào nhau của các mảng kiến tạo). Các lớp đá mềm dẻo bị uốn cong liên tục tạo thành các nếp uốn nhấp nhô mà không bị nứt vỡ.
+            </p>
+          </div>
+
+          <div>
+            <span class="font-bold text-emerald-400 block mb-1">⛰️ Dạng địa hình đặc trưng:</span>
+            <p id="kp-landform" class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 text-slate-300 leading-normal">
+              - <b>Nếp nhô (Anticline):</b> Phần vòm đá uốn cong dâng cao tạo thành đỉnh và dãy núi cao.<br>
+              - <b>Nếp lõm (Syncline):</b> Phần đá uốn cong võng xuống tạo thành thung lũng giữa các dãy núi.
+            </p>
+          </div>
+
+          <div>
+            <span class="font-bold text-cyan-400 block mb-1">🇻🇳 & 🌐 Ví dụ thực tế:</span>
+            <p id="kp-example" class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 text-slate-200 font-medium leading-normal">
+              - <b>Việt Nam:</b> Dãy Hoàng Liên Sơn (đỉnh Fansipan 3.143m), Vùng núi Đông Bắc.<br>
+              - <b>Thế giới:</b> Dãy Himalaya (Châu Á), Dãy An-đét (Nam Mỹ), Dãy An-pơ (Châu Âu).
+            </p>
+          </div>
+        </div>
+
+        <!-- Dynamic Hotspot Selection list for current mode -->
+        <div class="border-t border-slate-800 pt-3">
+          <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider block mb-2">
+            <i class="fa-solid fa-location-dot text-red-400 mr-1"></i> Các đối tượng địa chất quan sát:
+          </span>
+          <div id="hotspots-list-buttons" class="flex flex-wrap gap-1.5">
+            <!-- Dynamic button tags -->
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- LIVE SUBTITLE BANNER (BOTTOM NARRATION BANNER) -->
+    <div id="subtitle-banner-container" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 w-[94%] max-w-4xl pointer-events-auto transition-all duration-300">
+      <div class="glass-panel p-3.5 sm:p-4 rounded-2xl shadow-2xl border border-slate-700/80 bg-slate-900/90 flex flex-col sm:flex-row items-center gap-3.5 relative overflow-hidden">
+        
+        <!-- Glowing Left Border Status Accent -->
+        <div id="sub-accent-bar" class="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-blue-500 to-indigo-500"></div>
+
+        <!-- Audio Speaker Icon with wave graphic -->
+        <div class="flex-none flex items-center justify-center w-11 h-11 rounded-xl bg-slate-800/80 border border-slate-700 relative">
+          <i id="sub-speaker-icon" class="fa-solid fa-volume-high text-amber-400 text-lg"></i>
+          <div id="audio-wave-graphic" class="absolute -bottom-1 flex gap-0.5 items-end h-2.5 px-1">
+            <span class="sound-wave-bar h-2 animate-wave-bar"></span>
+            <span class="sound-wave-bar h-3 animate-wave-bar" style="animation-delay: 0.2s"></span>
+            <span class="sound-wave-bar h-1.5 animate-wave-bar" style="animation-delay: 0.4s"></span>
+            <span class="sound-wave-bar h-2.5 animate-wave-bar" style="animation-delay: 0.1s"></span>
+          </div>
+        </div>
+
+        <!-- Subtitle Content Block -->
+        <div class="flex-1 min-w-0 text-center sm:text-left space-y-1">
+          <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+            <span id="sub-tag" class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-blue-500/20 text-blue-400 border border-blue-500/30">
+              [UỐN NẾP]
+            </span>
+            <span id="sub-process-title" class="text-xs font-bold text-amber-300 tracking-wide uppercase">
+              Tạo núi do lực nén ép kiến tạo
+            </span>
+            <span class="text-[10px] text-slate-400 font-mono hidden md:inline">• Thuyết minh mô phỏng</span>
+          </div>
+
+          <!-- Main Live Subtitle Text Line -->
+          <p id="sub-text" class="text-xs sm:text-sm font-medium text-white leading-snug drop-shadow">
+            "Khi hai mảng kiến tạo xô vào nhau, lực nén ép ngang uốn cong các lớp đá dẻo thành các dãy núi uốn nếp cao đồ sộ."
+          </p>
+        </div>
+
+        <!-- Quick Controls -->
+        <div class="flex-none flex items-center gap-1.5 border-t sm:border-t-0 sm:border-l border-slate-800 pt-2 sm:pt-0 sm:pl-3 w-full sm:w-auto justify-center">
+          <button onclick="prevMode()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs" title="Chế độ trước">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          
+          <button id="btn-sub-playpause" onclick="togglePlayPauseNarration()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-amber-500/20">
+            <i id="sub-play-icon" class="fa-solid fa-pause"></i>
+            <span id="sub-play-label">Tạm dừng</span>
+          </button>
+
+          <button onclick="nextMode()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs" title="Chế độ tiếp">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* =========================================================================
+       1. PEDAGOGICAL DATA STRUCTURES chuẩn GDPT 2018
+       ========================================================================= */
+    const MODE_DATA = {
+      fold: {
+        id: 'fold',
+        title: 'Chế độ 1: Tạo núi Uốn nếp',
+        subtitle: 'Do lực nén ép ngang của các mảng kiến tạo',
+        badge: 'UỐN NẾP KIẾN TẠO',
+        color: '#3b82f6',
+        accentClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+        nature: 'Do tác động của lực nén ép ngang trong vận động uốn nếp. Các lớp đá có độ dẻo cao bị uốn cong thành các nếp uốn vòm và uốn lõm liên tục mà không làm vỡ đứt gãy kết cấu đá.',
+        landforms: '• Nếp nhô (Anticline): Vòm uốn nhô cao tạo thành dãy núi cao.\n• Nếp lõm (Syncline): Phần uốn võng xuống tạo thành thung lũng bồn địa giữa núi.',
+        example: '• Việt Nam: Dãy Hoàng Liên Sơn, Vùng núi đá vôi Đông Bắc.\n• Thế giới: Dãy Himalaya, Dãy An-pơ, Dãy An-đét.',
+        subtitles: [
+          'Dưới tác động của lực nén ép xô vào nhau giữa các mảng kiến tạo...',
+          'Các tầng đá bị nén dồn từ hai phía, dẻo uốn cong thành các nếp nhô và nếp lõm.',
+          'Các đỉnh nếp nhô tiếp tục dâng cao tạo nên những dãy núi uốn nếp đồ sộ.'
+        ],
+        hotspots: [
+          { id: 'f1', title: 'Nếp nhô (Anticline)', type: 'Đỉnh núi', pos: new THREE.Vector3(-3.0, 3.2, 0) },
+          { id: 'f2', title: 'Nếp lõm (Syncline)', type: 'Thung lũng', pos: new THREE.Vector3(0.0, 0.8, 0) },
+          { id: 'f3', title: 'Nếp nhô phụ', type: 'Đỉnh núi 2', pos: new THREE.Vector3(3.0, 2.8, 0) },
+          { id: 'f4', title: 'Trầm tích Sa thạch', type: 'Tầng đá dẻo', pos: new THREE.Vector3(-4.5, 0.5, 3.0) }
+        ],
+        defaultCamPos: new THREE.Vector3(0, 10, 22),
+        defaultTarget: new THREE.Vector3(0, 1, 0)
+      },
+      fault: {
+        id: 'fault',
+        title: 'Chế độ 2: Tạo núi Đứt gãy',
+        subtitle: 'Khối địa chất bị sụt lún & nâng cao tạo Địa lũy/Địa hào',
+        badge: 'ĐỨT GÃY ĐỊA CHẤT',
+        color: '#eab308',
+        accentClass: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        nature: 'Xảy ra ở những vùng đá cứng bị tác động của lực kiến tạo (kéo giãn hoặc nén ép mạnh). Khối đá bị nứt vỡ, đứt gãy và trượt dịch chuyển tương đối theo mặt đứt gãy nghiêng.',
+        landforms: '• Địa lũy (Horst): Khối đá trung tâm trồi lên hoặc hai bên sụt xuống, tạo thành khối núi đứt gãy vách đứng.\n• Địa hào (Graben): Khối đá sụt lún xuống tạo thành thung lũng đứt gãy sâu.',
+        example: '• Việt Nam: Thung lũng Sông Hồng, Sông Chảy, Dãy Con Voi.\n• Thế giới: Biển Đỏ, Thung lũng Đứt gãy Đông Phi (Great Rift Valley).',
+        subtitles: [
+          'Lực kiến tạo vượt quá giới hạn chịu lực của các tầng đá cứng giòn...',
+          'Xuất hiện các mặt đứt gãy nghiêng xé rách khối vỏ Trái Đất.',
+          'Khối trung tâm nâng trồi lên thành Địa lũy (Horst), khối trượt sụt xuống thành Địa hào (Graben).'
+        ],
+        hotspots: [
+          { id: 'ft1', title: 'Địa lũy (Horst)', type: 'Khối núi nhô', pos: new THREE.Vector3(0.0, 3.8, 0) },
+          { id: 'ft2', title: 'Địa hào (Graben)', type: 'Thung lũng sụt', pos: new THREE.Vector3(4.5, -0.8, 0) },
+          { id: 'ft3', title: 'Mặt đứt gãy (Fault Plane)', type: 'Vách trượt', pos: new THREE.Vector3(-2.2, 1.8, 2.0) },
+          { id: 'ft4', title: 'Vách đứt gãy đứng', type: 'Vách đá', pos: new THREE.Vector3(2.3, 1.5, 2.0) }
+        ],
+        defaultCamPos: new THREE.Vector3(2, 9, 20),
+        defaultTarget: new THREE.Vector3(0, 1, 0)
+      },
+      volcano: {
+        id: 'volcano',
+        title: 'Chế độ 3: Tạo núi do Núi lửa',
+        subtitle: 'Magma phun trào & tích tụ thành núi lửa nón',
+        badge: 'NÚI LỬA PHUN TRÀO',
+        color: '#ef4444',
+        accentClass: 'bg-red-500/20 text-red-400 border-red-500/30',
+        nature: 'Tại các ranh giới hút chìm hoặc tách tạo mảng, áp suất cực lớn đẩy dung nham, tro bụi và khí nóng từ tầng Manti qua họng núi lửa phun trào lên bề mặt và tích tụ lại.',
+        landforms: '• Núi lửa nón (Stratovolcano): Do các lớp dung nham và tro bụi đắp cao dần.\n• Miệng núi lửa (Crater) & Cao nguyên dung nham bazan rộng lớn.',
+        example: '• Việt Nam: Núi lửa Hàm Rồng (Gia Lai), Cao nguyên Bazan Tây Nguyên.\n• Thế giới: Núi Phú Sĩ (Nhật Bản), Núi Vesuvius (Ý), Dãy Vành đai lửa Thái Bình Dương.',
+        subtitles: [
+          'Sự hút chìm của mảng đại dương làm tan chảy đá magma trong lòng đất...',
+          'Áp suất Magma tăng cao, xé rách ống họng núi lửa và phun trào tro bụi, dung nham.',
+          'Các lớp dung nham tràn ra nguội đi, chồng xếp tích tụ tạo nên ngọn núi lửa cao vút.'
+        ],
+        hotspots: [
+          { id: 'v1', title: 'Miệng núi lửa (Crater)', type: 'Đỉnh phun trào', pos: new THREE.Vector3(0.0, 4.6, 0) },
+          { id: 'v2', title: 'Dòng Dung nham (Lava)', type: 'Nóng chảy', pos: new THREE.Vector3(2.2, 2.2, 1.5) },
+          { id: 'v3', title: 'Túi Magma (Chamber)', type: 'Lòng đất', pos: new THREE.Vector3(0.0, -2.5, 0) },
+          { id: 'v4', title: 'Ống họng núi lửa', type: 'Đường dẫn', pos: new THREE.Vector3(0.0, 1.0, 0) }
+        ],
+        defaultCamPos: new THREE.Vector3(-4, 11, 22),
+        defaultTarget: new THREE.Vector3(0, 1, 0)
+      }
+    };
+
+    let currentMode = 'fold';
+    let isXRayMode = false;
+    let isAutoTouring = false;
+    let autoTourTimer = null;
+    let subtitlesEnabled = true;
+    let voiceEnabled = true;
+    let isNarrationPlaying = true;
+    let isAnimLooping = false;
+    let animLoopDir = 1;
+
+    // Slider Values (0.0 to 1.0)
+    let sliderFoldVal = 0.5;
+    let sliderFaultVal = 0.5;
+    let sliderVolcanoVal = 0.5;
+
+    // Speech Synthesizer
+    let speechSynth = window.speechSynthesis;
+    let currentUtterance = null;
+
+    // Three.js Core Variables
+    let scene, camera, renderer, controls;
+    let foldMeshGroup, faultMeshGroup, volcanoMeshGroup;
+    let magmaChamberMesh, magmaConduitMesh, lavaFlowMesh, volcanoConeMesh;
+    let ashParticles, sparkParticles, faultDustParticles;
+
+    function init3DScene() {
+      const container = document.getElementById('canvas-container');
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0b1120);
+      scene.fog = new THREE.FogExp2(0x0b1120, 0.018);
+
+      camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.set(0, 10, 22);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2 + 0.05;
+      controls.minDistance = 6;
+      controls.maxDistance = 50;
+      controls.target.set(0, 1, 0);
+
+      // Lighting Setup
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+      scene.add(ambientLight);
+
+      const sunLight = new THREE.DirectionalLight(0xfff7ed, 1.2);
+      sunLight.position.set(12, 22, 14);
+      sunLight.castShadow = true;
+      sunLight.shadow.mapSize.width = 2048;
+      sunLight.shadow.mapSize.height = 2048;
+      scene.add(sunLight);
+
+      const magmaLight = new THREE.PointLight(0xff3300, 2.5, 18);
+      magmaLight.position.set(0, -2.5, 0);
+      scene.add(magmaLight);
+
+      // Build Models for all 3 Modes
+      buildFoldModel();
+      buildFaultModel();
+      buildVolcanoModel();
+      buildParticleSystems();
+
+      // Set Initial Mode Visibility
+      updateModeVisibility();
+
+      window.addEventListener('resize', onWindowResize);
+      animate();
+    }
+
+    function buildFoldModel() {
+      foldMeshGroup = new THREE.Group();
+
+      // Build 4 procedural horizontal rock layers with sine-wave flex animation
+      const width = 16;
+      const depth = 8;
+      const xSegments = 64;
+      const zSegments = 16;
+
+      const layerConfigs = [
+        { name: 'GrassTop', color: 0x10b981, heightOffset: 1.8, thickness: 0.4 },
+        { name: 'Sandstone', color: 0xd97706, heightOffset: 1.2, thickness: 0.6 },
+        { name: 'Limestone', color: 0x0284c7, heightOffset: 0.4, thickness: 0.8 },
+        { name: 'BasaltBase', color: 0x334155, heightOffset: -0.6, thickness: 1.2 }
+      ];
+
+      foldMeshGroup.layersList = [];
+
+      layerConfigs.forEach((cfg) => {
+        const geo = new THREE.PlaneGeometry(width, depth, xSegments, zSegments);
+        geo.rotateX(-Math.PI / 2); // Lay flat on XZ plane
+
+        const mat = new THREE.MeshStandardMaterial({
+          color: cfg.color,
+          roughness: 0.8,
+          side: THREE.DoubleSide
+        });
+
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.y = cfg.heightOffset;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.cfg = cfg;
+
+        foldMeshGroup.add(mesh);
+        foldMeshGroup.layersList.push(mesh);
+      });
+
+      // Bottom Mantle Base Block
+      const mantleGeo = new THREE.BoxGeometry(width, 2.5, depth);
+      const mantleMat = new THREE.MeshStandardMaterial({ color: 0x27140e, roughness: 0.9 });
+      const mantleMesh = new THREE.Mesh(mantleGeo, mantleMat);
+      mantleMesh.position.y = -2.2;
+      foldMeshGroup.add(mantleMesh);
+
+      scene.add(foldMeshGroup);
+      updateFoldDeformation();
+    }
+
+    /* Deform Fold Layers using Sine Waves based on slider value */
+    function updateFoldDeformation() {
+      if (!foldMeshGroup || !foldMeshGroup.layersList) return;
+
+      const comp = sliderFoldVal; // 0.0 to 1.0
+      const amp1 = 1.8 * comp;
+      const amp2 = 0.8 * comp;
+
+      foldMeshGroup.layersList.forEach((mesh) => {
+        const posAttr = mesh.geometry.attributes.position;
+        for (let i = 0; i < posAttr.count; i++) {
+          const x = posAttr.getX(i);
+          const z = posAttr.getZ(i);
+
+          // Calculate height displacement using sine equation
+          const wave = Math.sin(x * 0.5) * amp1 + Math.sin(x * 1.2 + z * 0.3) * amp2;
+          posAttr.setY(i, wave);
+        }
+        posAttr.needsUpdate = true;
+        mesh.geometry.computeVertexNormals();
+      });
+
+      // Update Hotspot pins for Fold mode
+      if (MODE_DATA.fold.hotspots) {
+        MODE_DATA.fold.hotspots[0].pos.set(-3.0, 1.8 + 1.8 * comp, 0); // Anticline peak
+        MODE_DATA.fold.hotspots[1].pos.set(0.0, 1.8 - 1.2 * comp, 0);  // Syncline trough
+        MODE_DATA.fold.hotspots[2].pos.set(3.0, 1.8 + 1.5 * comp, 0);  // Secondary Anticline
+      }
+    }
+
+    function buildFaultModel() {
+      faultMeshGroup = new THREE.Group();
+
+      // Create 3 displaced geological blocks along fault planes
+      // Block 1: Left Block (Static / Slight sink)
+      // Block 2: Center Block (Horst / Địa lũy - Rises UP)
+      // Block 3: Right Block (Graben / Địa hào - Drops DOWN)
+
+      const blockMat1 = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.8 });
+      const blockMatCenter = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.7 });
+      const blockMatRight = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.85 });
+
+      // Left Block Geometry
+      const leftGeo = new THREE.BoxGeometry(4.5, 4.0, 8);
+      const leftMesh = new THREE.Mesh(leftGeo, blockMat1);
+      leftMesh.position.set(-5.5, 0.5, 0);
+      leftMesh.castShadow = true;
+      faultMeshGroup.add(leftMesh);
+      faultMeshGroup.leftMesh = leftMesh;
+
+      // Center Horst Block Geometry (Địa lũy)
+      const centerGeo = new THREE.BoxGeometry(5.0, 4.2, 8);
+      const centerMesh = new THREE.Mesh(centerGeo, blockMatCenter);
+      centerMesh.position.set(0, 0.5, 0);
+      centerMesh.castShadow = true;
+      faultMeshGroup.add(centerMesh);
+      faultMeshGroup.centerMesh = centerMesh;
+
+      // Right Graben Block Geometry (Địa hào)
+      const rightGeo = new THREE.BoxGeometry(4.5, 4.0, 8);
+      const rightMesh = new THREE.Mesh(rightGeo, blockMatRight);
+      rightMesh.position.set(5.5, 0.5, 0);
+      rightMesh.castShadow = true;
+      faultMeshGroup.add(rightMesh);
+      faultMeshGroup.rightMesh = rightMesh;
+
+      // Add Top Soil Grass Cap on center block
+      const capGeo = new THREE.BoxGeometry(5.0, 0.3, 8);
+      const capMat = new THREE.MeshStandardMaterial({ color: 0x10b981 });
+      const capMesh = new THREE.Mesh(capGeo, capMat);
+      capMesh.position.y = 2.2;
+      centerMesh.add(capMesh);
+
+      // Fault Plane Scarp visual overlays (Reddish exposed rock face)
+      const faultScarpGeo = new THREE.PlaneGeometry(0.1, 4.0);
+      const faultScarpMat = new THREE.MeshStandardMaterial({ color: 0xef4444, side: THREE.DoubleSide, roughness: 0.5 });
+      const scarpMeshLeft = new THREE.Mesh(faultScarpGeo, faultScarpMat);
+      scarpMeshLeft.position.set(-2.5, 0, 0);
+      scarpMeshLeft.rotation.y = Math.PI / 2;
+      centerMesh.add(scarpMeshLeft);
+
+      scene.add(faultMeshGroup);
+      updateFaultDeformation();
+    }
+
+    /* Adjust Fault Block positions according to slider value */
+    function updateFaultDeformation() {
+      if (!faultMeshGroup || !faultMeshGroup.centerMesh) return;
+
+      const intensity = sliderFaultVal; // 0.0 to 1.0
+
+      // Center Horst block moves UP
+      faultMeshGroup.centerMesh.position.y = 0.5 + intensity * 2.2;
+
+      // Right Graben block moves DOWN
+      faultMeshGroup.rightMesh.position.y = 0.5 - intensity * 1.8;
+
+      // Left block slight drop
+      faultMeshGroup.leftMesh.position.y = 0.5 - intensity * 0.5;
+
+      // Update Hotspot positions for Fault mode
+      if (MODE_DATA.fault.hotspots) {
+        MODE_DATA.fault.hotspots[0].pos.set(0.0, 2.6 + intensity * 2.2, 0); // Horst peak
+        MODE_DATA.fault.hotspots[1].pos.set(5.5, 2.2 - intensity * 1.8, 0); // Graben floor
+        MODE_DATA.fault.hotspots[2].pos.set(-2.5, 0.5 + intensity * 1.1, 2.0); // Fault plane
+        MODE_DATA.fault.hotspots[3].pos.set(2.7, 1.0 + intensity * 0.2, 2.0); // Fault scarp
+      }
+    }
+
+    function buildVolcanoModel() {
+      volcanoMeshGroup = new THREE.Group();
+
+      // Base Terrain Box
+      const baseGeo = new THREE.BoxGeometry(16, 2.0, 8);
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 });
+      const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+      baseMesh.position.y = -1.0;
+      volcanoMeshGroup.add(baseMesh);
+
+      // Underground Magma Chamber (Glowing Sphere)
+      const chamberGeo = new THREE.SphereGeometry(2.2, 32, 32);
+      const chamberMat = new THREE.MeshStandardMaterial({
+        color: 0xff3300,
+        emissive: 0xff2200,
+        emissiveIntensity: 0.8,
+        roughness: 0.2
+      });
+      magmaChamberMesh = new THREE.Mesh(chamberGeo, chamberMat);
+      magmaChamberMesh.position.set(0, -2.5, 0);
+      volcanoMeshGroup.add(magmaChamberMesh);
+
+      // Magma Conduit Pipe
+      const conduitGeo = new THREE.CylinderGeometry(0.6, 1.2, 4.5, 16);
+      const conduitMat = new THREE.MeshStandardMaterial({ color: 0xd97706, emissive: 0xb45309, emissiveIntensity: 0.6 });
+      magmaConduitMesh = new THREE.Mesh(conduitGeo, conduitMat);
+      magmaConduitMesh.position.set(0, 0.2, 0);
+      volcanoMeshGroup.add(magmaConduitMesh);
+
+      // Stratovolcano Cone (Scales height with magma pressure)
+      const volcanoGeo = new THREE.ConeGeometry(5.2, 4.8, 32, 1, true); // Open bottom
+      const volcanoMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.85 });
+      volcanoConeMesh = new THREE.Mesh(volcanoGeo, volcanoMat);
+      volcanoConeMesh.position.set(0, 2.4, 0);
+      volcanoConeMesh.castShadow = true;
+      volcanoMeshGroup.add(volcanoConeMesh);
+
+      // Volcano Lava Stream Flow
+      const lavaPoints = [
+        new THREE.Vector3(0, 4.5, 0),
+        new THREE.Vector3(1.2, 3.2, 1.0),
+        new THREE.Vector3(2.2, 2.0, 1.5),
+        new THREE.Vector3(3.2, 0.2, 2.2)
+      ];
+      const lavaCurve = new THREE.CatmullRomCurve3(lavaPoints);
+      const lavaGeo = new THREE.TubeGeometry(lavaCurve, 20, 0.3, 8, false);
+      const lavaMat = new THREE.MeshStandardMaterial({ color: 0xff4500, emissive: 0xff2200, emissiveIntensity: 1.0 });
+      lavaFlowMesh = new THREE.Mesh(lavaGeo, lavaMat);
+      volcanoMeshGroup.add(lavaFlowMesh);
+
+      scene.add(volcanoMeshGroup);
+      updateVolcanoDeformation();
+    }
+
+    /* Adjust Volcano Cone scale & lava intensity based on slider value */
+    function updateVolcanoDeformation() {
+      if (!volcanoConeMesh) return;
+
+      const press = sliderVolcanoVal; // 0.0 to 1.0
+
+      // Cone height scales up as lava accumulates
+      volcanoConeMesh.scale.set(0.8 + press * 0.4, 0.5 + press * 0.7, 0.8 + press * 0.4);
+      volcanoConeMesh.position.y = (4.8 * (0.5 + press * 0.7)) / 2;
+
+      // Lava flow emissive glow
+      if (lavaFlowMesh) {
+        lavaFlowMesh.material.emissiveIntensity = 0.3 + press * 0.9;
+        lavaFlowMesh.scale.set(1, 0.2 + press * 0.8, 1);
+      }
+
+      // Hotspot positions update
+      if (MODE_DATA.volcano.hotspots) {
+        const topY = 4.8 * (0.5 + press * 0.7);
+        MODE_DATA.volcano.hotspots[0].pos.set(0.0, topY, 0); // Crater
+        MODE_DATA.volcano.hotspots[1].pos.set(2.2, topY * 0.5, 1.5); // Lava stream
+      }
+    }
+
+    function buildParticleSystems() {
+      // 1. Ash Particles
+      const ashCount = 250;
+      const ashGeo = new THREE.BufferGeometry();
+      const ashPos = new Float32Array(ashCount * 3);
+
+      for (let i = 0; i < ashCount * 3; i += 3) {
+        ashPos[i] = (Math.random() - 0.5) * 3.0;
+        ashPos[i + 1] = 4.5 + Math.random() * 5.0;
+        ashPos[i + 2] = (Math.random() - 0.5) * 3.0;
+      }
+      ashGeo.setAttribute('position', new THREE.BufferAttribute(ashPos, 3));
+      const ashMat = new THREE.PointsMaterial({
+        color: 0x64748b,
+        size: 0.35,
+        transparent: true,
+        opacity: 0.6
+      });
+      ashParticles = new THREE.Points(ashGeo, ashMat);
+      scene.add(ashParticles);
+
+      // 2. Fire Sparks
+      const sparkCount = 100;
+      const sparkGeo = new THREE.BufferGeometry();
+      const sparkPos = new Float32Array(sparkCount * 3);
+
+      for (let i = 0; i < sparkCount * 3; i += 3) {
+        sparkPos[i] = (Math.random() - 0.5) * 1.5;
+        sparkPos[i + 1] = 4.0 + Math.random() * 3.0;
+        sparkPos[i + 2] = (Math.random() - 0.5) * 1.5;
+      }
+      sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+      const sparkMat = new THREE.PointsMaterial({
+        color: 0xff4500,
+        size: 0.2,
+        transparent: true,
+        opacity: 0.9
+      });
+      sparkParticles = new THREE.Points(sparkGeo, sparkMat);
+      scene.add(sparkParticles);
+    }
+
+    function switchMode(modeKey) {
+      if (!MODE_DATA[modeKey]) return;
+      currentMode = modeKey;
+
+      updateModeVisibility();
+      renderUIControls();
+      renderHotspotBadges();
+      renderRightSidebarKnowledge();
+
+      const m = MODE_DATA[currentMode];
+      animateCameraTo(m.defaultCamPos, m.defaultTarget);
+
+      if (voiceEnabled && isNarrationPlaying) {
+        speakNarrationText(m.subtitles[0]);
+      }
+    }
+
+    function updateModeVisibility() {
+      if (foldMeshGroup) foldMeshGroup.visible = (currentMode === 'fold');
+      if (faultMeshGroup) faultMeshGroup.visible = (currentMode === 'fault');
+      if (volcanoMeshGroup) volcanoMeshGroup.visible = (currentMode === 'volcano');
+      if (ashParticles) ashParticles.visible = (currentMode === 'volcano');
+      if (sparkParticles) sparkParticles.visible = (currentMode === 'volcano');
+
+      // Update Top Nav Button Styling
+      ['fold', 'fault', 'volcano'].forEach((k) => {
+        const topBtn = document.getElementById(`top-tab-${k}`);
+        const mobBtn = document.getElementById(`mob-tab-${k}`);
+        const activeClass = `tab-active-${k}`;
+
+        if (topBtn) {
+          topBtn.className = (k === currentMode)
+            ? `px-3 py-1.5 rounded-lg border font-bold transition flex items-center gap-1.5 ${activeClass}`
+            : 'px-3 py-1.5 rounded-lg border border-transparent text-slate-400 hover:text-white transition flex items-center gap-1.5';
+        }
+        if (mobBtn) {
+          mobBtn.className = (k === currentMode)
+            ? `flex-1 py-1.5 rounded-lg font-bold text-center transition ${activeClass}`
+            : 'flex-1 py-1.5 rounded-lg text-slate-400 text-center transition';
+        }
+      });
+    }
+
+    function renderUIControls() {
+      const container = document.getElementById('sliders-container');
+      container.innerHTML = '';
+
+      const modeObj = MODE_DATA[currentMode];
+      document.getElementById('mode-title').innerText = modeObj.title;
+      document.getElementById('mode-subtitle').innerText = modeObj.subtitle;
+
+      const badgeIcon = document.getElementById('mode-icon-badge');
+      if (currentMode === 'fold') {
+        badgeIcon.className = 'w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-500/30';
+        badgeIcon.innerHTML = '<i class="fa-solid fa-water"></i>';
+      } else if (currentMode === 'fault') {
+        badgeIcon.className = 'w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-500/30';
+        badgeIcon.innerHTML = '<i class="fa-solid fa-arrows-up-down"></i>';
+      } else {
+        badgeIcon.className = 'w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center font-bold text-sm border border-red-500/30';
+        badgeIcon.innerHTML = '<i class="fa-solid fa-volcano"></i>';
+      }
+
+      // Inject Sliders
+      if (currentMode === 'fold') {
+        container.innerHTML = `
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="text-slate-300 font-medium">Lực nén ép mảng kiến tạo:</span>
+              <span id="val-fold" class="font-mono text-blue-400 font-bold">${Math.round(sliderFoldVal * 100)}%</span>
+            </div>
+            <input type="range" min="0" max="1" step="0.01" value="${sliderFoldVal}" oninput="onSliderChange('fold', this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+            <p class="text-[10px] text-slate-400 mt-1">Tăng lực nén để thấy rõ các Nếp nhô (Anticline) và Nếp lõm (Syncline) nhấp nhô.</p>
+          </div>
+        `;
+      } else if (currentMode === 'fault') {
+        container.innerHTML = `
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="text-slate-300 font-medium">Cường độ Đứt gãy & Trượt:</span>
+              <span id="val-fault" class="font-mono text-amber-400 font-bold">${Math.round(sliderFaultVal * 100)}%</span>
+            </div>
+            <input type="range" min="0" max="1" step="0.01" value="${sliderFaultVal}" oninput="onSliderChange('fault', this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
+            <p class="text-[10px] text-slate-400 mt-1">Kéo thanh trượt để nâng trồi Địa lũy (Horst) và hạ sụt Địa hào (Graben).</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="text-slate-300 font-medium">Áp suất Magma & Phun trào:</span>
+              <span id="val-volcano" class="font-mono text-red-400 font-bold">${Math.round(sliderVolcanoVal * 100)}%</span>
+            </div>
+            <input type="range" min="0" max="1" step="0.01" value="${sliderVolcanoVal}" oninput="onSliderChange('volcano', this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-red-500">
+            <p class="text-[10px] text-slate-400 mt-1">Gia tăng áp suất để bồi đắp ngọn núi lửa nón và phun tràn dung nham.</p>
+          </div>
+        `;
+      }
+    }
+
+    function onSliderChange(mode, val) {
+      const numVal = parseFloat(val);
+      if (mode === 'fold') {
+        sliderFoldVal = numVal;
+        document.getElementById('val-fold').innerText = `${Math.round(numVal * 100)}%`;
+        updateFoldDeformation();
+      } else if (mode === 'fault') {
+        sliderFaultVal = numVal;
+        document.getElementById('val-fault').innerText = `${Math.round(numVal * 100)}%`;
+        updateFaultDeformation();
+      } else if (mode === 'volcano') {
+        sliderVolcanoVal = numVal;
+        document.getElementById('val-volcano').innerText = `${Math.round(numVal * 100)}%`;
+        updateVolcanoDeformation();
+      }
+
+      // Update subtitle dynamic context text
+      const m = MODE_DATA[mode];
+      let subIdx = 0;
+      if (numVal > 0.35 && numVal <= 0.7) subIdx = 1;
+      else if (numVal > 0.7) subIdx = 2;
+
+      updateSubtitleBannerText(m.subtitles[subIdx]);
+    }
+
+    function renderHotspotBadges() {
+      const container = document.getElementById('hotspots-layer');
+      container.innerHTML = '';
+
+      const currentHotspots = MODE_DATA[currentMode].hotspots || [];
+
+      currentHotspots.forEach((hs) => {
+        const badgeEl = document.createElement('div');
+        badgeEl.id = `hotspot-badge-${hs.id}`;
+        badgeEl.className = 'hotspot-badge opacity-0 flex flex-col items-center cursor-pointer group';
+        badgeEl.onclick = () => focusHotspot(hs);
+
+        const colorClass = currentMode === 'fold'
+          ? 'border-blue-500/80 bg-blue-950/90 text-blue-200'
+          : currentMode === 'fault'
+            ? 'border-amber-500/80 bg-amber-950/90 text-amber-200'
+            : 'border-red-500/80 bg-red-950/90 text-red-200';
+
+        badgeEl.innerHTML = `
+          <div class="glass-card px-2.5 py-1 rounded-xl border ${colorClass} shadow-xl flex items-center gap-1.5 group-hover:scale-105 transition-transform duration-200">
+            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+            <div class="flex flex-col text-left">
+              <span class="font-bold text-[11px] whitespace-nowrap text-white">${hs.title}</span>
+              <span class="text-[9px] text-slate-300 font-medium whitespace-nowrap opacity-90">${hs.type}</span>
+            </div>
+          </div>
+          <div class="hotspot-pointer"></div>
+        `;
+
+        container.appendChild(badgeEl);
+        hs.element = badgeEl;
+      });
+    }
+
+    function updateHotspotPositions() {
+      if (!camera) return;
+      const currentHotspots = MODE_DATA[currentMode].hotspots || [];
+
+      currentHotspots.forEach((hs) => {
+        if (!hs.element) return;
+
+        const tempV = hs.pos.clone();
+        tempV.project(camera);
+
+        if (tempV.z > 1) {
+          hs.element.style.opacity = '0';
+          return;
+        }
+
+        const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (-(tempV.y * 0.5) + 0.5) * window.innerHeight;
+
+        hs.element.style.transform = `translate(-50%, -100%) translate(${x}px, ${y}px)`;
+        hs.element.style.opacity = '1';
+      });
+    }
+
+    function focusHotspot(hs) {
+      const targetCam = hs.pos.clone().add(new THREE.Vector3(0, 4, 10));
+      animateCameraTo(targetCam, hs.pos);
+      updateSubtitleBannerText(`[QUAN SÁT]: ${hs.title} - ${hs.type}`);
+    }
+
+    function renderRightSidebarKnowledge() {
+      const m = MODE_DATA[currentMode];
+
+      document.getElementById('kp-badge').innerText = m.badge;
+      document.getElementById('kp-badge').className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase border ${m.accentClass}`;
+      document.getElementById('kp-title').innerText = m.title;
+      document.getElementById('kp-nature').innerText = m.nature;
+      document.getElementById('kp-landform').innerText = m.landforms;
+      document.getElementById('kp-example').innerText = m.example;
+
+      // Render button tags for hotspots
+      const btnContainer = document.getElementById('hotspots-list-buttons');
+      btnContainer.innerHTML = '';
+
+      m.hotspots.forEach((hs) => {
+        const btn = document.createElement('button');
+        btn.className = 'px-2 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-xs text-slate-200 border border-slate-700 transition flex items-center gap-1';
+        btn.onclick = () => focusHotspot(hs);
+        btn.innerHTML = `<i class="fa-solid fa-crosshairs text-indigo-400 text-[10px]"></i> ${hs.title}`;
+        btnContainer.appendChild(btn);
+      });
+
+      updateSubtitleBannerText(m.subtitles[0]);
+    }
+
+    function updateSubtitleBannerText(text) {
+      const m = MODE_DATA[currentMode];
+
+      document.getElementById('sub-tag').innerText = `[${m.badge.split(' ')[0]}]`;
+      document.getElementById('sub-tag').className = `px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider border ${m.accentClass}`;
+      document.getElementById('sub-process-title').innerText = m.title;
+      document.getElementById('sub-text').innerText = `"${text}"`;
+
+      document.getElementById('sub-accent-bar').style.backgroundColor = m.color;
+
+      if (voiceEnabled && isNarrationPlaying) {
+        speakNarrationText(text);
+      }
+    }
+
+    function speakNarrationText(text) {
+      if (!speechSynth) return;
+      speechSynth.cancel();
+
+      const cleanText = text.replace(/\[.*?\]/g, '').trim();
+      currentUtterance = new SpeechSynthesisUtterance(cleanText);
+      currentUtterance.lang = 'vi-VN';
+      currentUtterance.rate = 0.95;
+
+      const waveGraphic = document.getElementById('audio-wave-graphic');
+      currentUtterance.onstart = () => { if (waveGraphic) waveGraphic.classList.remove('hidden'); };
+      currentUtterance.onend = () => { if (waveGraphic) waveGraphic.classList.add('hidden'); };
+
+      speechSynth.speak(currentUtterance);
+    }
+
+    function prevMode() {
+      const keys = ['fold', 'fault', 'volcano'];
+      let idx = keys.indexOf(currentMode) - 1;
+      if (idx < 0) idx = keys.length - 1;
+      switchMode(keys[idx]);
+    }
+
+    function nextMode() {
+      const keys = ['fold', 'fault', 'volcano'];
+      let idx = (keys.indexOf(currentMode) + 1) % keys.length;
+      switchMode(keys[idx]);
+    }
+
+    function toggleAutoTour() {
+      isAutoTouring = !isAutoTouring;
+      const btn = document.getElementById('btn-auto-tour');
+      const icon = document.getElementById('icon-tour');
+
+      if (isAutoTouring) {
+        btn.className = 'px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition border border-amber-400 shadow-md';
+        icon.className = 'fa-solid fa-pause';
+        runAutoTourStep();
+      } else {
+        btn.className = 'px-3 py-1.5 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-xs font-semibold flex items-center gap-2 transition border border-indigo-400/30 shadow-md';
+        icon.className = 'fa-solid fa-play';
+        clearTimeout(autoTourTimer);
+      }
+    }
+
+    function runAutoTourStep() {
+      if (!isAutoTouring) return;
+      nextMode();
+      autoTourTimer = setTimeout(runAutoTourStep, 8000);
+    }
+
+    function toggleSubtitles() {
+      subtitlesEnabled = !subtitlesEnabled;
+      document.getElementById('subtitle-banner-container').style.display = subtitlesEnabled ? 'block' : 'none';
+      document.getElementById('label-sub').innerText = subtitlesEnabled ? 'Phụ Đề' : 'Hiện Phụ Đề';
+    }
+
+    function toggleVoiceSpeech() {
+      voiceEnabled = !voiceEnabled;
+      const label = document.getElementById('label-voice');
+      const icon = document.getElementById('icon-voice');
+
+      if (voiceEnabled) {
+        label.innerText = 'Giọng đọc';
+        icon.className = 'fa-solid fa-volume-high text-amber-400';
+        speakNarrationText(MODE_DATA[currentMode].subtitles[0]);
+      } else {
+        label.innerText = 'Tắt tiếng';
+        icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+        if (speechSynth) speechSynth.cancel();
+      }
+    }
+
+    function togglePlayPauseNarration() {
+      isNarrationPlaying = !isNarrationPlaying;
+      document.getElementById('sub-play-label').innerText = isNarrationPlaying ? 'Tạm dừng' : 'Phát tiếp';
+      document.getElementById('sub-play-icon').className = isNarrationPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+
+      if (!isNarrationPlaying && speechSynth) {
+        speechSynth.cancel();
+      }
+    }
+
+    function toggleXRayMode() {
+      isXRayMode = !isXRayMode;
+      const btn = document.getElementById('btn-xray');
+
+      const applyOpacity = (group, op) => {
+        if (!group) return;
+        group.traverse((child) => {
+          if (child.isMesh && child.material) {
+            child.material.transparent = isXRayMode;
+            child.material.opacity = isXRayMode ? op : 1.0;
+          }
+        });
+      };
+
+      applyOpacity(foldMeshGroup, 0.45);
+      applyOpacity(faultMeshGroup, 0.45);
+      applyOpacity(volcanoConeMesh, 0.35);
+
+      btn.className = isXRayMode
+        ? 'px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-xs font-bold flex items-center gap-2 transition border border-cyan-400 shadow-lg'
+        : 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold flex items-center gap-2 transition border border-slate-700 text-slate-200';
+    }
+
+    function toggleAnimLoop() {
+      isAnimLooping = !isAnimLooping;
+      document.getElementById('label-play-anim').innerText = isAnimLooping ? 'Dừng biến dạng' : 'Tự động biến dạng';
+      document.getElementById('icon-play-anim').className = isAnimLooping ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+    }
+
+    function resetSliders() {
+      sliderFoldVal = 0.5;
+      sliderFaultVal = 0.5;
+      sliderVolcanoVal = 0.5;
+
+      onSliderChange('fold', 0.5);
+      onSliderChange('fault', 0.5);
+      onSliderChange('volcano', 0.5);
+      renderUIControls();
+    }
+
+    function resetCameraView() {
+      const m = MODE_DATA[currentMode];
+      animateCameraTo(m.defaultCamPos, m.defaultTarget);
+    }
+
+    function animateCameraTo(targetCamPos, targetLookAt) {
+      const duration = 1200;
+      const startCamPos = camera.position.clone();
+      const startLookAt = controls.target.clone();
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1.0);
+        const ease = 1 - Math.pow(1 - progress, 3);
+
+        camera.position.lerpVectors(startCamPos, targetCamPos, ease);
+        controls.target.lerpVectors(startLookAt, targetLookAt, ease);
+        controls.update();
+
+        if (progress < 1.0) {
+          requestAnimationFrame(step);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('canvas-container');
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const time = performance.now() * 0.001;
+
+      // Automatic Deformation Slider Oscillation if playing
+      if (isAnimLooping) {
+        let currentVal = currentMode === 'fold' ? sliderFoldVal : currentMode === 'fault' ? sliderFaultVal : sliderVolcanoVal;
+        currentVal += 0.005 * animLoopDir;
+
+        if (currentVal >= 1.0) {
+          currentVal = 1.0;
+          animLoopDir = -1;
+        } else if (currentVal <= 0.0) {
+          currentVal = 0.0;
+          animLoopDir = 1;
+        }
+
+        onSliderChange(currentMode, currentVal);
+        const sliderInput = document.querySelector('#sliders-container input[type="range"]');
+        if (sliderInput) sliderInput.value = currentVal;
+      }
+
+      // Particle Animations
+      if (ashParticles && currentMode === 'volcano') {
+        const pos = ashParticles.geometry.attributes.position.array;
+        for (let i = 1; i < pos.length; i += 3) {
+          pos[i] += 0.04 * (0.5 + sliderVolcanoVal);
+          if (pos[i] > 9.5) pos[i] = 4.5;
+        }
+        ashParticles.geometry.attributes.position.needsUpdate = true;
+      }
+
+      if (sparkParticles && currentMode === 'volcano') {
+        const pos = sparkParticles.geometry.attributes.position.array;
+        for (let i = 1; i < pos.length; i += 3) {
+          pos[i] += 0.08 * (0.5 + sliderVolcanoVal);
+          if (pos[i] > 7.0) pos[i] = 4.0;
+        }
+        sparkParticles.geometry.attributes.position.needsUpdate = true;
+      }
+
+      // Pulse Underground Magma
+      if (magmaChamberMesh) {
+        magmaChamberMesh.material.emissiveIntensity = 0.6 + Math.sin(time * 3) * 0.3;
+      }
+
+      controls.update();
+      updateHotspotPositions();
+
+      renderer.render(scene, camera);
+    }
+
+    /* Window Load Handler */
+    window.onload = function() {
+      init3DScene();
+      switchMode('fold');
+    };
+  </script>
+</body>
+</html>

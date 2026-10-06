@@ -1,0 +1,2533 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 19 - Thủy quyển và vòng tuần hoàn lớn của nước</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#061525;
+    --bg2:#091c30;
+    --card:#0d243b;
+    --card2:#102b44;
+    --line:#244762;
+    --text:#eaf6ff;
+    --muted:#9db6c9;
+    --blue:#45aef0;
+    --cyan:#43d8ef;
+    --green:#4dd6a2;
+    --yellow:#ffd166;
+    --orange:#ff9f68;
+    --red:#ff7086;
+    --purple:#a98cff;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:var(--text);
+    line-height:1.65;
+    background:
+        radial-gradient(circle at 10% 0%,rgba(50,170,230,.09),transparent 30%),
+        radial-gradient(circle at 90% 15%,rgba(45,100,210,.08),transparent 28%),
+        linear-gradient(145deg,#05111f,#081b2d 50%,#061525);
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+.container{
+    width:min(1180px,92%);
+    margin:auto;
+}
+
+/* HEADER */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(5,16,29,.92);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(90,160,210,.16);
+}
+
+.nav{
+    min-height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:17px;
+    font-weight:800;
+}
+
+.logo-icon{
+    width:43px;
+    height:43px;
+    border-radius:13px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#1474bd,#20b8c8);
+    box-shadow:0 8px 28px rgba(20,150,210,.2);
+}
+
+.home-btn{
+    padding:10px 17px;
+    border-radius:12px;
+    border:1px solid #2a4d68;
+    background:#0e263e;
+    color:#dff3ff;
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#143652;
+    transform:translateY(-1px);
+}
+
+/* HERO */
+
+.hero{
+    padding:55px 0 35px;
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:22px;
+}
+
+.hero-main{
+    padding:34px;
+    border-radius:25px;
+    border:1px solid #214762;
+    background:
+        linear-gradient(145deg,rgba(17,59,88,.65),rgba(7,28,47,.9));
+    box-shadow:0 22px 55px rgba(0,0,0,.25);
+}
+
+.badge{
+    display:inline-flex;
+    padding:7px 12px;
+    border-radius:999px;
+    background:rgba(67,216,239,.1);
+    border:1px solid rgba(67,216,239,.25);
+    color:#83e8f6;
+    font-size:13px;
+    font-weight:800;
+    margin-bottom:17px;
+}
+
+h1{
+    font-size:clamp(28px,4vw,47px);
+    line-height:1.15;
+    margin-bottom:15px;
+}
+
+.hero-main p{
+    color:var(--muted);
+    max-width:760px;
+}
+
+.hero-side{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px;
+}
+
+.stat{
+    min-height:130px;
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:rgba(12,35,56,.85);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.stat-icon{
+    font-size:29px;
+    margin-bottom:6px;
+}
+
+.stat strong{
+    font-size:25px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* GENERAL */
+
+section{
+    padding:27px 0;
+}
+
+.section-title{
+    margin-bottom:18px;
+}
+
+.section-title h2{
+    font-size:27px;
+    margin-bottom:5px;
+}
+
+.section-title p{
+    color:var(--muted);
+}
+
+/* OBJECTIVES */
+
+.objectives{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.objective{
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:var(--card);
+}
+
+.objective-number{
+    width:35px;
+    height:35px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:#123b5b;
+    color:#79e2f5;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.objective p{
+    color:#c9dbe9;
+}
+
+/* WATER COMPOSITION */
+
+.composition{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.water-card{
+    padding:25px;
+    border:1px solid var(--line);
+    border-radius:21px;
+    background:linear-gradient(145deg,#102a43,#0c2135);
+}
+
+.water-card h3{
+    margin-bottom:15px;
+}
+
+.percent-box{
+    height:28px;
+    display:flex;
+    overflow:hidden;
+    border-radius:999px;
+    background:#081827;
+    margin:15px 0;
+}
+
+.percent-salt{
+    width:97.5%;
+    background:linear-gradient(90deg,#1e79b8,#258fce);
+}
+
+.percent-fresh{
+    width:2.5%;
+    min-width:8px;
+    background:#45d7c1;
+}
+
+.percent-labels{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    color:#b8cedd;
+    font-size:13px;
+}
+
+.fresh-list{
+    display:grid;
+    gap:10px;
+    margin-top:15px;
+}
+
+.fresh-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 14px;
+    border-radius:12px;
+    background:#0a1d30;
+    border:1px solid #1c3a51;
+}
+
+.fresh-item span{
+    color:#afc4d4;
+}
+
+.fresh-item strong{
+    color:#76e1d2;
+}
+
+/* COMPONENTS */
+
+.components{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+}
+
+.component{
+    min-height:155px;
+    padding:20px 16px;
+    text-align:center;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:#0e263d;
+}
+
+.component-icon{
+    font-size:38px;
+    margin-bottom:8px;
+}
+
+.component strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.component span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* SIMULATION */
+
+.simulation-section{
+    padding-top:38px;
+}
+
+.simulation-box{
+    position:relative;
+    overflow:hidden;
+    border-radius:27px;
+    border:1px solid #245674;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(46,169,221,.12),transparent 45%),
+        linear-gradient(145deg,#0a2239,#071a2c);
+    box-shadow:0 24px 65px rgba(0,0,0,.28);
+}
+
+.simulation-top{
+    padding:27px 28px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    border-bottom:1px solid #1d3e57;
+}
+
+.simulation-title{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.sim-icon{
+    width:51px;
+    height:51px;
+    border-radius:15px;
+    display:grid;
+    place-items:center;
+    font-size:27px;
+    background:#113c59;
+}
+
+.simulation-title h3{
+    font-size:23px;
+}
+
+.simulation-title p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.sim-badge{
+    padding:8px 13px;
+    border-radius:999px;
+    color:#7de7f4;
+    background:rgba(67,216,239,.08);
+    border:1px solid rgba(67,216,239,.22);
+    font-size:12px;
+    font-weight:800;
+}
+
+.simulation-preview{
+    padding:27px;
+}
+
+.preview{
+    min-height:290px;
+    border-radius:20px;
+    border:1px dashed #315a74;
+    background:
+        radial-gradient(circle at 50% 25%,rgba(61,166,220,.09),transparent 30%),
+        #081b2d;
+    display:grid;
+    place-items:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.preview-sun{
+    position:absolute;
+    width:95px;
+    height:95px;
+    border-radius:50%;
+    right:9%;
+    top:15%;
+    background:radial-gradient(circle,#ffe9a2 0%,#ffc84d 45%,rgba(255,193,62,.15) 72%,transparent 73%);
+    filter:drop-shadow(0 0 20px rgba(255,202,83,.28));
+}
+
+.preview-cloud{
+    position:absolute;
+    left:12%;
+    top:23%;
+    font-size:55px;
+    opacity:.7;
+}
+
+.preview-earth{
+    position:absolute;
+    bottom:-35px;
+    width:260px;
+    height:140px;
+    border-radius:50% 50% 0 0;
+    background:
+        radial-gradient(circle at 50% 10%,#237db4,#12577e 58%,#0b3a58);
+    box-shadow:
+        inset 0 20px 30px rgba(60,180,230,.15),
+        0 -8px 30px rgba(43,157,213,.15);
+}
+
+.preview-arrow{
+    position:absolute;
+    color:#5ee2ef;
+    font-size:28px;
+    font-weight:900;
+}
+
+.arrow-a{
+    bottom:76px;
+    left:34%;
+    transform:rotate(-45deg);
+}
+
+.arrow-b{
+    left:48%;
+    top:45%;
+    transform:rotate(-65deg);
+}
+
+.arrow-c{
+    right:28%;
+    top:37%;
+    transform:rotate(35deg);
+}
+
+.preview-text{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    max-width:470px;
+    margin-top:-25px;
+}
+
+.preview-text strong{
+    display:block;
+    font-size:21px;
+    margin-bottom:6px;
+}
+
+.preview-text span{
+    color:#8faabd;
+    font-size:14px;
+}
+
+.sim-button-row{
+    display:flex;
+    justify-content:center;
+    margin-top:21px;
+}
+
+.sim-button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    padding:14px 24px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#1578b7,#159fae);
+    color:white;
+    font-weight:900;
+    border:1px solid rgba(91,224,239,.3);
+    box-shadow:0 10px 28px rgba(19,144,190,.16);
+    transition:.2s;
+}
+
+.sim-button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 34px rgba(19,144,190,.25);
+}
+
+.sim-note{
+    text-align:center;
+    color:#7897ad;
+    font-size:12px;
+    margin-top:10px;
+}
+
+/* WATER CYCLE */
+
+.cycle{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.cycle-card{
+    padding:20px 15px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:#0d243a;
+    text-align:center;
+}
+
+.cycle-number{
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    margin:0 auto 10px;
+    border-radius:50%;
+    background:#123c5a;
+    color:#6fe3f0;
+    font-weight:900;
+}
+
+.cycle-icon{
+    font-size:32px;
+    margin-bottom:7px;
+}
+
+.cycle-card strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.cycle-card span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* STATE CHANGE */
+
+.states{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.state{
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:#0d253d;
+}
+
+.state-icon{
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.state strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.state p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* WATER USE */
+
+.use-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.use-card{
+    padding:22px;
+    border-radius:19px;
+    border:1px solid var(--line);
+    background:linear-gradient(145deg,#102a42,#0b2034);
+}
+
+.use-icon{
+    font-size:35px;
+    margin-bottom:8px;
+}
+
+.use-card h3{
+    margin-bottom:6px;
+}
+
+.use-card p{
+    color:#a9bfd0;
+    font-size:14px;
+}
+
+/* IMPORTANT NOTE */
+
+.note{
+    margin-top:18px;
+    padding:18px 20px;
+    border-radius:17px;
+    border-left:4px solid #39c6dc;
+    background:rgba(48,176,207,.08);
+    color:#c7dce8;
+}
+
+.note strong{
+    color:#6ee0ee;
+}
+
+/* QUESTIONS */
+
+.question-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.question-card{
+    padding:21px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:#0d243b;
+}
+
+.question-card .q-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.question-card h3{
+    font-size:17px;
+    margin-bottom:7px;
+}
+
+.question-card p{
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* QUIZ */
+
+.quiz{
+    border:1px solid #234862;
+    border-radius:23px;
+    overflow:hidden;
+    background:#0b2136;
+}
+
+.quiz-top{
+    padding:20px;
+    background:#102a43;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.quiz-progress{
+    flex:1;
+    min-width:220px;
+}
+
+.progress-text{
+    display:flex;
+    justify-content:space-between;
+    color:#a9c0d1;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.progress-bar{
+    height:8px;
+    overflow:hidden;
+    border-radius:999px;
+    background:#071827;
+}
+
+.progress-fill{
+    width:0;
+    height:100%;
+    background:linear-gradient(90deg,#3cb9eb,#43d6ad);
+    transition:.3s;
+}
+
+.timer{
+    min-width:73px;
+    text-align:center;
+    padding:10px 13px;
+    border-radius:12px;
+    background:#091a2b;
+    border:1px solid #31516b;
+    color:#7de3f2;
+    font-weight:900;
+}
+
+.quiz-body{
+    padding:28px;
+}
+
+.quiz-start{
+    text-align:center;
+    padding:25px 10px;
+}
+
+.quiz-icon{
+    font-size:54px;
+    margin-bottom:8px;
+}
+
+.quiz-start p{
+    color:var(--muted);
+    max-width:650px;
+    margin:8px auto 20px;
+}
+
+.start-btn,
+.next-btn,
+.retry-btn,
+.finish-btn{
+    border:none;
+    cursor:pointer;
+    color:white;
+    font-weight:900;
+    border-radius:12px;
+}
+
+.start-btn{
+    padding:13px 23px;
+    background:linear-gradient(135deg,#167ebd,#1aa8ad);
+    font-size:15px;
+}
+
+.question-box{
+    display:none;
+}
+
+.question{
+    font-size:21px;
+    line-height:1.45;
+    margin-bottom:20px;
+}
+
+.answers{
+    display:grid;
+    gap:10px;
+}
+
+.answer{
+    width:100%;
+    text-align:left;
+    padding:14px 16px;
+    border-radius:13px;
+    border:1px solid #294b65;
+    background:#102a42;
+    color:#dceaf4;
+    cursor:pointer;
+    font-size:15px;
+    transition:.18s;
+}
+
+.answer:hover{
+    background:#153751;
+}
+
+.answer.correct{
+    background:rgba(65,213,163,.12);
+    border-color:#42d5a2;
+    color:#83e9c8;
+}
+
+.answer.wrong{
+    background:rgba(255,112,134,.12);
+    border-color:#ff7086;
+    color:#ff9aab;
+}
+
+.answer.disabled{
+    pointer-events:none;
+}
+
+.feedback{
+    display:none;
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:12px;
+    background:#091b2c;
+    border:1px solid #29485f;
+}
+
+.next-btn{
+    display:none;
+    margin-top:15px;
+    padding:11px 18px;
+    background:#176da4;
+}
+
+.result{
+    display:none;
+    text-align:center;
+    padding:25px 10px;
+}
+
+.result-score{
+    font-size:52px;
+    font-weight:900;
+    color:#70dff1;
+}
+
+.result p{
+    color:var(--muted);
+}
+
+.result-actions{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.retry-btn{
+    padding:12px 18px;
+    background:#1c638e;
+}
+
+.finish-btn{
+    padding:12px 18px;
+    background:#188d76;
+}
+
+/* MEMORY */
+
+.memory{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+}
+
+.memory-card{
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:#0e263d;
+    text-align:center;
+}
+
+.memory-card div{
+    font-size:31px;
+    margin-bottom:7px;
+}
+
+.memory-card strong{
+    display:block;
+    margin-bottom:4px;
+}
+
+.memory-card span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:35px;
+    padding:30px 0 50px;
+    border-top:1px solid #19384f;
+    text-align:center;
+    color:#718ba1;
+    font-size:13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .hero-grid{
+        grid-template-columns:1fr;
+    }
+
+    .composition{
+        grid-template-columns:1fr;
+    }
+
+    .components{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .cycle{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .states{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .use-grid{
+        grid-template-columns:1fr;
+    }
+
+    .memory{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:620px){
+
+    .hero{
+        padding-top:30px;
+    }
+
+    .hero-main{
+        padding:24px;
+    }
+
+    .hero-side{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .objectives,
+    .question-grid{
+        grid-template-columns:1fr;
+    }
+
+    .components{
+        grid-template-columns:1fr;
+    }
+
+    .cycle{
+        grid-template-columns:1fr;
+    }
+
+    .states{
+        grid-template-columns:1fr;
+    }
+
+    .memory{
+        grid-template-columns:1fr;
+    }
+
+    .simulation-preview{
+        padding:15px;
+    }
+
+    .preview{
+        min-height:270px;
+    }
+
+    .preview-earth{
+        width:210px;
+    }
+
+    .quiz-body{
+        padding:20px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header>
+
+<div class="container nav">
+
+    <div class="logo">
+        <div class="logo-icon">💧</div>
+        <span>HỌC LIỆU SỐ ĐỊA LÍ 6</span>
+    </div>
+
+    <a href="index.html" class="home-btn">
+        ⌂ Trang chủ
+    </a>
+
+</div>
+
+</header>
+
+
+<main>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="container hero-grid">
+
+    <div class="hero-main">
+
+        <div class="badge">
+            🌎 ĐỊA LÍ 6 • CHƯƠNG 5
+        </div>
+
+        <h1>
+            Bài 19<br>
+            <span style="color:#6fdef0">
+                Thủy quyển và vòng tuần hoàn lớn của nước
+            </span>
+        </h1>
+
+        <p>
+            Tìm hiểu lớp nước bao quanh Trái Đất, các dạng nước chủ yếu
+            và cách nước không ngừng vận động giữa đại dương, lục địa
+            và khí quyển.
+        </p>
+
+    </div>
+
+
+    <div class="hero-side">
+
+        <div class="stat">
+            <div class="stat-icon">🌊</div>
+            <strong>97,5%</strong>
+            <span>Nước mặn</span>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">💧</div>
+            <strong>2,5%</strong>
+            <span>Nước ngọt</span>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">☁️</div>
+            <strong>💨</strong>
+            <span>Hơi nước trong khí quyển</span>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">🔄</div>
+            <strong>∞</strong>
+            <span>Vòng tuần hoàn nước</span>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- OBJECTIVES -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🎯 Mục tiêu bài học</h2>
+
+        <p>
+            Sau bài học, học sinh có thể nhận biết thành phần của thủy quyển
+            và mô tả vòng tuần hoàn lớn của nước.
+        </p>
+
+    </div>
+
+
+    <div class="objectives">
+
+        <div class="objective">
+
+            <div class="objective-number">01</div>
+
+            <p>
+                <strong>Nhận biết thủy quyển</strong><br>
+                Kể tên được các thành phần chủ yếu của thủy quyển.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-number">02</div>
+
+            <p>
+                <strong>Hiểu về nước ngọt</strong><br>
+                Nêu được các dạng tồn tại của nước ngọt và tỉ lệ của từng dạng.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-number">03</div>
+
+            <p>
+                <strong>Mô tả vòng tuần hoàn lớn</strong><br>
+                Trình bày được quá trình nước vận động giữa đại dương,
+                lục địa và khí quyển.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-number">04</div>
+
+            <p>
+                <strong>Sử dụng và bảo vệ nước</strong><br>
+                Có ý thức sử dụng hợp lí và bảo vệ tài nguyên nước.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- THUY QUYEN -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🌊 1. Thủy quyển là gì?</h2>
+
+        <p>
+            Thủy quyển là toàn bộ lớp nước bao quanh Trái Đất,
+            nằm trên bề mặt và bên trong vỏ Trái Đất.
+        </p>
+
+    </div>
+
+
+    <div class="composition">
+
+        <div class="water-card">
+
+            <h3>💧 Thành phần nước trên Trái Đất</h3>
+
+            <div class="percent-box">
+                <div class="percent-salt"></div>
+                <div class="percent-fresh"></div>
+            </div>
+
+            <div class="percent-labels">
+
+                <span>
+                    🌊 Nước mặn: <strong>97,5%</strong>
+                </span>
+
+                <span>
+                    💧 Nước ngọt: <strong>2,5%</strong>
+                </span>
+
+            </div>
+
+            <div class="note">
+                <strong>Ghi nhớ:</strong>
+                Phần lớn nước trên Trái Đất là nước mặn.
+                Nước ngọt chỉ chiếm một tỉ lệ rất nhỏ.
+            </div>
+
+        </div>
+
+
+        <div class="water-card">
+
+            <h3>💦 Nước ngọt tồn tại dưới những dạng nào?</h3>
+
+            <div class="fresh-list">
+
+                <div class="fresh-item">
+                    <span>🧊 Băng</span>
+                    <strong>68,7%</strong>
+                </div>
+
+                <div class="fresh-item">
+                    <span>💧 Nước dưới đất</span>
+                    <strong>30,1%</strong>
+                </div>
+
+                <div class="fresh-item">
+                    <span>🏞️ Nước mặt và dạng khác</span>
+                    <strong>1,2%</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- COMPONENTS -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🗺️ Các thành phần chủ yếu của thủy quyển</h2>
+
+        <p>
+            Nước tồn tại ở nhiều nơi và dưới nhiều trạng thái khác nhau.
+        </p>
+
+    </div>
+
+
+    <div class="components">
+
+        <div class="component">
+            <div class="component-icon">🌊</div>
+            <strong>Đại dương và biển</strong>
+            <span>Kho chứa nước mặn lớn nhất trên Trái Đất.</span>
+        </div>
+
+        <div class="component">
+            <div class="component-icon">🏞️</div>
+            <strong>Sông, hồ, đầm lầy</strong>
+            <span>Nguồn nước trên bề mặt lục địa.</span>
+        </div>
+
+        <div class="component">
+            <div class="component-icon">💧</div>
+            <strong>Nước dưới đất</strong>
+            <span>Nước tồn tại trong các tầng đất và đá.</span>
+        </div>
+
+        <div class="component">
+            <div class="component-icon">🧊</div>
+            <strong>Tuyết và băng</strong>
+            <span>Nước tồn tại ở trạng thái rắn.</span>
+        </div>
+
+        <div class="component">
+            <div class="component-icon">☁️</div>
+            <strong>Hơi nước</strong>
+            <span>Nước tồn tại trong khí quyển.</span>
+        </div>
+
+        <div class="component">
+            <div class="component-icon">🌧️</div>
+            <strong>Nước mưa</strong>
+            <span>Nước từ khí quyển rơi xuống bề mặt Trái Đất.</span>
+        </div>
+
+        <div class="component">
+            <div class="component-icon">🏔️</div>
+            <strong>Nước trong băng tuyết</strong>
+            <span>Kho dự trữ nước ngọt quan trọng.</span>
+        </div>
+
+        <div class="component">
+            <div class="component-icon">🌱</div>
+            <strong>Nước trong sinh vật</strong>
+            <span>Nước tồn tại trong cơ thể sinh vật.</span>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- SIMULATION -->
+
+<section class="simulation-section">
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🔬 Mô phỏng vòng tuần hoàn lớn của nước</h2>
+
+        <p>
+            Hãy quan sát sự vận động liên tục của nước giữa đại dương,
+            lục địa và khí quyển.
+        </p>
+
+    </div>
+
+
+    <div class="simulation-box">
+
+        <div class="simulation-top">
+
+            <div class="simulation-title">
+
+                <div class="sim-icon">
+                    🔄
+                </div>
+
+                <div>
+
+                    <h3>
+                        Vòng tuần hoàn lớn của nước
+                    </h3>
+
+                    <p>
+                        Mô phỏng tương tác • Quan sát quá trình từng bước
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="sim-badge">
+             TƯƠNG TÁC
+            </div>
+
+        </div>
+
+
+        <div class="simulation-preview">
+
+            <div class="preview">
+
+                <div class="preview-sun">
+                </div>
+
+                <div class="preview-cloud">
+                    ☁️
+                </div>
+
+                <div class="preview-earth">
+                </div>
+
+                <div class="preview-arrow arrow-a">
+                    ↗
+                </div>
+
+                <div class="preview-arrow arrow-b">
+                    ↑
+                </div>
+
+                <div class="preview-arrow arrow-c">
+                    ↘
+                </div>
+
+
+                <div class="preview-text">
+
+                    <strong>
+                        💧 Nước không ngừng vận động
+                    </strong>
+
+                    <span>
+                        Bốc hơi → ngưng tụ → mưa → dòng chảy →
+                        trở về đại dương → tiếp tục tuần hoàn
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="sim-button-row">
+
+                <!--
+                    FILE MÔ PHỎNG RIÊNG
+                    Đặt cùng thư mục với g19.html
+                -->
+
+                <a
+                    href="mpvthnl.html"
+                    class="sim-button"
+                >
+                    💧 MỞ MÔ PHỎNG VÒNG TUẦN HOÀN LỚN
+                </a>
+
+            </div>
+
+
+            <div class="sim-note">
+                Mô phỏng được thiết kế riêng cho nội dung Bài 19.
+                Học sinh có thể quan sát từng quá trình và tự điều khiển mô phỏng.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- WATER CYCLE -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🔄 Vòng tuần hoàn lớn của nước</h2>
+
+        <p>
+            Nước trong thiên nhiên không ngừng vận động và chuyển từ trạng thái
+            này sang trạng thái khác.
+        </p>
+
+    </div>
+
+
+    <div class="cycle">
+
+        <div class="cycle-card">
+
+            <div class="cycle-number">1</div>
+
+            <div class="cycle-icon">☀️</div>
+
+            <strong>Bốc hơi</strong>
+
+            <span>
+                Nước ở biển, đại dương, sông, hồ... nhận nhiệt
+                và chuyển thành hơi nước.
+            </span>
+
+        </div>
+
+
+        <div class="cycle-card">
+
+            <div class="cycle-number">2</div>
+
+            <div class="cycle-icon">⬆️</div>
+
+            <strong>Bốc lên khí quyển</strong>
+
+            <span>
+                Hơi nước đi lên khí quyển và được vận chuyển
+                bởi các dòng không khí.
+            </span>
+
+        </div>
+
+
+        <div class="cycle-card">
+
+            <div class="cycle-number">3</div>
+
+            <div class="cycle-icon">☁️</div>
+
+            <strong>Ngưng tụ</strong>
+
+            <span>
+                Hơi nước gặp điều kiện thích hợp,
+                ngưng tụ tạo thành mây.
+            </span>
+
+        </div>
+
+
+        <div class="cycle-card">
+
+            <div class="cycle-number">4</div>
+
+            <div class="cycle-icon">🌧️</div>
+
+            <strong>Nước rơi</strong>
+
+            <span>
+                Các hạt nước trong mây lớn dần và rơi xuống
+                dưới dạng mưa.
+            </span>
+
+        </div>
+
+
+        <div class="cycle-card">
+
+            <div class="cycle-number">5</div>
+
+            <div class="cycle-icon">🏞️</div>
+
+            <strong>Dòng chảy</strong>
+
+            <span>
+                Nước chảy trên bề mặt, thấm xuống đất và
+                cuối cùng tiếp tục vận động trong vòng tuần hoàn.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- STATE CHANGE -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🧪 Các quá trình chuyển trạng thái của nước</h2>
+
+        <p>
+            Nước có thể chuyển từ trạng thái này sang trạng thái khác.
+        </p>
+
+    </div>
+
+
+    <div class="states">
+
+        <div class="state">
+
+            <div class="state-icon">💧 → 💨</div>
+
+            <strong>Bốc hơi</strong>
+
+            <p>
+                Nước ở trạng thái lỏng chuyển thành hơi nước.
+            </p>
+
+        </div>
+
+
+        <div class="state">
+
+            <div class="state-icon">💨 → 💧</div>
+
+            <strong>Ngưng tụ</strong>
+
+            <p>
+                Hơi nước chuyển thành nước ở trạng thái lỏng.
+            </p>
+
+        </div>
+
+
+        <div class="state">
+
+            <div class="state-icon">🧊 → 💧</div>
+
+            <strong>Tan chảy</strong>
+
+            <p>
+                Nước ở trạng thái rắn chuyển thành trạng thái lỏng.
+            </p>
+
+        </div>
+
+
+        <div class="state">
+
+            <div class="state-icon">💧 → 🧊</div>
+
+            <strong>Đông đặc</strong>
+
+            <p>
+                Nước ở trạng thái lỏng chuyển thành trạng thái rắn.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- IMPORTANT QUESTION -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>💡 Một câu hỏi quan trọng</h2>
+
+        <p>
+            Hãy suy nghĩ trước khi xem đáp án.
+        </p>
+
+    </div>
+
+
+    <div class="question-grid">
+
+        <div class="question-card">
+
+            <div class="q-icon">🌧️</div>
+
+            <h3>
+                Nước mưa rơi xuống bề mặt Trái Đất sẽ tồn tại ở đâu?
+            </h3>
+
+            <p>
+                Có thể tồn tại trong sông, hồ, ao, biển, đại dương,
+                đất và nước ngầm, băng tuyết...
+            </p>
+
+        </div>
+
+
+        <div class="question-card">
+
+            <div class="q-icon">🔄</div>
+
+            <h3>
+                Vì sao nước trong sông, hồ cũng tham gia vòng tuần hoàn?
+            </h3>
+
+            <p>
+                Vì nước ở sông, hồ có thể bốc hơi, thấm xuống đất,
+                chảy ra biển hoặc tiếp tục được vận chuyển trong tự nhiên.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- WATER USE -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🌱 Sử dụng và bảo vệ tài nguyên nước</h2>
+
+        <p>
+            Nước là tài nguyên thiết yếu đối với sự sống và hoạt động của con người.
+        </p>
+
+    </div>
+
+
+    <div class="use-grid">
+
+        <div class="use-card">
+
+            <div class="use-icon">🚰</div>
+
+            <h3>Sử dụng tiết kiệm</h3>
+
+            <p>
+                Sử dụng lượng nước vừa đủ trong sinh hoạt,
+                tránh để nước chảy lãng phí.
+            </p>
+
+        </div>
+
+
+        <div class="use-card">
+
+            <div class="use-icon">♻️</div>
+
+            <h3>Không gây ô nhiễm</h3>
+
+            <p>
+                Không xả rác, dầu mỡ hoặc chất thải trực tiếp
+                vào sông, hồ và nguồn nước.
+            </p>
+
+        </div>
+
+
+        <div class="use-card">
+
+            <div class="use-icon">🌳</div>
+
+            <h3>Bảo vệ môi trường</h3>
+
+            <p>
+                Bảo vệ rừng, sông hồ và hệ sinh thái góp phần
+                bảo vệ nguồn nước.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="note">
+
+        <strong>🌎 Hãy nhớ:</strong>
+        Nước ngọt có thể sử dụng trực tiếp chỉ chiếm một phần rất nhỏ
+        trong tổng lượng nước trên Trái Đất, vì vậy việc sử dụng hợp lí
+        và bảo vệ tài nguyên nước có ý nghĩa rất quan trọng.
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- QUIZ -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🎯 Luyện tập nhanh</h2>
+
+        <p>
+            10 câu hỏi • 10 giây/câu • Hoàn thành bài để ghi nhận tiến độ.
+        </p>
+
+    </div>
+
+
+    <div class="quiz">
+
+        <div class="quiz-top">
+
+            <div class="quiz-progress">
+
+                <div class="progress-text">
+
+                    <span id="quizProgressText">
+                        Chưa bắt đầu
+                    </span>
+
+                    <span id="quizScoreTop">
+                        0 điểm
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="timer"
+                id="timer"
+            >
+                ⏱ 10s
+            </div>
+
+        </div>
+
+
+        <div class="quiz-body">
+
+            <div
+                class="quiz-start"
+                id="quizStart"
+            >
+
+                <div class="quiz-icon">
+                    💧
+                </div>
+
+                <h3>
+                    Sẵn sàng kiểm tra kiến thức?
+                </h3>
+
+                <p>
+                    Hãy vận dụng kiến thức về thủy quyển
+                    và vòng tuần hoàn lớn của nước.
+                </p>
+
+                <button
+                    class="start-btn"
+                    id="startQuiz"
+                >
+                    ▶ Bắt đầu
+                </button>
+
+            </div>
+
+
+            <div
+                class="question-box"
+                id="questionBox"
+            >
+
+                <div
+                    class="question"
+                    id="questionText"
+                ></div>
+
+                <div
+                    class="answers"
+                    id="answers"
+                ></div>
+
+                <div
+                    class="feedback"
+                    id="feedback"
+                ></div>
+
+                <button
+                    class="next-btn"
+                    id="nextQuestion"
+                >
+                    Câu tiếp theo →
+                </button>
+
+            </div>
+
+
+            <div
+                class="result"
+                id="quizResult"
+            >
+
+                <div style="font-size:38px">
+                    🏆
+                </div>
+
+                <div
+                    class="result-score"
+                    id="resultScore"
+                >
+                    0/10
+                </div>
+
+                <h3 id="resultTitle">
+                    Hoàn thành bài luyện tập!
+                </h3>
+
+                <p id="resultMessage">
+                    Hãy xem lại các câu sai và thử lại.
+                </p>
+
+
+                <div class="result-actions">
+
+                    <button
+                        class="retry-btn"
+                        id="retryQuiz"
+                    >
+                        ↻ Làm lại
+                    </button>
+
+                    <button
+                        class="finish-btn"
+                        id="finishLesson"
+                    >
+                        ✓ Hoàn thành bài
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- MEMORY -->
+
+<section>
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>🧠 Ghi nhớ nhanh</h2>
+
+        <p>
+            4 ý quan trọng nhất của Bài 19.
+        </p>
+
+    </div>
+
+
+    <div class="memory">
+
+        <div class="memory-card">
+
+            <div>🌊</div>
+
+            <strong>Thủy quyển</strong>
+
+            <span>
+                Toàn bộ lớp nước bao quanh và bên trong vỏ Trái Đất.
+            </span>
+
+        </div>
+
+
+        <div class="memory-card">
+
+            <div>💧</div>
+
+            <strong>Nước ngọt</strong>
+
+            <span>
+                Chiếm 2,5% tổng lượng nước.
+            </span>
+
+        </div>
+
+
+        <div class="memory-card">
+
+            <div>🔄</div>
+
+            <strong>Tuần hoàn nước</strong>
+
+            <span>
+                Nước không ngừng vận động trong tự nhiên.
+            </span>
+
+        </div>
+
+
+        <div class="memory-card">
+
+            <div>🌱</div>
+
+            <strong>Bảo vệ nước</strong>
+
+            <span>
+                Sử dụng hợp lí và bảo vệ nguồn nước.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<div class="container">
+
+    HỌC LIỆU SỐ ĐỊA LÍ 6 •
+    Bài 19 – Thủy quyển và vòng tuần hoàn lớn của nước
+
+</div>
+
+</footer>
+
+
+<script>
+
+const PROGRESS_KEY =
+    'hoclieu6_progress_v1';
+
+
+/* =========================
+   QUIZ
+========================= */
+
+const questions = [
+
+    {
+        q:'Thủy quyển là gì?',
+        a:[
+            'Chỉ là nước ở đại dương và biển',
+            'Toàn bộ lớp nước bao quanh Trái Đất, nằm trên bề mặt và bên trong vỏ Trái Đất',
+            'Chỉ là nước ngọt trên Trái Đất',
+            'Chỉ là hơi nước trong khí quyển'
+        ],
+        correct:1,
+        explain:
+            'Thủy quyển là toàn bộ lớp nước bao quanh Trái Đất, nằm trên bề mặt và bên trong vỏ Trái Đất.'
+    },
+
+    {
+        q:'Nước mặn chiếm khoảng bao nhiêu phần trăm tổng lượng nước trên Trái Đất?',
+        a:[
+            '2,5%',
+            '30,1%',
+            '68,7%',
+            '97,5%'
+        ],
+        correct:3,
+        explain:
+            'Nước mặn chiếm khoảng 97,5% tổng lượng nước trên Trái Đất.'
+    },
+
+    {
+        q:'Nước ngọt chiếm khoảng bao nhiêu phần trăm tổng lượng nước trên Trái Đất?',
+        a:[
+            '2,5%',
+            '30,1%',
+            '68,7%',
+            '97,5%'
+        ],
+        correct:0,
+        explain:
+            'Nước ngọt chỉ chiếm khoảng 2,5% tổng lượng nước.'
+    },
+
+    {
+        q:'Trong lượng nước ngọt, băng chiếm khoảng bao nhiêu phần trăm?',
+        a:[
+            '1,2%',
+            '30,1%',
+            '68,7%',
+            '97,5%'
+        ],
+        correct:2,
+        explain:
+            'Băng chiếm khoảng 68,7% lượng nước ngọt.'
+    },
+
+    {
+        q:'Nước dưới đất chiếm khoảng bao nhiêu phần trăm lượng nước ngọt?',
+        a:[
+            '68,7%',
+            '30,1%',
+            '2,5%',
+            '1,2%'
+        ],
+        correct:1,
+        explain:
+            'Nước dưới đất chiếm khoảng 30,1% lượng nước ngọt.'
+    },
+
+    {
+        q:'Quá trình nước ở trạng thái lỏng chuyển thành hơi nước gọi là gì?',
+        a:[
+            'Ngưng tụ',
+            'Đông đặc',
+            'Bốc hơi',
+            'Tan chảy'
+        ],
+        correct:2,
+        explain:
+            'Bốc hơi là quá trình nước ở trạng thái lỏng chuyển thành hơi nước.'
+    },
+
+    {
+        q:'Hơi nước chuyển thành nước ở trạng thái lỏng gọi là gì?',
+        a:[
+            'Bốc hơi',
+            'Ngưng tụ',
+            'Đông đặc',
+            'Tan chảy'
+        ],
+        correct:1,
+        explain:
+            'Ngưng tụ là quá trình hơi nước chuyển thành nước ở trạng thái lỏng.'
+    },
+
+    {
+        q:'Trong vòng tuần hoàn lớn, sau khi hơi nước ngưng tụ tạo thành mây thì có thể xảy ra quá trình nào?',
+        a:[
+            'Nước rơi xuống bề mặt Trái Đất',
+            'Nước biến mất hoàn toàn',
+            'Đất biến thành nước',
+            'Đại dương biến thành băng ngay lập tức'
+        ],
+        correct:0,
+        explain:
+            'Các hạt nước trong mây lớn dần và khi đủ nặng có thể rơi xuống thành mưa.'
+    },
+
+    {
+        q:'Nước mưa rơi xuống bề mặt Trái Đất có thể tồn tại ở đâu?',
+        a:[
+            'Chỉ ở đại dương',
+            'Chỉ ở sông',
+            'Sông, hồ, đất, nước ngầm, biển, đại dương, băng tuyết...',
+            'Chỉ trong khí quyển'
+        ],
+        correct:2,
+        explain:
+            'Nước mưa có thể tồn tại ở nhiều nơi như sông, hồ, đất, nước ngầm, biển, đại dương và băng tuyết.'
+    },
+
+    {
+        q:'Việc làm nào góp phần bảo vệ tài nguyên nước?',
+        a:[
+            'Xả rác xuống sông',
+            'Để vòi nước chảy liên tục',
+            'Sử dụng nước hợp lí và không gây ô nhiễm nguồn nước',
+            'Đổ chất thải trực tiếp xuống hồ'
+        ],
+        correct:2,
+        explain:
+            'Sử dụng hợp lí và bảo vệ nguồn nước là trách nhiệm của mỗi người.'
+    }
+
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let timerId = null;
+let timeLeft = 10;
+let answered = false;
+
+
+const quizStart =
+    document.getElementById('quizStart');
+
+const questionBox =
+    document.getElementById('questionBox');
+
+const resultBox =
+    document.getElementById('quizResult');
+
+const questionText =
+    document.getElementById('questionText');
+
+const answersBox =
+    document.getElementById('answers');
+
+const feedback =
+    document.getElementById('feedback');
+
+const nextBtn =
+    document.getElementById('nextQuestion');
+
+const timer =
+    document.getElementById('timer');
+
+const progressFill =
+    document.getElementById('progressFill');
+
+const progressText =
+    document.getElementById('quizProgressText');
+
+const scoreTop =
+    document.getElementById('quizScoreTop');
+
+
+document
+    .getElementById('startQuiz')
+    .addEventListener('click',startQuiz);
+
+
+document
+    .getElementById('retryQuiz')
+    .addEventListener('click',startQuiz);
+
+
+nextBtn.addEventListener(
+    'click',
+    nextQuestion
+);
+
+
+function startQuiz(){
+
+    clearInterval(timerId);
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    quizStart.style.display = 'none';
+
+    resultBox.style.display = 'none';
+
+    questionBox.style.display = 'block';
+
+    scoreTop.textContent = '0 điểm';
+
+    showQuestion();
+}
+
+
+function showQuestion(){
+
+    answered = false;
+
+    feedback.style.display = 'none';
+
+    feedback.innerHTML = '';
+
+    nextBtn.style.display = 'none';
+
+    const q =
+        questions[currentQuestion];
+
+    questionText.textContent =
+        `${currentQuestion + 1}. ${q.q}`;
+
+    answersBox.innerHTML = '';
+
+
+    q.a.forEach((answer,index)=>{
+
+        const button =
+            document.createElement('button');
+
+        button.className = 'answer';
+
+        button.textContent =
+            `${String.fromCharCode(65+index)}. ${answer}`;
+
+        button.addEventListener(
+            'click',
+            ()=>{
+                selectAnswer(
+                    index,
+                    button
+                );
+            }
+        );
+
+        answersBox.appendChild(button);
+
+    });
+
+
+    progressFill.style.width =
+        `${(currentQuestion / questions.length) * 100}%`;
+
+    progressText.textContent =
+        `Câu ${currentQuestion + 1}/${questions.length}`;
+
+    startTimer();
+}
+
+
+function startTimer(){
+
+    clearInterval(timerId);
+
+    timeLeft = 10;
+
+    timer.textContent =
+        `⏱ ${timeLeft}s`;
+
+    timerId =
+        setInterval(()=>{
+
+            timeLeft--;
+
+            timer.textContent =
+                `⏱ ${timeLeft}s`;
+
+            if(timeLeft <= 0){
+
+                clearInterval(timerId);
+
+                if(!answered){
+
+                    selectAnswer(
+                        -1,
+                        null,
+                        true
+                    );
+
+                }
+
+            }
+
+        },1000);
+}
+
+
+function selectAnswer(
+    index,
+    button,
+    timedOut=false
+){
+
+    if(answered) return;
+
+    answered = true;
+
+    clearInterval(timerId);
+
+    const q =
+        questions[currentQuestion];
+
+    const allAnswers =
+        document.querySelectorAll('.answer');
+
+    allAnswers.forEach(
+        btn=>btn.classList.add('disabled')
+    );
+
+
+    if(index === q.correct){
+
+        score++;
+
+        if(button){
+            button.classList.add('correct');
+        }
+
+        feedback.innerHTML =
+            `✅ <strong>Chính xác!</strong><br>${q.explain}`;
+
+    }else{
+
+        if(button){
+            button.classList.add('wrong');
+        }
+
+        if(allAnswers[q.correct]){
+
+            allAnswers[q.correct]
+                .classList.add('correct');
+
+        }
+
+        feedback.innerHTML =
+            timedOut
+            ? `⏰ <strong>Hết thời gian!</strong><br>${q.explain}`
+            : `❌ <strong>Chưa chính xác.</strong><br>${q.explain}`;
+
+    }
+
+
+    feedback.style.display = 'block';
+
+    scoreTop.textContent =
+        `${score} điểm`;
+
+    nextBtn.style.display =
+        'inline-block';
+}
+
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(
+        currentQuestion >=
+        questions.length
+    ){
+
+        endQuiz();
+
+    }else{
+
+        showQuestion();
+
+    }
+}
+
+
+function endQuiz(){
+
+    clearInterval(timerId);
+
+    questionBox.style.display = 'none';
+
+    resultBox.style.display = 'block';
+
+    progressFill.style.width = '100%';
+
+    progressText.textContent =
+        'Đã hoàn thành';
+
+    timer.textContent = '✓';
+
+
+    document
+        .getElementById('resultScore')
+        .textContent =
+        `${score}/${questions.length}`;
+
+
+    let title = '';
+
+    let message = '';
+
+
+    if(score >= 9){
+
+        title = '🌟 Xuất sắc!';
+
+        message =
+            'Bạn đã nắm rất chắc kiến thức về thủy quyển và vòng tuần hoàn nước.';
+
+    }else if(score >= 7){
+
+        title = '👏 Rất tốt!';
+
+        message =
+            'Bạn đã hiểu khá tốt nội dung bài học.';
+
+    }else if(score >= 5){
+
+        title = '💪 Khá ổn!';
+
+        message =
+            'Bạn đã có nền tảng, hãy ôn lại vòng tuần hoàn nước.';
+
+    }else{
+
+        title = '📚 Cần ôn lại';
+
+        message =
+            'Hãy xem lại phần thủy quyển và mô phỏng vòng tuần hoàn rồi thử lại nhé.';
+
+    }
+
+
+    document
+        .getElementById('resultTitle')
+        .textContent = title;
+
+
+    document
+        .getElementById('resultMessage')
+        .textContent = message;
+
+}
+
+
+/* =========================
+   FINISH LESSON
+========================= */
+
+document
+    .getElementById('finishLesson')
+    .addEventListener(
+        'click',
+        finishLesson
+    );
+
+
+function finishLesson(){
+
+    const p =
+        JSON.parse(
+            localStorage.getItem(
+                PROGRESS_KEY
+            ) || '{}'
+        );
+
+
+    p.g19 = true;
+
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(p)
+    );
+
+
+    const button =
+        document.getElementById(
+            'finishLesson'
+        );
+
+
+    button.textContent =
+        '✓ Đã hoàn thành';
+
+    button.disabled = true;
+
+    button.style.opacity = '.65';
+
+
+    alert(
+        '🎉 Đã ghi nhận hoàn thành Bài 19!'
+    );
+
+}
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g19");</script>
+</body>
+</html>

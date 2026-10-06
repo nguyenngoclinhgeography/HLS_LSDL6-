@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 27 – Dân số và sự phân bố dân cư trên thế giới</title>
+
+<!-- Leaflet -->
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<style>
+:root{
+    --bg:#07111f;
+    --bg2:#0c1b2d;
+    --card:#10243a;
+    --card2:#132b43;
+    --border:#24435f;
+    --text:#edf5ff;
+    --muted:#aebfd0;
+    --blue:#4da3ff;
+    --blue2:#2476c7;
+    --cyan:#48d7e8;
+    --yellow:#ffd166;
+    --green:#59d68c;
+    --red:#ff7676;
+    --purple:#a78bfa;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    background:
+        radial-gradient(circle at top left,#102c48 0,#07111f 42%);
+    color:var(--text);
+    line-height:1.65;
+}
+
+a{
+    color:var(--cyan);
+}
+
+.container{
+    width:min(1180px,94%);
+    margin:auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.hero{
+    padding:45px 0 35px;
+    border-bottom:1px solid var(--border);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(24,70,108,.75),
+            rgba(7,17,31,.95)
+        );
+}
+
+.badge{
+    display:inline-block;
+    padding:7px 14px;
+    border-radius:999px;
+    background:rgba(77,163,255,.13);
+    border:1px solid rgba(77,163,255,.35);
+    color:#9ed0ff;
+    font-size:14px;
+    font-weight:700;
+}
+
+.hero h1{
+    font-size:clamp(30px,5vw,52px);
+    line-height:1.15;
+    margin:18px 0 12px;
+}
+
+.hero p{
+    max-width:850px;
+    color:var(--muted);
+    font-size:17px;
+}
+
+/* =========================
+   NAV
+========================= */
+
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    backdrop-filter:blur(12px);
+    background:rgba(7,17,31,.88);
+    border-bottom:1px solid var(--border);
+}
+
+.nav-inner{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:10px 0;
+}
+
+.nav-inner a{
+    flex:none;
+    text-decoration:none;
+    padding:9px 14px;
+    border-radius:10px;
+    color:#cfe3f7;
+    border:1px solid transparent;
+    font-size:14px;
+}
+
+.nav-inner a:hover{
+    background:rgba(77,163,255,.1);
+    border-color:var(--border);
+}
+
+/* =========================
+   SECTION
+========================= */
+
+section{
+    padding:34px 0;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.section-title .num{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:rgba(77,163,255,.14);
+    color:#9ed0ff;
+    font-weight:800;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:27px;
+}
+
+.card{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(19,43,67,.96),
+            rgba(12,27,45,.96)
+        );
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+
+.card h3{
+    margin-top:0;
+}
+
+.muted{
+    color:var(--muted);
+}
+
+/* =========================
+   INFO GRID
+========================= */
+
+.grid{
+    display:grid;
+    gap:16px;
+}
+
+.grid-2{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.grid-3{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.grid-4{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+@media(max-width:800px){
+    .grid-2,
+    .grid-3,
+    .grid-4{
+        grid-template-columns:1fr;
+    }
+}
+
+.info-card{
+    padding:20px;
+    border-radius:16px;
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--border);
+}
+
+.info-card .icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.info-card h3{
+    font-size:18px;
+    margin:5px 0 8px;
+}
+
+.info-card p{
+    margin:0;
+    color:var(--muted);
+}
+
+/* =========================
+   HIGHLIGHT
+========================= */
+
+.highlight{
+    border-left:4px solid var(--cyan);
+    background:rgba(72,215,232,.07);
+    padding:16px 18px;
+    border-radius:0 12px 12px 0;
+    margin:16px 0;
+}
+
+.warning{
+    border-left-color:var(--yellow);
+    background:rgba(255,209,102,.06);
+}
+
+.success{
+    border-left-color:var(--green);
+    background:rgba(89,214,140,.06);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+}
+
+th,
+td{
+    padding:13px 14px;
+    border:1px solid var(--border);
+    text-align:left;
+}
+
+th{
+    background:#17334f;
+    color:#dff0ff;
+}
+
+td{
+    color:#d4e2ef;
+}
+
+tr:hover td{
+    background:rgba(77,163,255,.035);
+}
+
+/* =========================
+   MAP
+========================= */
+
+.map-card{
+    padding:16px;
+}
+
+.map-toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-bottom:13px;
+}
+
+.map-btn{
+    border:1px solid var(--border);
+    background:#10243a;
+    color:#dbeeff;
+    border-radius:10px;
+    padding:9px 14px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.2s;
+}
+
+.map-btn:hover{
+    background:#173a59;
+}
+
+.map-btn.active{
+    background:#1d5f98;
+    border-color:#4da3ff;
+}
+
+#populationMap{
+    width:100%;
+    height:560px;
+    border-radius:15px;
+    overflow:hidden;
+    border:1px solid var(--border);
+}
+
+@media(max-width:650px){
+    #populationMap{
+        height:460px;
+    }
+}
+
+/* Leaflet popup */
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip{
+    background:#10243a;
+    color:#edf5ff;
+}
+
+.leaflet-popup-content{
+    margin:14px 16px;
+    line-height:1.5;
+}
+
+.city-popup{
+    min-width:220px;
+}
+
+.city-popup h3{
+    margin:0 0 7px;
+    color:#ffffff;
+    font-size:19px;
+}
+
+.city-popup .country{
+    color:#9ed0ff;
+    font-weight:700;
+}
+
+.city-popup .population{
+    margin-top:9px;
+    padding:8px 10px;
+    border-radius:8px;
+    background:rgba(255,209,102,.09);
+    color:#ffe29a;
+}
+
+.city-popup .note{
+    color:#b8c9d9;
+    font-size:13px;
+    margin-top:8px;
+}
+
+.leaflet-control-zoom a{
+    background:#10243a !important;
+    color:#fff !important;
+    border-color:#35526d !important;
+}
+
+.leaflet-control-attribution{
+    background:rgba(7,17,31,.8) !important;
+    color:#b9c8d5 !important;
+}
+
+.leaflet-control-attribution a{
+    color:#8ecbff !important;
+}
+
+/* city marker */
+
+.city-marker{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#ffd166;
+    border:3px solid #fff;
+    box-shadow:
+        0 0 0 4px rgba(255,209,102,.20),
+        0 2px 8px rgba(0,0,0,.45);
+}
+
+/* density area */
+
+.density-area{
+    fill:#4da3ff;
+    fill-opacity:.18;
+    stroke:#79bcff;
+    stroke-width:1.5;
+}
+
+/* map legend */
+
+.map-legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-top:13px;
+    padding:12px 14px;
+    border-radius:10px;
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--border);
+    color:#c8d7e5;
+    font-size:14px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.legend-dot{
+    width:13px;
+    height:13px;
+    border-radius:50%;
+    background:#ffd166;
+    border:2px solid #fff;
+}
+
+.legend-area{
+    width:20px;
+    height:13px;
+    border-radius:3px;
+    background:rgba(77,163,255,.3);
+    border:1px solid #79bcff;
+}
+
+.map-info{
+    margin-top:14px;
+    padding:15px;
+    border-radius:12px;
+    background:rgba(72,215,232,.06);
+    border:1px solid rgba(72,215,232,.2);
+}
+
+.map-info strong{
+    color:#8ce9f2;
+}
+
+/* =========================
+   CITY CARDS
+========================= */
+
+.city-card{
+    cursor:pointer;
+    transition:
+        transform .2s,
+        border-color .2s,
+        background .2s;
+}
+
+.city-card:hover{
+    transform:translateY(-3px);
+    border-color:#397caf;
+    background:#14304a;
+}
+
+.city-rank{
+    display:inline-flex;
+    min-width:34px;
+    height:34px;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    background:rgba(255,209,102,.1);
+    color:#ffe29a;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.city-card h3{
+    margin:3px 0;
+}
+
+.city-card p{
+    margin:5px 0;
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-question{
+    display:none;
+}
+
+.quiz-question.active{
+    display:block;
+}
+
+.question-number{
+    color:#8ecbff;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.question-text{
+    font-size:19px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.options{
+    display:grid;
+    gap:10px;
+}
+
+.option{
+    width:100%;
+    text-align:left;
+    padding:13px 15px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:#0d2033;
+    color:#e5f1fc;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.option:hover{
+    background:#15344f;
+    border-color:#3d7198;
+}
+
+.option.correct{
+    background:rgba(89,214,140,.15);
+    border-color:#59d68c;
+}
+
+.option.wrong{
+    background:rgba(255,118,118,.15);
+    border-color:#ff7676;
+}
+
+.feedback{
+    display:none;
+    margin-top:14px;
+    padding:13px;
+    border-radius:10px;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.quiz-controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:18px;
+    flex-wrap:wrap;
+}
+
+.quiz-btn{
+    border:none;
+    padding:11px 18px;
+    border-radius:10px;
+    background:#236ca6;
+    color:white;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.quiz-btn:hover{
+    background:#2b80c3;
+}
+
+.quiz-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.timer{
+    font-weight:800;
+    color:#ffd166;
+}
+
+.progress-bar{
+    width:100%;
+    height:8px;
+    border-radius:99px;
+    overflow:hidden;
+    background:#0a1725;
+    margin-bottom:20px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0;
+    background:#4da3ff;
+    transition:width .3s;
+}
+
+.result{
+    display:none;
+    text-align:center;
+}
+
+.result.show{
+    display:block;
+}
+
+.score{
+    font-size:50px;
+    font-weight:900;
+    color:#8ecbff;
+}
+
+.result-message{
+    color:var(--muted);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    padding:35px 0 45px;
+    border-top:1px solid var(--border);
+    color:#91a6ba;
+    text-align:center;
+}
+
+.back-home{
+    display:inline-block;
+    margin-top:10px;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:10px;
+    background:#123251;
+    color:#dceeff;
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="hero">
+    <div class="container">
+
+        <span class="badge">
+            🌎 ĐỊA LÍ 6 · KẾT NỐI TRI THỨC
+        </span>
+
+        <h1>
+            Bài 27. Dân số và sự phân bố dân cư trên thế giới
+        </h1>
+
+        <p>
+            Cùng tìm hiểu về dân số thế giới, sự phân bố dân cư
+            và một số thành phố đông dân trên thế giới thông qua
+            bản đồ tương tác và các hoạt động khám phá.
+        </p>
+
+    </div>
+</header>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="navbar">
+    <div class="container nav-inner">
+        <a href="#muctieu">🎯 Mục tiêu</a>
+        <a href="#dansothegioi">👥 Dân số</a>
+        <a href="#phanbo">🗺️ Phân bố dân cư</a>
+        <a href="#thanhpho">🏙️ Thành phố</a>
+        <a href="#quiz">🎮 Luyện tập</a>
+    </div>
+</nav>
+
+
+<main class="container">
+
+<!-- =========================
+     1. MỤC TIÊU
+========================= -->
+
+<section id="muctieu">
+
+    <div class="section-title">
+        <div class="num">1</div>
+        <h2>🎯 Mục tiêu bài học</h2>
+    </div>
+
+    <div class="grid grid-3">
+
+        <div class="info-card">
+            <div class="icon">👥</div>
+            <h3>Dân số</h3>
+            <p>
+                Trình bày được một số đặc điểm cơ bản về
+                dân số thế giới.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="icon">🗺️</div>
+            <h3>Phân bố dân cư</h3>
+            <p>
+                Nhận biết được sự phân bố dân cư không đồng đều
+                trên thế giới.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="icon">🏙️</div>
+            <h3>Đô thị đông dân</h3>
+            <p>
+                Xác định được vị trí và tìm hiểu một số thành phố
+                đông dân trên thế giới.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     2. DÂN SỐ
+========================= -->
+
+<section id="dansothegioi">
+
+    <div class="section-title">
+        <div class="num">2</div>
+        <h2>👥 Dân số thế giới</h2>
+    </div>
+
+    <div class="card">
+
+        <h3>Dân số là gì?</h3>
+
+        <p>
+            Dân số là tổng số người sinh sống trên một lãnh thổ
+            tại một thời điểm nhất định.
+        </p>
+
+        <div class="highlight">
+            💡 <strong>Ghi nhớ:</strong>
+            Dân số của một quốc gia hoặc một khu vực luôn có sự
+            biến động theo thời gian do sinh, tử và di cư.
+        </div>
+
+    </div>
+
+
+    <div class="grid grid-3">
+
+        <div class="info-card">
+            <div class="icon">👶</div>
+            <h3>Sinh</h3>
+            <p>
+                Làm tăng số dân của một quốc gia hoặc khu vực.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="icon">🧓</div>
+            <h3>Tử</h3>
+            <p>
+                Làm giảm số dân.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="icon">🚶</div>
+            <h3>Di cư</h3>
+            <p>
+                Làm thay đổi số dân giữa các quốc gia,
+                khu vực và lãnh thổ.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     3. PHÂN BỐ DÂN CƯ
+========================= -->
+
+<section id="phanbo">
+
+    <div class="section-title">
+        <div class="num">3</div>
+        <h2>🗺️ Phân bố dân cư trên thế giới</h2>
+    </div>
+
+    <div class="card">
+
+        <h3>Dân cư thế giới phân bố như thế nào?</h3>
+
+        <p>
+            Dân cư trên thế giới phân bố không đồng đều.
+            Có những khu vực tập trung đông dân, trong khi
+            một số khu vực có dân cư thưa thớt.
+        </p>
+
+        <div class="grid grid-2">
+
+            <div class="highlight">
+                🌆 <strong>Khu vực đông dân:</strong>
+                thường tập trung ở những nơi có điều kiện
+                tự nhiên thuận lợi, kinh tế phát triển,
+                giao thông thuận tiện và lịch sử cư trú lâu đời.
+            </div>
+
+            <div class="highlight warning">
+                🏔️ <strong>Khu vực thưa dân:</strong>
+                thường là những nơi có điều kiện tự nhiên
+                khắc nghiệt như hoang mạc, vùng cực,
+                núi cao hoặc rừng rậm.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         INTERACTIVE MAP
+    ========================= -->
+
+    <div class="card map-card">
+
+        <h3>🌎 Bản đồ tương tác dân cư thế giới</h3>
+
+        <p class="muted">
+            Hãy thử bấm trực tiếp vào các điểm thành phố trên bản đồ.
+            Thông tin về thành phố sẽ xuất hiện ngay trên bản đồ.
+        </p>
+
+        <div class="map-toolbar">
+
+            <button
+                type="button"
+                class="map-btn active"
+                id="btnCities">
+                🏙️ Thành phố
+            </button>
+
+            <button
+                type="button"
+                class="map-btn"
+                id="btnDensity">
+                👥 Khu vực đông dân
+            </button>
+
+            <button
+                type="button"
+                class="map-btn"
+                id="btnWorld">
+                🌎 Toàn thế giới
+            </button>
+
+        </div>
+
+        <div id="populationMap"></div>
+
+        <div class="map-legend">
+
+            <div class="legend-item">
+                <span class="legend-dot"></span>
+                Thành phố được giới thiệu
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-area"></span>
+                Khu vực tập trung dân cư đông
+            </div>
+
+        </div>
+
+        <div class="map-info" id="mapInfo">
+            <strong>📍 Hướng dẫn:</strong>
+            Bấm vào một điểm thành phố màu vàng để xem
+            tên thành phố, quốc gia, số dân theo bảng số liệu
+            và một số thông tin khái quát.
+        </div>
+
+        <p class="muted" style="font-size:13px;margin-top:12px;">
+            Bản đồ nền trực tuyến sử dụng OpenStreetMap.
+            Các điểm thành phố và số liệu dân số phục vụ mục đích
+            học tập theo nội dung bài học; số dân không được hiểu
+            là số liệu dân số hiện tại.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     4. CÁC THÀNH PHỐ
+========================= -->
+
+<section id="thanhpho">
+
+    <div class="section-title">
+        <div class="num">4</div>
+        <h2>🏙️ Một số thành phố đông dân</h2>
+    </div>
+
+    <div class="card">
+
+        <p>
+            Dưới đây là một số thành phố đông dân được sử dụng
+            để học sinh luyện tập xác định vị trí trên bản đồ.
+        </p>
+
+        <div class="grid grid-2">
+
+            <div
+                class="info-card city-card"
+                data-city-card="tokyo">
+
+                <span class="city-rank">1</span>
+                <h3>Tokyo</h3>
+                <p>🇯🇵 Nhật Bản</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 37,5 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="delhi">
+
+                <span class="city-rank">2</span>
+                <h3>Delhi</h3>
+                <p>🇮🇳 Ấn Độ</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 28,5 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="shanghai">
+
+                <span class="city-rank">3</span>
+                <h3>Thượng Hải</h3>
+                <p>🇨🇳 Trung Quốc</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 25,6 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="saopaulo">
+
+                <span class="city-rank">4</span>
+                <h3>São Paulo</h3>
+                <p>🇧🇷 Bra-xin</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 21,7 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="mexicocity">
+
+                <span class="city-rank">5</span>
+                <h3>Mexico City</h3>
+                <p>🇲🇽 Mê-hi-cô</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 21,6 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="cairo">
+
+                <span class="city-rank">6</span>
+                <h3>Cairo</h3>
+                <p>🇪🇬 Ai Cập</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 20,1 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="mumbai">
+
+                <span class="city-rank">7</span>
+                <h3>Mumbai</h3>
+                <p>🇮🇳 Ấn Độ</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 20,0 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="dhaka">
+
+                <span class="city-rank">8</span>
+                <h3>Dhaka</h3>
+                <p>🇧🇩 Băng-la-đét</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 19,6 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="beijing">
+
+                <span class="city-rank">9</span>
+                <h3>Bắc Kinh</h3>
+                <p>🇨🇳 Trung Quốc</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 19,6 triệu người.
+                </p>
+            </div>
+
+
+            <div
+                class="info-card city-card"
+                data-city-card="osaka">
+
+                <span class="city-rank">10</span>
+                <h3>Osaka</h3>
+                <p>🇯🇵 Nhật Bản</p>
+                <p>
+                    Số dân theo bảng số liệu: khoảng 19,3 triệu người.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     5. NHẬN XÉT
+========================= -->
+
+<section>
+
+    <div class="section-title">
+        <div class="num">5</div>
+        <h2>🔎 Cùng nhận xét</h2>
+    </div>
+
+    <div class="card">
+
+        <h3>Quan sát bản đồ và trả lời</h3>
+
+        <div class="grid grid-2">
+
+            <div class="highlight">
+                <strong>Câu 1.</strong>
+                Các thành phố đông dân trong danh sách trên
+                tập trung chủ yếu ở những châu lục nào?
+            </div>
+
+            <div class="highlight">
+                <strong>Câu 2.</strong>
+                Các khu vực đông dân trên thế giới có đặc điểm
+                phân bố như thế nào?
+            </div>
+
+            <div class="highlight">
+                <strong>Câu 3.</strong>
+                Vì sao dân cư không phân bố đều trên Trái Đất?
+            </div>
+
+            <div class="highlight success">
+                <strong>Câu 4.</strong>
+                Hãy chọn một thành phố trên bản đồ và trình bày
+                một điều em biết về thành phố đó.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     6. LUYỆN TẬP
+========================= -->
+
+<section id="quiz">
+
+    <div class="section-title">
+        <div class="num">6</div>
+        <h2>🎮 Luyện tập nhanh</h2>
+    </div>
+
+    <div class="card">
+
+        <p class="muted">
+            Có 10 câu hỏi. Mỗi câu có 10 giây.
+            Hãy chọn đáp án phù hợp nhất.
+        </p>
+
+        <div class="progress-bar">
+            <div
+                class="progress-fill"
+                id="quizProgress">
+            </div>
+        </div>
+
+        <div
+            class="quiz-question active"
+            data-question="0">
+
+            <div class="question-number">
+                Câu 1/10
+            </div>
+
+            <div class="question-text">
+                Dân số là gì?
+            </div>
+
+            <div class="options">
+
+                <button class="option"
+                    data-answer="A">
+                    A. Tổng số người sinh sống trên một lãnh thổ
+                    tại một thời điểm nhất định.
+                </button>
+
+                <button class="option"
+                    data-answer="B">
+                    B. Số người sống trong một thành phố.
+                </button>
+
+                <button class="option"
+                    data-answer="C">
+                    C. Số người di cư trong một năm.
+                </button>
+
+                <button class="option"
+                    data-answer="D">
+                    D. Số trẻ em được sinh ra.
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="1">
+
+            <div class="question-number">
+                Câu 2/10
+            </div>
+
+            <div class="question-text">
+                Dân cư trên thế giới phân bố như thế nào?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Phân bố hoàn toàn đồng đều.
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Phân bố không đồng đều.
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Chỉ tập trung ở đồng bằng.
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Chỉ tập trung ở ven biển.
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="2">
+
+            <div class="question-number">
+                Câu 3/10
+            </div>
+
+            <div class="question-text">
+                Khu vực nào thường có điều kiện thuận lợi
+                để dân cư tập trung đông?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Nơi có điều kiện tự nhiên và kinh tế thuận lợi.
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Vùng cực.
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Hoang mạc khô hạn.
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Núi rất cao.
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="3">
+
+            <div class="question-number">
+                Câu 4/10
+            </div>
+
+            <div class="question-text">
+                Thành phố nào sau đây nằm ở Nhật Bản?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Tokyo
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Cairo
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Delhi
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Mumbai
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="4">
+
+            <div class="question-number">
+                Câu 5/10
+            </div>
+
+            <div class="question-text">
+                Delhi thuộc quốc gia nào?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Trung Quốc
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Ấn Độ
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Nhật Bản
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Ai Cập
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="5">
+
+            <div class="question-number">
+                Câu 6/10
+            </div>
+
+            <div class="question-text">
+                Thành phố nào sau đây nằm ở Bra-xin?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. São Paulo
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Osaka
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Bắc Kinh
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Dhaka
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="6">
+
+            <div class="question-number">
+                Câu 7/10
+            </div>
+
+            <div class="question-text">
+                Thành phố nào nằm ở Ai Cập?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Cairo
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Tokyo
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Mexico City
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Mumbai
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="7">
+
+            <div class="question-number">
+                Câu 8/10
+            </div>
+
+            <div class="question-text">
+                Yếu tố nào có thể làm thay đổi số dân của một khu vực?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Sinh, tử và di cư.
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Chỉ có thời tiết.
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Chỉ có địa hình.
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Chỉ có sông ngòi.
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="8">
+
+            <div class="question-number">
+                Câu 9/10
+            </div>
+
+            <div class="question-text">
+                Khu vực nào thường có dân cư thưa thớt?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Hoang mạc và vùng cực.
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Đồng bằng màu mỡ.
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Các đô thị lớn.
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Các đồng bằng ven biển.
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div
+            class="quiz-question"
+            data-question="9">
+
+            <div class="question-number">
+                Câu 10/10
+            </div>
+
+            <div class="question-text">
+                Khi học bản đồ dân cư, thao tác nào giúp xác định
+                vị trí một thành phố?
+            </div>
+
+            <div class="options">
+
+                <button class="option" data-answer="A">
+                    A. Xác định vị trí thành phố trên bản đồ.
+                </button>
+
+                <button class="option" data-answer="B">
+                    B. Chỉ nhìn màu nền của bản đồ.
+                </button>
+
+                <button class="option" data-answer="C">
+                    C. Bỏ qua tên địa điểm.
+                </button>
+
+                <button class="option" data-answer="D">
+                    D. Không cần đọc chú giải.
+                </button>
+
+            </div>
+
+            <div class="feedback"></div>
+
+        </div>
+
+
+        <div class="quiz-controls">
+
+            <div class="timer" id="timer">
+                ⏱️ 10 giây
+            </div>
+
+            <button
+                type="button"
+                class="quiz-btn"
+                id="nextBtn"
+                disabled>
+                Câu tiếp theo →
+            </button>
+
+        </div>
+
+
+        <div class="result" id="quizResult">
+
+            <div class="score" id="score">
+                0/10
+            </div>
+
+            <h3>🎉 Hoàn thành bài luyện tập!</h3>
+
+            <p
+                class="result-message"
+                id="resultMessage">
+            </p>
+
+            <button
+                type="button"
+                class="quiz-btn"
+                id="retryBtn">
+                🔄 Làm lại
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="container">
+
+        <strong>
+            🌎 Học liệu số Địa lí 6
+        </strong>
+
+        <p>
+            Bài 27 – Dân số và sự phân bố dân cư trên thế giới
+        </p>
+
+        <a
+            class="back-home"
+            href="index.html">
+            🏠 Về trang chủ
+        </a>
+
+    </div>
+
+</footer>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+<script>
+/* =========================================================
+   BẢN ĐỒ TƯƠNG TÁC
+========================================================= */
+
+const cityData = {
+
+    tokyo:{
+        name:"Tokyo",
+        country:"Nhật Bản",
+        population:"37,5 triệu người",
+        lat:35.6762,
+        lng:139.6503,
+        rank:1,
+        note:"Tokyo nằm ở phía đông đảo Honshu, là một trong những đô thị lớn của Nhật Bản."
+    },
+
+    delhi:{
+        name:"Delhi",
+        country:"Ấn Độ",
+        population:"28,5 triệu người",
+        lat:28.6139,
+        lng:77.2090,
+        rank:2,
+        note:"Delhi nằm ở miền bắc Ấn Độ, thuộc khu vực có dân cư tập trung đông."
+    },
+
+    shanghai:{
+        name:"Thượng Hải",
+        country:"Trung Quốc",
+        population:"25,6 triệu người",
+        lat:31.2304,
+        lng:121.4737,
+        rank:3,
+        note:"Thượng Hải nằm ở miền đông Trung Quốc, gần cửa sông Dương Tử."
+    },
+
+    saopaulo:{
+        name:"São Paulo",
+        country:"Bra-xin",
+        population:"21,7 triệu người",
+        lat:-23.5505,
+        lng:-46.6333,
+        rank:4,
+        note:"São Paulo là đô thị lớn ở khu vực đông nam Bra-xin."
+    },
+
+    mexicocity:{
+        name:"Mexico City",
+        country:"Mê-hi-cô",
+        population:"21,6 triệu người",
+        lat:19.4326,
+        lng:-99.1332,
+        rank:5,
+        note:"Mexico City nằm trong khu vực cao nguyên trung tâm của Mê-hi-cô."
+    },
+
+    cairo:{
+        name:"Cairo",
+        country:"Ai Cập",
+        population:"20,1 triệu người",
+        lat:30.0444,
+        lng:31.2357,
+        rank:6,
+        note:"Cairo nằm bên sông Nin, trong khu vực đông dân của Ai Cập."
+    },
+
+    mumbai:{
+        name:"Mumbai",
+        country:"Ấn Độ",
+        population:"20,0 triệu người",
+        lat:19.0760,
+        lng:72.8777,
+        rank:7,
+        note:"Mumbai nằm ở bờ biển phía tây Ấn Độ."
+    },
+
+    dhaka:{
+        name:"Dhaka",
+        country:"Băng-la-đét",
+        population:"19,6 triệu người",
+        lat:23.8103,
+        lng:90.4125,
+        rank:8,
+        note:"Dhaka nằm ở khu vực đồng bằng thấp thuộc hệ thống sông Hằng – Brahmaputra."
+    },
+
+    beijing:{
+        name:"Bắc Kinh",
+        country:"Trung Quốc",
+        population:"19,6 triệu người",
+        lat:39.9042,
+        lng:116.4074,
+        rank:9,
+        note:"Bắc Kinh nằm ở phía bắc Trung Quốc và là một đô thị lớn của quốc gia này."
+    },
+
+    osaka:{
+        name:"Osaka",
+        country:"Nhật Bản",
+        population:"19,3 triệu người",
+        lat:34.6937,
+        lng:135.5023,
+        rank:10,
+        note:"Osaka nằm ở vùng Kansai trên đảo Honshu của Nhật Bản."
+    }
+
+};
+
+
+/* =========================
+   KHỞI TẠO MAP
+========================= */
+
+const populationMap = L.map(
+    "populationMap",
+    {
+        center:[20,10],
+        zoom:2,
+        minZoom:2,
+        maxZoom:8,
+        worldCopyJump:true
+    }
+);
+
+
+/* =========================
+   OPENSTREETMAP
+========================= */
+
+L.tileLayer(
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        maxZoom:19,
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'
+    }
+).addTo(populationMap);
+
+
+/* =========================
+   ICON THÀNH PHỐ
+========================= */
+
+const cityIcon = L.divIcon({
+
+    className:"custom-city-marker",
+
+    html:
+        '<div class="city-marker"></div>',
+
+    iconSize:[18,18],
+
+    iconAnchor:[9,9],
+
+    popupAnchor:[0,-10]
+
+});
+
+
+/* =========================
+   TẠO POPUP
+========================= */
+
+function createCityPopup(city){
+
+    return `
+        <div class="city-popup">
+
+            <h3>🏙️ ${city.name}</h3>
+
+            <div class="country">
+                🌎 ${city.country}
+            </div>
+
+            <div class="population">
+                👥 Số dân theo bảng số liệu:
+                <strong>${city.population}</strong>
+            </div>
+
+            <div class="note">
+                ${city.note}
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* =========================
+   THÊM MARKER
+========================= */
+
+const cityMarkers = {};
+
+Object.entries(cityData).forEach(
+    ([key,city]) => {
+
+        const marker = L.marker(
+            [city.lat,city.lng],
+            {
+                icon:cityIcon,
+                title:city.name
+            }
+        );
+
+        marker.bindPopup(
+            createCityPopup(city),
+            {
+                maxWidth:300
+            }
+        );
+
+        marker.bindTooltip(
+            `<strong>${city.name}</strong>`,
+            {
+                direction:"top",
+                offset:[0,-8]
+            }
+        );
+
+        marker.on(
+            "click",
+            function(){
+
+                showCityInfo(city);
+
+            }
+        );
+
+        cityMarkers[key] = marker;
+
+        marker.addTo(populationMap);
+    }
+);
+
+
+/* =========================
+   KHU VỰC ĐÔNG DÂN
+   (MANG TÍNH KHÁI QUÁT PHỤC VỤ HỌC TẬP)
+========================= */
+
+const densityAreas = [
+
+    {
+        name:"Đông Á",
+        coords:[
+            [20,105],
+            [25,110],
+            [35,115],
+            [45,125],
+            [45,145],
+            [30,145],
+            [20,135],
+            [20,105]
+        ]
+    },
+
+    {
+        name:"Nam Á",
+        coords:[
+            [5,65],
+            [8,80],
+            [15,95],
+            [30,100],
+            [35,88],
+            [30,68],
+            [5,65]
+        ]
+    },
+
+    {
+        name:"Đông Nam Á",
+        coords:[
+            [-10,95],
+            [-8,115],
+            [5,130],
+            [20,125],
+            [20,100],
+            [-10,95]
+        ]
+    },
+
+    {
+        name:"Tây và Trung Âu",
+        coords:[
+            [40,-10],
+            [42,5],
+            [55,20],
+            [60,30],
+            [45,35],
+            [35,20],
+            [40,-10]
+        ]
+    },
+
+    {
+        name:"Đông Bắc Hoa Kỳ",
+        coords:[
+            [35,-90],
+            [38,-80],
+            [48,-65],
+            [45,-55],
+            [35,-60],
+            [30,-80],
+            [35,-90]
+        ]
+    },
+
+    {
+        name:"Đông Nam Bra-xin",
+        coords:[
+            [-15,-55],
+            [-15,-35],
+            [-30,-35],
+            [-35,-50],
+            [-15,-55]
+        ]
+    }
+
+];
+
+
+const densityLayers = [];
+
+
+densityAreas.forEach(
+    area => {
+
+        const polygon = L.polygon(
+            area.coords,
+            {
+                className:"density-area",
+                color:"#79bcff",
+                fillColor:"#4da3ff",
+                fillOpacity:.18,
+                weight:1.5
+            }
+        );
+
+        polygon.bindPopup(
+            `
+            <div class="city-popup">
+                <h3>👥 ${area.name}</h3>
+                <div class="note">
+                    Đây là khu vực được biểu diễn
+                    khái quát để hỗ trợ nhận biết
+                    những nơi dân cư tập trung đông.
+                </div>
+            </div>
+            `
+        );
+
+        densityLayers.push(polygon);
+
+    }
+);
+
+
+/* =========================
+   HIỂN THỊ THÔNG TIN
+========================= */
+
+function showCityInfo(city){
+
+    const mapInfo =
+        document.getElementById("mapInfo");
+
+    mapInfo.innerHTML = `
+        <strong>📍 ${city.name}</strong>
+        —
+        ${city.country}.
+        Theo bảng số liệu, thành phố có khoảng
+        <strong>${city.population}</strong>.
+        Hãy quan sát vị trí của thành phố trên bản đồ
+        và thử xác định thành phố này thuộc châu lục nào.
+    `;
+
+}
+
+
+/* =========================
+   FOCUS THÀNH PHỐ
+========================= */
+
+function focusCity(key){
+
+    const city = cityData[key];
+
+    if(!city) return;
+
+    populationMap.flyTo(
+        [city.lat,city.lng],
+        5,
+        {
+            duration:1.2
+        }
+    );
+
+    setTimeout(
+        () => {
+
+            cityMarkers[key].openPopup();
+
+            showCityInfo(city);
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================
+   HIỂN THỊ / ẨN MARKER
+========================= */
+
+function showCityMarkers(){
+
+    Object.values(cityMarkers).forEach(
+        marker => {
+
+            if(!populationMap.hasLayer(marker)){
+                marker.addTo(populationMap);
+            }
+
+        }
+    );
+
+}
+
+
+function hideCityMarkers(){
+
+    Object.values(cityMarkers).forEach(
+        marker => {
+
+            if(populationMap.hasLayer(marker)){
+                populationMap.removeLayer(marker);
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================
+   HIỂN THỊ / ẨN VÙNG DÂN CƯ
+========================= */
+
+function showDensityAreas(){
+
+    densityLayers.forEach(
+        layer => {
+
+            if(!populationMap.hasLayer(layer)){
+                layer.addTo(populationMap);
+            }
+
+        }
+    );
+
+}
+
+
+function hideDensityAreas(){
+
+    densityLayers.forEach(
+        layer => {
+
+            if(populationMap.hasLayer(layer)){
+                populationMap.removeLayer(layer);
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================
+   NÚT BẢN ĐỒ
+========================= */
+
+const btnCities =
+    document.getElementById("btnCities");
+
+const btnDensity =
+    document.getElementById("btnDensity");
+
+const btnWorld =
+    document.getElementById("btnWorld");
+
+
+function setActive(button){
+
+    [
+        btnCities,
+        btnDensity,
+        btnWorld
+    ].forEach(
+        btn => btn.classList.remove("active")
+    );
+
+    button.classList.add("active");
+}
+
+
+/* Thành phố */
+
+btnCities.addEventListener(
+    "click",
+    () => {
+
+        setActive(btnCities);
+
+        showCityMarkers();
+        hideDensityAreas();
+
+        populationMap.flyTo(
+            [20,10],
+            2,
+            {
+                duration:.8
+            }
+        );
+
+    }
+);
+
+
+/* Khu vực đông dân */
+
+btnDensity.addEventListener(
+    "click",
+    () => {
+
+        setActive(btnDensity);
+
+        hideCityMarkers();
+        showDensityAreas();
+
+        populationMap.flyTo(
+            [20,20],
+            2,
+            {
+                duration:.8
+            }
+        );
+
+    }
+);
+
+
+/* Toàn thế giới */
+
+btnWorld.addEventListener(
+    "click",
+    () => {
+
+        setActive(btnWorld);
+
+        showCityMarkers();
+        showDensityAreas();
+
+        populationMap.flyTo(
+            [20,10],
+            2,
+            {
+                duration:.8
+            }
+        );
+
+    }
+);
+
+
+/* =========================
+   CLICK CÁC THẺ THÀNH PHỐ
+========================= */
+
+document
+    .querySelectorAll("[data-city-card]")
+    .forEach(
+        card => {
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    const key =
+                        card.dataset.cityCard;
+
+                    setActive(btnCities);
+
+                    showCityMarkers();
+                    hideDensityAreas();
+
+                    focusCity(key);
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================
+   ĐẢM BẢO MAP HIỂN THỊ ĐÚNG
+========================= */
+
+setTimeout(
+    () => {
+        populationMap.invalidateSize();
+    },
+    400
+);
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const answers = [
+    "A",
+    "B",
+    "A",
+    "A",
+    "B",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A"
+];
+
+const explanations = [
+
+    "Dân số là tổng số người sinh sống trên một lãnh thổ tại một thời điểm nhất định.",
+
+    "Dân cư thế giới phân bố không đồng đều giữa các khu vực.",
+
+    "Những nơi có điều kiện tự nhiên và kinh tế thuận lợi thường thu hút dân cư.",
+
+    "Tokyo là thành phố của Nhật Bản.",
+
+    "Delhi nằm ở Ấn Độ.",
+
+    "São Paulo là một thành phố lớn ở Bra-xin.",
+
+    "Cairo nằm ở Ai Cập, bên sông Nin.",
+
+    "Sinh, tử và di cư đều có thể làm thay đổi số dân.",
+
+    "Hoang mạc và vùng cực thường có điều kiện tự nhiên khắc nghiệt nên dân cư thưa thớt.",
+
+    "Muốn xác định thành phố cần quan sát vị trí và tên địa điểm trên bản đồ."
+];
+
+
+const questions =
+    document.querySelectorAll(".quiz-question");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+const timerElement =
+    document.getElementById("timer");
+
+const progressFill =
+    document.getElementById("quizProgress");
+
+const quizResult =
+    document.getElementById("quizResult");
+
+const scoreElement =
+    document.getElementById("score");
+
+const resultMessage =
+    document.getElementById("resultMessage");
+
+const retryBtn =
+    document.getElementById("retryBtn");
+
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+let timer = null;
+let timeLeft = 10;
+
+
+/* =========================
+   HIỂN THỊ CÂU HỎI
+========================= */
+
+function showQuestion(index){
+
+    questions.forEach(
+        (question,i) => {
+
+            question.classList.toggle(
+                "active",
+                i === index
+            );
+
+        }
+    );
+
+    progressFill.style.width =
+        `${(index / questions.length) * 100}%`;
+
+    answered = false;
+
+    nextBtn.disabled = true;
+
+    timeLeft = 10;
+
+    updateTimer();
+
+    clearInterval(timer);
+
+    timer = setInterval(
+        () => {
+
+            timeLeft--;
+
+            updateTimer();
+
+            if(timeLeft <= 0){
+
+                clearInterval(timer);
+
+                if(!answered){
+
+                    answered = true;
+
+                    const question =
+                        questions[currentQuestion];
+
+                    const options =
+                        question.querySelectorAll(".option");
+
+                    options.forEach(
+                        option => {
+
+                            option.disabled = true;
+
+                            if(
+                                option.dataset.answer ===
+                                answers[currentQuestion]
+                            ){
+                                option.classList.add("correct");
+                            }
+
+                        }
+                    );
+
+                    showFeedback(
+                        question,
+                        false,
+                        "⏰ Hết thời gian! " +
+                        explanations[currentQuestion]
+                    );
+
+                    nextBtn.disabled = false;
+
+                }
+
+            }
+
+        },
+        1000
+    );
+
+}
+
+
+function updateTimer(){
+
+    timerElement.textContent =
+        `⏱️ ${timeLeft} giây`;
+
+}
+
+
+/* =========================
+   FEEDBACK
+========================= */
+
+function showFeedback(
+    question,
+    isCorrect,
+    text
+){
+
+    const feedback =
+        question.querySelector(".feedback");
+
+    feedback.className =
+        "feedback show";
+
+    feedback.style.background =
+        isCorrect
+            ? "rgba(89,214,140,.10)"
+            : "rgba(255,118,118,.10)";
+
+    feedback.style.border =
+        isCorrect
+            ? "1px solid rgba(89,214,140,.35)"
+            : "1px solid rgba(255,118,118,.35)";
+
+    feedback.innerHTML =
+        `
+        <strong>
+            ${isCorrect ? "✅ Chính xác!" : "❌ Chưa chính xác!"}
+        </strong>
+        <br>
+        ${text}
+        `;
+
+}
+
+
+/* =========================
+   CHỌN ĐÁP ÁN
+========================= */
+
+questions.forEach(
+    (question,index) => {
+
+        const options =
+            question.querySelectorAll(".option");
+
+        options.forEach(
+            option => {
+
+                option.addEventListener(
+                    "click",
+                    () => {
+
+                        if(
+                            answered ||
+                            index !== currentQuestion
+                        ){
+                            return;
+                        }
+
+                        answered = true;
+
+                        clearInterval(timer);
+
+                        options.forEach(
+                            item => {
+                                item.disabled = true;
+                            }
+                        );
+
+                        const selected =
+                            option.dataset.answer;
+
+                        const correct =
+                            selected === answers[index];
+
+                        if(correct){
+
+                            score++;
+
+                            option.classList.add("correct");
+
+                        }else{
+
+                            option.classList.add("wrong");
+
+                            options.forEach(
+                                item => {
+
+                                    if(
+                                        item.dataset.answer ===
+                                        answers[index]
+                                    ){
+                                        item.classList.add("correct");
+                                    }
+
+                                }
+                            );
+
+                        }
+
+                        showFeedback(
+                            question,
+                            correct,
+                            explanations[index]
+                        );
+
+                        nextBtn.disabled = false;
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================
+   CÂU TIẾP THEO
+========================= */
+
+nextBtn.addEventListener(
+    "click",
+    () => {
+
+        if(currentQuestion < questions.length - 1){
+
+            currentQuestion++;
+
+            showQuestion(currentQuestion);
+
+        }else{
+
+            finishQuiz();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   HOÀN THÀNH QUIZ
+========================= */
+
+function finishQuiz(){
+
+    clearInterval(timer);
+
+    questions.forEach(
+        question => {
+            question.style.display = "none";
+        }
+    );
+
+    document
+        .querySelector(".quiz-controls")
+        .style.display = "none";
+
+    progressFill.style.width = "100%";
+
+    quizResult.classList.add("show");
+
+    scoreElement.textContent =
+        `${score}/${questions.length}`;
+
+
+    if(score >= 9){
+
+        resultMessage.textContent =
+            "🌟 Xuất sắc! Em nắm rất tốt kiến thức về dân số và sự phân bố dân cư.";
+
+    }else if(score >= 7){
+
+        resultMessage.textContent =
+            "👏 Rất tốt! Em đã hiểu phần lớn nội dung bài học.";
+
+    }else if(score >= 5){
+
+        resultMessage.textContent =
+            "💪 Khá ổn! Em hãy xem lại phần phân bố dân cư và các thành phố.";
+
+    }else{
+
+        resultMessage.textContent =
+            "📚 Em hãy đọc lại bài học rồi thử làm lại nhé.";
+
+    }
+
+}
+
+
+/* =========================
+   LÀM LẠI
+========================= */
+
+retryBtn.addEventListener(
+    "click",
+    () => {
+
+        currentQuestion = 0;
+        score = 0;
+
+        quizResult.classList.remove("show");
+
+        document
+            .querySelector(".quiz-controls")
+            .style.display = "flex";
+
+
+        questions.forEach(
+            question => {
+
+                question.style.display = "";
+
+                const options =
+                    question.querySelectorAll(".option");
+
+                options.forEach(
+                    option => {
+
+                        option.disabled = false;
+
+                        option.classList.remove(
+                            "correct",
+                            "wrong"
+                        );
+
+                    }
+                );
+
+                const feedback =
+                    question.querySelector(".feedback");
+
+                feedback.className =
+                    "feedback";
+
+                feedback.innerHTML = "";
+
+            }
+        );
+
+        showQuestion(0);
+
+    }
+);
+
+
+/* Khởi động */
+
+showQuestion(0);
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g27");</script>
+</body>
+</html>

@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 23 - Sự sống trên Trái Đất</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#050d17;
+    --bg2:#081a2b;
+    --panel:#0b2237;
+    --panel2:#102d45;
+    --border:#244861;
+    --cyan:#49dcff;
+    --blue:#3b91ff;
+    --green:#50dfaa;
+    --yellow:#ffd65e;
+    --orange:#ffad62;
+    --red:#ff727b;
+    --text:#eaf7ff;
+    --muted:#9bb5c8;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -15%,#173b55 0%,#081827 38%,#030910 100%);
+}
+
+button,a{
+    font-family:inherit;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(4,14,26,.95);
+    border-bottom:1px solid #1c3c54;
+    backdrop-filter:blur(14px);
+}
+
+.header-inner{
+    max-width:1400px;
+    margin:auto;
+    padding:13px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:13px;
+    display:grid;
+    place-items:center;
+    font-size:24px;
+    background:linear-gradient(135deg,#0d9eb9,#185dbd);
+    box-shadow:0 0 25px rgba(52,207,255,.23);
+}
+
+.brand h1{
+    font-size:19px;
+}
+
+.brand p{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:#e7faff;
+    padding:10px 15px;
+    border-radius:10px;
+    background:#0c2237;
+    border:1px solid #2a526d;
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#123750;
+    border-color:#43dfff;
+}
+
+main{
+    max-width:1400px;
+    margin:auto;
+    padding:25px 22px 60px;
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+    padding:40px 20px 44px;
+    margin-bottom:20px;
+    border:1px solid #1d405a;
+    border-radius:22px;
+    background:
+        radial-gradient(circle at 30% 100%,rgba(28,172,213,.16),transparent 40%),
+        radial-gradient(circle at 70% 100%,rgba(63,186,111,.10),transparent 45%),
+        linear-gradient(135deg,#0c2438,#071625);
+    box-shadow:0 20px 55px rgba(0,0,0,.25);
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:350px;
+    height:350px;
+    right:-160px;
+    top:-180px;
+    border-radius:50%;
+    background:rgba(62,218,255,.06);
+    pointer-events:none;
+}
+
+.tag{
+    display:inline-block;
+    padding:7px 14px;
+    border-radius:999px;
+    color:#70e7ff;
+    background:rgba(40,207,255,.08);
+    border:1px solid #21536c;
+    font-size:12px;
+    margin-bottom:14px;
+}
+
+.hero h2{
+    font-size:clamp(30px,4.5vw,48px);
+    margin-bottom:10px;
+}
+
+.hero p{
+    max-width:900px;
+    margin:auto;
+    color:var(--muted);
+    line-height:1.7;
+}
+
+/* GENERAL */
+
+.section{
+    margin-top:20px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:13px;
+}
+
+.section-number{
+    width:34px;
+    height:34px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:linear-gradient(135deg,#116eaa,#174eb0);
+    color:white;
+    font-weight:bold;
+}
+
+.section-title h3{
+    font-size:22px;
+}
+
+.section-title p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:2px;
+}
+
+/* OBJECTIVES */
+
+.objectives{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+}
+
+.objective{
+    padding:18px;
+    border-radius:15px;
+    background:linear-gradient(145deg,#0d2942,#091b2d);
+    border:1px solid var(--border);
+    transition:.2s;
+}
+
+.objective:hover{
+    transform:translateY(-3px);
+    border-color:#317a96;
+}
+
+.objective .icon{
+    font-size:29px;
+    margin-bottom:9px;
+}
+
+.objective h4{
+    margin-bottom:6px;
+}
+
+.objective p{
+    color:#9eb7c8;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* INTRO */
+
+.intro-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:15px;
+}
+
+.info-card{
+    padding:20px;
+    border-radius:17px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0b2740,#071a2b);
+}
+
+.info-card h4{
+    font-size:20px;
+    margin-bottom:9px;
+}
+
+.info-card p{
+    color:#a7bdcc;
+    line-height:1.75;
+    font-size:14px;
+}
+
+.highlight{
+    margin-top:14px;
+    padding:14px;
+    border-radius:12px;
+    background:#071827;
+    border:1px solid #21465c;
+}
+
+.highlight strong{
+    color:#67e4ff;
+}
+
+.highlight span{
+    color:#a4bac9;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* OCEAN ZONES */
+
+.ocean-zone{
+    padding:20px;
+    border-radius:20px;
+    border:1px solid #24506a;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(44,184,255,.10),transparent 55%),
+        linear-gradient(145deg,#0a2841,#061625);
+}
+
+.ocean-profile{
+    position:relative;
+    height:590px;
+    overflow:hidden;
+    border-radius:17px;
+    border:2px solid #24556f;
+    background:
+        linear-gradient(
+            to bottom,
+            #0c7fa5 0%,
+            #075d83 15%,
+            #084668 35%,
+            #073454 52%,
+            #06273f 70%,
+            #041b2d 100%
+        );
+}
+
+.sunlight{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:120px;
+    background:linear-gradient(
+        to bottom,
+        rgba(255,220,108,.18),
+        transparent
+    );
+    pointer-events:none;
+}
+
+.depth-line{
+    position:absolute;
+    left:0;
+    width:100%;
+    border-top:1px dashed rgba(174,236,255,.20);
+}
+
+.depth-label{
+    position:absolute;
+    right:12px;
+    transform:translateY(-50%);
+    padding:5px 8px;
+    border-radius:7px;
+    background:rgba(3,15,25,.62);
+    color:#8fc9dc;
+    font-size:10px;
+}
+
+.depth-200{top:23%;}
+.depth-1000{top:42%;}
+.depth-4000{top:72%;}
+.depth-6000{top:92%;}
+
+.ocean-creature{
+    position:absolute;
+    cursor:pointer;
+    font-size:30px;
+    transition:.25s;
+    filter:drop-shadow(0 5px 8px rgba(0,0,0,.3));
+    user-select:none;
+}
+
+.ocean-creature:hover{
+    transform:scale(1.25);
+    filter:drop-shadow(0 0 10px rgba(83,224,255,.7));
+}
+
+.creature1{left:13%;top:13%;}
+.creature2{left:31%;top:19%;}
+.creature3{left:53%;top:11%;}
+.creature4{left:72%;top:23%;}
+.creature5{left:20%;top:34%;}
+.creature6{left:61%;top:40%;}
+.creature7{left:35%;top:52%;}
+.creature8{left:76%;top:58%;}
+.creature9{left:14%;top:71%;}
+.creature10{left:50%;top:77%;}
+.creature11{left:78%;top:88%;}
+
+.bubble{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(174,240,255,.18);
+    border:1px solid rgba(174,240,255,.25);
+    animation:bubbleRise 5s linear infinite;
+}
+
+.b1{width:7px;height:7px;left:23%;bottom:4%;}
+.b2{width:11px;height:11px;left:47%;bottom:3%;animation-delay:1.5s;}
+.b3{width:5px;height:5px;left:67%;bottom:10%;animation-delay:2.5s;}
+.b4{width:9px;height:9px;left:82%;bottom:6%;animation-delay:3.5s;}
+
+@keyframes bubbleRise{
+    from{
+        transform:translateY(0);
+        opacity:.1;
+    }
+    50%{
+        opacity:.65;
+    }
+    to{
+        transform:translateY(-350px);
+        opacity:0;
+    }
+}
+
+.ocean-info{
+    margin-top:15px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.zone-info{
+    padding:18px;
+    border-radius:16px;
+    background:#071a2b;
+    border:1px solid #1e4258;
+}
+
+.zone-info h4{
+    font-size:20px;
+    margin-bottom:6px;
+}
+
+.zone-info .depth{
+    color:#68e3ff;
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+.zone-info p{
+    color:#a3bbc9;
+    font-size:13px;
+    line-height:1.65;
+}
+
+.species-list{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.species{
+    padding:7px 9px;
+    border-radius:8px;
+    background:#0b273b;
+    border:1px solid #214b63;
+    color:#b7d3df;
+    font-size:11px;
+}
+
+.sim-button{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    margin-top:13px;
+    padding:13px 16px;
+    border-radius:11px;
+    text-decoration:none;
+    color:#ecfbff;
+    background:linear-gradient(135deg,#0a789d,#1759bd);
+    border:1px solid #3bd7fa;
+    font-weight:bold;
+    font-size:13px;
+    transition:.2s;
+}
+
+.sim-button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+/* LAND SIMULATION CARDS */
+
+.sim-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.sim-card{
+    position:relative;
+    overflow:hidden;
+    min-height:320px;
+    padding:21px;
+    border-radius:19px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0b2841,#071a2b);
+    transition:.22s;
+}
+
+.sim-card:hover{
+    transform:translateY(-4px);
+    border-color:#3aa3bf;
+}
+
+.sim-card::after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    right:-80px;
+    bottom:-90px;
+    border-radius:50%;
+    background:rgba(62,213,255,.06);
+    pointer-events:none;
+}
+
+.sim-icon{
+    width:58px;
+    height:58px;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    font-size:31px;
+    background:#09283b;
+    border:1px solid #20536a;
+    margin-bottom:13px;
+}
+
+.sim-card h4{
+    font-size:21px;
+    margin-bottom:7px;
+}
+
+.sim-card>p{
+    color:#9fb8c8;
+    font-size:13px;
+    line-height:1.65;
+    min-height:66px;
+}
+
+.visual-mini{
+    height:100px;
+    margin-top:13px;
+    border-radius:12px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid #20455c;
+}
+
+/* plant mini visual */
+
+.plant-visual{
+    background:
+        linear-gradient(
+            to bottom,
+            #143e27 0 30%,
+            #265f32 30% 50%,
+            #65452e 50% 100%
+        );
+}
+
+.plant-visual::before{
+    content:"🌳  🌴  🌲  🌿  🌳";
+    position:absolute;
+    left:50%;
+    top:16px;
+    transform:translateX(-50%);
+    white-space:nowrap;
+    font-size:34px;
+    letter-spacing:5px;
+}
+
+.plant-visual::after{
+    content:"🌱       🌾       🌱";
+    position:absolute;
+    left:50%;
+    bottom:8px;
+    transform:translateX(-50%);
+    white-space:nowrap;
+    font-size:19px;
+}
+
+/* animal mini visual */
+
+.animal-visual{
+    background:
+        linear-gradient(
+            to bottom,
+            #88b9c3 0 34%,
+            #5f824e 34% 60%,
+            #66503a 60% 100%
+        );
+}
+
+.animal-visual::before{
+    content:"🐘   🦒   🦁   🐫";
+    position:absolute;
+    left:50%;
+    top:26px;
+    transform:translateX(-50%);
+    white-space:nowrap;
+    font-size:32px;
+    letter-spacing:5px;
+}
+
+.animal-visual::after{
+    content:"🌿  🌾  🌿  🌾";
+    position:absolute;
+    bottom:7px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:18px;
+    white-space:nowrap;
+}
+
+.sim-note{
+    margin-top:11px;
+    padding:9px 11px;
+    border-radius:9px;
+    background:#071827;
+    border:1px solid #1d4056;
+    color:#89aabd;
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* PLANTS / ANIMALS */
+
+.compare-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.compare-card{
+    padding:20px;
+    border-radius:17px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0c2941,#071a2b);
+}
+
+.compare-card h4{
+    font-size:20px;
+    margin-bottom:9px;
+}
+
+.compare-card p{
+    color:#a5bccb;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.zone-list{
+    margin-top:15px;
+    display:grid;
+    gap:9px;
+}
+
+.zone-item{
+    display:grid;
+    grid-template-columns:48px 1fr;
+    gap:10px;
+    align-items:center;
+    padding:11px;
+    border-radius:10px;
+    background:#071827;
+    border:1px solid #1d4055;
+}
+
+.zone-icon{
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:#0a2739;
+    font-size:23px;
+}
+
+.zone-item strong{
+    display:block;
+    color:#e9f8ff;
+    font-size:13px;
+    margin-bottom:3px;
+}
+
+.zone-item span{
+    color:#8faabd;
+    font-size:11px;
+    line-height:1.45;
+}
+
+/* ANIMAL EXAMPLES */
+
+.animal-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.animal-card{
+    padding:17px;
+    border-radius:15px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0b2840,#071a2b);
+}
+
+.animal-card .animal-icon{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.animal-card h4{
+    margin-bottom:6px;
+}
+
+.animal-card p{
+    color:#9eb6c6;
+    font-size:12px;
+    line-height:1.6;
+}
+
+/* BIODIVERSITY */
+
+.biodiversity{
+    padding:21px;
+    border-radius:19px;
+    border:1px solid #28506a;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(67,214,166,.08),transparent 55%),
+        linear-gradient(145deg,#0b263d,#071a2b);
+}
+
+.biodiversity-flow{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.bio-item{
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+    background:#071827;
+    border:1px solid #1c4055;
+}
+
+.bio-item .icon{
+    font-size:28px;
+    margin-bottom:7px;
+}
+
+.bio-item strong{
+    display:block;
+    margin-bottom:4px;
+    font-size:13px;
+}
+
+.bio-item span{
+    color:#8faabd;
+    font-size:11px;
+    line-height:1.45;
+}
+
+/* PROTECTION */
+
+.protect{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+}
+
+.protect-card{
+    padding:18px;
+    border-radius:15px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0c2941,#071a2b);
+}
+
+.protect-card .icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.protect-card h4{
+    margin-bottom:7px;
+}
+
+.protect-card p{
+    color:#9eb6c6;
+    font-size:12px;
+    line-height:1.6;
+}
+
+/* MEMORY */
+
+.memory{
+    margin-top:20px;
+    padding:20px;
+    border-radius:17px;
+    border:1px solid #224963;
+    background:linear-gradient(145deg,#0b263e,#071a2c);
+}
+
+.memory h3{
+    margin-bottom:13px;
+    color:#70eaff;
+}
+
+.memory-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.memory-item{
+    padding:13px;
+    border-radius:11px;
+    background:#071827;
+    border:1px solid #1b3a53;
+}
+
+.memory-item strong{
+    display:block;
+    margin-bottom:5px;
+    color:#dff8ff;
+    font-size:13px;
+}
+
+.memory-item span{
+    color:#8faabd;
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* QUIZ */
+
+.quiz{
+    margin-top:20px;
+    border-radius:19px;
+    overflow:hidden;
+    border:1px solid #28506a;
+    background:linear-gradient(145deg,#0b253d,#061827);
+    box-shadow:0 18px 45px rgba(0,0,0,.22);
+}
+
+.quiz-head{
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    border-bottom:1px solid #1e4058;
+}
+
+.quiz-head h3{
+    font-size:20px;
+}
+
+.quiz-head p{
+    color:#92adbf;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.timer{
+    min-width:65px;
+    padding:10px 12px;
+    text-align:center;
+    border-radius:10px;
+    color:#72eaff;
+    background:#08283b;
+    border:1px solid #205873;
+    font-weight:bold;
+}
+
+.quiz-body{
+    padding:20px;
+}
+
+.quiz-start{
+    text-align:center;
+    padding:22px 5px;
+}
+
+.big-icon{
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+.quiz-start p{
+    color:#9fb7c8;
+    max-width:650px;
+    margin:0 auto 17px;
+    line-height:1.7;
+    font-size:13px;
+}
+
+.start-btn{
+    padding:12px 24px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#0b8bb5,#155fd0);
+    border:1px solid #39d9ff;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.quiz-question{
+    display:none;
+}
+
+.progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:13px;
+    color:#9db6c8;
+    font-size:12px;
+}
+
+.progress-bar{
+    height:7px;
+    flex:1;
+    background:#061523;
+    border-radius:99px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#28cfff,#2474ff);
+    transition:.25s;
+}
+
+.question-text{
+    font-size:19px;
+    line-height:1.5;
+    margin-bottom:15px;
+}
+
+.answers{
+    display:grid;
+    gap:9px;
+}
+
+.answer{
+    width:100%;
+    text-align:left;
+    padding:13px 14px;
+    border-radius:11px;
+    border:1px solid #24465e;
+    background:#091d2e;
+    color:#cfe3ed;
+    cursor:pointer;
+    transition:.18s;
+    font-size:13px;
+}
+
+.answer:hover:not(:disabled){
+    background:#0d2c44;
+    border-color:#3aa8cf;
+}
+
+.answer.correct{
+    background:#0b3b36;
+    border-color:#43dcb5;
+    color:#b8ffea;
+}
+
+.answer.wrong{
+    background:#3d2028;
+    border-color:#ed6876;
+    color:#ffd0d5;
+}
+
+.answer:disabled{
+    cursor:default;
+}
+
+.feedback{
+    min-height:42px;
+    margin-top:13px;
+    padding:10px 12px;
+    border-radius:10px;
+    background:#071827;
+    border:1px solid #1b394f;
+    color:#9eb7c9;
+    font-size:12px;
+    line-height:1.55;
+}
+
+.next-btn{
+    margin-top:13px;
+    padding:10px 16px;
+    border-radius:9px;
+    border:1px solid #2a607c;
+    background:#10334c;
+    color:#e6f8ff;
+    cursor:pointer;
+    display:none;
+}
+
+.result{
+    display:none;
+    text-align:center;
+    padding:15px 5px 5px;
+}
+
+.result-icon{
+    font-size:55px;
+    margin-bottom:7px;
+}
+
+.result h3{
+    font-size:24px;
+    margin-bottom:5px;
+}
+
+.score{
+    font-size:42px;
+    font-weight:bold;
+    color:#60e4ff;
+    margin:7px 0;
+}
+
+.result p{
+    color:#9db6c8;
+    font-size:13px;
+    margin-bottom:17px;
+}
+
+.result-actions{
+    display:flex;
+    justify-content:center;
+    gap:9px;
+    flex-wrap:wrap;
+}
+
+footer{
+    text-align:center;
+    margin-top:25px;
+    color:#617d91;
+    font-size:11px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px){
+
+    .objectives{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .sim-grid{
+        grid-template-columns:1fr;
+    }
+
+    .animal-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .memory-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .biodiversity-flow{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .protect{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:850px){
+
+    .intro-grid,
+    .ocean-info,
+    .compare-grid{
+        grid-template-columns:1fr;
+    }
+
+    .ocean-profile{
+        height:520px;
+    }
+}
+
+@media(max-width:600px){
+
+    main{
+        padding:15px 12px 40px;
+    }
+
+    .header-inner{
+        padding:11px 12px;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .brand p{
+        display:none;
+    }
+
+    .objectives,
+    .animal-grid,
+    .memory-grid,
+    .biodiversity-flow{
+        grid-template-columns:1fr;
+    }
+
+    .ocean-profile{
+        height:460px;
+    }
+
+    .ocean-creature{
+        font-size:23px;
+    }
+
+    .question-text{
+        font-size:17px;
+    }
+
+    .quiz-head{
+        align-items:flex-start;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header>
+
+<div class="header-inner">
+
+<div class="brand">
+
+<div class="logo">🌱</div>
+
+<div>
+<h1>Bài 23 - Sự sống trên Trái Đất</h1>
+<p>Địa lí 6 · Kết nối tri thức với cuộc sống</p>
+</div>
+
+</div>
+
+<a href="index.html" class="home-btn">
+🏠 Trang chủ
+</a>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="tag">
+🌍 CHƯƠNG 6 · ĐẤT VÀ SINH VẬT TRÊN TRÁI ĐẤT
+</div>
+
+<h2>Sự sống trên Trái Đất</h2>
+
+<p>
+Khám phá sự đa dạng của thế giới sinh vật trong đại dương
+và trên các lục địa, từ những sinh vật sống ở vùng biển sâu
+đến các hệ thực vật và động vật thích nghi với những đới khí hậu khác nhau.
+</p>
+
+</section>
+
+
+<!-- OBJECTIVES -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">🎯</div>
+
+<div>
+<h3>Mục tiêu bài học</h3>
+<p>Sau bài học, em có thể...</p>
+</div>
+
+</div>
+
+
+<div class="objectives">
+
+<div class="objective">
+
+<div class="icon">🌊</div>
+
+<h4>Khám phá sinh vật đại dương</h4>
+
+<p>
+Nêu được ví dụ về sự đa dạng của sinh vật
+ở các vùng biển và độ sâu khác nhau.
+</p>
+
+</div>
+
+
+<div class="objective">
+
+<div class="icon">🌳</div>
+
+<h4>Nhận biết thực vật</h4>
+
+<p>
+Nêu được sự đa dạng của thực vật trên lục địa
+và sự khác biệt giữa các đới khí hậu.
+</p>
+
+</div>
+
+
+<div class="objective">
+
+<div class="icon">🐘</div>
+
+<h4>Nhận biết động vật</h4>
+
+<p>
+Nêu được ví dụ về sự đa dạng của động vật
+trên các lục địa.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- INTRO -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">🌍</div>
+
+<div>
+<h3>Sự sống trên Trái Đất đa dạng như thế nào?</h3>
+<p>Sinh vật tồn tại trong nhiều môi trường khác nhau</p>
+</div>
+
+</div>
+
+
+<div class="intro-grid">
+
+<div class="info-card">
+
+<h4>🌱 Một thế giới sinh vật phong phú</h4>
+
+<p>
+Các cơ thể sống tồn tại và phát triển ở những môi trường
+khác nhau đã tạo nên sự khác biệt và tính đa dạng
+của sinh vật trên Trái Đất.
+</p>
+
+<div class="highlight">
+
+<strong>💡 Hai môi trường lớn cần khám phá:</strong>
+
+<br>
+
+<span>
+🌊 Đại dương và 🏞️ lục địa.
+Trong mỗi môi trường, điều kiện sống khác nhau
+làm xuất hiện những loài sinh vật khác nhau.
+</span>
+
+</div>
+
+</div>
+
+
+<div class="info-card">
+
+<h4>🔎 Điều gì tạo nên sự đa dạng?</h4>
+
+<p>
+Ở đại dương, các vĩ độ và độ sâu khác nhau có sự khác biệt
+về nhiệt độ, độ muối, áp suất, ánh sáng, nồng độ ô-xy...
+Ở lục địa, khí hậu, đặc biệt là nhiệt độ và lượng mưa,
+có ảnh hưởng rõ rệt đến sự phân bố sinh vật.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- OCEAN -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">1</div>
+
+<div>
+<h3>Sự đa dạng của sinh vật dưới đại dương</h3>
+<p>Càng xuống sâu, điều kiện môi trường càng thay đổi</p>
+</div>
+
+</div>
+
+
+<div class="ocean-zone">
+
+<div class="section-title">
+
+<div class="section-number">🌊</div>
+
+<div>
+<h3>Khám phá theo độ sâu</h3>
+<p>Bấm vào các sinh vật trong mô hình để xem thông tin</p>
+</div>
+
+</div>
+
+
+<div class="ocean-profile">
+
+<div class="sunlight"></div>
+
+
+<div class="depth-line depth-200"></div>
+<div class="depth-label depth-200">~200 m</div>
+
+<div class="depth-line depth-1000"></div>
+<div class="depth-label depth-1000">~1 000 m</div>
+
+<div class="depth-line depth-4000"></div>
+<div class="depth-label depth-4000">~4 000 m</div>
+
+<div class="depth-line depth-6000"></div>
+<div class="depth-label depth-6000">~6 000 m</div>
+
+
+<div class="ocean-creature creature1"
+data-zone="surface"
+title="San hô">
+🪸
+</div>
+
+<div class="ocean-creature creature2"
+data-zone="surface"
+title="Cá ngừ">
+🐟
+</div>
+
+<div class="ocean-creature creature3"
+data-zone="surface"
+title="Sứa">
+🪼
+</div>
+
+<div class="ocean-creature creature4"
+data-zone="surface"
+title="Rùa">
+🐢
+</div>
+
+
+<div class="ocean-creature creature5"
+data-zone="middle"
+title="Cua">
+🦀
+</div>
+
+<div class="ocean-creature creature6"
+data-zone="middle"
+title="Cá mập">
+🦈
+</div>
+
+
+<div class="ocean-creature creature7"
+data-zone="deep"
+title="Sao biển">
+⭐
+</div>
+
+<div class="ocean-creature creature8"
+data-zone="deep"
+title="Bạch tuộc">
+🐙
+</div>
+
+
+<div class="ocean-creature creature9"
+data-zone="abyss"
+title="Cá cần câu">
+🐡
+</div>
+
+<div class="ocean-creature creature10"
+data-zone="abyss"
+title="Mực ma">
+🦑
+</div>
+
+
+<div class="ocean-creature creature11"
+data-zone="trench"
+title="Hải quỳ">
+🌸
+</div>
+
+
+<div class="bubble b1"></div>
+<div class="bubble b2"></div>
+<div class="bubble b3"></div>
+<div class="bubble b4"></div>
+
+</div>
+
+
+<div class="ocean-info">
+
+<div class="zone-info">
+
+<h4 id="oceanZoneTitle">
+🌊 Vùng biển khơi mặt
+</h4>
+
+<div class="depth" id="oceanZoneDepth">
+Từ mặt biển đến khoảng 200 m
+</div>
+
+<p id="oceanZoneText">
+Đây là vùng nhận được nhiều ánh sáng hơn,
+có nhiều loài sinh vật như tôm, cá ngừ, sứa,
+rùa, san hô và cỏ biển.
+</p>
+
+<div class="species-list" id="speciesList">
+
+<div class="species">🪸 San hô</div>
+<div class="species">🦐 Tôm</div>
+<div class="species">🐟 Cá ngừ</div>
+<div class="species">🪼 Sứa</div>
+<div class="species">🐢 Rùa</div>
+
+</div>
+
+</div>
+
+
+<div class="zone-info">
+
+<h4>🔬 Vì sao sinh vật thay đổi theo độ sâu?</h4>
+
+<p>
+Ở các độ sâu khác nhau, môi trường sống có sự khác biệt
+về <strong>nhiệt độ, độ muối, áp suất, ánh sáng
+và nồng độ ô-xy</strong>. Vì vậy thành phần sinh vật
+cũng thay đổi theo độ sâu.
+</p>
+
+<a href="mpsvdd.html"
+class="sim-button">
+🚀 MỞ MÔ PHỎNG SINH VẬT DƯỚI ĐẠI DƯƠNG
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- LAND -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">2</div>
+
+<div>
+<h3>Sự đa dạng của sinh vật trên lục địa</h3>
+<p>Khí hậu tạo nên những môi trường sống khác nhau</p>
+</div>
+
+</div>
+
+
+<div class="info-card">
+
+<h4>🌍 Vì sao sinh vật trên lục địa đa dạng?</h4>
+
+<p>
+Sinh vật trên lục địa rất phong phú và đa dạng.
+Sự khác nhau về khí hậu trên Trái Đất,
+đặc biệt là <strong>nhiệt độ và lượng mưa</strong>,
+làm xuất hiện những kiểu thảm thực vật
+và giới động vật khác nhau giữa các đới khí hậu.
+</p>
+
+</div>
+
+
+<div style="height:15px"></div>
+
+
+<div class="sim-grid">
+
+
+<!-- PLANT SIM -->
+
+<div class="sim-card">
+
+<div class="sim-icon">
+🌳
+</div>
+
+<h4>🌿 Mô phỏng sự đa dạng thực vật</h4>
+
+<p>
+Khám phá sự thay đổi của thảm thực vật
+từ đới nóng đến đới ôn hòa và đới lạnh.
+Quan sát đặc điểm của rừng mưa nhiệt đới,
+rừng lá kim và đài nguyên.
+</p>
+
+<div class="visual-mini plant-visual"></div>
+
+<div class="sim-note">
+🎯 Nội dung mô phỏng: đới khí hậu → điều kiện nhiệt độ,
+lượng mưa → kiểu thảm thực vật.
+</div>
+
+<a href="mptvld.html"
+class="sim-button">
+🌱 MỞ MÔ PHỎNG THỰC VẬT TRÊN LỤC ĐỊA
+</a>
+
+</div>
+
+
+<!-- ANIMAL SIM -->
+
+<div class="sim-card">
+
+<div class="sim-icon">
+🐘
+</div>
+
+<h4>🐾 Mô phỏng sự đa dạng động vật</h4>
+
+<p>
+Khám phá các loài động vật tiêu biểu ở
+đới nóng, đới ôn hòa, đới lạnh và môi trường khô hạn.
+Tìm hiểu cách động vật thích nghi với môi trường sống.
+</p>
+
+<div class="visual-mini animal-visual"></div>
+
+<div class="sim-note">
+🎯 Nội dung mô phỏng: môi trường sống → loài động vật
+tiêu biểu → đặc điểm thích nghi.
+</div>
+
+<a href="mpdvld.html"
+class="sim-button">
+🐾 MỞ MÔ PHỎNG ĐỘNG VẬT TRÊN LỤC ĐỊA
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PLANTS -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">🌳</div>
+
+<div>
+<h3>a) Thực vật trên lục địa</h3>
+<p>Thực vật có sự khác biệt rõ rệt giữa các đới khí hậu</p>
+</div>
+
+</div>
+
+
+<div class="compare-grid">
+
+<div class="compare-card">
+
+<h4>🌱 Đặc điểm chung</h4>
+
+<p>
+Giới thực vật trên lục địa hết sức phong phú,
+đa dạng. Ở từng đới khí hậu xuất hiện
+các kiểu thảm thực vật khác nhau.
+</p>
+
+<div class="zone-list">
+
+<div class="zone-item">
+
+<div class="zone-icon">🌴</div>
+
+<div>
+<strong>Đới nóng</strong>
+<span>
+Rừng mưa nhiệt đới, rừng nhiệt đới gió mùa,
+xa van,...
+</span>
+</div>
+
+</div>
+
+
+<div class="zone-item">
+
+<div class="zone-icon">🌲</div>
+
+<div>
+<strong>Đới ôn hòa</strong>
+<span>
+Rừng lá rộng, rừng lá kim, thảo nguyên,
+rừng cận nhiệt đới,...
+</span>
+</div>
+
+</div>
+
+
+<div class="zone-item">
+
+<div class="zone-icon">🌿</div>
+
+<div>
+<strong>Đới lạnh</strong>
+<span>
+Thảm thực vật đài nguyên với các loài
+thích nghi với khí hậu lạnh.
+</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="compare-card">
+
+<h4>🔎 So sánh ba môi trường</h4>
+
+<p>
+Điều kiện khí hậu khác nhau dẫn đến
+đặc điểm thực vật khác nhau.
+</p>
+
+<div class="zone-list">
+
+<div class="zone-item">
+
+<div class="zone-icon">🌴</div>
+
+<div>
+<strong>Rừng mưa nhiệt đới</strong>
+<span>
+Cây cối rậm rạp, xanh tốt, thành phần loài
+phong phú; có cây cỏ, dây leo và cây gỗ lớn.
+</span>
+</div>
+
+</div>
+
+
+<div class="zone-item">
+
+<div class="zone-icon">🌲</div>
+
+<div>
+<strong>Rừng lá kim</strong>
+<span>
+Chủ yếu là cây thân gỗ, thành phần loài
+ít hơn rừng mưa nhiệt đới.
+</span>
+</div>
+
+</div>
+
+
+<div class="zone-item">
+
+<div class="zone-icon">🌿</div>
+
+<div>
+<strong>Đài nguyên</strong>
+<span>
+Không có cây thân gỗ; chủ yếu là các loài
+cây thân cỏ, rêu và địa y thấp, thưa thớt.
+</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ANIMALS -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">🐾</div>
+
+<div>
+<h3>b) Động vật trên lục địa</h3>
+<p>Phong phú, đa dạng và có khả năng thích nghi với môi trường</p>
+</div>
+
+</div>
+
+
+<div class="info-card">
+
+<h4>🐘 Động vật chịu ảnh hưởng của khí hậu như thế nào?</h4>
+
+<p>
+Động vật trên các lục địa cũng hết sức phong phú và đa dạng,
+có sự khác biệt giữa các đới khí hậu. Tuy nhiên,
+động vật chịu ảnh hưởng của khí hậu ít hơn thực vật
+vì chúng có thể di chuyển từ nơi này đến nơi khác.
+</p>
+
+</div>
+
+
+<div style="height:15px"></div>
+
+
+<div class="animal-grid">
+
+
+<div class="animal-card">
+
+<div class="animal-icon">
+🦁
+</div>
+
+<h4>☀️ Đới nóng</h4>
+
+<p>
+Có nhiều loài động vật như khỉ, vượn, sóc,
+cá sấu, hổ, báo, ngựa, nai, voi
+và nhiều loài côn trùng, chim.
+</p>
+
+</div>
+
+
+<div class="animal-card">
+
+<div class="animal-icon">
+🐺
+</div>
+
+<h4>🍂 Đới ôn hòa</h4>
+
+<p>
+Có những loài như gấu nâu, tuần lộc,
+cáo bạc và nhiều loài thích nghi
+với điều kiện khí hậu ôn hòa.
+</p>
+
+</div>
+
+
+<div class="animal-card">
+
+<div class="animal-icon">
+🐻‍❄️
+</div>
+
+<h4>❄️ Đới lạnh</h4>
+
+<p>
+Có những loài thích nghi với khí hậu lạnh,
+một số loài ngủ đông hoặc di cư theo mùa
+như gấu trắng, ngỗng trời.
+</p>
+
+</div>
+
+
+<div class="animal-card">
+
+<div class="animal-icon">
+🐫
+</div>
+
+<h4>🏜️ Hoang mạc</h4>
+
+<p>
+Có các loài thích nghi với điều kiện nóng,
+khô hạn như bò cạp, rắn, lạc đà.
+</p>
+
+</div>
+
+
+<div class="animal-card">
+
+<div class="animal-icon">
+🐘
+</div>
+
+<h4>🌿 Đồng cỏ</h4>
+
+<p>
+Các loài ăn cỏ như ngựa, linh dương
+và các loài ăn thịt có thể cùng tồn tại
+trong hệ sinh thái đồng cỏ.
+</p>
+
+</div>
+
+
+<div class="animal-card">
+
+<div class="animal-icon">
+🦅
+</div>
+
+<h4>🌍 Khả năng di chuyển</h4>
+
+<p>
+Khả năng di chuyển giúp động vật có thể
+tìm kiếm thức ăn, tránh điều kiện bất lợi
+và thích nghi với môi trường sống.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- BIODIVERSITY -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">🧠</div>
+
+<div>
+<h3>Bức tranh đa dạng sinh vật</h3>
+<p>Nhìn toàn bộ bài học trong một sơ đồ</p>
+</div>
+
+</div>
+
+
+<div class="biodiversity">
+
+<div class="biodiversity-flow">
+
+<div class="bio-item">
+
+<div class="icon">🌊</div>
+
+<strong>Đại dương</strong>
+
+<span>
+Đa dạng theo vĩ độ
+và độ sâu.
+</span>
+
+</div>
+
+
+<div class="bio-item">
+
+<div class="icon">🌴</div>
+
+<strong>Thực vật</strong>
+
+<span>
+Khác biệt rõ rệt
+giữa các đới khí hậu.
+</span>
+
+</div>
+
+
+<div class="bio-item">
+
+<div class="icon">🐘</div>
+
+<strong>Động vật</strong>
+
+<span>
+Phong phú và có khả năng
+di chuyển, thích nghi.
+</span>
+
+</div>
+
+
+<div class="bio-item">
+
+<div class="icon">❤️</div>
+
+<strong>Bảo vệ</strong>
+
+<span>
+Yêu thiên nhiên và bảo vệ
+sự đa dạng sinh vật.
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PROTECTION -->
+
+<section class="section">
+
+<div class="section-title">
+
+<div class="section-number">🛡️</div>
+
+<div>
+<h3>Bảo vệ sự đa dạng sinh vật</h3>
+<p>Trách nhiệm của mỗi người đối với sự sống trên Trái Đất</p>
+</div>
+
+</div>
+
+
+<div class="protect">
+
+
+<div class="protect-card">
+
+<div class="icon">🌳</div>
+
+<h4>Bảo vệ môi trường sống</h4>
+
+<p>
+Giữ gìn rừng, biển và các môi trường sống tự nhiên
+để các loài có điều kiện tồn tại và phát triển.
+</p>
+
+</div>
+
+
+<div class="protect-card">
+
+<div class="icon">🚫</div>
+
+<h4>Hạn chế tác động tiêu cực</h4>
+
+<p>
+Không săn bắt, khai thác hoặc buôn bán trái phép
+các loài sinh vật; hạn chế gây ô nhiễm môi trường.
+</p>
+
+</div>
+
+
+<div class="protect-card">
+
+<div class="icon">❤️</div>
+
+<h4>Hình thành ý thức</h4>
+
+<p>
+Yêu thiên nhiên, tôn trọng sự sống
+và cùng tham gia các hoạt động bảo vệ
+đa dạng sinh học.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MEMORY -->
+
+<section class="memory">
+
+<h3>🧠 Ghi nhớ nhanh Bài 23</h3>
+
+<div class="memory-grid">
+
+<div class="memory-item">
+
+<strong>🌊 Sinh vật đại dương</strong>
+
+<span>
+Rất phong phú, đa dạng; thay đổi theo vĩ độ
+và độ sâu do điều kiện môi trường khác nhau.
+</span>
+
+</div>
+
+
+<div class="memory-item">
+
+<strong>🌳 Thực vật lục địa</strong>
+
+<span>
+Phong phú, đa dạng và khác biệt rõ rệt
+giữa các đới khí hậu.
+</span>
+
+</div>
+
+
+<div class="memory-item">
+
+<strong>🐘 Động vật lục địa</strong>
+
+<span>
+Phong phú, đa dạng; có sự khác biệt giữa
+các đới khí hậu và có khả năng di chuyển.
+</span>
+
+</div>
+
+
+<div class="memory-item">
+
+<strong>❤️ Bảo vệ sinh vật</strong>
+
+<span>
+Yêu thiên nhiên và có ý thức bảo vệ
+sự đa dạng của sinh vật trên Trái Đất.
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- QUIZ -->
+
+<section class="quiz">
+
+<div class="quiz-head">
+
+<div>
+
+<h3>🎮 Thử thách kiến thức</h3>
+
+<p>
+10 câu hỏi · 10 giây mỗi câu
+</p>
+
+</div>
+
+<div class="timer" id="timer">
+10s
+</div>
+
+</div>
+
+
+<div class="quiz-body">
+
+
+<div class="quiz-start" id="quizStart">
+
+<div class="big-icon">
+🌍
+</div>
+
+<p>
+Hãy kiểm tra xem bạn đã nắm được những kiến thức
+quan trọng của Bài 23 chưa nhé!
+</p>
+
+<button class="start-btn" id="startQuiz">
+🚀 Bắt đầu thử thách
+</button>
+
+</div>
+
+
+<div class="quiz-question" id="quizQuestion">
+
+<div class="progress-row">
+
+<span id="questionCount">
+Câu 1/10
+</span>
+
+<div class="progress-bar">
+
+<div class="progress-fill" id="progressFill"></div>
+
+</div>
+
+<span id="scoreSmall">
+0 điểm
+</span>
+
+</div>
+
+
+<div class="question-text" id="questionText"></div>
+
+<div class="answers" id="answers"></div>
+
+<div class="feedback" id="feedback">
+Hãy chọn đáp án đúng.
+</div>
+
+<button class="next-btn" id="nextBtn">
+Câu tiếp theo →
+</button>
+
+</div>
+
+
+<div class="result" id="quizResult">
+
+<div class="result-icon" id="resultIcon">
+🏆
+</div>
+
+<h3>
+Hoàn thành thử thách!
+</h3>
+
+<div class="score" id="finalScore">
+0/10
+</div>
+
+<p id="resultText">
+...
+</p>
+
+<div class="result-actions">
+
+<button class="start-btn" id="retryQuiz">
+🔄 Làm lại
+</button>
+
+<button class="home-btn" id="finishLesson">
+✅ Hoàn thành bài học
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+Học liệu số Địa lí 6 · Bài 23: Sự sống trên Trái Đất
+</footer>
+
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   MÔ HÌNH SINH VẬT ĐẠI DƯƠNG
+========================================================= */
+
+const oceanData={
+
+surface:{
+    title:"🌊 Vùng biển khơi mặt",
+    depth:"Từ mặt biển đến khoảng 200 m",
+    text:
+    "Vùng biển khơi mặt nhận được nhiều ánh sáng hơn, là nơi sinh sống của nhiều loài sinh vật.",
+    species:[
+        "🪸 San hô",
+        "🦐 Tôm",
+        "🐟 Cá ngừ",
+        "🪼 Sứa",
+        "🐢 Rùa"
+    ]
+},
+
+middle:{
+    title:"🌊 Vùng biển khơi trung",
+    depth:"Khoảng 200 – 1 000 m",
+    text:
+    "Khi xuống sâu hơn, ánh sáng giảm và điều kiện môi trường thay đổi. Một số loài tiêu biểu là cua, cá mập và mực.",
+    species:[
+        "🦀 Cua",
+        "🦈 Cá mập",
+        "🦑 Mực"
+    ]
+},
+
+deep:{
+    title:"🌊 Vùng biển khơi sâu",
+    depth:"Khoảng 1 000 – 4 000 m",
+    text:
+    "Ở vùng biển khơi sâu, ánh sáng rất yếu và điều kiện sống khắc nghiệt hơn. Có thể gặp sao biển và bạch tuộc.",
+    species:[
+        "⭐ Sao biển",
+        "🐙 Bạch tuộc"
+    ]
+},
+
+abyss:{
+    title:"🌑 Vùng biển khơi sâu thẳm",
+    depth:"Khoảng 4 000 – 6 000 m",
+    text:
+    "Ở vùng sâu thẳm, áp suất rất lớn và ánh sáng hầu như không còn. Có những sinh vật thích nghi với môi trường đặc biệt này.",
+    species:[
+        "🐡 Cá cần câu",
+        "🦑 Mực ma"
+    ]
+},
+
+trench:{
+    title:"🌑 Vùng đáy vực thẳm",
+    depth:"Khoảng 6 000 m trở xuống",
+    text:
+    "Đây là khu vực rất sâu của đại dương. Một ví dụ về sinh vật được SGK giới thiệu là hải quỳ.",
+    species:[
+        "🌸 Hải quỳ"
+    ]
+}
+
+};
+
+
+const zoneTitle=
+document.getElementById("oceanZoneTitle");
+
+const zoneDepth=
+document.getElementById("oceanZoneDepth");
+
+const zoneText=
+document.getElementById("oceanZoneText");
+
+const speciesList=
+document.getElementById("speciesList");
+
+
+document.querySelectorAll(".ocean-creature")
+.forEach(creature=>{
+
+    creature.addEventListener("click",()=>{
+
+        const key=
+        creature.dataset.zone;
+
+        const data=
+        oceanData[key];
+
+        if(!data)return;
+
+        zoneTitle.textContent=
+        data.title;
+
+        zoneDepth.textContent=
+        data.depth;
+
+        zoneText.textContent=
+        data.text;
+
+        speciesList.innerHTML=
+        data.species.map(item=>
+            `<div class="species">${item}</div>`
+        ).join("");
+
+    });
+
+});
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const questions=[
+
+{
+q:"Nguyên nhân nào góp phần tạo nên sự đa dạng của sinh vật dưới đại dương?",
+options:[
+"Chỉ do nhiệt độ",
+"Do sự khác nhau về nhiệt độ, độ muối, áp suất, ánh sáng, nồng độ ô-xy,...",
+"Chỉ do độ sâu",
+"Chỉ do lượng mưa"
+],
+answer:1,
+explain:
+"Ở các vĩ độ và độ sâu khác nhau, nhiệt độ, độ muối, áp suất, ánh sáng, nồng độ ô-xy,... khác nhau nên sinh vật cũng đa dạng."
+},
+
+{
+q:"Loài nào sau đây được SGK giới thiệu ở vùng biển khơi mặt?",
+options:[
+"Cá cần câu",
+"Hải quỳ",
+"Cá ngừ",
+"Mực ma"
+],
+answer:2,
+explain:
+"Cá ngừ là một trong những sinh vật được giới thiệu ở vùng biển khơi mặt."
+},
+
+{
+q:"Ở vùng biển khơi trung có thể gặp những sinh vật nào?",
+options:[
+"Cua, cá mập, mực",
+"Hải quỳ, cá cần câu",
+"Rêu, địa y",
+"Ngựa, voi, hổ"
+],
+answer:0,
+explain:
+"Vùng biển khơi trung có các ví dụ như cua, cá mập và mực."
+},
+
+{
+q:"Sự đa dạng của thực vật trên lục địa có sự khác biệt rõ rệt theo yếu tố nào?",
+options:[
+"Đới khí hậu",
+"Độ mặn của nước biển",
+"Thủy triều",
+"Sóng biển"
+],
+answer:0,
+explain:
+"Thực vật trên lục địa có sự khác biệt rõ rệt giữa các đới khí hậu."
+},
+
+{
+q:"Ở đới nóng có thể gặp kiểu thảm thực vật nào?",
+options:[
+"Rừng mưa nhiệt đới",
+"Đài nguyên",
+"Chỉ có rừng lá kim",
+"Không có thực vật"
+],
+answer:0,
+explain:
+"Ở đới nóng có rừng mưa nhiệt đới, rừng nhiệt đới gió mùa, xa van,..."
+},
+
+{
+q:"Đặc điểm nào đúng với rừng mưa nhiệt đới?",
+options:[
+"Cây cối rậm rạp, xanh tốt, thành phần loài phong phú",
+"Không có cây thân gỗ",
+"Chỉ có cây lá kim",
+"Thực vật thưa thớt, thấp lùn"
+],
+answer:0,
+explain:
+"Rừng mưa nhiệt đới có cây cối rậm rạp, xanh tốt và thành phần loài phong phú."
+},
+
+{
+q:"Rừng lá kim có đặc điểm nào?",
+options:[
+"Chủ yếu là cây thân gỗ, thành phần loài ít hơn rừng mưa nhiệt đới",
+"Không có cây thân gỗ",
+"Chỉ có rêu và địa y",
+"Luôn xanh tốt quanh năm như rừng mưa nhiệt đới"
+],
+answer:0,
+explain:
+"Rừng lá kim chủ yếu gồm cây thân gỗ và thành phần loài ít hơn rừng mưa nhiệt đới."
+},
+
+{
+q:"Động vật chịu ảnh hưởng của khí hậu ít hơn thực vật chủ yếu vì sao?",
+options:[
+"Động vật không cần thức ăn",
+"Động vật có thể di chuyển từ nơi này đến nơi khác",
+"Động vật không chịu tác động của môi trường",
+"Động vật chỉ sống trong nước"
+],
+answer:1,
+explain:
+"Động vật chịu ảnh hưởng của khí hậu ít hơn thực vật vì chúng có thể di chuyển từ nơi này đến nơi khác."
+},
+
+{
+q:"Loài nào thích nghi với khí hậu lạnh bằng cách ngủ đông hoặc di cư theo mùa?",
+options:[
+"Gấu trắng",
+"Lạc đà",
+"Cá sấu",
+"Voi"
+],
+answer:0,
+explain:
+"Gấu trắng và một số loài khác ở đới lạnh có những cách thích nghi với khí hậu lạnh như ngủ đông hoặc di cư theo mùa."
+},
+
+{
+q:"Một trong những yêu cầu của bài học về sự sống trên Trái Đất là gì?",
+options:[
+"Khai thác tối đa mọi loài sinh vật",
+"Yêu thiên nhiên và có ý thức bảo vệ sự đa dạng của sinh vật",
+"Chỉ bảo vệ động vật",
+"Chỉ bảo vệ thực vật"
+],
+answer:1,
+explain:
+"Bài học hướng đến việc yêu thiên nhiên và có ý thức bảo vệ sự đa dạng của sinh vật trên Trái Đất."
+}
+
+];
+
+
+let currentQuestion=0;
+let score=0;
+let timer=10;
+let timerInterval=null;
+let answered=false;
+
+
+const quizStart=
+document.getElementById("quizStart");
+
+const quizQuestion=
+document.getElementById("quizQuestion");
+
+const quizResult=
+document.getElementById("quizResult");
+
+const questionText=
+document.getElementById("questionText");
+
+const answers=
+document.getElementById("answers");
+
+const feedback=
+document.getElementById("feedback");
+
+const nextBtn=
+document.getElementById("nextBtn");
+
+const timerEl=
+document.getElementById("timer");
+
+const questionCount=
+document.getElementById("questionCount");
+
+const scoreSmall=
+document.getElementById("scoreSmall");
+
+const progressFill=
+document.getElementById("progressFill");
+
+
+function startQuiz(){
+
+    clearInterval(timerInterval);
+
+    currentQuestion=0;
+    score=0;
+
+    quizStart.style.display="none";
+    quizResult.style.display="none";
+    quizQuestion.style.display="block";
+
+    showQuestion();
+
+}
+
+
+document
+.getElementById("startQuiz")
+.addEventListener("click",startQuiz);
+
+
+function showQuestion(){
+
+    clearInterval(timerInterval);
+
+    answered=false;
+
+    const q=
+    questions[currentQuestion];
+
+    questionCount.textContent=
+    `Câu ${currentQuestion+1}/10`;
+
+    scoreSmall.textContent=
+    `${score} điểm`;
+
+    progressFill.style.width=
+    `${(currentQuestion/questions.length)*100}%`;
+
+    questionText.textContent=
+    q.q;
+
+    answers.innerHTML="";
+
+    q.options.forEach((option,index)=>{
+
+        const btn=
+        document.createElement("button");
+
+        btn.className="answer";
+
+        btn.textContent=
+        option;
+
+        btn.addEventListener("click",()=>{
+            selectAnswer(index);
+        });
+
+        answers.appendChild(btn);
+
+    });
+
+    feedback.textContent=
+    "Hãy chọn đáp án đúng.";
+
+    nextBtn.style.display="none";
+
+    startTimer();
+
+}
+
+
+function startTimer(){
+
+    timer=10;
+
+    timerEl.textContent="10s";
+
+    timerInterval=
+    setInterval(()=>{
+
+        timer--;
+
+        timerEl.textContent=
+        `${timer}s`;
+
+        if(timer<=0){
+
+            clearInterval(timerInterval);
+
+            if(!answered){
+
+                selectAnswer(-1);
+
+            }
+
+        }
+
+    },1000);
+
+}
+
+
+function selectAnswer(index){
+
+    if(answered)return;
+
+    answered=true;
+
+    clearInterval(timerInterval);
+
+    const q=
+    questions[currentQuestion];
+
+    const buttons=
+    document.querySelectorAll(".answer");
+
+    buttons.forEach((btn,i)=>{
+
+        btn.disabled=true;
+
+        if(i===q.answer){
+            btn.classList.add("correct");
+        }
+
+        if(i===index && i!==q.answer){
+            btn.classList.add("wrong");
+        }
+
+    });
+
+
+    if(index===q.answer){
+
+        score++;
+
+        feedback.innerHTML=
+        `✅ <strong>Chính xác!</strong> ${q.explain}`;
+
+    }
+
+    else if(index===-1){
+
+        feedback.innerHTML=
+        `⏰ <strong>Hết thời gian!</strong>
+        Đáp án đúng là
+        <strong>${q.options[q.answer]}</strong>.
+        ${q.explain}`;
+
+    }
+
+    else{
+
+        feedback.innerHTML=
+        `❌ <strong>Chưa chính xác.</strong>
+        Đáp án đúng là
+        <strong>${q.options[q.answer]}</strong>.
+        ${q.explain}`;
+
+    }
+
+
+    scoreSmall.textContent=
+    `${score} điểm`;
+
+    nextBtn.style.display=
+    "inline-block";
+
+}
+
+
+nextBtn.addEventListener("click",()=>{
+
+    currentQuestion++;
+
+    if(currentQuestion>=questions.length){
+
+        showResult();
+
+    }else{
+
+        showQuestion();
+
+    }
+
+});
+
+
+function showResult(){
+
+    clearInterval(timerInterval);
+
+    quizQuestion.style.display="none";
+    quizResult.style.display="block";
+
+    document.getElementById("finalScore")
+    .textContent=`${score}/10`;
+
+    const resultText=
+    document.getElementById("resultText");
+
+    const resultIcon=
+    document.getElementById("resultIcon");
+
+
+    if(score>=9){
+
+        resultIcon.textContent="🏆";
+
+        resultText.textContent=
+        "Xuất sắc! Bạn đã nắm rất chắc kiến thức về sự sống trên Trái Đất.";
+
+    }
+
+    else if(score>=7){
+
+        resultIcon.textContent="🌟";
+
+        resultText.textContent=
+        "Rất tốt! Bạn đã hiểu phần lớn kiến thức trọng tâm của bài.";
+
+    }
+
+    else if(score>=5){
+
+        resultIcon.textContent="👍";
+
+        resultText.textContent=
+        "Khá tốt! Hãy xem lại phần sinh vật dưới đại dương và sự đa dạng trên lục địa.";
+
+    }
+
+    else{
+
+        resultIcon.textContent="📚";
+
+        resultText.textContent=
+        "Bạn nên xem lại nội dung bài học rồi thử lại một lần nữa nhé.";
+
+    }
+
+}
+
+
+document
+.getElementById("retryQuiz")
+.addEventListener("click",startQuiz);
+
+
+/* =========================================================
+   LƯU TIẾN ĐỘ
+========================================================= */
+
+const PROGRESS_KEY=
+"hoclieu6_progress_v1";
+
+
+document
+.getElementById("finishLesson")
+.addEventListener("click",function(){
+
+    const p=
+    JSON.parse(
+        localStorage.getItem(PROGRESS_KEY)||"{}"
+    );
+
+    p.g23=true;
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(p)
+    );
+
+    this.textContent=
+    "✅ Đã hoàn thành";
+
+    this.disabled=true;
+
+    this.style.opacity=".7";
+
+});
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g23");</script>
+</body>
+</html>

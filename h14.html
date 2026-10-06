@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bài 14 – Nhà nước Văn Lang - Âu Lạc</title>
+<style>
+:root{--bg:#120d09;--panel:#211711;--panel2:#2c1e15;--gold:#d9a441;--gold2:#f0c66b;--bronze:#a66a2c;--cream:#f7ead2;--muted:#cdbda5;--green:#66845a;--red:#b95845;--line:rgba(224,174,83,.25)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 20% 0%,#382419 0,#120d09 42%,#0d0907 100%);color:var(--cream);line-height:1.65}.wrap{max-width:1180px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:10px 0 24px}.home{color:var(--gold2);text-decoration:none;font-weight:800}.tag{font-size:12px;letter-spacing:1.4px;color:#f0d69c}.hero{background:linear-gradient(135deg,rgba(103,57,23,.8),rgba(35,23,15,.95));border:1px solid var(--line);border-radius:28px;padding:38px;box-shadow:0 20px 60px #0008;position:relative;overflow:hidden}.hero:after{content:"☉";position:absolute;right:35px;top:-25px;font-size:190px;color:#e4b85d10}.hero h1{font-size:clamp(32px,5vw,58px);line-height:1.05;margin:8px 0 12px}.hero p{max-width:800px;color:var(--muted);font-size:17px}.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}.chip{padding:7px 12px;border:1px solid #d9a44145;border-radius:999px;background:#fff5d90b;color:#ecd6ad;font-size:13px}.section{margin-top:28px;background:linear-gradient(180deg,#211610,#19100c);border:1px solid var(--line);border-radius:24px;padding:28px}.section h2{margin:0 0 8px;color:var(--gold2);font-size:27px}.lead{color:var(--muted);margin-top:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.card{background:linear-gradient(145deg,#302016,#1d130e);border:1px solid #d9a44124;border-radius:20px;padding:20px;transition:.25s;cursor:pointer}.card:hover{transform:translateY(-4px);border-color:#d9a44166;box-shadow:0 15px 35px #0005}.icon{font-size:39px}.card h3{margin:7px 0;color:#f2d18c}.card p{margin:5px 0;color:#cdbda5}.detail{display:none;margin-top:14px;padding:14px;border-radius:14px;background:#0f0a07aa;border-left:3px solid var(--gold);color:#e9d9bf}.card.open .detail{display:block}.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:10px;margin-top:20px}.flowbox{padding:20px;border-radius:18px;text-align:center;background:#2c1c13;border:1px solid #d9a44133}.arrow{font-size:28px;color:var(--gold2)}.timeline{position:relative;margin:24px 0;padding:4px 0}.timeline:before{content:"";position:absolute;left:28px;top:0;bottom:0;width:3px;background:linear-gradient(var(--gold),#73451f)}.event{position:relative;padding:0 0 22px 70px}.dot{position:absolute;left:18px;top:5px;width:23px;height:23px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 6px #d9a44118}.date{color:var(--gold2);font-weight:900}.compare{width:100%;border-collapse:collapse;margin-top:15px;overflow:hidden;border-radius:16px}.compare th,.compare td{padding:13px;border:1px solid #d9a44124;vertical-align:top}.compare th{background:#4b2c16;color:#f5d895}.compare td{background:#1d130e;color:#dbcbb4}.visual{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.vcard{text-align:center;padding:18px;border-radius:18px;background:#f0d59a0b;border:1px solid #d9a44122}.vicon{font-size:48px}.vcard b{display:block;color:#f1cf82;margin:7px 0}.callout{margin-top:18px;padding:18px 20px;border-radius:18px;background:linear-gradient(90deg,#5b371b33,#b97b2920);border:1px solid #d9a44133}.quiz{margin-top:20px;padding:22px;border-radius:20px;background:#0f0a08;border:1px solid #d9a44130}.quizStart{text-align:center;padding:30px}.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#d7a13d,#8c4e20);color:#180e08;box-shadow:0 10px 24px #0005}.btn.secondary{background:#332319;color:#f0d6a0;border:1px solid #d9a44135}.qmeta{display:flex;justify-content:space-between;color:#cdbda5;font-size:13px}.timer{color:#ffd16a;font-weight:900}.qtext{font-size:21px;font-weight:800;margin:18px 0}.options{display:grid;gap:10px}.opt{padding:14px 16px;border:1px solid #d9a44128;border-radius:13px;background:#231710;color:#f4e5cb;text-align:left;cursor:pointer;font-size:15px}.opt:hover{border-color:#d9a44175;background:#302016}.opt.correct{background:#23442b;border-color:#72b77d;color:#d9f2dd}.opt.wrong{background:#4a211b;border-color:#d46b59;color:#ffe0d8}.feedback{margin-top:14px;padding:14px;border-radius:14px;display:none}.feedback.show{display:block}.feedback.ok{background:#214329;color:#d9f2dd}.feedback.no{background:#4a211b;color:#ffe0d8}.quizActions{display:flex;justify-content:flex-end;margin-top:15px}.result{text-align:center;display:none;padding:22px}.score{font-size:45px;color:var(--gold2);font-weight:900}.completion{display:none;text-align:center;padding:24px;border:1px solid #6db17b55;background:#193321;border-radius:18px;margin-top:15px}.status{display:inline-flex;padding:5px 10px;border-radius:999px;background:#234329;color:#bfe6c7;font-size:12px;font-weight:800;margin-left:8px}.footer{text-align:center;color:#8e7d67;font-size:12px;padding:30px}.small{font-size:13px;color:#9e8d77}.hide{display:none!important}@media(max-width:800px){.grid,.grid2,.visual{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg);text-align:center}}@media(max-width:520px){.grid,.grid2,.visual{grid-template-columns:1fr}.hero,.section{padding:20px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="tag">HỌC LIỆU SỐ 6 · LỊCH SỬ</div><a class="home" href="index.html">⌂ Trang chủ</a></div>
+  <section class="hero">
+    <div class="tag">CHƯƠNG 5 · VIỆT NAM TỪ KHOẢNG THẾ KỈ VII TCN ĐẾN ĐẦU THẾ KỈ X</div>
+    <h1>Bài 14<br>Nhà nước Văn Lang – Âu Lạc</h1>
+    <p>Tìm hiểu sự ra đời, tổ chức nhà nước và đời sống vật chất – tinh thần của cư dân Văn Lang, Âu Lạc.</p>
+    <div class="chips"><span class="chip">🏺 Văn Lang</span><span class="chip">🛡️ Âu Lạc</span><span class="chip">🏰 Cổ Loa</span><span class="chip">🌾 Đời sống cư dân</span></div>
+  </section>
+
+  <section class="section">
+    <h2>🎯 Sau bài học, em có thể</h2>
+    <div class="grid">
+      <div class="card"><div class="icon">📅</div><h3>Xác định thời gian</h3><p>Nêu được khoảng thời gian thành lập của Văn Lang và Âu Lạc.</p></div>
+      <div class="card"><div class="icon">🏛️</div><h3>Hiểu tổ chức nhà nước</h3><p>Trình bày được tổ chức nhà nước của Văn Lang và Âu Lạc.</p></div>
+      <div class="card"><div class="icon">🌾</div><h3>Khám phá đời sống</h3><p>Mô tả đời sống vật chất và tinh thần của cư dân hai nhà nước.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>1. Nhà nước đầu tiên của người Việt cổ</h2>
+    <p class="lead">Sự phát triển kinh tế làm xã hội có những chuyển biến; nhu cầu đoàn kết để làm thủy lợi và chống ngoại xâm góp phần thúc đẩy sự ra đời của nhà nước.</p>
+    <div class="flow">
+      <div class="flowbox"><div class="icon">🌾</div><b>Kinh tế phát triển</b><br><span class="small">Đời sống xã hội có chuyển biến</span></div><div class="arrow">→</div>
+      <div class="flowbox"><div class="icon">💧</div><b>Nhu cầu làm thủy lợi</b><br><span class="small">Đoàn kết cộng đồng</span></div><div class="arrow">→</div>
+      <div class="flowbox"><div class="icon">🛡️</div><b>Nhu cầu chống ngoại xâm</b><br><span class="small">Thúc đẩy tổ chức nhà nước</span></div>
+    </div>
+    <div class="callout"><b>📌 Văn Lang:</b> khoảng <strong>thế kỉ VII TCN</strong>, lãnh thổ chủ yếu ở khu vực Bắc Bộ và Bắc Trung Bộ Việt Nam ngày nay; kinh đô đặt tại <strong>Phong Châu</strong> (Phú Thọ).</div>
+    <div class="visual">
+      <div class="vcard"><div class="vicon">👑</div><b>Hùng Vương</b><span class="small">Đứng đầu nhà nước</span></div>
+      <div class="vcard"><div class="vicon">🏛️</div><b>Lạc hầu · Lạc tướng</b><span class="small">Giúp việc và đứng đầu các bộ</span></div>
+      <div class="vcard"><div class="vicon">🏘️</div><b>Bồ chính</b><span class="small">Đứng đầu chiềng, chạ</span></div>
+      <div class="vcard"><div class="vicon">1️⃣5️⃣</div><b>15 bộ</b><span class="small">Theo tổ chức nhà nước được nêu trong bài</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>2. Sự ra đời của nhà nước Âu Lạc</h2>
+    <p class="lead">Sau thắng lợi của cuộc kháng chiến chống quân Tần, Thục Phán lên làm vua, xưng là An Dương Vương và lập ra nhà nước Âu Lạc.</p>
+    <div class="timeline">
+      <div class="event"><span class="dot"></span><div class="date">Cuối thế kỉ III TCN</div><div>Cuộc kháng chiến chống quân Tần diễn ra; Thục Phán lãnh đạo nhân dân kháng chiến.</div></div>
+      <div class="event"><span class="dot"></span><div class="date">Khoảng năm 208 TCN</div><div>Thục Phán xưng là <b>An Dương Vương</b>, lập nhà nước <b>Âu Lạc</b>.</div></div>
+      <div class="event"><span class="dot"></span><div class="date">Kinh đô</div><div>Dời về <b>Phong Khê</b>, nay là khu vực <b>Cổ Loa, Đông Anh, Hà Nội</b>.</div></div>
+      <div class="event"><span class="dot"></span><div class="date">Năm 179 TCN</div><div>Âu Lạc bị Nam Việt xâm lược; nhà nước Âu Lạc sụp đổ.</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">🛡️</div><h3>Điểm mới của Âu Lạc</h3><p>Nhấn để khám phá</p><div class="detail">Tổ chức nhà nước cơ bản giống Văn Lang nhưng <b>chặt chẽ hơn</b>; vua có nhiều quyền hành hơn. Âu Lạc có <b>quân đội mạnh, vũ khí tốt</b> và thành Cổ Loa kiên cố.</div></div>
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">🏰</div><h3>Cổ Loa</h3><p>Nhấn để khám phá</p><div class="detail">Cổ Loa là kinh đô của Âu Lạc, đồng thời là một công trình quân sự có vai trò phòng vệ. Các tư liệu dạy học của bài nhấn mạnh thành Cổ Loa cùng vũ khí như <b>lẫy nỏ và mũi tên đồng</b>.</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>3. Đời sống vật chất và tinh thần</h2>
+    <p class="lead">Hãy bấm vào từng biểu tượng để khám phá những nét tiêu biểu.</p>
+    <div class="grid">
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">🌾</div><h3>Nông nghiệp</h3><p>Nghề chính là trồng lúa nước.</p><div class="detail">Cư dân còn chăn nuôi, đánh bắt cá và khai thác các nguồn thức ăn khác. Việc làm ruộng gắn với nhu cầu khai khẩn và làm thủy lợi.</div></div>
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">⚒️</div><h3>Thủ công nghiệp</h3><p>Đúc đồng và các nghề thủ công.</p><div class="detail">Cư dân biết đúc đồng, làm gốm, dệt, đan lát, đóng thuyền và chế tác đồ trang sức. Các hiện vật văn hóa Đông Sơn cho thấy trình độ luyện kim nổi bật.</div></div>
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">🏠</div><h3>Nhà ở & trang phục</h3><p>Gắn với môi trường sống.</p><div class="detail">Cư dân sống trong các chiềng, chạ; nhà ở phổ biến là nhà sàn. Trang phục nam, nữ có những đặc điểm riêng; trong lễ hội có cách trang phục và trang sức cầu kì hơn.</div></div>
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">🥁</div><h3>Đời sống tinh thần</h3><p>Lễ hội, tín ngưỡng, phong tục.</p><div class="detail">Có tục thờ cúng tổ tiên và các lực lượng tự nhiên như núi, sông, Mặt Trời; có lễ hội, ca hát, nhảy múa. Một số phong tục được nhắc đến gồm ăn trầu, nhuộm răng đen, xăm mình và các truyền thống gắn với đời sống cộng đồng.</div></div>
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">🍚</div><h3>Ẩm thực</h3><p>Gắn với sản xuất nông nghiệp.</p><div class="detail">Thức ăn hằng ngày gồm cơm nếp, cơm tẻ, rau, thịt, cá, ốc và các sản vật khác.</div></div>
+      <div class="card" onclick="this.classList.toggle('open')"><div class="icon">🛶</div><h3>Đi lại</h3><p>Sông ngòi có vai trò quan trọng.</p><div class="detail">Thuyền là một phương tiện đi lại trên sông, phù hợp với môi trường cư trú của cư dân Văn Lang – Âu Lạc.</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>⚖️ So sánh Văn Lang và Âu Lạc</h2>
+    <table class="compare">
+      <thead><tr><th>Nội dung</th><th>Văn Lang</th><th>Âu Lạc</th></tr></thead>
+      <tbody>
+        <tr><td><b>Thời gian</b></td><td>Khoảng thế kỉ VII TCN</td><td>Khoảng năm 208 TCN – 179 TCN</td></tr>
+        <tr><td><b>Người đứng đầu</b></td><td>Hùng Vương</td><td>Thục Phán – An Dương Vương</td></tr>
+        <tr><td><b>Kinh đô</b></td><td>Phong Châu</td><td>Phong Khê (Cổ Loa)</td></tr>
+        <tr><td><b>Tổ chức nhà nước</b></td><td>Vua; Lạc hầu, Lạc tướng; 15 bộ; Bồ chính ở chiềng, chạ.</td><td>Cơ bản giống Văn Lang nhưng chặt chẽ hơn; quyền lực của vua được tăng cường.</td></tr>
+        <tr><td><b>Điểm nổi bật</b></td><td>Nhà nước đầu tiên của người Việt cổ.</td><td>Có quân đội mạnh, vũ khí tốt và thành Cổ Loa.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>🧠 Ghi nhớ nhanh</h2>
+    <div class="grid2">
+      <div class="callout"><b>VĂN LANG</b><br>Thế kỉ VII TCN → Phong Châu → Hùng Vương → 15 bộ.</div>
+      <div class="callout"><b>ÂU LẠC</b><br>Khoảng 208 TCN → Cổ Loa → An Dương Vương → tổ chức chặt chẽ hơn.</div>
+    </div>
+  </section>
+
+  <section class="section" id="challenge">
+    <h2>🎯 Thử thách cuối bài</h2>
+    <p class="lead">10 câu · 10 giây/câu · phản hồi ngay sau mỗi lựa chọn.</p>
+    <div class="quiz" id="quiz">
+      <div class="quizStart" id="quizStart"><div class="icon">🏺</div><h3>Sẵn sàng kiểm tra?</h3><p>Hãy hoàn thành 10 câu hỏi để kiểm tra mức độ nắm bài.</p><button class="btn" onclick="startQuiz()">▶ Bắt đầu</button></div>
+      <div id="quizBody" class="hide">
+        <div class="qmeta"><span id="qCount">Câu 1/10</span><span class="timer">⏱ <span id="timer">10</span>s</span></div>
+        <div class="qtext" id="qText"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quizActions"><button class="btn secondary hide" id="nextBtn" onclick="nextQuestion()">Câu tiếp theo →</button></div>
+      </div>
+      <div class="result" id="result"><div>🎉 Kết quả</div><div class="score" id="score">0/10</div><p id="resultText"></p><button class="btn secondary" onclick="restartQuiz()">↻ Làm lại</button> <button class="btn" id="finishLesson">✓ Hoàn thành bài học</button></div>
+      <div class="completion" id="completion"><div class="icon">🏆</div><h3>Đã hoàn thành Bài 14 <span class="status" id="lessonStatus">✓ Đã lưu</span></h3><p id="completionText">Tiến độ học tập của em đã được cập nhật.</p></div>
+    </div>
+  </section>
+  <div class="footer">Học liệu số 6 · Lịch sử và Địa lí · Bài 14</div>
+</div>
+<script>
+const PROGRESS_KEY='hoclieu6_progress_v1';
+const LESSON_ID='h14';
+const questions=[
+ {q:'Nhà nước Văn Lang ra đời khoảng vào thời gian nào?',a:['Thế kỉ VII TCN','Năm 208 TCN','Thế kỉ II','Thế kỉ X'],c:0,e:'Văn Lang được xác định ra đời khoảng thế kỉ VII TCN.'},
+ {q:'Kinh đô của nhà nước Văn Lang là',a:['Cổ Loa','Phong Châu','Phong Khê','Đông Sơn'],c:1,e:'Kinh đô Văn Lang đặt tại Phong Châu (Phú Thọ).'},
+ {q:'Ai đứng đầu nhà nước Văn Lang?',a:['An Dương Vương','Lạc tướng','Hùng Vương','Bồ chính'],c:2,e:'Hùng Vương là người đứng đầu nhà nước Văn Lang.'},
+ {q:'Theo nội dung bài học, Văn Lang được chia thành',a:['10 bộ','12 bộ','15 bộ','18 bộ'],c:2,e:'Nhà nước Văn Lang được tổ chức thành 15 bộ.'},
+ {q:'Ai là người đứng đầu nhà nước Âu Lạc?',a:['Hùng Vương','Thục Phán – An Dương Vương','Lạc hầu','Bồ chính'],c:1,e:'Sau thắng lợi chống quân Tần, Thục Phán xưng là An Dương Vương và lập Âu Lạc.'},
+ {q:'Kinh đô của Âu Lạc được đặt tại',a:['Phong Châu','Phong Khê (Cổ Loa)','Việt Trì','Đông Sơn'],c:1,e:'Kinh đô Âu Lạc ở Phong Khê, nay là khu vực Cổ Loa, Đông Anh, Hà Nội.'},
+ {q:'Điểm mới nổi bật của tổ chức nhà nước Âu Lạc so với Văn Lang là',a:['Không còn vua','Vua có nhiều quyền hành hơn và tổ chức chặt chẽ hơn','Không còn các bộ','Chỉ dựa vào già làng'],c:1,e:'Tổ chức cơ bản kế thừa Văn Lang nhưng chặt chẽ hơn, quyền lực của vua được tăng cường.'},
+ {q:'Hoạt động kinh tế chính của cư dân Văn Lang – Âu Lạc là',a:['Trồng lúa nước','Buôn bán đường biển','Săn bắt là chủ yếu','Khai thác vàng là chủ yếu'],c:0,e:'Trồng lúa nước là nghề chính; bên cạnh đó còn chăn nuôi, đánh bắt cá và các nghề thủ công.'},
+ {q:'Tín ngưỡng tiêu biểu của cư dân Văn Lang – Âu Lạc là',a:['Thờ cúng tổ tiên và các lực lượng tự nhiên','Thờ Chúa Giê-su','Ướp xác','Thờ thần Zeus'],c:0,e:'Bài học nêu tục thờ cúng tổ tiên và các lực lượng tự nhiên như núi, sông, Mặt Trời.'},
+ {q:'Công trình nào gắn với nhà nước Âu Lạc?',a:['Đền Pác-thenon','Thành Cổ Loa','Kim tự tháp Giza','Đấu trường Colosseum'],c:1,e:'Cổ Loa là kinh đô và công trình quân sự quan trọng của Âu Lạc.'}
+];
+let current=0,score=0,timer=null,timeLeft=10,answered=false,quizFinished=false;
+const $=id=>document.getElementById(id);
+function startQuiz(){current=0;score=0;quizFinished=false;$('quizStart').classList.add('hide');$('result').style.display='none';$('completion').style.display='none';$('quizBody').classList.remove('hide');showQuestion();}
+function showQuestion(){answered=false;timeLeft=10;clearInterval(timer);$('qCount').textContent=`Câu ${current+1}/10`;$('timer').textContent=timeLeft;$('qText').textContent=questions[current].q;$('feedback').className='feedback';$('feedback').textContent='';$('nextBtn').classList.add('hide');const box=$('options');box.innerHTML='';questions[current].a.forEach((t,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=String.fromCharCode(65+i)+'. '+t;b.onclick=()=>answer(i,b);box.appendChild(b)});timer=setInterval(()=>{timeLeft--;$('timer').textContent=timeLeft;if(timeLeft<=0){clearInterval(timer);if(!answered) answer(-1,null)}},1000)}
+function answer(i,button){if(answered)return;answered=true;clearInterval(timer);const q=questions[current];document.querySelectorAll('.opt').forEach((b,idx)=>{b.disabled=true;if(idx===q.c)b.classList.add('correct')});if(i===q.c){score++;$('feedback').className='feedback show ok';$('feedback').innerHTML='<b>✓ Chính xác!</b> '+q.e}else{$('feedback').className='feedback show no';$('feedback').innerHTML='<b>✗ Chưa chính xác.</b> '+q.e;if(button)button.classList.add('wrong')}$('nextBtn').textContent=current===questions.length-1?'Xem kết quả →':'Câu tiếp theo →';$('nextBtn').classList.remove('hide')}
+function nextQuestion(){if(!answered)return;if(current<questions.length-1){current++;showQuestion()}else finishQuiz()}
+function finishQuiz(){quizFinished=true;clearInterval(timer);$('quizBody').classList.add('hide');$('result').style.display='block';$('score').textContent=score+'/10';$('resultText').textContent=score>=8?'Rất tốt! Em đã nắm khá chắc kiến thức của bài.':score>=5?'Khá tốt! Em hãy xem lại những câu còn nhầm.':'Hãy xem lại phần ghi nhớ và thử lại nhé.';}
+function restartQuiz(){$('result').style.display='none';startQuiz()}
+function completeLesson(){if(!quizFinished)return;const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');p[LESSON_ID]=true;localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));$('result').style.display='none';$('completion').style.display='block';$('lessonStatus').style.display='inline-flex';$('completionText').textContent='✓ Đã lưu Bài 14 vào tiến độ học tập. Tiến độ Tổng và Lịch sử đã được cập nhật.';window.scrollTo({top:$('challenge').offsetTop-80,behavior:'smooth'})}
+$('finishLesson').addEventListener('click',completeLesson);
+function checkProgress(){const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');if(p[LESSON_ID]===true){$('lessonStatus').style.display='inline-flex';}}
+checkProgress();
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("h14");</script>
+</body>
+</html>

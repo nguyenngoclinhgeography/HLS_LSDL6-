@@ -1,0 +1,6242 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Bài 8 · Ấn Độ cổ đại | Học liệu số 6</title>
+
+
+<style>
+
+/* =========================================================
+   BIẾN MÀU
+========================================================= */
+
+:root{
+
+    --bg:#f3eadb;
+    --bg2:#fffaf0;
+
+    --card:#ffffff;
+    --card2:#f8f0e1;
+
+    --brown:#2d1c12;
+    --brown2:#6b4226;
+
+    --gold:#b7791f;
+    --gold2:#d59b42;
+
+    --cream:#fff7e5;
+
+    --text:#2e251e;
+    --muted:#766b60;
+
+    --red:#b83232;
+    --green:#3f7d4a;
+    --blue:#356b9f;
+
+    --line:#e4d7c0;
+
+    --shadow:
+        0 12px 35px rgba(80,55,25,.10);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    margin:0;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:var(--text);
+
+    line-height:1.65;
+
+    background:
+
+        radial-gradient(
+            circle at top left,
+            rgba(214,158,46,.12),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            180deg,
+            #f8f2e6 0%,
+            #f1e8d8 100%
+        );
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+button{
+    font-family:inherit;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    width:100%;
+
+    height:88px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        0 5.2vw;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #24170f 0%,
+            #2d1c12 100%
+        );
+
+    border-bottom:
+        1px solid
+        rgba(207,160,82,.28);
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.18);
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    color:white;
+
+    text-decoration:none;
+}
+
+
+.brand-icon{
+
+    width:52px;
+
+    height:52px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:15px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #a87332,
+            #c18a3e
+        );
+
+    color:white;
+
+    font-size:25px;
+
+    box-shadow:
+        0 6px 15px
+        rgba(0,0,0,.25);
+}
+
+
+.brand-text{
+
+    display:flex;
+
+    flex-direction:column;
+
+    line-height:1.05;
+}
+
+
+.brand-main{
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:900;
+
+    letter-spacing:.2px;
+}
+
+
+.brand-sub{
+
+    margin-top:5px;
+
+    color:#e1cba7;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+}
+
+
+/* =========================================================
+   NÚT TRANG CHỦ
+========================================================= */
+
+.top-home-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:150px;
+
+    height:50px;
+
+    padding:
+        0 18px;
+
+    border-radius:15px;
+
+    border:
+        1px solid
+        rgba(214,170,100,.45);
+
+    background:
+        rgba(255,255,255,.045);
+
+    color:#f5ead7;
+
+    font-size:15px;
+
+    font-weight:800;
+
+    text-decoration:none;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.top-home-btn:hover{
+
+    background:
+        rgba(193,138,62,.18);
+
+    border-color:
+        rgba(224,181,108,.75);
+
+    color:white;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 7px 20px
+        rgba(0,0,0,.18);
+}
+
+
+.top-home-btn:active{
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE TOPBAR
+========================================================= */
+
+@media(max-width:650px){
+
+    .topbar{
+
+        height:76px;
+
+        padding:
+            0 16px;
+    }
+
+
+    .brand{
+
+        gap:10px;
+    }
+
+
+    .brand-icon{
+
+        width:43px;
+
+        height:43px;
+
+        border-radius:12px;
+
+        font-size:20px;
+    }
+
+
+    .brand-main{
+
+        font-size:14px;
+    }
+
+
+    .brand-sub{
+
+        font-size:8px;
+
+        letter-spacing:.7px;
+    }
+
+
+    .top-home-btn{
+
+        min-width:auto;
+
+        height:42px;
+
+        padding:
+            0 12px;
+
+        border-radius:12px;
+
+        font-size:12px;
+    }
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:
+        82px 7vw 72px;
+
+    background:
+
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(214,158,46,.24),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 10% 100%,
+            rgba(107,66,38,.10),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            135deg,
+            #fff9eb,
+            #f3e6cc
+        );
+}
+
+
+.hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:320px;
+
+    height:320px;
+
+    right:-100px;
+
+    bottom:-160px;
+
+    border:
+        2px solid
+        rgba(183,121,31,.14);
+
+    border-radius:50%;
+}
+
+
+.hero-inner{
+
+    position:relative;
+
+    z-index:1;
+
+    max-width:1200px;
+
+    margin:auto;
+}
+
+
+.eyebrow{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:
+        7px 12px;
+
+    border-radius:999px;
+
+    background:#fff4d7;
+
+    color:var(--gold);
+
+    font-size:12px;
+
+    font-weight:800;
+
+    letter-spacing:.5px;
+
+    border:
+        1px solid
+        #ead4a4;
+}
+
+
+.hero h1{
+
+    margin:
+        18px 0 12px;
+
+    max-width:850px;
+
+    font-size:
+        clamp(40px,6vw,76px);
+
+    line-height:.98;
+
+    letter-spacing:-2.5px;
+
+    color:var(--brown);
+}
+
+
+.hero h1 span{
+
+    color:var(--gold);
+}
+
+
+.hero-description{
+
+    max-width:760px;
+
+    margin:0;
+
+    font-size:18px;
+
+    color:#675b4e;
+}
+
+
+.hero-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-top:30px;
+}
+
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    min-height:46px;
+
+    padding:
+        0 18px;
+
+    border-radius:12px;
+
+    border:
+        1px solid
+        transparent;
+
+    font-size:14px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.btn:hover{
+
+    transform:
+        translateY(-2px);
+}
+
+
+.btn-primary{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--brown2),
+            #8b5e34
+        );
+
+    color:white;
+
+    box-shadow:
+        0 8px 22px
+        rgba(107,66,38,.20);
+}
+
+
+.btn-secondary{
+
+    background:white;
+
+    color:var(--brown2);
+
+    border-color:#decba9;
+}
+
+
+.btn-gold{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    color:white;
+}
+
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+.container{
+
+    width:min(
+        1200px,
+        90vw
+    );
+
+    margin:auto;
+}
+
+
+.section{
+
+    padding:
+        70px 0;
+}
+
+
+.section-header{
+
+    margin-bottom:28px;
+}
+
+
+.section-kicker{
+
+    display:inline-block;
+
+    margin-bottom:8px;
+
+    color:var(--gold);
+
+    font-size:12px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:1.2px;
+}
+
+
+.section-title{
+
+    margin:0;
+
+    font-size:
+        clamp(28px,4vw,43px);
+
+    line-height:1.15;
+
+    color:var(--brown2);
+
+    letter-spacing:-1px;
+}
+
+
+.section-description{
+
+    max-width:760px;
+
+    margin:
+        10px 0 0;
+
+    color:var(--muted);
+}
+
+
+.card{
+
+    background:var(--card);
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:20px;
+
+    box-shadow:var(--shadow);
+}
+
+
+.grid-3{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+}
+
+
+.grid-4{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:18px;
+}
+
+
+@media(max-width:900px){
+
+    .grid-3,
+    .grid-4{
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+
+@media(max-width:600px){
+
+    .grid-3,
+    .grid-4{
+
+        grid-template-columns:1fr;
+    }
+
+
+    .section{
+
+        padding:50px 0;
+    }
+}
+
+
+/* =========================================================
+   OBJECTIVES
+========================================================= */
+
+.objective-card{
+
+    padding:24px;
+}
+
+
+.objective-icon{
+
+    width:52px;
+
+    height:52px;
+
+    display:grid;
+
+    place-items:center;
+
+    margin-bottom:16px;
+
+    border-radius:15px;
+
+    background:#fff2cf;
+
+    font-size:25px;
+}
+
+
+.objective-card h3{
+
+    margin:
+        0 0 8px;
+
+    color:var(--brown2);
+
+    font-size:18px;
+}
+
+
+.objective-card p{
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+
+/* =========================================================
+   NATURE
+========================================================= */
+
+.nature-card{
+
+    position:relative;
+
+    min-height:230px;
+
+    padding:26px;
+
+    overflow:hidden;
+}
+
+
+.nature-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    right:-30px;
+
+    bottom:-50px;
+
+    width:150px;
+
+    height:150px;
+
+    border-radius:50%;
+
+    background:
+        rgba(214,158,46,.08);
+}
+
+
+.nature-number{
+
+    display:inline-flex;
+
+    width:38px;
+
+    height:38px;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:11px;
+
+    background:#f7e8c2;
+
+    color:var(--brown2);
+
+    font-weight:900;
+}
+
+
+.nature-card h3{
+
+    margin:
+        17px 0 8px;
+
+    color:var(--brown2);
+}
+
+
+.nature-card p{
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.map-shell{
+
+    overflow:hidden;
+
+    border-radius:24px;
+
+    background:#fffdf7;
+
+    border:
+        1px solid
+        var(--line);
+
+    box-shadow:var(--shadow);
+}
+
+
+.map-toolbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:14px;
+
+    padding:
+        15px 18px;
+
+    border-bottom:
+        1px solid
+        var(--line);
+
+    background:#fffaf0;
+}
+
+
+.map-tabs{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+}
+
+
+.map-tab{
+
+    border:
+        1px solid
+        #dfceb0;
+
+    background:white;
+
+    color:var(--muted);
+
+    padding:
+        9px 13px;
+
+    border-radius:10px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.map-tab:hover{
+
+    border-color:var(--gold);
+}
+
+
+.map-tab.active{
+
+    background:var(--brown2);
+
+    color:white;
+
+    border-color:var(--brown2);
+}
+
+
+.map-tools{
+
+    display:flex;
+
+    gap:7px;
+}
+
+
+.map-tool{
+
+    width:36px;
+
+    height:36px;
+
+    border:
+        1px solid
+        #dfceb0;
+
+    background:white;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    color:var(--brown2);
+
+    font-size:17px;
+
+    font-weight:800;
+}
+
+
+.map-tool:hover{
+
+    background:#f8edd7;
+}
+
+
+.map-content{
+
+    display:grid;
+
+    grid-template-columns:
+        220px 1fr;
+}
+
+
+.map-layers{
+
+    padding:18px;
+
+    border-right:
+        1px solid
+        var(--line);
+
+    background:#fffaf1;
+}
+
+
+.map-layers h4{
+
+    margin:
+        0 0 13px;
+
+    color:var(--brown2);
+
+    font-size:13px;
+}
+
+
+.layer-btn{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:10px;
+
+    margin-bottom:7px;
+
+    border:
+        1px solid
+        #e6d8bd;
+
+    background:white;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    color:#64594c;
+
+    text-align:left;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+
+.layer-btn.active{
+
+    border-color:#d5a94f;
+
+    background:#fff4d8;
+
+    color:var(--brown2);
+}
+
+
+.map-main{
+
+    position:relative;
+
+    min-width:0;
+}
+
+
+.map-canvas{
+
+    position:relative;
+
+    height:620px;
+
+    overflow:hidden;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(255,255,255,.7),
+            transparent 50%
+        ),
+
+        #e8f0e2;
+
+    cursor:grab;
+
+    user-select:none;
+}
+
+
+.map-canvas.dragging{
+
+    cursor:grabbing;
+}
+
+
+.map-viewport{
+
+    position:absolute;
+
+    inset:0;
+
+    overflow:hidden;
+}
+
+
+.map-zoom-stage{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    transform-origin:center center;
+
+    transition:
+        transform .18s ease;
+}
+
+
+.map-svg{
+
+    width:100%;
+
+    height:100%;
+
+    display:block;
+}
+
+
+.map-mode-label{
+
+    position:absolute;
+
+    left:18px;
+
+    top:18px;
+
+    z-index:10;
+
+    padding:
+        9px 12px;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.9);
+
+    border:
+        1px solid
+        rgba(107,66,38,.15);
+
+    color:var(--brown2);
+
+    font-size:12px;
+
+    font-weight:900;
+
+    box-shadow:
+        0 7px 20px
+        rgba(50,50,20,.08);
+}
+
+
+.map-note{
+
+    position:absolute;
+
+    left:18px;
+
+    bottom:18px;
+
+    z-index:10;
+
+    padding:
+        8px 11px;
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.86);
+
+    border:
+        1px solid
+        rgba(107,66,38,.12);
+
+    color:var(--muted);
+
+    font-size:11px;
+}
+
+
+.map-controls{
+
+    position:absolute;
+
+    right:18px;
+
+    top:18px;
+
+    z-index:20;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:7px;
+}
+
+
+.map-info{
+
+    padding:20px;
+
+    border-top:
+        1px solid
+        var(--line);
+
+    background:#fffdf8;
+
+    min-height:92px;
+}
+
+
+.map-info-title{
+
+    margin:
+        0 0 5px;
+
+    font-size:18px;
+
+    color:var(--brown2);
+}
+
+
+.map-info-text{
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+.place{
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.place:hover{
+
+    filter:brightness(.95);
+}
+
+
+.place-dot{
+
+    fill:#a85b29;
+
+    stroke:white;
+
+    stroke-width:3;
+
+    transition:.2s;
+}
+
+
+.place:hover .place-dot{
+
+    r:10;
+}
+
+
+.map-label{
+
+    fill:#5b4635;
+
+    font-size:13px;
+
+    font-weight:800;
+
+    pointer-events:none;
+}
+
+
+.map-river{
+
+    fill:none;
+
+    stroke:#4c87b5;
+
+    stroke-width:5;
+
+    stroke-linecap:round;
+
+    opacity:.8;
+}
+
+
+.map-mountain{
+
+    fill:none;
+
+    stroke:#8c7454;
+
+    stroke-width:3;
+
+    opacity:.8;
+}
+
+
+.modern-country{
+
+    fill:#d8d2bc;
+
+    stroke:#8d806c;
+
+    stroke-width:2;
+}
+
+
+.modern-country.highlight{
+
+    fill:#e8bb63;
+}
+
+
+.modern-river{
+
+    fill:none;
+
+    stroke:#3f86b7;
+
+    stroke-width:5;
+
+    stroke-linecap:round;
+
+    opacity:.85;
+}
+
+
+.compare-box{
+
+    width:100%;
+
+    height:100%;
+
+    min-height:620px;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:18px;
+
+    padding:45px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #f5ead2 0 50%,
+            #e7efe4 50% 100%
+        );
+}
+
+
+.compare-column{
+
+    padding:24px;
+
+    border-radius:18px;
+
+    background:
+        rgba(255,255,255,.78);
+
+    border:
+        1px solid
+        rgba(107,66,38,.13);
+
+    backdrop-filter:blur(5px);
+}
+
+
+.compare-column h3{
+
+    margin-top:0;
+
+    color:var(--brown2);
+}
+
+
+.compare-column ul{
+
+    margin:0;
+
+    padding-left:20px;
+
+    color:#63584c;
+
+    font-size:14px;
+}
+
+
+.hidden{
+
+    display:none!important;
+}
+
+
+@media(max-width:800px){
+
+    .map-content{
+
+        grid-template-columns:1fr;
+    }
+
+
+    .map-layers{
+
+        border-right:0;
+
+        border-bottom:
+            1px solid
+            var(--line);
+    }
+
+
+    .map-canvas{
+
+        height:520px;
+    }
+
+
+    .compare-box{
+
+        grid-template-columns:1fr;
+
+        min-height:520px;
+
+        padding:25px;
+
+        background:
+            linear-gradient(
+                180deg,
+                #f5ead2 0 50%,
+                #e7efe4 50% 100%
+            );
+    }
+}
+
+
+/* =========================================================
+   XÃ HỘI
+========================================================= */
+
+.caste-intro{
+
+    padding:25px;
+
+    margin-bottom:20px;
+
+    background:#fff8e9;
+
+    border:
+        1px solid
+        #ead6ad;
+
+    border-radius:18px;
+}
+
+
+.caste-intro strong{
+
+    color:var(--brown2);
+}
+
+
+.caste-card{
+
+    padding:23px;
+
+    border-top:
+        5px solid
+        var(--gold);
+}
+
+
+.caste-card:nth-child(2){
+
+    border-top-color:#9a6c45;
+}
+
+
+.caste-card:nth-child(3){
+
+    border-top-color:#8a8a8a;
+}
+
+
+.caste-card:nth-child(4){
+
+    border-top-color:#5f7b63;
+}
+
+
+.caste-card h3{
+
+    margin:
+        0 0 7px;
+
+    color:var(--brown2);
+}
+
+
+.caste-card .caste-role{
+
+    color:var(--gold);
+
+    font-size:12px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+}
+
+
+.caste-card p{
+
+    margin:
+        10px 0 0;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+.timeline{
+
+    position:relative;
+
+    padding:
+        15px 0;
+}
+
+
+.timeline::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:21px;
+
+    top:20px;
+
+    bottom:20px;
+
+    width:2px;
+
+    background:#dfc79d;
+}
+
+
+.timeline-item{
+
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:
+        44px 1fr;
+
+    gap:16px;
+
+    margin-bottom:18px;
+}
+
+
+.timeline-dot{
+
+    position:relative;
+
+    z-index:2;
+
+    width:44px;
+
+    height:44px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:50%;
+
+    background:#fff1cc;
+
+    border:
+        2px solid
+        #d5a64a;
+
+    color:var(--brown2);
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+
+.timeline-content{
+
+    padding:
+        18px 20px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:15px;
+
+    background:white;
+
+    box-shadow:
+        0 7px 20px
+        rgba(80,55,25,.06);
+}
+
+
+.timeline-content h3{
+
+    margin:
+        0 0 5px;
+
+    color:var(--brown2);
+
+    font-size:17px;
+}
+
+
+.timeline-content p{
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+========================================================= */
+
+.achievement{
+
+    padding:24px;
+
+    min-height:240px;
+}
+
+
+.achievement-icon{
+
+    width:55px;
+
+    height:55px;
+
+    display:grid;
+
+    place-items:center;
+
+    margin-bottom:16px;
+
+    border-radius:15px;
+
+    background:#f7e9c7;
+
+    font-size:26px;
+}
+
+
+.achievement h3{
+
+    margin:
+        0 0 9px;
+
+    color:var(--brown2);
+}
+
+
+.achievement p{
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+.achievement-tag{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:
+        5px 9px;
+
+    border-radius:999px;
+
+    background:#f3e8d1;
+
+    color:#7a5c34;
+
+    font-size:11px;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap{
+
+    overflow:auto;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        var(--line);
+
+    background:white;
+
+    box-shadow:var(--shadow);
+}
+
+
+.compare-table{
+
+    width:100%;
+
+    min-width:700px;
+
+    border-collapse:collapse;
+}
+
+
+.compare-table th,
+.compare-table td{
+
+    padding:
+        15px 17px;
+
+    border-bottom:
+        1px solid
+        #eee2cf;
+
+    text-align:left;
+
+    font-size:13px;
+
+    vertical-align:top;
+}
+
+
+.compare-table th{
+
+    background:#f5ead3;
+
+    color:var(--brown2);
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.4px;
+}
+
+
+.compare-table tr:last-child td{
+
+    border-bottom:0;
+}
+
+
+/* =========================================================
+   FLOW
+========================================================= */
+
+.flow{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:10px;
+
+    align-items:stretch;
+}
+
+
+.flow-step{
+
+    position:relative;
+
+    padding:
+        22px 17px;
+
+    border-radius:17px;
+
+    background:white;
+
+    border:
+        1px solid
+        var(--line);
+
+    box-shadow:
+        0 8px 22px
+        rgba(80,55,25,.06);
+
+    text-align:center;
+}
+
+
+.flow-step:not(:last-child)::after{
+
+    content:"→";
+
+    position:absolute;
+
+    right:-18px;
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    z-index:3;
+
+    width:27px;
+
+    height:27px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:50%;
+
+    background:#fff1cf;
+
+    color:var(--gold);
+
+    font-weight:900;
+}
+
+
+.flow-number{
+
+    width:34px;
+
+    height:34px;
+
+    display:grid;
+
+    place-items:center;
+
+    margin:
+        0 auto 10px;
+
+    border-radius:10px;
+
+    background:#f6e6be;
+
+    color:var(--brown2);
+
+    font-weight:900;
+}
+
+
+.flow-step h3{
+
+    margin:
+        0 0 6px;
+
+    color:var(--brown2);
+
+    font-size:15px;
+}
+
+
+.flow-step p{
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+
+@media(max-width:900px){
+
+    .flow{
+
+        grid-template-columns:1fr;
+    }
+
+
+    .flow-step:not(:last-child)::after{
+
+        right:auto;
+
+        left:50%;
+
+        top:auto;
+
+        bottom:-19px;
+
+        transform:
+            translateX(-50%)
+            rotate(90deg);
+    }
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz-section{
+
+    background:
+        linear-gradient(
+            135deg,
+            #5c3925,
+            #7d4e2b
+        );
+}
+
+
+.quiz-section .section-title,
+.quiz-section .section-description{
+
+    color:white;
+}
+
+
+.quiz-section .section-kicker{
+
+    color:#f4cf7b;
+}
+
+
+.quiz-shell{
+
+    max-width:850px;
+
+    margin:
+        28px auto 0;
+
+    padding:25px;
+
+    border-radius:23px;
+
+    background:#fffaf1;
+
+    box-shadow:
+        0 20px 55px
+        rgba(30,15,5,.20);
+}
+
+
+.quiz-intro{
+
+    text-align:center;
+
+    padding:
+        30px 15px;
+}
+
+
+.quiz-intro-icon{
+
+    width:76px;
+
+    height:76px;
+
+    display:grid;
+
+    place-items:center;
+
+    margin:
+        0 auto 17px;
+
+    border-radius:22px;
+
+    background:#f7e4b5;
+
+    font-size:37px;
+}
+
+
+.quiz-intro h3{
+
+    margin:
+        0 0 10px;
+
+    color:var(--brown2);
+
+    font-size:28px;
+}
+
+
+.quiz-intro p{
+
+    max-width:600px;
+
+    margin:
+        0 auto 20px;
+
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+
+.quiz-rules{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:8px;
+
+    margin-bottom:23px;
+}
+
+
+.quiz-rule{
+
+    padding:
+        7px 11px;
+
+    border-radius:999px;
+
+    background:#f5ead2;
+
+    color:#6c573f;
+
+    font-size:11px;
+
+    font-weight:800;
+}
+
+
+.quiz-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+
+.quiz-progress{
+
+    flex:1;
+}
+
+
+.progress-text{
+
+    margin-bottom:7px;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+
+.progress-bar{
+
+    height:8px;
+
+    overflow:hidden;
+
+    border-radius:99px;
+
+    background:#eadfcd;
+}
+
+
+.progress-fill{
+
+    height:100%;
+
+    width:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--gold),
+            #e5b95e
+        );
+
+    transition:.3s;
+}
+
+
+.timer{
+
+    min-width:60px;
+
+    padding:
+        8px 10px;
+
+    border-radius:10px;
+
+    background:#fff0d0;
+
+    color:var(--brown2);
+
+    text-align:center;
+
+    font-weight:900;
+
+    font-size:13px;
+}
+
+
+.quiz-question{
+
+    padding:25px;
+
+    border-radius:17px;
+
+    background:white;
+
+    border:
+        1px solid
+        var(--line);
+}
+
+
+.question-number{
+
+    color:var(--gold);
+
+    font-size:12px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:.8px;
+}
+
+
+.question-text{
+
+    margin:
+        8px 0 20px;
+
+    color:var(--brown2);
+
+    font-size:21px;
+
+    line-height:1.4;
+
+    font-weight:800;
+}
+
+
+.answers{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:10px;
+}
+
+
+.answer{
+
+    min-height:54px;
+
+    padding:
+        12px 14px;
+
+    border-radius:12px;
+
+    border:
+        1px solid
+        #dfd0b7;
+
+    background:#fffdf8;
+
+    color:#51473d;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    transition:.18s;
+}
+
+
+.answer:hover{
+
+    border-color:#c59646;
+
+    background:#fff6df;
+
+    transform:
+        translateY(-1px);
+}
+
+
+.answer.correct{
+
+    background:#e7f3e9;
+
+    border-color:#69a275;
+
+    color:#2e6738;
+}
+
+
+.answer.wrong{
+
+    background:#fae7e4;
+
+    border-color:#d88379;
+
+    color:#8d3028;
+}
+
+
+.answer.disabled{
+
+    cursor:default;
+}
+
+
+.quiz-footer{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-top:16px;
+}
+
+
+.score-live{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+
+.result{
+
+    text-align:center;
+
+    padding:
+        35px 15px;
+}
+
+
+.result-score{
+
+    font-size:58px;
+
+    line-height:1;
+
+    color:var(--gold);
+
+    font-weight:900;
+}
+
+
+.result h3{
+
+    margin:
+        15px 0 8px;
+
+    color:var(--brown2);
+
+    font-size:26px;
+}
+
+
+.result p{
+
+    margin:
+        0 auto 22px;
+
+    max-width:600px;
+
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+
+.completion{
+
+    display:none;
+
+    margin-top:20px;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    background:#eef7ef;
+
+    border:
+        1px solid
+        #bfd9c2;
+
+    color:#37623c;
+
+    text-align:center;
+
+    font-size:14px;
+
+    font-weight:700;
+}
+
+
+@media(max-width:650px){
+
+    .answers{
+
+        grid-template-columns:1fr;
+    }
+
+
+    .quiz-shell{
+
+        padding:15px;
+    }
+
+
+    .question-text{
+
+        font-size:18px;
+    }
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    padding:
+        45px 0;
+
+    background:#3f291d;
+
+    color:#e8d9c4;
+}
+
+
+.footer-inner{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+}
+
+
+.footer-title{
+
+    font-weight:900;
+
+    color:white;
+}
+
+
+.footer-text{
+
+    margin-top:5px;
+
+    font-size:12px;
+
+    color:#cdbba4;
+}
+
+
+@media(max-width:700px){
+
+    .footer-inner{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+}
+
+</style>
+
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     THANH TRÊN CÙNG
+========================================================= -->
+
+<header class="topbar">
+
+
+    <!-- LOGO -->
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+
+        <div class="brand-icon">
+            🏺
+        </div>
+
+
+        <div class="brand-text">
+
+            <div class="brand-main">
+                HỌC LIỆU SỐ 6
+            </div>
+
+
+            <div class="brand-sub">
+                LỊCH SỬ · KHÁM PHÁ TƯ LIỆU
+            </div>
+
+        </div>
+
+    </a>
+
+
+    <!-- TRANG CHỦ -->
+
+    <a
+        href="index.html"
+        class="top-home-btn"
+    >
+
+        ← Trang chủ
+
+    </a>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+
+        <div class="eyebrow">
+
+            🪷 BÀI 8 · LỊCH SỬ 6
+
+        </div>
+
+
+        <h1>
+
+            Ấn Độ
+            <span>cổ đại</span>
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            Khám phá điều kiện tự nhiên, xã hội và những
+            thành tựu văn hóa tiêu biểu của một trong những
+            nền văn minh lớn của phương Đông thời cổ đại.
+
+        </p>
+
+
+        <div class="hero-actions">
+
+
+            <a
+                href="#tunhien"
+                class="btn btn-primary"
+            >
+
+                🌏 Bắt đầu khám phá
+
+            </a>
+
+
+            <a
+                href="#quiz"
+                class="btn btn-gold"
+            >
+
+                🧠 Tự kiểm tra
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MỤC TIÊU
+========================================================= -->
+
+<section
+    class="section"
+    id="muctieu"
+>
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Sau bài học
+            </div>
+
+
+            <h2 class="section-title">
+                Em cần đạt được gì?
+            </h2>
+
+
+            <p class="section-description">
+
+                Sau khi hoàn thành bài học, em có thể nhận biết
+                những đặc điểm cơ bản của Ấn Độ cổ đại và giải thích
+                được ý nghĩa của một số thành tựu văn hóa tiêu biểu.
+
+            </p>
+
+        </div>
+
+
+        <div class="grid-3">
+
+
+            <div class="card objective-card">
+
+                <div class="objective-icon">
+                    🌏
+                </div>
+
+
+                <h3>
+                    Nhận biết không gian
+                </h3>
+
+
+                <p>
+
+                    Xác định được vị trí của Ấn Độ cổ đại,
+                    vai trò của sông Ấn và sông Hằng đối với
+                    sự hình thành và phát triển của nền văn minh.
+
+                </p>
+
+            </div>
+
+
+            <div class="card objective-card">
+
+                <div class="objective-icon">
+                    👥
+                </div>
+
+
+                <h3>
+                    Tìm hiểu xã hội
+                </h3>
+
+
+                <p>
+
+                    Trình bày được một số nét chính về xã hội
+                    Ấn Độ cổ đại, đặc biệt là sự hình thành
+                    và đặc điểm của chế độ đẳng cấp.
+
+                </p>
+
+            </div>
+
+
+            <div class="card objective-card">
+
+                <div class="objective-icon">
+                    🪷
+                </div>
+
+
+                <h3>
+                    Khám phá văn hóa
+                </h3>
+
+
+                <p>
+
+                    Nhận biết được những thành tựu tiêu biểu
+                    về tôn giáo, chữ viết, văn học, toán học
+                    và kiến trúc.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ĐIỀU KIỆN TỰ NHIÊN
+========================================================= -->
+
+<section
+    class="section"
+    id="tunhien"
+>
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                I · Điều kiện tự nhiên
+            </div>
+
+
+            <h2 class="section-title">
+                Ấn Độ cổ đại hình thành ở đâu?
+            </h2>
+
+
+            <p class="section-description">
+
+                Điều kiện tự nhiên có ảnh hưởng quan trọng
+                đến đời sống cư dân và sự hình thành các nền
+                văn minh cổ đại ở Ấn Độ.
+
+            </p>
+
+        </div>
+
+
+        <div class="grid-3">
+
+
+            <div class="card nature-card">
+
+                <div class="nature-number">
+                    01
+                </div>
+
+
+                <h3>
+                    Vị trí
+                </h3>
+
+
+                <p>
+
+                    Ấn Độ cổ đại hình thành chủ yếu trên
+                    tiểu lục địa Ấn Độ ở khu vực Nam Á,
+                    phía nam châu Á và được bao quanh bởi
+                    Ấn Độ Dương ở phía nam.
+
+                </p>
+
+            </div>
+
+
+            <div class="card nature-card">
+
+                <div class="nature-number">
+                    02
+                </div>
+
+
+                <h3>
+                    Sông Ấn
+                </h3>
+
+
+                <p>
+
+                    Lưu vực sông Ấn có đất đai tương đối
+                    màu mỡ, tạo điều kiện cho nông nghiệp
+                    và sự hình thành các đô thị cổ như
+                    Ha-ra-pa và Mô-hen-giô Đa-rô.
+
+                </p>
+
+            </div>
+
+
+            <div class="card nature-card">
+
+                <div class="nature-number">
+                    03
+                </div>
+
+
+                <h3>
+                    Sông Hằng
+                </h3>
+
+
+                <p>
+
+                    Sông Hằng có vai trò quan trọng đối với
+                    đời sống cư dân Bắc Ấn. Lưu vực sông Hằng
+                    là một trong những trung tâm quan trọng
+                    của lịch sử Ấn Độ.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     BẢN ĐỒ
+========================================================= -->
+
+<section class="section">
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Bản đồ tương tác
+            </div>
+
+
+            <h2 class="section-title">
+                Khám phá không gian Ấn Độ
+            </h2>
+
+
+            <p class="section-description">
+
+                Chọn từng lớp bản đồ và nhấn vào các địa điểm
+                để tìm hiểu thêm. Em có thể kéo bản đồ,
+                phóng to hoặc thu nhỏ bằng các nút điều khiển.
+
+            </p>
+
+        </div>
+
+
+        <div class="map-shell">
+
+
+            <!-- MAP TOOLBAR -->
+
+            <div class="map-toolbar">
+
+
+                <div class="map-tabs">
+
+
+                    <button
+                        class="map-tab active"
+                        data-map="ancient"
+                        onclick="switchMapView('ancient')"
+                    >
+
+                        🏺 ẤN ĐỘ CỔ ĐẠI
+
+                    </button>
+
+
+                    <button
+                        class="map-tab"
+                        data-map="modern"
+                        onclick="switchMapView('modern')"
+                    >
+
+                        🌎 KHU VỰC HIỆN NAY
+
+                    </button>
+
+
+                    <button
+                        class="map-tab"
+                        data-map="compare"
+                        onclick="switchMapView('compare')"
+                    >
+
+                        ⚖️ SO SÁNH
+
+                    </button>
+
+                </div>
+
+
+                <div class="map-tools">
+
+
+                    <button
+                        class="map-tool"
+                        onclick="zoomMap(1.2)"
+                    >
+                        +
+                    </button>
+
+
+                    <button
+                        class="map-tool"
+                        onclick="zoomMap(.83)"
+                    >
+                        −
+                    </button>
+
+
+                    <button
+                        class="map-tool"
+                        onclick="resetMap()"
+                    >
+                        ↺
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="map-content">
+
+
+                <!-- LAYERS -->
+
+                <aside class="map-layers">
+
+
+                    <h4>
+                        Lớp thông tin
+                    </h4>
+
+
+                    <button
+                        class="layer-btn active"
+                        id="layerAncRiver"
+                        onclick="toggleLayer('ancRiver')"
+                    >
+
+                        💧 Sông Ấn · Sông Hằng
+
+                    </button>
+
+
+                    <button
+                        class="layer-btn active"
+                        id="layerAncPlace"
+                        onclick="toggleLayer('ancPlace')"
+                    >
+
+                        📍 Địa điểm cổ
+
+                    </button>
+
+
+                    <button
+                        class="layer-btn active"
+                        id="layerAncMountain"
+                        onclick="toggleLayer('ancMountain')"
+                    >
+
+                        ⛰️ Dãy Hi-ma-lay-a
+
+                    </button>
+
+
+                    <button
+                        class="layer-btn active"
+                        id="layerModernRiver"
+                        onclick="toggleLayer('modernRiver')"
+                    >
+
+                        🌊 Sông hiện nay
+
+                    </button>
+
+
+                    <div
+                        style="
+                        margin-top:20px;
+                        padding:13px;
+                        border-radius:13px;
+                        background:#f6ecd8;
+                        color:#756653;
+                        font-size:11px;
+                        line-height:1.6;
+                        "
+                    >
+
+                        <strong style="color:#68462b;">
+                            Gợi ý:
+                        </strong>
+
+                        Hãy quan sát mối quan hệ giữa
+                        các con sông, địa hình và nơi cư trú
+                        của cư dân cổ đại.
+
+                    </div>
+
+                </aside>
+
+
+                <!-- MAP -->
+
+                <div class="map-main">
+
+
+                    <div
+                        class="map-canvas"
+                        id="mapCanvas"
+                    >
+
+
+                        <div
+                            class="map-mode-label"
+                            id="mapModeLabel"
+                        >
+
+                            Ấn Độ cổ đại
+
+                        </div>
+
+
+                        <div class="map-controls">
+
+
+                            <button
+                                class="map-tool"
+                                onclick="zoomMap(1.2)"
+                            >
+                                +
+                            </button>
+
+
+                            <button
+                                class="map-tool"
+                                onclick="zoomMap(.83)"
+                            >
+                                −
+                            </button>
+
+
+                            <button
+                                class="map-tool"
+                                onclick="resetMap()"
+                            >
+                                ↺
+                            </button>
+
+                        </div>
+
+
+                        <div class="map-viewport">
+
+
+                            <div
+                                class="map-zoom-stage"
+                                id="mapZoomStage"
+                            >
+
+
+                                <!-- =====================
+                                     BẢN ĐỒ CỔ ĐẠI
+                                ====================== -->
+
+                                <svg
+                                    id="ancientMap"
+                                    class="map-svg"
+                                    viewBox="0 0 1000 650"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+
+
+                                    <rect
+                                        width="1000"
+                                        height="650"
+                                        fill="#edf3e7"
+                                    />
+
+
+                                    <!-- DÃY HI-MA-LAY-A -->
+
+                                    <g
+                                        id="ancMountain"
+                                        class="map-layer"
+                                    >
+
+                                        <path
+                                            class="map-mountain"
+                                            d="
+                                            M100 120
+                                            L150 85
+                                            L200 115
+                                            L250 72
+                                            L300 105
+                                            L350 67
+                                            L400 100
+                                            L450 70
+                                            L500 105
+                                            L550 75
+                                            L600 108
+                                            L650 83
+                                            L700 115
+                                            L750 90
+                                            L800 125
+                                            "
+                                        />
+
+
+                                        <text
+                                            x="430"
+                                            y="55"
+                                            class="map-label"
+                                            font-size="17"
+                                        >
+
+                                            Dãy Hi-ma-lay-a
+
+                                        </text>
+
+                                    </g>
+
+
+                                    <!-- ĐẤT -->
+
+                                    <path
+                                        d="
+                                        M220 140
+                                        C310 110 420 115 505 160
+                                        C570 195 635 250 665 330
+                                        C690 400 650 470 620 530
+                                        C600 575 550 610 505 625
+                                        C470 595 450 555 425 515
+                                        C390 460 350 425 325 375
+                                        C295 320 250 285 210 250
+                                        C185 225 190 170 220 140Z
+                                        "
+                                        fill="#d8c8a5"
+                                        stroke="#967c59"
+                                        stroke-width="3"
+                                    />
+
+
+                                    <!-- HOANG MẠC -->
+
+                                    <path
+                                        d="
+                                        M250 200
+                                        C290 175 335 180 365 205
+                                        C340 235 315 255 275 270
+                                        C245 250 235 225 250 200Z
+                                        "
+                                        fill="#e6d8b8"
+                                        opacity=".9"
+                                    />
+
+
+                                    <text
+                                        x="260"
+                                        y="225"
+                                        class="map-label"
+                                        font-size="11"
+                                        opacity=".7"
+                                    >
+
+                                        Hoang mạc
+
+                                    </text>
+
+
+                                    <!-- SÔNG ẤN -->
+
+                                    <g
+                                        id="ancRiverIndus"
+                                        class="map-layer"
+                                    >
+
+                                        <path
+                                            class="map-river"
+                                            d="
+                                            M315 145
+                                            C300 190 310 230 325 270
+                                            C340 310 350 350 345 390
+                                            C340 425 350 470 375 520
+                                            "
+                                        />
+
+
+                                        <text
+                                            x="295"
+                                            y="330"
+                                            class="map-label"
+                                            fill="#356b9f"
+                                        >
+
+                                            Sông Ấn
+
+                                        </text>
+
+                                    </g>
+
+
+                                    <!-- SÔNG HẰNG -->
+
+                                    <g
+                                        id="ancRiverGanges"
+                                        class="map-layer"
+                                    >
+
+                                        <path
+                                            class="map-river"
+                                            d="
+                                            M475 190
+                                            C510 215 540 235 565 265
+                                            C600 305 625 340 640 385
+                                            C655 430 670 470 705 500
+                                            "
+                                        />
+
+
+                                        <text
+                                            x="570"
+                                            y="310"
+                                            class="map-label"
+                                            fill="#356b9f"
+                                        >
+
+                                            Sông Hằng
+
+                                        </text>
+
+                                    </g>
+
+
+                                    <!-- ĐỊA ĐIỂM CỔ -->
+
+                                    <g
+                                        id="ancPlace"
+                                        class="map-layer"
+                                    >
+
+
+                                        <!-- HA-RA-PA -->
+
+                                        <g
+                                            class="place"
+                                            onclick="selectPlace('harappa')"
+                                        >
+
+                                            <circle
+                                                class="place-dot"
+                                                cx="350"
+                                                cy="255"
+                                                r="8"
+                                            />
+
+
+                                            <text
+                                                class="map-label"
+                                                x="365"
+                                                y="250"
+                                            >
+
+                                                Ha-ra-pa
+
+                                            </text>
+
+                                        </g>
+
+
+                                        <!-- MÔ-HEN-GIÔ ĐA-RÔ -->
+
+                                        <g
+                                            class="place"
+                                            onclick="selectPlace('mohenjo')"
+                                        >
+
+                                            <circle
+                                                class="place-dot"
+                                                cx="340"
+                                                cy="330"
+                                                r="8"
+                                            />
+
+
+                                            <text
+                                                class="map-label"
+                                                x="355"
+                                                y="327"
+                                            >
+
+                                                Mô-hen-giô Đa-rô
+
+                                            </text>
+
+                                        </g>
+
+
+                                        <!-- PA-TA-LI-PU-TRA -->
+
+                                        <g
+                                            class="place"
+                                            onclick="selectPlace('pataliputra')"
+                                        >
+
+                                            <circle
+                                                class="place-dot"
+                                                cx="565"
+                                                cy="275"
+                                                r="8"
+                                            />
+
+
+                                            <text
+                                                class="map-label"
+                                                x="580"
+                                                y="270"
+                                            >
+
+                                                Pa-ta-li-pu-tra
+
+                                            </text>
+
+                                        </g>
+
+
+                                        <!-- VA-RA-NA-SI -->
+
+                                        <g
+                                            class="place"
+                                            onclick="selectPlace('varanasi')"
+                                        >
+
+                                            <circle
+                                                class="place-dot"
+                                                cx="605"
+                                                cy="315"
+                                                r="8"
+                                            />
+
+
+                                            <text
+                                                class="map-label"
+                                                x="620"
+                                                y="312"
+                                            >
+
+                                                Va-ra-na-si
+
+                                            </text>
+
+                                        </g>
+
+                                    </g>
+
+
+                                    <text
+                                        x="430"
+                                        y="600"
+                                        fill="#5b7891"
+                                        font-size="16"
+                                        font-weight="800"
+                                    >
+
+                                        Ấn Độ Dương
+
+                                    </text>
+
+
+                                    <text
+                                        x="115"
+                                        y="315"
+                                        class="map-label"
+                                        font-size="18"
+                                    >
+
+                                        ẤN ĐỘ CỔ ĐẠI
+
+                                    </text>
+
+                                </svg>
+
+
+                                <!-- =====================
+                                     BẢN ĐỒ HIỆN NAY
+                                ====================== -->
+
+                                <svg
+                                    id="modernMap"
+                                    class="map-svg hidden"
+                                    viewBox="0 0 1000 650"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+
+
+                                    <rect
+                                        width="1000"
+                                        height="650"
+                                        fill="#e8f0e3"
+                                    />
+
+
+                                    <!-- ẤN ĐỘ -->
+
+                                    <path
+                                        class="modern-country highlight"
+                                        d="
+                                        M390 120
+                                        C450 110 520 125 570 165
+                                        C620 205 655 260 670 320
+                                        C685 380 665 430 635 485
+                                        C610 530 570 575 525 610
+                                        C490 580 470 545 445 505
+                                        C415 460 390 420 370 375
+                                        C345 320 330 275 345 220
+                                        C350 180 365 145 390 120Z
+                                        "
+                                    />
+
+
+                                    <!-- PA-KI-XTAN -->
+
+                                    <path
+                                        class="modern-country"
+                                        d="
+                                        M300 150
+                                        C335 130 365 135 395 155
+                                        C390 210 370 250 350 300
+                                        C320 290 290 255 275 220
+                                        C270 190 280 165 300 150Z
+                                        "
+                                    />
+
+
+                                    <!-- NÊ-PAN -->
+
+                                    <path
+                                        class="modern-country"
+                                        d="
+                                        M445 110
+                                        C500 95 565 105 610 125
+                                        L590 160
+                                        L455 155Z
+                                        "
+                                    />
+
+
+                                    <!-- BĂNG-LA-ĐÉT -->
+
+                                    <path
+                                        class="modern-country"
+                                        d="
+                                        M610 275
+                                        C645 275 675 295 685 330
+                                        C675 360 650 380 620 375
+                                        L600 340Z
+                                        "
+                                    />
+
+
+                                    <!-- SÔNG ẤN -->
+
+                                    <g
+                                        id="modIndus"
+                                        class="map-layer"
+                                    >
+
+                                        <path
+                                            class="modern-river"
+                                            d="
+                                            M355 145
+                                            C350 190 360 230 370 270
+                                            C380 315 390 360 395 405
+                                            C405 450 430 485 455 520
+                                            "
+                                        />
+
+
+                                        <text
+                                            x="325"
+                                            y="330"
+                                            class="map-label"
+                                        >
+
+                                            Sông Ấn
+
+                                        </text>
+
+                                    </g>
+
+
+                                    <!-- SÔNG HẰNG -->
+
+                                    <g
+                                        id="modGanges"
+                                        class="map-layer"
+                                    >
+
+                                        <path
+                                            class="modern-river"
+                                            d="
+                                            M460 165
+                                            C510 180 555 195 595 225
+                                            C635 255 660 295 675 335
+                                            C690 370 700 410 725 445
+                                            "
+                                        />
+
+
+                                        <text
+                                            x="585"
+                                            y="245"
+                                            class="map-label"
+                                        >
+
+                                            Sông Hằng
+
+                                        </text>
+
+                                    </g>
+
+
+                                    <text
+                                        x="480"
+                                        y="350"
+                                        class="map-label"
+                                        font-size="23"
+                                    >
+
+                                        ẤN ĐỘ
+
+                                    </text>
+
+
+                                    <text
+                                        x="300"
+                                        y="215"
+                                        class="map-label"
+                                    >
+
+                                        PA-KI-XTAN
+
+                                    </text>
+
+
+                                    <text
+                                        x="485"
+                                        y="120"
+                                        class="map-label"
+                                    >
+
+                                        NÊ-PAN
+
+                                    </text>
+
+
+                                    <text
+                                        x="630"
+                                        y="325"
+                                        class="map-label"
+                                    >
+
+                                        BĂNG-LA-ĐÉT
+
+                                    </text>
+
+
+                                    <text
+                                        x="430"
+                                        y="600"
+                                        fill="#5b7891"
+                                        font-size="16"
+                                        font-weight="800"
+                                    >
+
+                                        Ấn Độ Dương
+
+                                    </text>
+
+                                </svg>
+
+
+                                <!-- =====================
+                                     SO SÁNH
+                                ====================== -->
+
+                                <div
+                                    id="compareMap"
+                                    class="compare-box hidden"
+                                >
+
+
+                                    <div class="compare-column">
+
+                                        <h3>
+                                            🏺 Ấn Độ cổ đại
+                                        </h3>
+
+
+                                        <ul>
+
+                                            <li>
+                                                Văn minh sông Ấn
+                                                phát triển từ rất sớm.
+                                            </li>
+
+                                            <li>
+                                                Cư dân tập trung tại
+                                                các lưu vực sông lớn.
+                                            </li>
+
+                                            <li>
+                                                Xuất hiện các đô thị cổ
+                                                như Ha-ra-pa và
+                                                Mô-hen-giô Đa-rô.
+                                            </li>
+
+                                            <li>
+                                                Về sau nhiều trung tâm
+                                                chính trị hình thành
+                                                ở lưu vực sông Hằng.
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+
+                                    <div class="compare-column">
+
+                                        <h3>
+                                            🌎 Nam Á hiện nay
+                                        </h3>
+
+
+                                        <ul>
+
+                                            <li>
+                                                Khu vực gồm nhiều quốc gia,
+                                                trong đó Ấn Độ là quốc gia
+                                                có diện tích lớn.
+                                            </li>
+
+                                            <li>
+                                                Sông Ấn và sông Hằng
+                                                vẫn có vai trò quan trọng
+                                                đối với đời sống.
+                                            </li>
+
+                                            <li>
+                                                Nhiều thành phố hiện đại
+                                                phát triển trên những vùng
+                                                đất có lịch sử lâu đời.
+                                            </li>
+
+                                            <li>
+                                                Không gian văn hóa Nam Á
+                                                tiếp tục mang nhiều dấu ấn
+                                                của lịch sử cổ đại.
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="map-note">
+
+                            🖱️ Kéo để di chuyển · Cuộn chuột để thu phóng
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="map-info">
+
+
+                        <h3
+                            class="map-info-title"
+                            id="mapInfoTitle"
+                        >
+
+                            Khám phá bản đồ
+
+                        </h3>
+
+
+                        <p
+                            class="map-info-text"
+                            id="mapInfoText"
+                        >
+
+                            Hãy nhấn vào một địa điểm trên bản đồ
+                            để xem thông tin.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     XÃ HỘI
+========================================================= -->
+
+<section
+    class="section"
+    id="xahoi"
+>
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                II · Xã hội Ấn Độ cổ đại
+            </div>
+
+
+            <h2 class="section-title">
+                Xã hội và chế độ đẳng cấp
+            </h2>
+
+
+            <p class="section-description">
+
+                Khoảng giữa thiên niên kỉ II TCN, người A-ri-a
+                tiến vào Bắc Ấn. Xã hội dần hình thành chế độ
+                đẳng cấp với sự phân chia địa vị khá rõ rệt.
+
+            </p>
+
+        </div>
+
+
+        <div class="caste-intro">
+
+            <strong>
+                Chế độ đẳng cấp
+            </strong>
+
+            là sự phân chia xã hội thành các đẳng cấp
+            khác nhau. Địa vị của mỗi người phần lớn được
+            xác định ngay từ khi sinh ra và rất khó thay đổi.
+
+        </div>
+
+
+        <div class="grid-4">
+
+
+            <div class="card caste-card">
+
+                <div class="caste-role">
+                    Đẳng cấp 1
+                </div>
+
+
+                <h3>
+                    Bra-man
+                </h3>
+
+
+                <p>
+
+                    Tăng lữ, tu sĩ, những người thực hiện
+                    các nghi lễ tôn giáo và giữ vị trí cao
+                    trong xã hội.
+
+                </p>
+
+            </div>
+
+
+            <div class="card caste-card">
+
+                <div class="caste-role">
+                    Đẳng cấp 2
+                </div>
+
+
+                <h3>
+                    Ksa-tri-a
+                </h3>
+
+
+                <p>
+
+                    Vua, quý tộc và chiến binh,
+                    giữ vai trò cai trị và bảo vệ
+                    đất nước.
+
+                </p>
+
+            </div>
+
+
+            <div class="card caste-card">
+
+                <div class="caste-role">
+                    Đẳng cấp 3
+                </div>
+
+
+                <h3>
+                    Vai-si-a
+                </h3>
+
+
+                <p>
+
+                    Nông dân, thương nhân và thợ thủ công,
+                    chủ yếu hoạt động trong sản xuất
+                    và buôn bán.
+
+                </p>
+
+            </div>
+
+
+            <div class="card caste-card">
+
+                <div class="caste-role">
+                    Đẳng cấp 4
+                </div>
+
+
+                <h3>
+                    Su-đra
+                </h3>
+
+
+                <p>
+
+                    Những người có địa vị thấp nhất trong
+                    bốn đẳng cấp chính, chủ yếu phục vụ
+                    các đẳng cấp trên.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     DÒNG THỜI GIAN
+========================================================= -->
+
+<section class="section">
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Dòng thời gian
+            </div>
+
+
+            <h2 class="section-title">
+                Những dấu mốc đáng nhớ
+            </h2>
+
+        </div>
+
+
+        <div class="timeline">
+
+
+            <div class="timeline-item">
+
+
+                <div class="timeline-dot">
+                    I
+                </div>
+
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Khoảng thiên niên kỉ III TCN
+                    </h3>
+
+
+                    <p>
+
+                        Văn minh sông Ấn hình thành và phát triển,
+                        tiêu biểu với các đô thị Ha-ra-pa
+                        và Mô-hen-giô Đa-rô.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+
+                <div class="timeline-dot">
+                    II
+                </div>
+
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Khoảng giữa thiên niên kỉ II TCN
+                    </h3>
+
+
+                    <p>
+
+                        Người A-ri-a tiến vào Bắc Ấn.
+                        Xã hội có sự phân chia thành các đẳng cấp.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+
+                <div class="timeline-dot">
+                    III
+                </div>
+
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Khoảng thế kỉ VI TCN
+                    </h3>
+
+
+                    <p>
+
+                        Phật giáo ra đời ở Ấn Độ và sau đó
+                        được truyền bá đến nhiều khu vực khác
+                        của châu Á.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+
+                <div class="timeline-dot">
+                    IV
+                </div>
+
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Thế kỉ III TCN
+                    </h3>
+
+
+                    <p>
+
+                        Dưới thời vua A-sô-ca của vương triều
+                        Maurya, Ấn Độ có sự phát triển mạnh
+                        và Phật giáo được truyền bá rộng rãi.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     VĂN HÓA
+========================================================= -->
+
+<section
+    class="section"
+    id="vanhoa"
+>
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                III · Văn hóa
+            </div>
+
+
+            <h2 class="section-title">
+                Những thành tựu văn hóa tiêu biểu
+            </h2>
+
+
+            <p class="section-description">
+
+                Người Ấn Độ cổ đại đã để lại nhiều thành tựu
+                có ảnh hưởng lâu dài đến lịch sử văn minh nhân loại.
+
+            </p>
+
+        </div>
+
+
+        <div class="grid-4">
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    🪷
+                </div>
+
+
+                <h3>
+                    Tôn giáo
+                </h3>
+
+
+                <p>
+
+                    Ấn Độ là quê hương của nhiều tôn giáo,
+                    tiêu biểu là Hin-đu giáo và Phật giáo.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Tư tưởng
+                </span>
+
+            </div>
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    📜
+                </div>
+
+
+                <h3>
+                    Chữ viết
+                </h3>
+
+
+                <p>
+
+                    Người Ấn Độ sử dụng tiếng Phạn và chữ Phạn
+                    trong đời sống văn hóa, tôn giáo và văn học.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Chữ viết
+                </span>
+
+            </div>
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    📖
+                </div>
+
+
+                <h3>
+                    Văn học
+                </h3>
+
+
+                <p>
+
+                    Nhiều tác phẩm nổi tiếng ra đời,
+                    tiêu biểu như sử thi Ma-ha-bha-ra-ta
+                    và Ra-ma-ya-na.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Văn học
+                </span>
+
+            </div>
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    🔢
+                </div>
+
+
+                <h3>
+                    Toán học
+                </h3>
+
+
+                <p>
+
+                    Người Ấn Độ có những đóng góp quan trọng
+                    đối với hệ thống chữ số và khái niệm số 0.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Khoa học
+                </span>
+
+            </div>
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    🛕
+                </div>
+
+
+                <h3>
+                    Kiến trúc
+                </h3>
+
+
+                <p>
+
+                    Nhiều công trình tôn giáo được xây dựng,
+                    trong đó có các bảo tháp và công trình
+                    mang dấu ấn Phật giáo.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Kiến trúc
+                </span>
+
+            </div>
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    🧘
+                </div>
+
+
+                <h3>
+                    Tư tưởng
+                </h3>
+
+
+                <p>
+
+                    Các tư tưởng tôn giáo và triết học của
+                    Ấn Độ cổ đại có ảnh hưởng sâu rộng
+                    đến đời sống tinh thần của cư dân.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Triết học
+                </span>
+
+            </div>
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    🏛️
+                </div>
+
+
+                <h3>
+                    Đô thị cổ
+                </h3>
+
+
+                <p>
+
+                    Các đô thị của văn minh sông Ấn cho thấy
+                    trình độ quy hoạch và tổ chức đời sống
+                    đô thị khá phát triển.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Đô thị
+                </span>
+
+            </div>
+
+
+            <div class="card achievement">
+
+                <div class="achievement-icon">
+                    🌏
+                </div>
+
+
+                <h3>
+                    Ảnh hưởng
+                </h3>
+
+
+                <p>
+
+                    Nhiều thành tựu của Ấn Độ cổ đại được
+                    truyền bá đến các khu vực khác ở châu Á
+                    và để lại dấu ấn lâu dài.
+
+                </p>
+
+
+                <span class="achievement-tag">
+                    Di sản
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     HỆ THỐNG KIẾN THỨC
+========================================================= -->
+
+<section class="section">
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Hệ thống hóa
+            </div>
+
+
+            <h2 class="section-title">
+                Nhớ nhanh kiến thức bài học
+            </h2>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+
+            <table class="compare-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Nội dung
+                        </th>
+
+                        <th>
+                            Kiến thức cần nhớ
+                        </th>
+
+                        <th>
+                            Từ khóa
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+                            Điều kiện tự nhiên
+                        </td>
+
+
+                        <td>
+
+                            Ấn Độ cổ đại nằm ở Nam Á,
+                            có các lưu vực sông lớn,
+                            đặc biệt là sông Ấn và sông Hằng.
+
+                        </td>
+
+
+                        <td>
+
+                            Nam Á · sông Ấn · sông Hằng
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Văn minh sông Ấn
+                        </td>
+
+
+                        <td>
+
+                            Hình thành sớm, xuất hiện các đô thị
+                            như Ha-ra-pa và Mô-hen-giô Đa-rô.
+
+                        </td>
+
+
+                        <td>
+
+                            Ha-ra-pa ·
+                            Mô-hen-giô Đa-rô
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Xã hội
+                        </td>
+
+
+                        <td>
+
+                            Hình thành chế độ đẳng cấp,
+                            trong đó có bốn đẳng cấp chính.
+
+                        </td>
+
+
+                        <td>
+
+                            Bra-man ·
+                            Ksa-tri-a ·
+                            Vai-si-a ·
+                            Su-đra
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Tôn giáo
+                        </td>
+
+
+                        <td>
+
+                            Hin-đu giáo và Phật giáo
+                            có vai trò quan trọng trong
+                            đời sống tinh thần.
+
+                        </td>
+
+
+                        <td>
+
+                            Hin-đu giáo · Phật giáo
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Văn học
+                        </td>
+
+
+                        <td>
+
+                            Có nhiều tác phẩm nổi tiếng,
+                            tiêu biểu là hai bộ sử thi
+                            Ma-ha-bha-ra-ta và Ra-ma-ya-na.
+
+                        </td>
+
+
+                        <td>
+                            Sử thi
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Toán học
+                        </td>
+
+
+                        <td>
+
+                            Có những đóng góp quan trọng
+                            đối với hệ thống chữ số và số 0.
+
+                        </td>
+
+
+                        <td>
+                            Số 0 · chữ số
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SƠ ĐỒ
+========================================================= -->
+
+<section class="section">
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Sơ đồ kiến thức
+            </div>
+
+
+            <h2 class="section-title">
+                Từ tự nhiên đến văn minh
+            </h2>
+
+
+            <p class="section-description">
+
+                Có thể ghi nhớ bài học theo chuỗi:
+                điều kiện tự nhiên → cư dân → xã hội →
+                văn hóa → ảnh hưởng.
+
+            </p>
+
+        </div>
+
+
+        <div class="flow">
+
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    1
+                </div>
+
+
+                <h3>
+                    Tự nhiên
+                </h3>
+
+
+                <p>
+                    Sông Ấn · Sông Hằng
+                </p>
+
+            </div>
+
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    2
+                </div>
+
+
+                <h3>
+                    Cư dân
+                </h3>
+
+
+                <p>
+                    Các cộng đồng cư dân cổ
+                </p>
+
+            </div>
+
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    3
+                </div>
+
+
+                <h3>
+                    Xã hội
+                </h3>
+
+
+                <p>
+                    Chế độ đẳng cấp
+                </p>
+
+            </div>
+
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    4
+                </div>
+
+
+                <h3>
+                    Văn hóa
+                </h3>
+
+
+                <p>
+                    Tôn giáo · văn học · toán học
+                </p>
+
+            </div>
+
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    5
+                </div>
+
+
+                <h3>
+                    Di sản
+                </h3>
+
+
+                <p>
+                    Ảnh hưởng đến nhiều khu vực
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     QUIZ
+========================================================= -->
+
+<section
+    class="section quiz-section"
+    id="quiz"
+>
+
+    <div class="container">
+
+
+        <div class="section-header">
+
+            <div class="section-kicker">
+                Tự kiểm tra
+            </div>
+
+
+            <h2 class="section-title">
+                Em đã nhớ bài chưa?
+            </h2>
+
+
+            <p class="section-description">
+
+                Trả lời 8 câu hỏi để kiểm tra mức độ
+                nắm kiến thức về Ấn Độ cổ đại.
+
+            </p>
+
+        </div>
+
+
+        <div class="quiz-shell">
+
+
+            <!-- MÀN HÌNH BẮT ĐẦU -->
+
+            <div
+                class="quiz-intro"
+                id="quizIntro"
+            >
+
+
+                <div class="quiz-intro-icon">
+                    🧠
+                </div>
+
+
+                <h3>
+                    Sẵn sàng thử sức?
+                </h3>
+
+
+                <p>
+
+                    Bài kiểm tra gồm 8 câu hỏi.
+                    Mỗi câu có thời gian 10 giây.
+                    Hãy đọc kĩ câu hỏi trước khi lựa chọn.
+
+                </p>
+
+
+                <div class="quiz-rules">
+
+
+                    <span class="quiz-rule">
+                        8 câu hỏi
+                    </span>
+
+
+                    <span class="quiz-rule">
+                        10 giây / câu
+                    </span>
+
+
+                    <span class="quiz-rule">
+                        10 điểm / câu
+                    </span>
+
+
+                    <span class="quiz-rule">
+                        Có tính điểm
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="btn btn-primary"
+                    onclick="startQuiz()"
+                >
+
+                    🚀 Bắt đầu
+
+                </button>
+
+            </div>
+
+
+            <!-- PHẦN QUIZ -->
+
+            <div
+                id="quizBox"
+                class="hidden"
+            >
+
+
+                <div class="quiz-header">
+
+
+                    <div class="quiz-progress">
+
+
+                        <div
+                            class="progress-text"
+                            id="progressText"
+                        >
+
+                            Câu 1 / 8
+
+                        </div>
+
+
+                        <div class="progress-bar">
+
+
+                            <div
+                                class="progress-fill"
+                                id="progressFill"
+                            ></div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="timer"
+                        id="timer"
+                    >
+
+                        10s
+
+                    </div>
+
+                </div>
+
+
+                <div class="quiz-question">
+
+
+                    <div
+                        class="question-number"
+                        id="questionNumber"
+                    >
+
+                        CÂU HỎI 01
+
+                    </div>
+
+
+                    <div
+                        class="question-text"
+                        id="questionText"
+                    ></div>
+
+
+                    <div
+                        class="answers"
+                        id="answers"
+                    ></div>
+
+                </div>
+
+
+                <div class="quiz-footer">
+
+
+                    <div
+                        class="score-live"
+                        id="scoreLive"
+                    >
+
+                        Điểm: 0
+
+                    </div>
+
+
+                    <button
+                        class="btn btn-secondary hidden"
+                        id="nextBtn"
+                        onclick="nextQuestion()"
+                    >
+
+                        Câu tiếp theo →
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- KẾT QUẢ -->
+
+            <div
+                class="result hidden"
+                id="quizResult"
+            >
+
+
+                <div
+                    class="result-score"
+                    id="resultScore"
+                >
+
+                    0/80
+
+                </div>
+
+
+                <h3 id="resultTitle">
+                    Hoàn thành!
+                </h3>
+
+
+                <p id="resultText">
+
+                    Hãy xem lại những phần kiến thức
+                    mà em còn chưa chắc chắn.
+
+                </p>
+
+
+                <div
+                    style="
+                    display:flex;
+                    justify-content:center;
+                    flex-wrap:wrap;
+                    gap:10px;
+                    "
+                >
+
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="restartQuiz()"
+                    >
+
+                        🔄 Làm lại
+
+                    </button>
+
+
+                    <a
+                        href="index.html"
+                        class="btn btn-secondary"
+                    >
+
+                        ← Trang chủ
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="completion"
+                id="completion"
+            >
+
+                🎉 Em đã hoàn thành phần tự kiểm tra
+                của Bài 8 – Ấn Độ cổ đại!
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+
+    <div class="container">
+
+
+        <div class="footer-inner">
+
+
+            <div>
+
+
+                <div class="footer-title">
+
+                    HỌC LIỆU SỐ 6 · LỊCH SỬ
+
+                </div>
+
+
+                <div class="footer-text">
+
+                    Bài 8 · Ấn Độ cổ đại
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="index.html"
+                class="btn btn-secondary"
+            >
+
+                ← Về trang chủ
+
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   DỮ LIỆU ĐỊA ĐIỂM
+========================================================= */
+
+const placeData = {
+
+
+    harappa:{
+
+        title:"Ha-ra-pa",
+
+        text:
+        "Ha-ra-pa là một đô thị tiêu biểu của văn minh sông Ấn. Di tích cho thấy cư dân cổ đại đã có trình độ quy hoạch đô thị và tổ chức đời sống khá phát triển."
+
+    },
+
+
+    mohenjo:{
+
+        title:"Mô-hen-giô Đa-rô",
+
+        text:
+        "Mô-hen-giô Đa-rô là một đô thị lớn của văn minh sông Ấn. Nơi đây có những dấu tích về đường phố, nhà ở và hệ thống thoát nước."
+
+    },
+
+
+    pataliputra:{
+
+        title:"Pa-ta-li-pu-tra",
+
+        text:
+        "Pa-ta-li-pu-tra từng là một trung tâm chính trị quan trọng của Ấn Độ cổ đại, đặc biệt dưới thời vương triều Maurya."
+
+    },
+
+
+    varanasi:{
+
+        title:"Va-ra-na-si",
+
+        text:
+        "Va-ra-na-si nằm bên sông Hằng và là một địa điểm có lịch sử lâu đời, gắn với đời sống tôn giáo và văn hóa của cư dân Ấn Độ."
+
+    }
+
+};
+
+
+/* =========================================================
+   TRẠNG THÁI BẢN ĐỒ
+========================================================= */
+
+let currentMap = "ancient";
+
+let mapScale = 1;
+
+let mapX = 0;
+
+let mapY = 0;
+
+let dragging = false;
+
+let startX = 0;
+
+let startY = 0;
+
+let startMapX = 0;
+
+let startMapY = 0;
+
+
+/* =========================================================
+   PHẦN TỬ BẢN ĐỒ
+========================================================= */
+
+const mapCanvas =
+    document.getElementById("mapCanvas");
+
+const mapStage =
+    document.getElementById("mapZoomStage");
+
+const ancientMap =
+    document.getElementById("ancientMap");
+
+const modernMap =
+    document.getElementById("modernMap");
+
+const compareMap =
+    document.getElementById("compareMap");
+
+const mapModeLabel =
+    document.getElementById("mapModeLabel");
+
+const mapInfoTitle =
+    document.getElementById("mapInfoTitle");
+
+const mapInfoText =
+    document.getElementById("mapInfoText");
+
+
+/* =========================================================
+   CHUYỂN BẢN ĐỒ
+========================================================= */
+
+function switchMapView(view){
+
+    currentMap = view;
+
+
+    document
+        .querySelectorAll(".map-tab")
+        .forEach(tab => {
+
+            tab.classList.toggle(
+                "active",
+                tab.dataset.map === view
+            );
+
+        });
+
+
+    ancientMap.classList.add("hidden");
+
+    modernMap.classList.add("hidden");
+
+    compareMap.classList.add("hidden");
+
+
+    if(view === "ancient"){
+
+        ancientMap.classList.remove("hidden");
+
+        mapModeLabel.textContent =
+            "Ấn Độ cổ đại";
+
+        mapInfoTitle.textContent =
+            "Ấn Độ cổ đại";
+
+        mapInfoText.textContent =
+            "Quan sát sông Ấn, sông Hằng và các địa điểm cổ. Nhấn vào từng điểm để xem thông tin.";
+
+    }
+
+
+    if(view === "modern"){
+
+        modernMap.classList.remove("hidden");
+
+        mapModeLabel.textContent =
+            "Khu vực Nam Á hiện nay";
+
+        mapInfoTitle.textContent =
+            "Khu vực Nam Á hiện nay";
+
+        mapInfoText.textContent =
+            "Bản đồ khái quát giúp liên hệ không gian Ấn Độ cổ đại với khu vực Nam Á ngày nay.";
+
+    }
+
+
+    if(view === "compare"){
+
+        compareMap.classList.remove("hidden");
+
+        mapModeLabel.textContent =
+            "So sánh";
+
+        mapInfoTitle.textContent =
+            "Từ không gian cổ đại đến hiện nay";
+
+        mapInfoText.textContent =
+            "Hãy suy nghĩ: những con sông và không gian cư trú quan trọng của cư dân cổ đại có còn giữ vai trò đối với khu vực ngày nay không?";
+
+    }
+
+
+    resetMap();
+
+}
+
+
+/* =========================================================
+   LỚP BẢN ĐỒ
+========================================================= */
+
+const layerGroups = {
+
+
+    ancRiver:[
+        "ancRiverIndus",
+        "ancRiverGanges"
+    ],
+
+
+    ancPlace:[
+        "ancPlace"
+    ],
+
+
+    ancMountain:[
+        "ancMountain"
+    ],
+
+
+    modernRiver:[
+        "modIndus",
+        "modGanges"
+    ]
+
+};
+
+
+const layerState = {
+
+    ancRiver:true,
+
+    ancPlace:true,
+
+    ancMountain:true,
+
+    modernRiver:true
+
+};
+
+
+function toggleLayer(layer){
+
+    layerState[layer] =
+        !layerState[layer];
+
+
+    const buttonId =
+        {
+
+            ancRiver:
+                "layerAncRiver",
+
+            ancPlace:
+                "layerAncPlace",
+
+            ancMountain:
+                "layerAncMountain",
+
+            modernRiver:
+                "layerModernRiver"
+
+        }[layer];
+
+
+    const button =
+        document.getElementById(
+            buttonId
+        );
+
+
+    if(button){
+
+        button.classList.toggle(
+            "active",
+            layerState[layer]
+        );
+
+    }
+
+
+    layerGroups[layer].forEach(id => {
+
+        const el =
+            document.getElementById(id);
+
+        if(el){
+
+            el.style.display =
+                layerState[layer]
+                ? ""
+                : "none";
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   THÔNG TIN ĐỊA ĐIỂM
+========================================================= */
+
+function selectPlace(key){
+
+    const data =
+        placeData[key];
+
+
+    if(!data) return;
+
+
+    mapInfoTitle.textContent =
+        data.title;
+
+
+    mapInfoText.textContent =
+        data.text;
+
+}
+
+
+/* =========================================================
+   ZOOM BẢN ĐỒ
+========================================================= */
+
+function updateMapTransform(){
+
+    mapStage.style.transform =
+        `translate(${mapX}px, ${mapY}px) scale(${mapScale})`;
+
+}
+
+
+function zoomMap(factor){
+
+    mapScale *= factor;
+
+
+    if(mapScale < .75){
+
+        mapScale = .75;
+
+    }
+
+
+    if(mapScale > 3){
+
+        mapScale = 3;
+
+    }
+
+
+    updateMapTransform();
+
+}
+
+
+function resetMap(){
+
+    mapScale = 1;
+
+    mapX = 0;
+
+    mapY = 0;
+
+    updateMapTransform();
+
+}
+
+
+/* =========================================================
+   KÉO BẢN ĐỒ BẰNG CHUỘT
+========================================================= */
+
+mapCanvas.addEventListener(
+    "mousedown",
+    e => {
+
+        dragging = true;
+
+        mapCanvas.classList.add(
+            "dragging"
+        );
+
+
+        startX = e.clientX;
+
+        startY = e.clientY;
+
+
+        startMapX = mapX;
+
+        startMapY = mapY;
+
+    }
+);
+
+
+window.addEventListener(
+    "mousemove",
+    e => {
+
+        if(!dragging) return;
+
+
+        mapX =
+            startMapX +
+            (e.clientX - startX);
+
+
+        mapY =
+            startMapY +
+            (e.clientY - startY);
+
+
+        updateMapTransform();
+
+    }
+);
+
+
+window.addEventListener(
+    "mouseup",
+    () => {
+
+        dragging = false;
+
+        mapCanvas.classList.remove(
+            "dragging"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ZOOM BẰNG CON LĂN CHUỘT
+========================================================= */
+
+mapCanvas.addEventListener(
+    "wheel",
+    e => {
+
+        e.preventDefault();
+
+
+        if(e.deltaY < 0){
+
+            zoomMap(1.08);
+
+        }
+        else{
+
+            zoomMap(.92);
+
+        }
+
+    },
+    {
+        passive:false
+    }
+);
+
+
+/* =========================================================
+   TOUCH
+========================================================= */
+
+let touchStartX = 0;
+
+let touchStartY = 0;
+
+
+mapCanvas.addEventListener(
+    "touchstart",
+    e => {
+
+        if(e.touches.length !== 1) return;
+
+
+        const touch =
+            e.touches[0];
+
+
+        touchStartX =
+            touch.clientX;
+
+
+        touchStartY =
+            touch.clientY;
+
+
+        startMapX = mapX;
+
+        startMapY = mapY;
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+mapCanvas.addEventListener(
+    "touchmove",
+    e => {
+
+        if(e.touches.length !== 1) return;
+
+
+        const touch =
+            e.touches[0];
+
+
+        mapX =
+            startMapX +
+            (
+                touch.clientX -
+                touchStartX
+            );
+
+
+        mapY =
+            startMapY +
+            (
+                touch.clientY -
+                touchStartY
+            );
+
+
+        updateMapTransform();
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   CÂU HỎI QUIZ
+========================================================= */
+
+const questions = [
+
+
+    {
+
+        q:
+        "Hai con sông gắn liền với sự hình thành và phát triển của các trung tâm văn minh cổ đại ở Ấn Độ là?",
+
+        answers:[
+
+            "Sông Nin và sông Hằng",
+
+            "Sông Ấn và sông Hằng",
+
+            "Sông Ti-grơ và sông Ơ-phơ-rát",
+
+            "Sông Hoàng Hà và sông Trường Giang"
+
+        ],
+
+        correct:1
+
+    },
+
+
+    {
+
+        q:
+        "Dãy núi nào nằm ở phía bắc tiểu lục địa Ấn Độ và tạo thành một rào cản tự nhiên lớn?",
+
+        answers:[
+
+            "An-đét",
+
+            "An-pơ",
+
+            "Hi-ma-lay-a",
+
+            "U-ran"
+
+        ],
+
+        correct:2
+
+    },
+
+
+    {
+
+        q:
+        "Ha-ra-pa và Mô-hen-giô Đa-rô là hai địa điểm tiêu biểu của nền văn minh nào?",
+
+        answers:[
+
+            "Văn minh sông Nin",
+
+            "Văn minh sông Ấn",
+
+            "Văn minh Trung Hoa",
+
+            "Văn minh Lưỡng Hà"
+
+        ],
+
+        correct:1
+
+    },
+
+
+    {
+
+        q:
+        "Đặc điểm nổi bật của xã hội Ấn Độ cổ đại là sự tồn tại của?",
+
+        answers:[
+
+            "Chế độ đẳng cấp",
+
+            "Chế độ dân chủ trực tiếp",
+
+            "Chế độ phong kiến châu Âu",
+
+            "Chế độ thị tộc bình đẳng"
+
+        ],
+
+        correct:0
+
+    },
+
+
+    {
+
+        q:
+        "Trong bốn đẳng cấp chính của xã hội Ấn Độ cổ đại, đẳng cấp có địa vị cao nhất là?",
+
+        answers:[
+
+            "Su-đra",
+
+            "Vai-si-a",
+
+            "Ksa-tri-a",
+
+            "Bra-man"
+
+        ],
+
+        correct:3
+
+    },
+
+
+    {
+
+        q:
+        "Tôn giáo ra đời ở Ấn Độ khoảng thế kỉ VI TCN và sau đó được truyền bá rộng rãi ở nhiều khu vực châu Á là?",
+
+        answers:[
+
+            "Phật giáo",
+
+            "Ki-tô giáo",
+
+            "Hồi giáo",
+
+            "Nho giáo"
+
+        ],
+
+        correct:0
+
+    },
+
+
+    {
+
+        q:
+        "Hai bộ sử thi nổi tiếng của văn học Ấn Độ cổ đại là?",
+
+        answers:[
+
+            "I-li-át và Ô-đi-xê",
+
+            "Ma-ha-bha-ra-ta và Ra-ma-ya-na",
+
+            "Kinh Thánh và Kinh Cô-ran",
+
+            "Sử kí và Tam quốc chí"
+
+        ],
+
+        correct:1
+
+    },
+
+
+    {
+
+        q:
+        "Một đóng góp quan trọng của người Ấn Độ cổ đại đối với toán học là?",
+
+        answers:[
+
+            "Phát minh máy hơi nước",
+
+            "Phát minh kính thiên văn",
+
+            "Số 0 và hệ thống chữ số",
+
+            "Phát minh la bàn"
+
+        ],
+
+        correct:2
+
+    }
+
+];
+
+
+/* =========================================================
+   TRẠNG THÁI QUIZ
+========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timer = null;
+
+let timeLeft = 10;
+
+let answered = false;
+
+
+/* =========================================================
+   PHẦN TỬ QUIZ
+========================================================= */
+
+const quizIntro =
+    document.getElementById(
+        "quizIntro"
+    );
+
+
+const quizBox =
+    document.getElementById(
+        "quizBox"
+    );
+
+
+const quizResult =
+    document.getElementById(
+        "quizResult"
+    );
+
+
+const questionNumber =
+    document.getElementById(
+        "questionNumber"
+    );
+
+
+const questionText =
+    document.getElementById(
+        "questionText"
+    );
+
+
+const answersBox =
+    document.getElementById(
+        "answers"
+    );
+
+
+const progressText =
+    document.getElementById(
+        "progressText"
+    );
+
+
+const progressFill =
+    document.getElementById(
+        "progressFill"
+    );
+
+
+const timerEl =
+    document.getElementById(
+        "timer"
+    );
+
+
+const scoreLive =
+    document.getElementById(
+        "scoreLive"
+    );
+
+
+const nextBtn =
+    document.getElementById(
+        "nextBtn"
+    );
+
+
+/* =========================================================
+   MÀN HÌNH BẮT ĐẦU
+========================================================= */
+
+function showQuizIntro(){
+
+    clearInterval(timer);
+
+
+    quizIntro.classList.remove(
+        "hidden"
+    );
+
+
+    quizBox.classList.add(
+        "hidden"
+    );
+
+
+    quizResult.classList.add(
+        "hidden"
+    );
+
+
+    document
+        .getElementById(
+            "completion"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   BẮT ĐẦU QUIZ
+========================================================= */
+
+function startQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+
+    quizIntro.classList.add(
+        "hidden"
+    );
+
+
+    quizResult.classList.add(
+        "hidden"
+    );
+
+
+    quizBox.classList.remove(
+        "hidden"
+    );
+
+
+    scoreLive.textContent =
+        "Điểm: 0";
+
+
+    renderQuestion();
+
+}
+
+
+/* =========================================================
+   HIỂN THỊ CÂU HỎI
+========================================================= */
+
+function renderQuestion(){
+
+    clearInterval(timer);
+
+
+    answered = false;
+
+
+    const q =
+        questions[
+            currentQuestion
+        ];
+
+
+    questionNumber.textContent =
+        `CÂU HỎI ${String(
+            currentQuestion + 1
+        ).padStart(2,"0")}`;
+
+
+    questionText.textContent =
+        q.q;
+
+
+    progressText.textContent =
+        `Câu ${
+            currentQuestion + 1
+        } / ${
+            questions.length
+        }`;
+
+
+    progressFill.style.width =
+        `${
+            (
+                (
+                    currentQuestion + 1
+                ) /
+                questions.length
+            ) * 100
+        }%`;
+
+
+    answersBox.innerHTML =
+        "";
+
+
+    q.answers.forEach(
+        (answer,index) => {
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "answer";
+
+
+            button.textContent =
+                answer;
+
+
+            button.onclick =
+                () =>
+                chooseAnswer(
+                    index,
+                    button
+                );
+
+
+            answersBox.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    nextBtn.classList.add(
+        "hidden"
+    );
+
+
+    startTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    timeLeft = 10;
+
+
+    timerEl.textContent =
+        `${timeLeft}s`;
+
+
+    timerEl.style.background =
+        "#fff0d0";
+
+
+    timer =
+        setInterval(
+            () => {
+
+                timeLeft--;
+
+
+                timerEl.textContent =
+                    `${timeLeft}s`;
+
+
+                if(timeLeft <= 3){
+
+                    timerEl.style.background =
+                        "#fae0d9";
+
+                }
+
+
+                if(timeLeft <= 0){
+
+                    clearInterval(timer);
+
+                    timeUp();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================================
+   HẾT THỜI GIAN
+========================================================= */
+
+function timeUp(){
+
+    if(answered) return;
+
+
+    answered = true;
+
+
+    const q =
+        questions[
+            currentQuestion
+        ];
+
+
+    const buttons =
+        answersBox.querySelectorAll(
+            ".answer"
+        );
+
+
+    buttons.forEach(
+        (button,index) => {
+
+
+            button.classList.add(
+                "disabled"
+            );
+
+
+            if(index === q.correct){
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    nextBtn.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   CHỌN ĐÁP ÁN
+========================================================= */
+
+function chooseAnswer(
+    index,
+    button
+){
+
+    if(answered) return;
+
+
+    answered = true;
+
+
+    clearInterval(timer);
+
+
+    const q =
+        questions[
+            currentQuestion
+        ];
+
+
+    const buttons =
+        answersBox.querySelectorAll(
+            ".answer"
+        );
+
+
+    buttons.forEach(
+        (btn,i) => {
+
+
+            btn.classList.add(
+                "disabled"
+            );
+
+
+            if(i === q.correct){
+
+                btn.classList.add(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    if(index === q.correct){
+
+        score += 10;
+
+
+        button.classList.add(
+            "correct"
+        );
+
+    }
+    else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+    }
+
+
+    scoreLive.textContent =
+        `Điểm: ${score}`;
+
+
+    nextBtn.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   CÂU TIẾP THEO
+========================================================= */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+
+    if(
+        currentQuestion >=
+        questions.length
+    ){
+
+        showResult();
+
+        return;
+
+    }
+
+
+    renderQuestion();
+
+}
+
+
+/* =========================================================
+   KẾT QUẢ
+========================================================= */
+
+function showResult(){
+
+    clearInterval(timer);
+
+
+    quizBox.classList.add(
+        "hidden"
+    );
+
+
+    quizResult.classList.remove(
+        "hidden"
+    );
+
+
+    document
+        .getElementById(
+            "resultScore"
+        )
+        .textContent =
+        `${score}/80`;
+
+
+    let title =
+        "Hoàn thành!";
+
+
+    let text =
+        "Hãy xem lại những phần kiến thức mà em còn chưa chắc chắn.";
+
+
+    if(score >= 70){
+
+        title =
+            "Xuất sắc! 🌟";
+
+
+        text =
+            "Em đã nắm khá chắc các kiến thức trọng tâm của Bài 8.";
+
+    }
+    else if(score >= 50){
+
+        title =
+            "Khá tốt! 👍";
+
+
+        text =
+            "Em đã nắm được phần lớn kiến thức. Hãy xem lại một vài nội dung còn chưa chắc chắn.";
+
+    }
+    else if(score >= 30){
+
+        title =
+            "Cố gắng thêm nhé! 💪";
+
+
+        text =
+            "Em nên đọc lại phần điều kiện tự nhiên, xã hội và các thành tựu văn hóa.";
+
+    }
+    else{
+
+        title =
+            "Hãy thử lại nhé! 📚";
+
+
+        text =
+            "Em hãy xem lại bài học rồi làm bài kiểm tra thêm một lần nữa.";
+
+    }
+
+
+    document
+        .getElementById(
+            "resultTitle"
+        )
+        .textContent =
+        title;
+
+
+    document
+        .getElementById(
+            "resultText"
+        )
+        .textContent =
+        text;
+
+
+    document
+        .getElementById(
+            "completion"
+        )
+        .style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   LÀM LẠI QUIZ
+========================================================= */
+
+function restartQuiz(){
+
+    clearInterval(timer);
+
+    showQuizIntro();
+
+}
+
+
+/* =========================================================
+   KHỞI TẠO
+========================================================= */
+
+showQuizIntro();
+
+updateMapTransform();
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("h08");</script>
+</body>
+
+</html>

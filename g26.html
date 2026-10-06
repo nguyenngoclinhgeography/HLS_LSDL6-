@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 26 - Thực hành: Tìm hiểu môi trường tự nhiên địa phương</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#07121f;
+    --bg2:#0a1928;
+    --card:#10263b;
+    --card2:#142f46;
+    --border:rgba(110,190,220,.18);
+    --text:#eaf5fb;
+    --muted:#9bb3c4;
+    --cyan:#59d8ff;
+    --blue:#5b8dff;
+    --green:#55d49a;
+    --yellow:#ffd166;
+    --orange:#ffab62;
+    --red:#ff7070;
+}
+
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(circle at 15% 0%,rgba(34,130,160,.18),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(55,95,180,.15),transparent 30%),
+        linear-gradient(180deg,#07121f,#091827 48%,#06111d);
+    line-height:1.6;
+    min-height:100vh;
+}
+
+button,
+input,
+textarea,
+select{
+    font-family:inherit;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(5,14,26,.9);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+}
+
+.topbar-inner{
+    max-width:1180px;
+    margin:auto;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:800;
+}
+
+.logo-icon{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#187a9d,#294ea4);
+    font-size:21px;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:#dff6ff;
+    padding:9px 15px;
+    border-radius:10px;
+    border:1px solid rgba(90,210,245,.25);
+    background:rgba(60,160,195,.1);
+    font-weight:700;
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:rgba(60,160,195,.2);
+    transform:translateY(-1px);
+}
+
+.container{
+    max-width:1180px;
+    margin:auto;
+    padding:28px 20px 60px;
+}
+
+.hero{
+    padding:38px 32px;
+    border-radius:24px;
+    border:1px solid var(--border);
+    background:
+        radial-gradient(circle at 90% 25%,rgba(80,220,240,.12),transparent 30%),
+        linear-gradient(135deg,rgba(18,72,92,.72),rgba(11,29,49,.95));
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 18px 50px rgba(0,0,0,.22);
+}
+
+.hero::after{
+    content:"🔎";
+    position:absolute;
+    right:45px;
+    top:15px;
+    font-size:125px;
+    opacity:.08;
+    transform:rotate(-10deg);
+}
+
+.badge{
+    display:inline-flex;
+    padding:7px 12px;
+    border-radius:999px;
+    color:#8de8ff;
+    border:1px solid rgba(90,215,245,.22);
+    background:rgba(70,200,235,.08);
+    font-size:13px;
+    font-weight:800;
+}
+
+.hero h1{
+    margin-top:15px;
+    max-width:850px;
+    font-size:clamp(28px,4vw,46px);
+    line-height:1.15;
+}
+
+.hero p{
+    margin-top:14px;
+    max-width:820px;
+    color:#b7cedc;
+    font-size:16px;
+}
+
+.hero-goal{
+    margin-top:22px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.goal{
+    padding:15px;
+    border-radius:14px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.07);
+}
+
+.goal strong{
+    display:block;
+    margin-bottom:4px;
+}
+
+.goal span{
+    color:var(--muted);
+    font-size:14px;
+}
+
+.section{
+    margin-top:30px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.section-number{
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:rgba(70,190,225,.12);
+    color:#7ee6ff;
+    font-weight:900;
+}
+
+.section-title h2{
+    font-size:25px;
+}
+
+.section-desc{
+    color:var(--muted);
+    margin-bottom:17px;
+}
+
+/* WHY BOX */
+
+.why-box{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.why-card{
+    padding:21px;
+    border-radius:18px;
+    background:linear-gradient(180deg,#112b43,#0c2033);
+    border:1px solid var(--border);
+}
+
+.why-icon{
+    font-size:38px;
+    margin-bottom:8px;
+}
+
+.why-card h3{
+    font-size:18px;
+    margin-bottom:6px;
+}
+
+.why-card p{
+    color:#afc3d0;
+    font-size:14px;
+}
+
+/* TOPIC */
+
+.topic-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.topic-card{
+    cursor:pointer;
+    min-height:180px;
+    padding:17px;
+    border-radius:18px;
+    border:1px solid var(--border);
+    background:linear-gradient(180deg,#112940,#0d2135);
+    transition:.22s;
+    position:relative;
+    overflow:hidden;
+}
+
+.topic-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(90,215,245,.4);
+}
+
+.topic-card.active{
+    border-color:rgba(90,220,255,.65);
+    box-shadow:
+        0 0 0 2px rgba(80,210,245,.1),
+        0 14px 35px rgba(0,0,0,.22);
+}
+
+.topic-icon{
+    font-size:40px;
+    margin-bottom:8px;
+}
+
+.topic-card h3{
+    font-size:17px;
+}
+
+.topic-card p{
+    color:#91aabc;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.topic-detail{
+    margin-top:15px;
+    padding:20px;
+    border-radius:18px;
+    border:1px solid rgba(90,210,240,.18);
+    background:
+        linear-gradient(135deg,rgba(30,90,112,.17),rgba(12,31,50,.8));
+}
+
+.topic-detail h3{
+    color:#8de8ff;
+    margin-bottom:8px;
+}
+
+.topic-detail p{
+    color:#b9ccd8;
+}
+
+.detail-points{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:15px;
+}
+
+.detail-point{
+    padding:14px;
+    border-radius:13px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.detail-point strong{
+    display:block;
+    color:#fff;
+    margin-bottom:4px;
+    font-size:13px;
+}
+
+.detail-point span{
+    color:#a9bdca;
+    font-size:13px;
+}
+
+/* PROCESS */
+
+.process{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:9px;
+}
+
+.process-step{
+    text-align:center;
+    padding:15px 9px;
+    border-radius:14px;
+    background:#10263b;
+    border:1px solid var(--border);
+    position:relative;
+}
+
+.process-step .number{
+    width:32px;
+    height:32px;
+    margin:0 auto 8px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:rgba(80,205,240,.13);
+    color:#73e0ff;
+    font-weight:900;
+}
+
+.process-step strong{
+    display:block;
+    font-size:13px;
+}
+
+.process-step span{
+    display:block;
+    color:#829eaf;
+    font-size:11px;
+    margin-top:3px;
+}
+
+/* FIELD NOTE */
+
+.field-box{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:17px;
+}
+
+.field-card{
+    padding:22px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:linear-gradient(180deg,#102a41,#0c2033);
+}
+
+.field-card h3{
+    margin-bottom:7px;
+}
+
+.field-card p{
+    color:#a9c0ce;
+    font-size:14px;
+}
+
+.observation-list{
+    margin-top:15px;
+    display:grid;
+    gap:9px;
+}
+
+.observation{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    padding:11px;
+    border-radius:11px;
+    background:rgba(255,255,255,.035);
+}
+
+.observation .check{
+    color:#61e0a4;
+    font-weight:900;
+}
+
+.observation span{
+    color:#b7cad5;
+    font-size:13px;
+}
+
+/* REPORT BUILDER */
+
+.report-builder{
+    border-radius:22px;
+    border:1px solid var(--border);
+    background:linear-gradient(180deg,#0f263c,#091a2c);
+    overflow:hidden;
+}
+
+.report-head{
+    padding:19px 22px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.report-head h3{
+    color:#8ee9ff;
+}
+
+.report-head p{
+    color:#8da8ba;
+    font-size:13px;
+    margin-top:3px;
+}
+
+.report-body{
+    padding:22px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-group.full{
+    grid-column:1 / -1;
+}
+
+.form-group label{
+    font-size:13px;
+    color:#9fc0d1;
+    font-weight:700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    border:1px solid rgba(110,190,220,.17);
+    border-radius:11px;
+    background:#0a1b2d;
+    color:#e8f5fb;
+    padding:11px 12px;
+    outline:none;
+}
+
+.form-group textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:rgba(90,215,245,.55);
+    box-shadow:0 0 0 3px rgba(90,215,245,.07);
+}
+
+.generate-row{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:15px;
+}
+
+.primary-btn{
+    border:none;
+    cursor:pointer;
+    border-radius:11px;
+    padding:11px 18px;
+    font-weight:800;
+    color:#07141d;
+    background:linear-gradient(135deg,#61dcff,#559cff);
+    transition:.2s;
+}
+
+.primary-btn:hover{
+    transform:translateY(-2px);
+}
+
+.report-preview{
+    margin-top:17px;
+    padding:20px;
+    border-radius:16px;
+    border:1px dashed rgba(100,205,235,.25);
+    background:rgba(255,255,255,.025);
+}
+
+.report-preview h3{
+    color:#fff;
+    margin-bottom:10px;
+}
+
+.preview-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.preview-item{
+    padding:12px;
+    border-radius:11px;
+    background:rgba(255,255,255,.035);
+}
+
+.preview-item strong{
+    display:block;
+    color:#78dcff;
+    font-size:12px;
+    margin-bottom:3px;
+}
+
+.preview-item span{
+    color:#c1d2dc;
+    font-size:13px;
+    white-space:pre-wrap;
+}
+
+.preview-full{
+    grid-column:1/-1;
+}
+
+/* CHECKLIST */
+
+.checklist{
+    display:grid;
+    gap:9px;
+}
+
+.check-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+    border-radius:13px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.06);
+    cursor:pointer;
+}
+
+.check-item input{
+    width:19px;
+    height:19px;
+    accent-color:#54d49a;
+    flex:none;
+}
+
+.check-item span{
+    color:#b8ccd8;
+    font-size:14px;
+}
+
+.check-item.done{
+    border-color:rgba(70,210,145,.3);
+    background:rgba(60,190,130,.06);
+}
+
+.check-progress{
+    margin-top:14px;
+    padding:13px 15px;
+    border-radius:12px;
+    background:rgba(70,200,150,.07);
+    color:#91ddb9;
+    font-size:14px;
+}
+
+/* PRESENTATION */
+
+.presentation{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.presentation-card{
+    padding:20px;
+    border-radius:18px;
+    background:#10273c;
+    border:1px solid var(--border);
+}
+
+.presentation-icon{
+    font-size:40px;
+}
+
+.presentation-card h3{
+    margin-top:8px;
+    font-size:18px;
+}
+
+.presentation-card p{
+    margin-top:5px;
+    color:#a9bfcc;
+    font-size:13px;
+}
+
+/* FINAL */
+
+.final-box{
+    text-align:center;
+    padding:27px;
+    border-radius:22px;
+    background:
+        radial-gradient(circle at center,rgba(70,200,230,.1),transparent 55%),
+        #0d2135;
+    border:1px solid var(--border);
+}
+
+.final-box .big{
+    font-size:55px;
+}
+
+.final-box h2{
+    margin-top:5px;
+}
+
+.final-box p{
+    max-width:720px;
+    margin:7px auto 17px;
+    color:#a9bfcc;
+}
+
+.finish-btn{
+    border:none;
+    border-radius:11px;
+    padding:12px 20px;
+    background:linear-gradient(135deg,#5de0ff,#559cff);
+    color:#07141d;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.finish-btn:disabled{
+    opacity:.55;
+    cursor:default;
+}
+
+footer{
+    max-width:1180px;
+    margin:auto;
+    padding:0 20px 35px;
+    text-align:center;
+    color:#6f8a9d;
+    font-size:13px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+@media(max-width:950px){
+
+    .topic-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .process{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .why-box,
+    .presentation{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .container{
+        padding:20px 13px 50px;
+    }
+
+    .hero{
+        padding:28px 21px;
+    }
+
+    .hero::after{
+        font-size:85px;
+        right:10px;
+    }
+
+    .hero-goal,
+    .field-box,
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .topic-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .detail-points,
+    .preview-grid{
+        grid-template-columns:1fr;
+    }
+
+    .process{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .logo span{
+        display:none;
+    }
+}
+
+@media(max-width:450px){
+
+    .topic-grid{
+        grid-template-columns:1fr;
+    }
+
+    .process{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .section-title h2{
+        font-size:21px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="topbar-inner">
+
+        <div class="logo">
+
+            <div class="logo-icon">🧭</div>
+
+            <span>
+                HỌC LIỆU SỐ LỊCH SỬ & ĐỊA LÍ 6
+            </span>
+
+        </div>
+
+        <a href="index.html" class="home-btn">
+            🏠 Trang chủ
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <span class="badge">
+            🌎 ĐỊA LÍ 6 • BÀI THỰC HÀNH
+        </span>
+
+        <h1>
+            Bài 26: Thực hành tìm hiểu môi trường tự nhiên địa phương
+        </h1>
+
+        <p>
+            Hãy trở thành một “nhà địa lí nhỏ”: quan sát địa phương,
+            thu thập thông tin, phân tích kết quả và xây dựng báo cáo
+            về môi trường tự nhiên nơi em đang sống.
+        </p>
+
+        <div class="hero-goal">
+
+            <div class="goal">
+                <strong>🔎 Tìm hiểu</strong>
+                <span>
+                    Biết cách tìm hiểu môi trường tự nhiên
+                    qua tài liệu và thực tế địa phương.
+                </span>
+            </div>
+
+            <div class="goal">
+                <strong>🌱 Hành động</strong>
+                <span>
+                    Hình thành tình yêu thiên nhiên và ý thức
+                    bảo vệ môi trường tự nhiên.
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Ý NGHĨA -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">1</div>
+
+            <h2>
+                💡 Vì sao cần tìm hiểu môi trường địa phương?
+            </h2>
+
+        </div>
+
+        <p class="section-desc">
+            Môi trường tự nhiên quanh em không chỉ nằm trong sách giáo khoa.
+            Hãy quan sát chính nơi mình đang sống.
+        </p>
+
+        <div class="why-box">
+
+            <div class="why-card">
+
+                <div class="why-icon">👀</div>
+
+                <h3>Quan sát thực tế</h3>
+
+                <p>
+                    Nhận biết những đặc điểm của địa hình, khí hậu,
+                    sông ngòi, đất và sinh vật ngay tại địa phương.
+                </p>
+
+            </div>
+
+
+            <div class="why-card">
+
+                <div class="why-icon">🔗</div>
+
+                <h3>Thấy được mối quan hệ</h3>
+
+                <p>
+                    Phân tích mối liên hệ giữa các thành phần tự nhiên
+                    thay vì chỉ học từng yếu tố riêng lẻ.
+                </p>
+
+            </div>
+
+
+            <div class="why-card">
+
+                <div class="why-icon">🌱</div>
+
+                <h3>Biết cách bảo vệ</h3>
+
+                <p>
+                    Từ hiện trạng và nguyên nhân, đề xuất những giải pháp
+                    phù hợp với môi trường nơi em sinh sống.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 5 CHỦ ĐỀ -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">2</div>
+
+            <h2>
+                🧭 Chọn nội dung tìm hiểu
+            </h2>
+
+        </div>
+
+        <p class="section-desc">
+            Theo SGK, nhóm có thể lựa chọn một trong năm nội dung sau.
+            Bấm vào từng chủ đề để xem cần quan sát những gì.
+        </p>
+
+        <div class="topic-grid">
+
+            <div class="topic-card" data-topic="landform">
+
+                <div class="topic-icon">⛰️</div>
+
+                <h3>Địa hình</h3>
+
+                <p>
+                    Dạng địa hình và mối quan hệ tự nhiên
+                </p>
+
+            </div>
+
+
+            <div class="topic-card" data-topic="climate">
+
+                <div class="topic-icon">🌦️</div>
+
+                <h3>Khí hậu</h3>
+
+                <p>
+                    Nhiệt độ, độ ẩm, mưa, gió
+                </p>
+
+            </div>
+
+
+            <div class="topic-card" data-topic="river">
+
+                <div class="topic-icon">🌊</div>
+
+                <h3>Sông ngòi</h3>
+
+                <p>
+                    Mạng lưới và chế độ dòng chảy
+                </p>
+
+            </div>
+
+
+            <div class="topic-card" data-topic="soil">
+
+                <div class="topic-icon">🌱</div>
+
+                <h3>Đất</h3>
+
+                <p>
+                    Loại đất và sự phân bố
+                </p>
+
+            </div>
+
+
+            <div class="topic-card" data-topic="biology">
+
+                <div class="topic-icon">🌳</div>
+
+                <h3>Sinh vật</h3>
+
+                <p>
+                    Thực vật và động vật hoang dã
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="topic-detail" id="topicDetail">
+
+            <h3>
+                👆 Hãy chọn một chủ đề
+            </h3>
+
+            <p>
+                Em có thể chọn một trong năm nội dung phía trên
+                để bắt đầu tìm hiểu môi trường tự nhiên địa phương.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUY TRÌNH -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">3</div>
+
+            <h2>
+                🛠️ Quy trình thực hành
+            </h2>
+
+        </div>
+
+        <p class="section-desc">
+            Một cuộc điều tra địa lí nhỏ có thể được thực hiện theo các bước sau.
+        </p>
+
+        <div class="process">
+
+            <div class="process-step">
+                <div class="number">1</div>
+                <strong>Thành lập nhóm</strong>
+                <span>Chọn thành viên</span>
+            </div>
+
+            <div class="process-step">
+                <div class="number">2</div>
+                <strong>Chọn nội dung</strong>
+                <span>Địa hình, khí hậu...</span>
+            </div>
+
+            <div class="process-step">
+                <div class="number">3</div>
+                <strong>Phân công</strong>
+                <span>Giao nhiệm vụ</span>
+            </div>
+
+            <div class="process-step">
+                <div class="number">4</div>
+                <strong>Thu thập</strong>
+                <span>Tài liệu & thực tế</span>
+            </div>
+
+            <div class="process-step">
+                <div class="number">5</div>
+                <strong>Phân tích</strong>
+                <span>Tổng hợp & so sánh</span>
+            </div>
+
+            <div class="process-step">
+                <div class="number">6</div>
+                <strong>Báo cáo</strong>
+                <span>Trình bày kết quả</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CÁCH THU THẬP -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">4</div>
+
+            <h2>
+                🔎 Thu thập và xử lí thông tin
+            </h2>
+
+        </div>
+
+        <p class="section-desc">
+            SGK gợi ý kết hợp nhiều nguồn thông tin để có cái nhìn đầy đủ hơn.
+        </p>
+
+        <div class="field-box">
+
+            <div class="field-card">
+
+                <h3>
+                    📚 Những nguồn có thể sử dụng
+                </h3>
+
+                <p>
+                    Không nên chỉ dựa vào một nguồn thông tin.
+                    Hãy kết hợp tài liệu và quan sát thực tế.
+                </p>
+
+                <div class="observation-list">
+
+                    <div class="observation">
+                        <span class="check">✓</span>
+                        <span>Sách, tài liệu học tập</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">✓</span>
+                        <span>Thông tin trên Internet</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">✓</span>
+                        <span>Cơ quan quản lí vấn đề ở địa phương</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">✓</span>
+                        <span>Tham quan, tìm hiểu thực tế</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">✓</span>
+                        <span>Tìm hiểu qua người dân địa phương</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="field-card">
+
+                <h3>
+                    🧠 Sau khi thu thập cần làm gì?
+                </h3>
+
+                <p>
+                    Dữ liệu thu được cần được xử lí trước khi đưa vào báo cáo.
+                </p>
+
+                <div class="observation-list">
+
+                    <div class="observation">
+                        <span class="check">1</span>
+                        <span>Chọn lọc thông tin cần thiết.</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">2</span>
+                        <span>Phân tích những đặc điểm nổi bật.</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">3</span>
+                        <span>Tổng hợp các kết quả đã tìm hiểu.</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">4</span>
+                        <span>So sánh các thông tin thu được.</span>
+                    </div>
+
+                    <div class="observation">
+                        <span class="check">5</span>
+                        <span>Rút ra hiện trạng, nguyên nhân và giải pháp.</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PHIẾU THỰC HÀNH -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">5</div>
+
+            <h2>
+                📝 Phiếu thực hành số
+            </h2>
+
+        </div>
+
+        <p class="section-desc">
+            Điền thông tin để tạo nhanh một khung báo cáo thực hành.
+            Nội dung chỉ lưu trên trình duyệt trong lúc em đang học.
+        </p>
+
+
+        <div class="report-builder">
+
+            <div class="report-head">
+
+                <h3>
+                    📋 Xây dựng báo cáo tìm hiểu địa phương
+                </h3>
+
+                <p>
+                    Hãy điền những thông tin em đã quan sát hoặc thu thập được.
+                </p>
+
+            </div>
+
+
+            <div class="report-body">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="groupName">
+                            Tên nhóm
+                        </label>
+
+                        <input
+                            id="groupName"
+                            type="text"
+                            placeholder="Ví dụ: Nhóm 1"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="location">
+                            Địa điểm tìm hiểu
+                        </label>
+
+                        <input
+                            id="location"
+                            type="text"
+                            placeholder="Tên xã/phường, huyện/thành phố..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="topicSelect">
+                            Nội dung
+                        </label>
+
+                        <select id="topicSelect">
+
+                            <option value="">
+                                -- Chọn nội dung --
+                            </option>
+
+                            <option value="Địa hình">
+                                ⛰️ Địa hình
+                            </option>
+
+                            <option value="Khí hậu">
+                                🌦️ Khí hậu
+                            </option>
+
+                            <option value="Sông ngòi">
+                                🌊 Sông ngòi
+                            </option>
+
+                            <option value="Đất">
+                                🌱 Đất
+                            </option>
+
+                            <option value="Sinh vật">
+                                🌳 Sinh vật
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="time">
+                            Thời gian
+                        </label>
+
+                        <input
+                            id="time"
+                            type="text"
+                            placeholder="Ví dụ: tháng 10/2026"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="meaning">
+                            Ý nghĩa của việc tìm hiểu
+                        </label>
+
+                        <textarea
+                            id="meaning"
+                            placeholder="Vì sao nhóm em lựa chọn tìm hiểu nội dung này?"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="current">
+                            Hiện trạng quan sát được
+                        </label>
+
+                        <textarea
+                            id="current"
+                            placeholder="Nhóm em đã quan sát hoặc thu thập được những gì?"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="cause">
+                            Nguyên nhân
+                        </label>
+
+                        <textarea
+                            id="cause"
+                            placeholder="Những nguyên nhân nào có thể giải thích hiện trạng?"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="solution">
+                            Một số giải pháp
+                        </label>
+
+                        <textarea
+                            id="solution"
+                            placeholder="Đề xuất giải pháp phù hợp với địa phương."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="generate-row">
+
+                    <button
+                        class="primary-btn"
+                        id="generateReport">
+                        ✨ Tạo bản xem trước
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="report-preview hidden"
+                    id="reportPreview">
+
+                    <h3>
+                        📄 Bản xem trước báo cáo
+                    </h3>
+
+                    <div class="preview-grid">
+
+                        <div class="preview-item">
+                            <strong>NHÓM</strong>
+                            <span id="previewGroup">—</span>
+                        </div>
+
+                        <div class="preview-item">
+                            <strong>ĐỊA ĐIỂM</strong>
+                            <span id="previewLocation">—</span>
+                        </div>
+
+                        <div class="preview-item">
+                            <strong>NỘI DUNG</strong>
+                            <span id="previewTopic">—</span>
+                        </div>
+
+                        <div class="preview-item">
+                            <strong>THỜI GIAN</strong>
+                            <span id="previewTime">—</span>
+                        </div>
+
+                        <div class="preview-item preview-full">
+                            <strong>Ý NGHĨA</strong>
+                            <span id="previewMeaning">—</span>
+                        </div>
+
+                        <div class="preview-item preview-full">
+                            <strong>HIỆN TRẠNG</strong>
+                            <span id="previewCurrent">—</span>
+                        </div>
+
+                        <div class="preview-item preview-full">
+                            <strong>NGUYÊN NHÂN</strong>
+                            <span id="previewCause">—</span>
+                        </div>
+
+                        <div class="preview-item preview-full">
+                            <strong>GIẢI PHÁP</strong>
+                            <span id="previewSolution">—</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NỘI DUNG BÁO CÁO -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">6</div>
+
+            <h2>
+                📑 Báo cáo cần có gì?
+            </h2>
+
+        </div>
+
+        <p class="section-desc">
+            Theo gợi ý của SGK, báo cáo nên ngắn gọn và tập trung vào ba nội dung chính.
+        </p>
+
+        <div class="presentation">
+
+            <div class="presentation-card">
+
+                <div class="presentation-icon">💡</div>
+
+                <h3>Ý nghĩa</h3>
+
+                <p>
+                    Nêu ý nghĩa của việc tìm hiểu môi trường tự nhiên
+                    ở địa phương.
+                </p>
+
+            </div>
+
+
+            <div class="presentation-card">
+
+                <div class="presentation-icon">🔎</div>
+
+                <h3>Hiện trạng & nguyên nhân</h3>
+
+                <p>
+                    Trình bày những gì nhóm đã tìm hiểu,
+                    đồng thời phân tích nguyên nhân.
+                </p>
+
+            </div>
+
+
+            <div class="presentation-card">
+
+                <div class="presentation-icon">🌱</div>
+
+                <h3>Giải pháp</h3>
+
+                <p>
+                    Đề xuất một số giải pháp phù hợp để
+                    bảo vệ và cải thiện môi trường.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRÌNH BÀY -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">7</div>
+
+            <h2>
+                🎤 Trình bày sản phẩm
+            </h2>
+
+        </div>
+
+        <div class="card">
+
+            <p style="color:#b6cbd7;">
+                Khi trình bày trước lớp, nhóm có thể sử dụng
+                tranh ảnh, bảng số liệu, biểu đồ hoặc những tư liệu
+                đã thu thập được để minh họa cho báo cáo.
+            </p>
+
+            <div class="detail-points">
+
+                <div class="detail-point">
+
+                    <strong>👤 Phân công người báo cáo</strong>
+
+                    <span>
+                        Mỗi thành viên có thể đảm nhận một phần phù hợp.
+                    </span>
+
+                </div>
+
+
+                <div class="detail-point">
+
+                    <strong>🖼️ Chuẩn bị minh họa</strong>
+
+                    <span>
+                        Tranh ảnh, bảng số liệu, biểu đồ...
+                    </span>
+
+                </div>
+
+
+                <div class="detail-point">
+
+                    <strong>💬 Trao đổi</strong>
+
+                    <span>
+                        Giải thích kết quả và trả lời câu hỏi
+                        của giáo viên, các nhóm khác.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHECKLIST -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">8</div>
+
+            <h2>
+                ✅ Checklist trước khi nộp báo cáo
+            </h2>
+
+        </div>
+
+        <p class="section-desc">
+            Tự kiểm tra xem nhóm đã hoàn thành đầy đủ các bước chưa.
+        </p>
+
+        <div class="card">
+
+            <div class="checklist" id="checklist">
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Nhóm đã lựa chọn một nội dung tìm hiểu.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Nhóm đã phân công nhiệm vụ cho các thành viên.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Đã xác định thời gian và địa điểm tìm hiểu.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Đã thu thập thông tin từ các nguồn phù hợp.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Đã quan sát hoặc tìm hiểu thực tế địa phương.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Đã phân tích, tổng hợp và so sánh kết quả.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Báo cáo có ý nghĩa, hiện trạng, nguyên nhân và giải pháp.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox">
+                    <span>
+                        Đã chuẩn bị tranh ảnh, bảng số liệu hoặc biểu đồ minh họa.
+                    </span>
+                </label>
+
+            </div>
+
+
+            <div class="check-progress" id="checkProgress">
+                📌 Đã hoàn thành: 0/8 nhiệm vụ
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GHI NHỚ -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div class="section-number">9</div>
+
+            <h2>
+                🧠 Ghi nhớ quy trình
+            </h2>
+
+        </div>
+
+        <div class="memory-flow"
+             style="
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                flex-wrap:wrap;
+                gap:9px;
+             ">
+
+            <div class="process-step">
+                <div class="number">1</div>
+                <strong>Chọn</strong>
+                <span>Nội dung</span>
+            </div>
+
+            <div style="color:#61dcff;font-size:21px;">→</div>
+
+            <div class="process-step">
+                <div class="number">2</div>
+                <strong>Thu thập</strong>
+                <span>Thông tin</span>
+            </div>
+
+            <div style="color:#61dcff;font-size:21px;">→</div>
+
+            <div class="process-step">
+                <div class="number">3</div>
+                <strong>Phân tích</strong>
+                <span>Kết quả</span>
+            </div>
+
+            <div style="color:#61dcff;font-size:21px;">→</div>
+
+            <div class="process-step">
+                <div class="number">4</div>
+                <strong>Báo cáo</strong>
+                <span>Trình bày</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOÀN THÀNH -->
+
+    <section class="section">
+
+        <div class="final-box">
+
+            <div class="big">
+                🌱
+            </div>
+
+            <h2>
+                Hoàn thành Bài 26
+            </h2>
+
+            <p>
+                Sau khi thực hành, điều quan trọng không chỉ là
+                có một bản báo cáo mà còn là biết quan sát,
+                tìm hiểu và có ý thức bảo vệ môi trường tự nhiên
+                nơi mình đang sống.
+            </p>
+
+            <button
+                class="finish-btn"
+                id="finishLesson">
+                ✅ Hoàn thành bài
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Học liệu số Lịch sử & Địa lí 6 • Bài 26
+</footer>
+
+
+<script>
+
+/* =========================
+   1. CHỦ ĐỀ THỰC HÀNH
+========================= */
+
+const topicData = {
+
+    landform:{
+        title:"⛰️ Địa hình",
+        intro:
+        "Tìm hiểu đặc điểm địa hình ở địa phương và mối quan hệ giữa địa hình với các thành phần tự nhiên khác.",
+        points:[
+            ["Quan sát","Đặc điểm chung và các dạng địa hình chính."],
+            ["Liên hệ","Địa hình với khí hậu, sông ngòi, đất và sinh vật."],
+            ["Sản phẩm","Có thể dùng ảnh, sơ đồ hoặc bản đồ để minh họa."]
+        ]
+    },
+
+    climate:{
+        title:"🌦️ Khí hậu",
+        intro:
+        "Tìm hiểu đặc điểm chung và những nét đặc trưng của khí hậu địa phương.",
+        points:[
+            ["Quan sát","Nhiệt độ, độ ẩm, lượng mưa và gió."],
+            ["Liên hệ","Mối quan hệ giữa khí hậu với địa hình, sông ngòi, đất và sinh vật."],
+            ["Sản phẩm","Có thể sử dụng bảng số liệu hoặc biểu đồ."]
+        ]
+    },
+
+    river:{
+        title:"🌊 Sông ngòi",
+        intro:
+        "Tìm hiểu mạng lưới sông ngòi, hướng dòng chảy và sự thay đổi giữa mùa lũ và mùa cạn.",
+        points:[
+            ["Quan sát","Mạng lưới và hướng dòng chảy."],
+            ["Phân tích","Đặc điểm mùa lũ – mùa cạn."],
+            ["Liên hệ","Mối quan hệ giữa sông ngòi với địa hình và khí hậu."]
+        ]
+    },
+
+    soil:{
+        title:"🌱 Đất",
+        intro:
+        "Tìm hiểu các loại đất, đặc điểm chung và sự phân bố đất ở địa phương.",
+        points:[
+            ["Nhận biết","Các loại đất và đặc điểm chung."],
+            ["Phân bố","Xác định khu vực phân bố các loại đất."],
+            ["Liên hệ","Mối quan hệ giữa đất với địa hình, khí hậu và sông ngòi."]
+        ]
+    },
+
+    biology:{
+        title:"🌳 Sinh vật",
+        intro:
+        "Tìm hiểu hiện trạng thảm thực vật tự nhiên và các loài động vật hoang dã ở địa phương.",
+        points:[
+            ["Thực vật","Hiện trạng thảm thực vật tự nhiên, đặc biệt là độ che phủ."],
+            ["Động vật","Các loài động vật hoang dã."],
+            ["Mối quan hệ","Giữa thực vật, động vật và các thành phần tự nhiên khác."]
+        ]
+    }
+
+};
+
+const topicDetail =
+    document.getElementById("topicDetail");
+
+document
+.querySelectorAll(".topic-card")
+.forEach(card=>{
+
+    card.addEventListener("click",()=>{
+
+        const type = card.dataset.topic;
+        const data = topicData[type];
+
+        document
+        .querySelectorAll(".topic-card")
+        .forEach(item=>{
+            item.classList.remove("active");
+        });
+
+        card.classList.add("active");
+
+        topicDetail.innerHTML = `
+
+            <h3>
+                ${data.title}
+            </h3>
+
+            <p>
+                ${data.intro}
+            </p>
+
+            <div class="detail-points">
+
+                ${data.points.map(point=>`
+
+                    <div class="detail-point">
+
+                        <strong>
+                            ${point[0]}
+                        </strong>
+
+                        <span>
+                            ${point[1]}
+                        </span>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+        `;
+
+    });
+
+});
+
+
+/* =========================
+   2. TẠO BÁO CÁO
+========================= */
+
+const generateReport =
+    document.getElementById("generateReport");
+
+generateReport.addEventListener("click",()=>{
+
+    const values = {
+
+        group:
+            document.getElementById("groupName").value.trim(),
+
+        location:
+            document.getElementById("location").value.trim(),
+
+        topic:
+            document.getElementById("topicSelect").value,
+
+        time:
+            document.getElementById("time").value.trim(),
+
+        meaning:
+            document.getElementById("meaning").value.trim(),
+
+        current:
+            document.getElementById("current").value.trim(),
+
+        cause:
+            document.getElementById("cause").value.trim(),
+
+        solution:
+            document.getElementById("solution").value.trim()
+
+    };
+
+
+    document.getElementById("previewGroup")
+        .textContent =
+        values.group || "Chưa nhập";
+
+    document.getElementById("previewLocation")
+        .textContent =
+        values.location || "Chưa nhập";
+
+    document.getElementById("previewTopic")
+        .textContent =
+        values.topic || "Chưa chọn";
+
+    document.getElementById("previewTime")
+        .textContent =
+        values.time || "Chưa nhập";
+
+    document.getElementById("previewMeaning")
+        .textContent =
+        values.meaning || "Chưa nhập";
+
+    document.getElementById("previewCurrent")
+        .textContent =
+        values.current || "Chưa nhập";
+
+    document.getElementById("previewCause")
+        .textContent =
+        values.cause || "Chưa nhập";
+
+    document.getElementById("previewSolution")
+        .textContent =
+        values.solution || "Chưa nhập";
+
+
+    document
+    .getElementById("reportPreview")
+    .classList.remove("hidden");
+
+});
+
+
+/* =========================
+   3. CHECKLIST
+========================= */
+
+const checklist =
+    document.querySelectorAll(
+        "#checklist input[type='checkbox']"
+    );
+
+const checkProgress =
+    document.getElementById("checkProgress");
+
+
+function updateChecklist(){
+
+    let done = 0;
+
+    checklist.forEach(input=>{
+
+        const item =
+            input.closest(".check-item");
+
+        if(input.checked){
+
+            done++;
+
+            item.classList.add("done");
+
+        }else{
+
+            item.classList.remove("done");
+
+        }
+
+    });
+
+    checkProgress.textContent =
+        `📌 Đã hoàn thành: ${done}/${checklist.length} nhiệm vụ`;
+
+    if(done === checklist.length){
+
+        checkProgress.textContent =
+            "🎉 Tuyệt vời! Nhóm đã hoàn thành toàn bộ checklist.";
+
+    }
+
+}
+
+
+checklist.forEach(input=>{
+
+    input.addEventListener(
+        "change",
+        updateChecklist
+    );
+
+});
+
+
+/* =========================
+   4. LƯU TIẾN ĐỘ
+========================= */
+
+const PROGRESS_KEY =
+    "hoclieu6_progress_v1";
+
+const finishLesson =
+    document.getElementById("finishLesson");
+
+
+finishLesson.addEventListener("click",()=>{
+
+    const p =
+        JSON.parse(
+            localStorage.getItem(PROGRESS_KEY) || "{}"
+        );
+
+    p.g26 = true;
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(p)
+    );
+
+    finishLesson.textContent =
+        "✓ Đã hoàn thành Bài 26";
+
+    finishLesson.disabled = true;
+
+});
+
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g26");</script>
+</body>
+</html>

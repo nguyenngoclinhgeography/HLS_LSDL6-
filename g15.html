@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 15 - Lớp vỏ khí của Trái Đất. Khí áp và gió</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#061426;
+  --bg2:#091d34;
+  --panel:#0d2743;
+  --panel2:#102f50;
+  --border:rgba(100,180,255,.18);
+  --text:#eaf5ff;
+  --muted:#9db5ca;
+  --blue:#55d8ff;
+  --blue2:#278fc1;
+  --cyan:#72e3ff;
+  --green:#65dfad;
+  --orange:#ffbf78;
+  --red:#ff9686;
+}
+
+body{
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(25,103,158,.25),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(39,92,155,.20),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #061426,
+      #08192d 55%,
+      #061323
+    );
+
+  color:var(--text);
+
+  min-height:100vh;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  position:relative;
+
+  padding:55px 20px 48px;
+
+  overflow:hidden;
+
+  border-bottom:
+    1px solid rgba(93,182,255,.15);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(9,36,64,.98),
+      rgba(5,23,43,.96)
+    );
+}
+
+.header::before{
+  content:"";
+
+  position:absolute;
+
+  width:420px;
+  height:420px;
+
+  right:-150px;
+  top:-240px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(69,185,238,.16),
+      transparent 70%
+    );
+}
+
+.header-content{
+  position:relative;
+
+  max-width:1150px;
+
+  margin:auto;
+}
+
+.back-btn{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  margin-bottom:22px;
+
+  padding:8px 14px;
+
+  border-radius:10px;
+
+  color:#a9d8f7;
+
+  background:rgba(66,155,210,.08);
+
+  border:
+    1px solid rgba(89,181,238,.15);
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  transition:.2s;
+}
+
+.back-btn:hover{
+  background:rgba(66,155,210,.15);
+
+  transform:translateX(-2px);
+}
+
+.lesson-number{
+  display:inline-flex;
+
+  padding:7px 13px;
+
+  border-radius:999px;
+
+  color:#72dcff;
+
+  background:
+    rgba(74,180,235,.10);
+
+  border:
+    1px solid rgba(74,180,235,.2);
+
+  font-size:12px;
+
+  font-weight:800;
+
+  letter-spacing:.7px;
+
+  margin-bottom:12px;
+}
+
+.header h1{
+  font-size:
+    clamp(30px,5vw,48px);
+
+  line-height:1.15;
+
+  margin-bottom:13px;
+
+  letter-spacing:-.7px;
+}
+
+.header p{
+  max-width:800px;
+
+  color:var(--muted);
+
+  font-size:16px;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container{
+  max-width:1150px;
+
+  margin:auto;
+
+  padding:
+    35px 20px 70px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+  margin-bottom:28px;
+
+  padding:25px;
+
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13,39,67,.96),
+      rgba(8,28,49,.96)
+    );
+
+  border:
+    1px solid var(--border);
+
+  box-shadow:
+    0 14px 35px rgba(0,0,0,.18);
+}
+
+.section-title{
+  display:flex;
+
+  gap:14px;
+
+  align-items:flex-start;
+
+  margin-bottom:22px;
+}
+
+.section-icon{
+  width:44px;
+  height:44px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:13px;
+
+  background:
+    rgba(74,184,235,.10);
+
+  border:
+    1px solid rgba(74,184,235,.18);
+
+  font-size:22px;
+}
+
+.section-title h2{
+  font-size:23px;
+
+  margin-bottom:3px;
+}
+
+.section-title p{
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+
+/* =========================================================
+   OBJECTIVES
+========================================================= */
+
+.objective-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:15px;
+}
+
+.objective-card{
+  padding:19px;
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+.objective-icon{
+  font-size:25px;
+
+  margin-bottom:9px;
+}
+
+.objective-card h3{
+  font-size:15px;
+
+  margin-bottom:6px;
+}
+
+.objective-card p{
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content-block{
+  margin-bottom:20px;
+}
+
+.content-block:last-child{
+  margin-bottom:0;
+}
+
+.content-block h3{
+  color:#dff5ff;
+
+  font-size:18px;
+
+  margin-bottom:9px;
+}
+
+.content-block p{
+  color:#b5c9db;
+
+  font-size:15px;
+
+  line-height:1.75;
+}
+
+.highlight{
+  color:#72ddff;
+
+  font-weight:700;
+}
+
+
+/* =========================================================
+   INFO CARDS
+========================================================= */
+
+.info-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:16px;
+}
+
+.info-card{
+  padding:20px;
+
+  border-radius:17px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+.info-card h3{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:9px;
+
+  font-size:17px;
+}
+
+.info-card p{
+  color:var(--muted);
+
+  font-size:14px;
+
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   LAYERS
+========================================================= */
+
+.layer-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:15px;
+}
+
+.layer-card{
+  position:relative;
+
+  padding:20px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(49,118,161,.09),
+      rgba(255,255,255,.025)
+    );
+
+  border:
+    1px solid rgba(104,192,238,.12);
+
+  overflow:hidden;
+}
+
+.layer-card::after{
+  content:"";
+
+  position:absolute;
+
+  width:100px;
+  height:100px;
+
+  right:-40px;
+  bottom:-45px;
+
+  border-radius:50%;
+
+  background:
+    rgba(69,180,232,.06);
+}
+
+.layer-number{
+  display:inline-flex;
+
+  width:29px;
+  height:29px;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:9px;
+
+  background:
+    rgba(81,202,246,.10);
+
+  color:#72dcff;
+
+  font-size:12px;
+
+  font-weight:800;
+
+  margin-bottom:10px;
+}
+
+.layer-card h3{
+  margin-bottom:6px;
+
+  font-size:17px;
+}
+
+.layer-card p{
+  color:var(--muted);
+
+  font-size:14px;
+
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   PRESSURE
+========================================================= */
+
+.pressure-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:15px;
+
+  margin-top:17px;
+}
+
+.pressure-card{
+  padding:19px;
+
+  text-align:center;
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+.pressure-symbol{
+  font-size:30px;
+
+  margin-bottom:8px;
+}
+
+.pressure-card h3{
+  font-size:16px;
+
+  margin-bottom:5px;
+}
+
+.pressure-card p{
+  color:var(--muted);
+
+  font-size:13px;
+}
+
+
+/* =========================================================
+   WIND TYPES
+========================================================= */
+
+.wind-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:15px;
+}
+
+.wind-card{
+  padding:19px;
+
+  border-radius:17px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  transition:.2s;
+}
+
+.wind-card:hover{
+  transform:translateY(-2px);
+
+  border-color:
+    rgba(91,191,239,.25);
+}
+
+.wind-icon{
+  font-size:27px;
+
+  margin-bottom:7px;
+}
+
+.wind-card h3{
+  margin-bottom:6px;
+
+  font-size:17px;
+}
+
+.wind-card p{
+  color:var(--muted);
+
+  font-size:14px;
+
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   FLOW
+========================================================= */
+
+.flow-box{
+  margin-top:18px;
+
+  padding:20px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(62,156,207,.08),
+      rgba(255,255,255,.02)
+    );
+
+  border:
+    1px solid rgba(78,178,229,.14);
+}
+
+.flow-title{
+  color:#dff7ff;
+
+  font-weight:800;
+
+  margin-bottom:16px;
+}
+
+.flow{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+}
+
+.flow-step{
+  min-width:150px;
+
+  padding:12px 15px;
+
+  border-radius:13px;
+
+  text-align:center;
+
+  background:#102e4a;
+
+  border:
+    1px solid rgba(95,190,240,.12);
+}
+
+.flow-step span{
+  display:block;
+
+  color:#65dbff;
+
+  font-size:11px;
+
+  margin-bottom:3px;
+}
+
+.flow-step strong{
+  font-size:13px;
+}
+
+.flow-arrow{
+  font-size:23px;
+
+  color:#6edaff;
+}
+
+
+/* =========================================================
+   SIMULATION PREVIEW
+========================================================= */
+
+.simulation-preview{
+  position:relative;
+
+  min-height:330px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  overflow:hidden;
+
+  border-radius:20px;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(61,151,210,.20),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      #102f50,
+      #081b31
+    );
+
+  border:
+    1px solid rgba(100,192,238,.18);
+
+  margin-bottom:18px;
+}
+
+.preview-sun{
+  position:absolute;
+
+  top:25px;
+  right:35px;
+
+  font-size:43px;
+
+  filter:
+    drop-shadow(
+      0 0 17px rgba(255,220,100,.35)
+    );
+}
+
+.preview-region{
+  position:absolute;
+
+  top:50px;
+
+  width:170px;
+
+  text-align:center;
+
+  padding:12px;
+
+  border-radius:15px;
+
+  background:
+    rgba(5,20,37,.65);
+
+  border:
+    1px solid rgba(116,204,245,.14);
+}
+
+.preview-region.left{
+  left:8%;
+}
+
+.preview-region.right{
+  right:8%;
+}
+
+.preview-region strong{
+  display:block;
+
+  margin-top:3px;
+
+  font-size:16px;
+}
+
+.preview-region.left strong{
+  color:#64ddff;
+}
+
+.preview-region.right strong{
+  color:#ffab9a;
+}
+
+.preview-arrow{
+  font-size:43px;
+
+  color:#bcefff;
+
+  animation:
+    previewWind 2s linear infinite;
+
+  filter:
+    drop-shadow(
+      0 0 8px rgba(90,216,255,.5)
+    );
+}
+
+.preview-arrow-text{
+  position:absolute;
+
+  top:50%;
+
+  transform:translateY(38px);
+
+  color:#b5eaff;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  letter-spacing:.5px;
+}
+
+@keyframes previewWind{
+
+  0%{
+    transform:translateX(-35px);
+
+    opacity:.2;
+  }
+
+  50%{
+    transform:translateX(35px);
+
+    opacity:1;
+  }
+
+  100%{
+    transform:translateX(-35px);
+
+    opacity:.2;
+  }
+
+}
+
+.preview-ground{
+  position:absolute;
+
+  bottom:0;
+  left:0;
+  right:0;
+
+  height:62px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1c3d39,
+      #112b2b
+    );
+
+  border-top:
+    2px solid #6f9c88;
+}
+
+
+/* =========================================================
+   SIMULATION BUTTON
+========================================================= */
+
+.simulation-action{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+
+  padding:20px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(42,142,190,.11),
+      rgba(255,255,255,.025)
+    );
+
+  border:
+    1px solid rgba(75,183,234,.15);
+}
+
+.simulation-action h3{
+  font-size:18px;
+
+  margin-bottom:4px;
+}
+
+.simulation-action p{
+  color:var(--muted);
+
+  font-size:13px;
+}
+
+.open-simulation{
+  flex:none;
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  padding:12px 18px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #177ca5,
+      #126487
+    );
+
+  border:
+    1px solid rgba(101,218,255,.28);
+
+  color:#fff;
+
+  text-decoration:none;
+
+  font-weight:800;
+
+  font-size:14px;
+
+  box-shadow:
+    0 7px 18px rgba(13,112,155,.18);
+
+  transition:.2s;
+}
+
+.open-simulation:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 10px 22px rgba(13,112,155,.25);
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap{
+  overflow-x:auto;
+
+  border-radius:15px;
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+table{
+  width:100%;
+
+  border-collapse:collapse;
+
+  min-width:650px;
+}
+
+th,
+td{
+  padding:14px 15px;
+
+  text-align:left;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.06);
+
+  font-size:14px;
+}
+
+th{
+  color:#dff6ff;
+
+  background:
+    rgba(68,165,215,.08);
+
+  font-weight:800;
+}
+
+td{
+  color:#adc1d2;
+}
+
+tr:last-child td{
+  border-bottom:none;
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz-intro{
+  padding:18px;
+
+  border-radius:16px;
+
+  background:
+    rgba(65,161,211,.07);
+
+  border:
+    1px solid rgba(73,176,227,.13);
+
+  margin-bottom:18px;
+}
+
+.quiz-intro p{
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+.quiz-start{
+  margin-top:15px;
+
+  border:none;
+
+  padding:12px 20px;
+
+  border-radius:12px;
+
+  background:#14799f;
+
+  color:white;
+
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+.quiz-box{
+  display:none;
+}
+
+.quiz-box.active{
+  display:block;
+}
+
+.quiz-progress{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-bottom:13px;
+}
+
+.progress-text{
+  color:#9fc2d8;
+
+  font-size:13px;
+}
+
+.timer{
+  min-width:74px;
+
+  padding:7px 11px;
+
+  text-align:center;
+
+  border-radius:10px;
+
+  background:
+    rgba(255,174,104,.09);
+
+  border:
+    1px solid rgba(255,174,104,.18);
+
+  color:#ffc384;
+
+  font-weight:800;
+}
+
+.timer.danger{
+  background:
+    rgba(255,95,81,.12);
+
+  color:#ff9b8f;
+
+  border-color:
+    rgba(255,95,81,.24);
+}
+
+.question-card{
+  padding:22px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+.question-number{
+  color:#65dfff;
+
+  font-size:12px;
+
+  font-weight:800;
+
+  margin-bottom:8px;
+}
+
+.question-text{
+  font-size:19px;
+
+  font-weight:800;
+
+  margin-bottom:18px;
+
+  line-height:1.45;
+}
+
+.options{
+  display:grid;
+
+  gap:10px;
+}
+
+.option{
+  width:100%;
+
+  padding:13px 15px;
+
+  text-align:left;
+
+  border-radius:12px;
+
+  background:#102b46;
+
+  border:
+    1px solid rgba(99,180,226,.11);
+
+  color:#dcecf9;
+
+  cursor:pointer;
+
+  font-size:14px;
+
+  transition:.18s;
+}
+
+.option:hover{
+  background:#173957;
+
+  border-color:
+    rgba(95,196,242,.28);
+}
+
+.option.correct{
+  background:
+    rgba(57,196,139,.13);
+
+  border-color:
+    rgba(57,196,139,.4);
+
+  color:#7ee8ba;
+}
+
+.option.wrong{
+  background:
+    rgba(255,100,86,.12);
+
+  border-color:
+    rgba(255,100,86,.4);
+
+  color:#ffaaa0;
+}
+
+.option:disabled{
+  cursor:default;
+}
+
+.feedback{
+  display:none;
+
+  margin-top:15px;
+
+  padding:14px;
+
+  border-radius:13px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  color:#b8ccdd;
+
+  font-size:13px;
+
+  line-height:1.6;
+}
+
+.feedback.show{
+  display:block;
+}
+
+.next-question{
+  display:none;
+
+  margin-top:14px;
+
+  padding:10px 17px;
+
+  border:none;
+
+  border-radius:11px;
+
+  background:#147ba3;
+
+  color:white;
+
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result{
+  display:none;
+
+  text-align:center;
+
+  padding:30px 20px;
+}
+
+.result.show{
+  display:block;
+}
+
+.result-icon{
+  font-size:55px;
+
+  margin-bottom:10px;
+}
+
+.result h3{
+  font-size:25px;
+
+  margin-bottom:8px;
+}
+
+.result-score{
+  color:#6cddff;
+
+  font-size:34px;
+
+  font-weight:900;
+
+  margin:10px 0;
+}
+
+.result p{
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+.result-actions{
+  display:flex;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:20px;
+}
+
+.result-btn{
+  padding:11px 18px;
+
+  border-radius:11px;
+
+  border:1px solid rgba(105,190,235,.17);
+
+  background:#122f4b;
+
+  color:#dcefff;
+
+  cursor:pointer;
+
+  font-weight:800;
+}
+
+.result-btn.primary{
+  background:#137ca4;
+
+  color:white;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  max-width:1150px;
+
+  margin:0 auto;
+
+  padding:0 20px 45px;
+
+  text-align:center;
+
+  color:#68839a;
+
+  font-size:12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+  .objective-grid,
+  .pressure-grid{
+    grid-template-columns:1fr;
+  }
+
+  .info-grid,
+  .layer-grid,
+  .wind-grid{
+    grid-template-columns:1fr;
+  }
+
+  .simulation-action{
+    flex-direction:column;
+
+    align-items:flex-start;
+  }
+
+  .open-simulation{
+    width:100%;
+
+    justify-content:center;
+  }
+
+}
+
+
+@media(max-width:600px){
+
+  .header{
+    padding-top:35px;
+  }
+
+  .container{
+    padding:
+      22px 12px 50px;
+  }
+
+  .section{
+    padding:18px;
+
+    border-radius:18px;
+  }
+
+  .section-title h2{
+    font-size:20px;
+  }
+
+  .simulation-preview{
+    min-height:290px;
+  }
+
+  .preview-region{
+    width:130px;
+
+    font-size:12px;
+  }
+
+  .preview-region strong{
+    font-size:13px;
+  }
+
+  .preview-region.left{
+    left:3%;
+  }
+
+  .preview-region.right{
+    right:3%;
+  }
+
+  .flow-arrow{
+    transform:rotate(90deg);
+  }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+  <div class="header-content">
+
+    <a
+      href="index.html"
+      class="back-btn"
+    >
+      ← Về trang chủ
+    </a>
+
+    <div class="lesson-number">
+      ĐỊA LÍ 6 · BÀI 15
+    </div>
+
+    <h1>
+      Lớp vỏ khí của Trái Đất.
+      Khí áp và gió
+    </h1>
+
+    <p>
+      Tìm hiểu về lớp vỏ khí bao quanh Trái Đất,
+      khí áp, sự hình thành gió và một số loại gió
+      thường gặp.
+    </p>
+
+  </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- =========================================================
+     MỤC TIÊU
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🎯
+    </div>
+
+    <div>
+      <h2>Mục tiêu bài học</h2>
+
+      <p>
+        Những kiến thức và kĩ năng học sinh cần hình thành.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="objective-grid">
+
+    <div class="objective-card">
+
+      <div class="objective-icon">
+        🌍
+      </div>
+
+      <h3>
+        Nhận biết
+      </h3>
+
+      <p>
+        Nêu được khái niệm lớp vỏ khí,
+        khí áp và gió; nhận biết được
+        các tầng chính của khí quyển.
+      </p>
+
+    </div>
+
+
+    <div class="objective-card">
+
+      <div class="objective-icon">
+        🧠
+      </div>
+
+      <h3>
+        Thông hiểu
+      </h3>
+
+      <p>
+        Giải thích được mối quan hệ giữa
+        sự chênh lệch khí áp và sự hình thành
+        của gió.
+      </p>
+
+    </div>
+
+
+    <div class="objective-card">
+
+      <div class="objective-icon">
+        🔎
+      </div>
+
+      <h3>
+        Vận dụng
+      </h3>
+
+      <p>
+        Quan sát mô phỏng, phân tích hiện tượng
+        và vận dụng kiến thức để giải thích
+        một số hiện tượng gió trong thực tế.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     1. LỚP VỎ KHÍ
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🌎
+    </div>
+
+    <div>
+      <h2>1. Lớp vỏ khí của Trái Đất</h2>
+
+      <p>
+        Khí quyển và vai trò đối với sự sống.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="content-block">
+
+    <h3>
+      Lớp vỏ khí là gì?
+    </h3>
+
+    <p>
+      <span class="highlight">
+        Lớp vỏ khí
+      </span>
+      hay khí quyển là lớp không khí bao quanh Trái Đất.
+      Khí quyển có vai trò quan trọng đối với sự sống
+      và các hoạt động tự nhiên trên Trái Đất.
+    </p>
+
+  </div>
+
+
+  <div class="info-grid">
+
+    <div class="info-card">
+
+      <h3>
+        🌬️ Thành phần
+      </h3>
+
+      <p>
+        Không khí gồm nhiều loại khí khác nhau,
+        trong đó chủ yếu là nitơ và ôxi.
+        Ngoài ra còn có hơi nước và một số khí khác.
+      </p>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <h3>
+        🛡️ Vai trò
+      </h3>
+
+      <p>
+        Khí quyển cung cấp các loại khí cần thiết
+        cho sự sống, điều hòa nhiệt độ và tham gia
+        vào nhiều quá trình tự nhiên trên Trái Đất.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     2. CÁC TẦNG KHÍ QUYỂN
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      ☁️
+    </div>
+
+    <div>
+      <h2>2. Các tầng của khí quyển</h2>
+
+      <p>
+        Khí quyển được chia thành các tầng theo độ cao
+        và đặc điểm khác nhau.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="layer-grid">
+
+    <div class="layer-card">
+
+      <div class="layer-number">
+        01
+      </div>
+
+      <h3>
+        Tầng đối lưu
+      </h3>
+
+      <p>
+        Là tầng thấp nhất của khí quyển,
+        tiếp xúc trực tiếp với bề mặt Trái Đất.
+        Đây là nơi diễn ra phần lớn các hiện tượng
+        thời tiết như mây, mưa, gió...
+      </p>
+
+    </div>
+
+
+    <div class="layer-card">
+
+      <div class="layer-number">
+        02
+      </div>
+
+      <h3>
+        Tầng bình lưu
+      </h3>
+
+      <p>
+        Nằm phía trên tầng đối lưu.
+        Trong tầng này có lớp ô-dôn,
+        có vai trò hấp thụ phần lớn bức xạ
+        tử ngoại có hại từ Mặt Trời.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     3. KHÍ ÁP
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      📊
+    </div>
+
+    <div>
+      <h2>3. Khí áp</h2>
+
+      <p>
+        Tìm hiểu sức ép của không khí lên bề mặt Trái Đất.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="content-block">
+
+    <h3>
+      Khí áp là gì?
+    </h3>
+
+    <p>
+      <span class="highlight">
+        Khí áp
+      </span>
+      là sức ép của không khí lên bề mặt Trái Đất.
+      Sự phân bố khí áp trên Trái Đất không giống nhau
+      và có sự thay đổi theo độ cao, nhiệt độ và các điều kiện
+      khác.
+    </p>
+
+  </div>
+
+
+  <div class="pressure-grid">
+
+    <div class="pressure-card">
+
+      <div class="pressure-symbol">
+        ⬆️
+      </div>
+
+      <h3>
+        Độ cao tăng
+      </h3>
+
+      <p>
+        Càng lên cao, không khí càng loãng,
+        khí áp có xu hướng giảm.
+      </p>
+
+    </div>
+
+
+    <div class="pressure-card">
+
+      <div class="pressure-symbol">
+        🌡️
+      </div>
+
+      <h3>
+        Nhiệt độ thay đổi
+      </h3>
+
+      <p>
+        Nhiệt độ ảnh hưởng đến sự nở ra,
+        co lại và chuyển động của không khí.
+      </p>
+
+    </div>
+
+
+    <div class="pressure-card">
+
+      <div class="pressure-symbol">
+        ↔️
+      </div>
+
+      <h3>
+        Chênh lệch khí áp
+      </h3>
+
+      <p>
+        Sự chênh lệch khí áp giữa các khu vực
+        tạo điều kiện hình thành gió.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     4. MÔ PHỎNG KHÍ ÁP VÀ GIÓ
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🌬️
+    </div>
+
+    <div>
+      <h2>
+        4. Mô phỏng: Khí áp và gió
+      </h2>
+
+      <p>
+        Tương tác trực tiếp để quan sát sự hình thành của gió.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="simulation-preview">
+
+    <div class="preview-sun">
+      ☀️
+    </div>
+
+
+    <div class="preview-region left">
+
+      KHU VỰC A
+
+      <strong>
+        KHÍ ÁP CAO
+      </strong>
+
+    </div>
+
+
+    <div class="preview-region right">
+
+      KHU VỰC B
+
+      <strong>
+        KHÍ ÁP THẤP
+      </strong>
+
+    </div>
+
+
+    <div class="preview-arrow">
+      ➜
+    </div>
+
+    <div class="preview-arrow-text">
+      KHÔNG KHÍ CHUYỂN ĐỘNG
+    </div>
+
+
+    <div class="preview-ground"></div>
+
+  </div>
+
+
+  <div class="simulation-action">
+
+    <div>
+
+      <h3>
+        🔬 Mô phỏng tương tác
+      </h3>
+
+      <p>
+        Kéo thanh điều khiển để thay đổi chênh lệch khí áp,
+        quan sát tốc độ chuyển động của gió và xem phần
+        giải thích thay đổi theo từng trạng thái.
+      </p>
+
+    </div>
+
+
+    <a
+      href="mpkag.html"
+      class="open-simulation"
+    >
+      🚀 Mở mô phỏng
+    </a>
+
+  </div>
+
+
+  <div class="flow-box">
+
+    <div class="flow-title">
+      💡 Cơ chế hình thành gió
+    </div>
+
+    <div class="flow">
+
+      <div class="flow-step">
+
+        <span>
+          BƯỚC 1
+        </span>
+
+        <strong>
+          Có sự chênh lệch khí áp
+        </strong>
+
+      </div>
+
+      <div class="flow-arrow">
+        →
+      </div>
+
+      <div class="flow-step">
+
+        <span>
+          BƯỚC 2
+        </span>
+
+        <strong>
+          Không khí chuyển động
+        </strong>
+
+      </div>
+
+      <div class="flow-arrow">
+        →
+      </div>
+
+      <div class="flow-step">
+
+        <span>
+          BƯỚC 3
+        </span>
+
+        <strong>
+          Hình thành gió
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     5. GIÓ
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      💨
+    </div>
+
+    <div>
+      <h2>5. Gió và các loại gió chính</h2>
+
+      <p>
+        Gió là sự chuyển động của không khí từ nơi có khí áp cao
+        về nơi có khí áp thấp.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="content-block">
+
+    <h3>
+      Gió là gì?
+    </h3>
+
+    <p>
+      <span class="highlight">
+        Gió
+      </span>
+      là sự chuyển động của không khí từ nơi có khí áp cao
+      về nơi có khí áp thấp.
+      Gió là một yếu tố quan trọng của thời tiết và khí hậu.
+    </p>
+
+  </div>
+
+
+  <div class="wind-grid">
+
+    <div class="wind-card">
+
+      <div class="wind-icon">
+        🌎
+      </div>
+
+      <h3>
+        Gió Tín phong
+      </h3>
+
+      <p>
+        Là loại gió thổi thường xuyên từ các đai áp cao
+        cận chí tuyến về phía áp thấp xích đạo.
+      </p>
+
+    </div>
+
+
+    <div class="wind-card">
+
+      <div class="wind-icon">
+        🌬️
+      </div>
+
+      <h3>
+        Gió Tây ôn đới
+      </h3>
+
+      <p>
+        Là loại gió thổi từ các đai áp cao cận chí tuyến
+        về phía các đai áp thấp ôn đới.
+      </p>
+
+    </div>
+
+
+    <div class="wind-card">
+
+      <div class="wind-icon">
+        ❄️
+      </div>
+
+      <h3>
+        Gió Đông cực
+      </h3>
+
+      <p>
+        Là loại gió thổi từ các đai áp cao ở vùng cực
+        về phía các đai áp thấp ôn đới.
+      </p>
+
+    </div>
+
+
+    <div class="wind-card">
+
+      <div class="wind-icon">
+        🏠
+      </div>
+
+      <h3>
+        Gió địa phương
+      </h3>
+
+      <p>
+        Là những loại gió hình thành trong phạm vi
+        địa phương do sự khác biệt về nhiệt độ và khí áp
+        giữa các khu vực.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     6. BẢNG TỔNG KẾT
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      📋
+    </div>
+
+    <div>
+      <h2>
+        6. Hệ thống kiến thức
+      </h2>
+
+      <p>
+        Tóm tắt những nội dung quan trọng của bài học.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Nội dung
+          </th>
+
+          <th>
+            Kiến thức cần nhớ
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr>
+
+          <td>
+            Lớp vỏ khí
+          </td>
+
+          <td>
+            Là lớp không khí bao quanh Trái Đất,
+            có vai trò quan trọng đối với sự sống
+            và các quá trình tự nhiên.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Tầng đối lưu
+          </td>
+
+          <td>
+            Là tầng thấp nhất, nơi diễn ra phần lớn
+            các hiện tượng thời tiết.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Tầng bình lưu
+          </td>
+
+          <td>
+            Nằm phía trên tầng đối lưu,
+            có lớp ô-dôn.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Khí áp
+          </td>
+
+          <td>
+            Là sức ép của không khí lên bề mặt Trái Đất.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Gió
+          </td>
+
+          <td>
+            Là sự chuyển động của không khí
+            từ nơi khí áp cao đến nơi khí áp thấp.
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     7. LUYỆN TẬP
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🧠
+    </div>
+
+    <div>
+
+      <h2>
+        7. Kiểm tra kiến thức
+      </h2>
+
+      <p>
+        Trả lời 10 câu hỏi để kiểm tra mức độ hiểu bài.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="quiz-intro" id="quizIntro">
+
+    <p>
+      Mỗi câu hỏi có <strong>10 giây</strong> để trả lời.
+      Sau khi chọn đáp án, hệ thống sẽ cho biết đúng/sai
+      và giải thích ngắn gọn. Sau 10 câu, em có thể xem
+      kết quả và hoàn thành bài học.
+    </p>
+
+    <button
+      type="button"
+      class="quiz-start"
+      id="startQuizBtn"
+    >
+      ▶ Bắt đầu làm bài
+    </button>
+
+  </div>
+
+
+  <div class="quiz-box" id="quizBox">
+
+    <div class="quiz-progress">
+
+      <div
+        class="progress-text"
+        id="progressText"
+      >
+        Câu 1 / 10
+      </div>
+
+      <div
+        class="timer"
+        id="timer"
+      >
+        10s
+      </div>
+
+    </div>
+
+
+    <div class="question-card">
+
+      <div
+        class="question-number"
+        id="questionNumber"
+      >
+        CÂU 01
+      </div>
+
+      <div
+        class="question-text"
+        id="questionText"
+      ></div>
+
+      <div
+        class="options"
+        id="options"
+      ></div>
+
+      <div
+        class="feedback"
+        id="feedback"
+      ></div>
+
+      <button
+        type="button"
+        class="next-question"
+        id="nextQuestion"
+      >
+        Câu tiếp theo →
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="result"
+    id="result"
+  >
+
+    <div class="result-icon">
+      🎉
+    </div>
+
+    <h3>
+      Hoàn thành phần kiểm tra!
+    </h3>
+
+    <div
+      class="result-score"
+      id="resultScore"
+    >
+      0 / 10
+    </div>
+
+    <p id="resultMessage">
+      Em đã hoàn thành 10 câu hỏi.
+    </p>
+
+
+    <div class="result-actions">
+
+      <button
+        type="button"
+        class="result-btn"
+        id="restartBtn"
+      >
+        ↺ Làm lại
+      </button>
+
+      <button
+        type="button"
+        class="result-btn primary"
+        id="finishBtn"
+      >
+        ✓ Hoàn thành bài học
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+<footer class="footer">
+
+  Học liệu số Địa lí 6 · Bài 15
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   CẤU HÌNH
+========================================================= */
+
+const PROGRESS_KEY =
+  'hoclieu6_progress_v1';
+
+
+/* =========================================================
+   NGÂN HÀNG CÂU HỎI
+========================================================= */
+
+const questions = [
+
+  {
+    q:
+      'Khí quyển là gì?',
+
+    options:[
+      'Lớp đất bao phủ trên bề mặt Trái Đất',
+      'Lớp nước bao quanh Trái Đất',
+      'Lớp không khí bao quanh Trái Đất',
+      'Lớp đá ở bên trong Trái Đất'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Khí quyển là lớp không khí bao quanh Trái Đất.'
+  },
+
+
+  {
+    q:
+      'Hai thành phần chủ yếu của không khí là gì?',
+
+    options:[
+      'Nitơ và ôxi',
+      'Ôxi và cacbonic',
+      'Nitơ và hơi nước',
+      'Ôxi và hiđrô'
+    ],
+
+    answer:0,
+
+    explanation:
+      'Không khí gồm nhiều loại khí, trong đó nitơ và ôxi chiếm tỉ lệ chủ yếu.'
+  },
+
+
+  {
+    q:
+      'Phần lớn các hiện tượng thời tiết diễn ra ở tầng nào?',
+
+    options:[
+      'Tầng bình lưu',
+      'Tầng đối lưu',
+      'Tầng giữa',
+      'Tầng ngoài'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Tầng đối lưu là tầng thấp nhất của khí quyển và là nơi diễn ra phần lớn các hiện tượng thời tiết.'
+  },
+
+
+  {
+    q:
+      'Khí áp là gì?',
+
+    options:[
+      'Lượng hơi nước trong không khí',
+      'Sức ép của không khí lên bề mặt Trái Đất',
+      'Tốc độ chuyển động của không khí',
+      'Nhiệt độ của không khí'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Khí áp là sức ép của không khí lên bề mặt Trái Đất.'
+  },
+
+
+  {
+    q:
+      'Càng lên cao, khí áp thường thay đổi như thế nào?',
+
+    options:[
+      'Tăng',
+      'Không thay đổi',
+      'Giảm',
+      'Lúc tăng lúc giảm hoàn toàn ngẫu nhiên'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Càng lên cao, không khí càng loãng nên khí áp có xu hướng giảm.'
+  },
+
+
+  {
+    q:
+      'Gió hình thành chủ yếu do nguyên nhân nào?',
+
+    options:[
+      'Sự chênh lệch khí áp',
+      'Sự thay đổi màu sắc của bầu trời',
+      'Sự thay đổi độ cao của địa hình',
+      'Sự thay đổi độ dài ngày đêm'
+    ],
+
+    answer:0,
+
+    explanation:
+      'Sự chênh lệch khí áp giữa các khu vực tạo ra sự chuyển động của không khí và hình thành gió.'
+  },
+
+
+  {
+    q:
+      'Không khí có xu hướng chuyển động như thế nào?',
+
+    options:[
+      'Từ nơi khí áp thấp đến nơi khí áp cao',
+      'Từ nơi khí áp cao đến nơi khí áp thấp',
+      'Chỉ chuyển động theo chiều từ Tây sang Đông',
+      'Chỉ chuyển động theo chiều từ Đông sang Tây'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Gió là sự chuyển động của không khí từ nơi có khí áp cao về nơi có khí áp thấp.'
+  },
+
+
+  {
+    q:
+      'Lớp ô-dôn nằm chủ yếu ở tầng nào của khí quyển?',
+
+    options:[
+      'Tầng đối lưu',
+      'Tầng bình lưu',
+      'Tầng đất',
+      'Tầng nước'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Lớp ô-dôn nằm trong tầng bình lưu và có vai trò hấp thụ phần lớn bức xạ tử ngoại có hại.'
+  },
+
+
+  {
+    q:
+      'Khi chênh lệch khí áp càng lớn, gió có xu hướng như thế nào?',
+
+    options:[
+      'Yếu hơn',
+      'Không thay đổi',
+      'Mạnh hơn',
+      'Biến mất hoàn toàn'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Chênh lệch khí áp càng lớn thì sự chuyển động của không khí có xu hướng càng mạnh.'
+  },
+
+
+  {
+    q:
+      'Phát biểu nào sau đây đúng về gió?',
+
+    options:[
+      'Gió là không khí đứng yên',
+      'Gió chỉ xuất hiện ở vùng núi',
+      'Gió là sự chuyển động của không khí',
+      'Gió luôn thổi từ nơi lạnh đến nơi nóng'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Gió là sự chuyển động của không khí, chủ yếu từ nơi có khí áp cao về nơi có khí áp thấp.'
+  }
+
+];
+
+
+/* =========================================================
+   BIẾN QUIZ
+========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timerValue = 10;
+
+let timerInterval = null;
+
+let answered = false;
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const quizIntro =
+  document.getElementById('quizIntro');
+
+const quizBox =
+  document.getElementById('quizBox');
+
+const result =
+  document.getElementById('result');
+
+const startQuizBtn =
+  document.getElementById('startQuizBtn');
+
+const progressText =
+  document.getElementById('progressText');
+
+const timer =
+  document.getElementById('timer');
+
+const questionNumber =
+  document.getElementById('questionNumber');
+
+const questionText =
+  document.getElementById('questionText');
+
+const options =
+  document.getElementById('options');
+
+const feedback =
+  document.getElementById('feedback');
+
+const nextQuestion =
+  document.getElementById('nextQuestion');
+
+const resultScore =
+  document.getElementById('resultScore');
+
+const resultMessage =
+  document.getElementById('resultMessage');
+
+const restartBtn =
+  document.getElementById('restartBtn');
+
+const finishBtn =
+  document.getElementById('finishBtn');
+
+
+/* =========================================================
+   BẮT ĐẦU
+========================================================= */
+
+startQuizBtn.addEventListener(
+  'click',
+  startQuiz
+);
+
+
+function startQuiz(){
+
+  currentQuestion = 0;
+
+  score = 0;
+
+  clearInterval(timerInterval);
+
+  quizIntro.style.display =
+    'none';
+
+  result.classList.remove('show');
+
+  quizBox.classList.add('active');
+
+  loadQuestion();
+
+}
+
+
+/* =========================================================
+   HIỂN THỊ CÂU HỎI
+========================================================= */
+
+function loadQuestion(){
+
+  clearInterval(timerInterval);
+
+  answered = false;
+
+  timerValue = 10;
+
+  timer.textContent =
+    timerValue + 's';
+
+  timer.classList.remove('danger');
+
+  feedback.classList.remove('show');
+
+  feedback.innerHTML = '';
+
+  nextQuestion.style.display =
+    'none';
+
+
+  const q =
+    questions[currentQuestion];
+
+
+  progressText.textContent =
+    `Câu ${currentQuestion + 1} / ${questions.length}`;
+
+
+  questionNumber.textContent =
+    `CÂU ${String(currentQuestion + 1).padStart(2,'0')}`;
+
+
+  questionText.textContent =
+    q.q;
+
+
+  options.innerHTML = '';
+
+
+  q.options.forEach(
+    (option,index)=>{
+
+      const button =
+        document.createElement('button');
+
+      button.type =
+        'button';
+
+      button.className =
+        'option';
+
+      button.textContent =
+        option;
+
+      button.addEventListener(
+        'click',
+        ()=>{
+          answerQuestion(index);
+        }
+      );
+
+      options.appendChild(button);
+
+    }
+  );
+
+
+  startTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+  timerInterval =
+    setInterval(
+      ()=>{
+
+        timerValue--;
+
+        timer.textContent =
+          timerValue + 's';
+
+
+        if(timerValue <= 3){
+
+          timer.classList.add(
+            'danger'
+          );
+
+        }
+
+
+        if(timerValue <= 0){
+
+          clearInterval(
+            timerInterval
+          );
+
+          timeOut();
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+/* =========================================================
+   TRẢ LỜI
+========================================================= */
+
+function answerQuestion(index){
+
+  if(answered){
+    return;
+  }
+
+  answered = true;
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  const q =
+    questions[currentQuestion];
+
+  const buttons =
+    options.querySelectorAll(
+      '.option'
+    );
+
+
+  buttons.forEach(
+    (button,i)=>{
+
+      button.disabled = true;
+
+      if(i === q.answer){
+
+        button.classList.add(
+          'correct'
+        );
+
+      }
+
+    }
+  );
+
+
+  if(index === q.answer){
+
+    score++;
+
+    feedback.innerHTML =
+      `<strong style="color:#72e6b1">
+        ✓ Chính xác!
+      </strong><br>
+      ${q.explanation}`;
+
+  }else{
+
+    buttons[index].classList.add(
+      'wrong'
+    );
+
+    feedback.innerHTML =
+      `<strong style="color:#ffaaa0">
+        ✕ Chưa chính xác.
+      </strong><br>
+      Đáp án đúng là:
+      <strong>${q.options[q.answer]}</strong>.<br>
+      ${q.explanation}`;
+
+  }
+
+
+  feedback.classList.add(
+    'show'
+  );
+
+
+  showNextButton();
+
+}
+
+
+/* =========================================================
+   HẾT THỜI GIAN
+========================================================= */
+
+function timeOut(){
+
+  if(answered){
+    return;
+  }
+
+  answered = true;
+
+
+  const q =
+    questions[currentQuestion];
+
+  const buttons =
+    options.querySelectorAll(
+      '.option'
+    );
+
+
+  buttons.forEach(
+    (button,i)=>{
+
+      button.disabled = true;
+
+      if(i === q.answer){
+
+        button.classList.add(
+          'correct'
+        );
+
+      }
+
+    }
+  );
+
+
+  feedback.innerHTML =
+    `<strong style="color:#ffc27b">
+      ⏰ Hết thời gian!
+    </strong><br>
+    Đáp án đúng là:
+    <strong>${q.options[q.answer]}</strong>.<br>
+    ${q.explanation}`;
+
+
+  feedback.classList.add(
+    'show'
+  );
+
+
+  showNextButton();
+
+}
+
+
+/* =========================================================
+   NÚT CÂU TIẾP
+========================================================= */
+
+function showNextButton(){
+
+  nextQuestion.style.display =
+    'inline-block';
+
+  if(
+    currentQuestion ===
+    questions.length - 1
+  ){
+
+    nextQuestion.textContent =
+      'Xem kết quả →';
+
+  }else{
+
+    nextQuestion.textContent =
+      'Câu tiếp theo →';
+
+  }
+
+}
+
+
+nextQuestion.addEventListener(
+  'click',
+  ()=>{
+
+    currentQuestion++;
+
+    if(
+      currentQuestion >=
+      questions.length
+    ){
+
+      showResult();
+
+    }else{
+
+      loadQuestion();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   KẾT QUẢ
+========================================================= */
+
+function showResult(){
+
+  clearInterval(
+    timerInterval
+  );
+
+  quizBox.classList.remove(
+    'active'
+  );
+
+  result.classList.add(
+    'show'
+  );
+
+
+  resultScore.textContent =
+    `${score} / ${questions.length}`;
+
+
+  if(score >= 9){
+
+    resultMessage.textContent =
+      'Xuất sắc! Em đã nắm rất chắc kiến thức của bài học.';
+
+  }
+  else if(score >= 7){
+
+    resultMessage.textContent =
+      'Rất tốt! Em đã hiểu phần lớn nội dung của bài học.';
+
+  }
+  else if(score >= 5){
+
+    resultMessage.textContent =
+      'Khá tốt! Em nên xem lại một số nội dung trước khi hoàn thành bài học.';
+
+  }
+  else{
+
+    resultMessage.textContent =
+      'Em nên xem lại nội dung bài học và thử làm lại để củng cố kiến thức.';
+
+  }
+
+}
+
+
+/* =========================================================
+   LÀM LẠI
+========================================================= */
+
+restartBtn.addEventListener(
+  'click',
+  ()=>{
+
+    result.classList.remove(
+      'show'
+    );
+
+    quizIntro.style.display =
+      'none';
+
+    quizBox.classList.add(
+      'active'
+    );
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    loadQuestion();
+
+  }
+);
+
+
+/* =========================================================
+   HOÀN THÀNH BÀI HỌC
+========================================================= */
+
+finishBtn.addEventListener(
+  'click',
+  ()=>{
+
+    try{
+
+      const progress =
+        JSON.parse(
+          localStorage.getItem(
+            PROGRESS_KEY
+          ) || '{}'
+        );
+
+
+      progress.g15 = true;
+
+
+      localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(progress)
+      );
+
+
+      finishBtn.textContent =
+        '✓ Đã hoàn thành';
+
+      finishBtn.disabled =
+        true;
+
+      finishBtn.style.opacity =
+        '.7';
+
+      resultMessage.textContent =
+        '🎉 Bài 15 đã được đánh dấu hoàn thành! Em có thể quay về trang chủ để tiếp tục học.';
+
+    }catch(error){
+
+      alert(
+        'Không thể lưu tiến độ trên trình duyệt này.'
+      );
+
+    }
+
+  }
+);
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g15");</script>
+</body>
+</html>

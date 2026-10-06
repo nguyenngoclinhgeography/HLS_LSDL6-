@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 5 - Lược đồ trí nhớ | Học liệu số Địa lí 6</title>
+<style>
+:root{
+--bg:#07111f;--bg2:#0b1b2d;--panel:#10263b;--panel2:#132f47;--line:#1f4967;
+--cyan:#27d3e8;--cyan2:#72e8f4;--blue:#3f8cff;--green:#40d99a;--yellow:#ffd166;
+--orange:#ff9f43;--red:#ff6b6b;--text:#edf7ff;--muted:#9fb7ca;--shadow:0 18px 50px rgba(0,0,0,.28)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);line-height:1.65;
+background:radial-gradient(circle at 15% 0%,rgba(39,211,232,.12),transparent 28%),
+radial-gradient(circle at 85% 10%,rgba(63,140,255,.1),transparent 25%),var(--bg)}
+button,select{font:inherit;cursor:pointer}.container{width:min(1180px,calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:rgba(7,17,31,.88);border-bottom:1px solid rgba(114,232,244,.12)}
+.nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{font-weight:800;color:var(--cyan2)}.nav-actions{display:flex;gap:9px;flex-wrap:wrap}
+.nav-btn,.home-btn{border:1px solid var(--line);background:rgba(16,38,59,.75);color:var(--text);padding:9px 14px;border-radius:12px}
+.nav-btn:hover,.home-btn:hover{border-color:var(--cyan)}
+.hero{padding:68px 0 42px}.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:24px}
+.eyebrow{display:inline-flex;padding:7px 12px;border:1px solid rgba(39,211,232,.3);border-radius:999px;color:var(--cyan2);background:rgba(39,211,232,.07);font-size:13px;font-weight:700}
+h1{font-size:clamp(35px,5vw,58px);line-height:1.08;margin:18px 0 14px;letter-spacing:-1px}.hero p{color:var(--muted);font-size:17px}
+.hero-card,.card,.content-card,.quiz{background:linear-gradient(145deg,rgba(16,38,59,.95),rgba(11,27,45,.9));border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero-card{border-radius:24px;padding:25px;display:flex;flex-direction:column;justify-content:center}.map-icon{text-align:center;font-size:76px}
+.hero-card strong{color:var(--cyan2);font-size:18px}.hero-card span{color:var(--muted);font-size:14px}
+.section{padding:28px 0 54px}.section-head{margin-bottom:22px}.section-head h2{margin:0 0 6px;font-size:30px}.section-head p{margin:0;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{border-radius:18px;padding:20px}.card .icon{font-size:30px}.card h3{margin:8px 0 6px}.card p{margin:0;color:var(--muted);font-size:14px}
+.note{margin-top:18px;padding:16px 18px;border-left:3px solid var(--cyan);background:rgba(39,211,232,.06);border-radius:12px}
+.definition{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px}.content-card{border-radius:20px;padding:24px}.big-word{font-size:42px;font-weight:900;color:var(--cyan2);margin:10px 0}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.feature-icon{font-size:36px}.feature h3{margin:8px 0}.feature p{color:var(--muted);font-size:14px;margin:0}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px}.step-num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--cyan);color:var(--cyan2);font-weight:900;background:rgba(39,211,232,.08)}.step h3{font-size:16px;margin:10px 0 5px}.step p{font-size:13px;color:var(--muted);margin:0}
+.memory-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.memory-map{position:relative;min-height:470px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
+background:linear-gradient(90deg,rgba(114,232,244,.05) 1px,transparent 1px),linear-gradient(rgba(114,232,244,.05) 1px,transparent 1px),#092438;background-size:48px 48px}
+.park-area{position:absolute;width:34%;height:28%;left:33%;top:30%;border:2px dashed rgba(64,217,154,.55);background:rgba(64,217,154,.06);border-radius:50%}
+.road{position:absolute;height:10px;background:#3c5c70;border-radius:99px;transform-origin:left center}.road.main{height:13px;background:#557287}
+.r1{width:320px;left:6%;top:77%;transform:rotate(-24deg)}.r2{width:320px;left:28%;top:57%;transform:rotate(13deg)}.r3{width:270px;left:54%;top:67%;transform:rotate(-52deg)}.r4{width:250px;left:25%;top:35%;transform:rotate(5deg)}.r5{width:220px;left:62%;top:28%;transform:rotate(43deg)}
+.memory-route{position:absolute;height:6px;background:var(--yellow);border-radius:99px;box-shadow:0 0 15px rgba(255,209,102,.45);transform-origin:left center}
+.mr1{width:250px;left:15%;top:72%;transform:rotate(-20deg)}.mr2{width:210px;left:39%;top:57%;transform:rotate(-38deg)}.mr3{width:180px;left:58%;top:35%;transform:rotate(40deg)}
+.landmark{position:absolute;z-index:3;text-align:center}.landmark .mark{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#091a2a;border:2px solid var(--cyan);font-size:22px;box-shadow:0 8px 20px rgba(0,0,0,.25)}.landmark span{display:inline-block;margin-top:5px;padding:3px 7px;background:rgba(7,17,31,.9);border-radius:7px;font-size:12px;white-space:nowrap}
+.home{left:9%;top:69%}.cross{left:36%;top:51%}.market{left:61%;top:27%}.school{right:8%;top:14%}.temple{right:14%;bottom:16%}
+.map-compass{position:absolute;right:18px;top:18px;width:58px;height:58px;border-radius:50%;border:1px solid var(--cyan);background:rgba(7,17,31,.82);display:grid;place-items:center;color:var(--cyan2);font-weight:900}
+.memory-panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px}.memory-panel h3{margin-top:0}.memory-list{display:grid;gap:10px;margin-top:15px}.memory-item{display:flex;gap:11px;align-items:flex-start;padding:11px;border-radius:12px;background:rgba(39,211,232,.05);border:1px solid rgba(39,211,232,.12)}.memory-item b{color:var(--cyan2)}.memory-item span{color:var(--muted);font-size:13px}
+.builder{background:linear-gradient(145deg,rgba(16,38,59,.96),rgba(10,27,44,.94));border:1px solid var(--line);border-radius:24px;padding:24px}
+.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.builder-controls{display:grid;gap:12px}.builder-controls label{font-size:13px;color:var(--muted)}.builder-controls select{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#091a2a;color:var(--text)}
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{padding:12px;border:1px solid var(--line);border-radius:12px;background:#0b2033;color:var(--text)}.choice.active{border-color:var(--cyan);background:rgba(39,211,232,.1);color:var(--cyan2)}
+.preview{position:relative;min-height:350px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#092438;
+background-image:linear-gradient(90deg,rgba(114,232,244,.05) 1px,transparent 1px),linear-gradient(rgba(114,232,244,.05) 1px,transparent 1px);background-size:45px 45px}
+.preview-title{position:absolute;left:16px;top:13px;color:var(--cyan2);font-weight:800}.preview-road{position:absolute;height:7px;background:var(--yellow);border-radius:99px;transform-origin:left center}.p1{width:180px;left:17%;top:74%;transform:rotate(-21deg)}.p2{width:160px;left:45%;top:57%;transform:rotate(-38deg)}.p3{width:145px;left:65%;top:35%;transform:rotate(42deg)}
+.preview-node{position:absolute;text-align:center}.preview-node i{font-style:normal;font-size:27px}.preview-node small{display:block;font-size:11px;color:var(--muted)}.pn1{left:10%;top:67%}.pn2{left:42%;top:48%}.pn3{left:62%;top:20%}.pn4{right:7%;top:8%}
+.quiz{border-radius:24px;padding:26px}.quiz-start{text-align:center;padding:28px 10px}.quiz-start-icon{font-size:54px}.quiz-start h2{margin:8px 0}.quiz-start p{color:var(--muted);max-width:650px;margin:0 auto 18px}.quiz-info{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}.quiz-info span{padding:8px 12px;border-radius:999px;background:rgba(39,211,232,.08);border:1px solid rgba(39,211,232,.18);color:var(--cyan2);font-size:13px}
+.start-btn,.retry-btn{padding:13px 22px;border:1px solid var(--cyan);border-radius:13px;background:linear-gradient(135deg,rgba(39,211,232,.2),rgba(63,140,255,.14));color:var(--text);font-weight:800}.start-btn:hover,.retry-btn:hover{transform:translateY(-1px)}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.timer{font-weight:800;color:var(--yellow);padding:7px 12px;border-radius:10px;background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2)}.progress{height:8px;background:#091a2a;border-radius:99px;overflow:hidden;margin-bottom:20px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));width:0}.question{font-size:20px;font-weight:800;margin-bottom:16px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{padding:14px 16px;text-align:left;border:1px solid var(--line);border-radius:13px;background:#0c2033;color:var(--text)}.answer:hover{border-color:var(--cyan)}.answer.correct{border-color:var(--green);background:rgba(64,217,154,.1)}.answer.wrong{border-color:var(--red);background:rgba(255,107,107,.1)}.feedback{margin-top:14px;padding:13px 15px;border-radius:12px;background:rgba(114,232,244,.06);display:none}.feedback.show{display:block}
+.quiz-result{text-align:center;padding:30px 10px}.score{font-size:48px;font-weight:900;color:var(--cyan2)}.result-msg{color:var(--muted);margin-bottom:20px}.footer{padding:30px 0 50px;color:#718ca0;text-align:center;font-size:13px}
+@media(max-width:950px){.hero-grid,.definition,.memory-wrap,.builder-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}.feature-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.cards,.feature-grid,.steps,.answers,.choice-row{grid-template-columns:1fr}.hero{padding-top:42px}.memory-map{min-height:390px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+<header class="topbar"><div class="container nav">
+<div class="brand">🌎 HỌC LIỆU SỐ ĐỊA LÍ 6</div>
+<div class="nav-actions"><button class="home-btn" onclick="goHome()">⌂ Trang chủ</button><button class="nav-btn" onclick="document.getElementById('quiz').scrollIntoView()">🎯 Luyện tập</button></div>
+</div></header>
+
+<main>
+<section class="hero"><div class="container hero-grid"><div>
+<span class="eyebrow">CHƯƠNG 1 · BẢN ĐỒ</span>
+<h1>Bài 5. Lược đồ trí nhớ</h1>
+<p>Lược đồ trí nhớ giúp chúng ta thể hiện những thông tin không gian được lưu giữ trong trí óc, từ những địa điểm quen thuộc đến đường đi trong cuộc sống hằng ngày.</p>
+</div><div class="hero-card"><div class="map-icon">🧠🗺️</div><strong>Nhớ không gian → chọn mốc → vẽ đường</strong><span>Học sinh có thể hình dung và mô tả không gian quen thuộc bằng chính trí nhớ của mình.</span></div></div></section>
+
+<section class="section"><div class="container"><div class="section-head"><h2>🎯 Mục tiêu học tập</h2><p>Sau bài học, em có thể:</p></div>
+<div class="cards">
+<div class="card"><div class="icon">🧠</div><h3>Hiểu khái niệm</h3><p>Biết lược đồ trí nhớ là gì và hiểu nó phản ánh cảm nhận của mỗi người về không gian sống.</p></div>
+<div class="card"><div class="icon">📍</div><h3>Nhận biết địa điểm</h3><p>Xác định những địa điểm, mốc và đặc điểm không gian quen thuộc được ghi nhớ.</p></div>
+<div class="card"><div class="icon">🛣️</div><h3>Mô tả đường đi</h3><p>Dùng trí nhớ để mô tả đường đi giữa các địa điểm quen thuộc.</p></div>
+<div class="card"><div class="icon">✏️</div><h3>Vẽ lược đồ</h3><p>Biết thể hiện một lược đồ trí nhớ đơn giản để chỉ đường hoặc mô tả một không gian quen thuộc.</p></div>
+</div></div></section>
+
+<section class="section"><div class="container"><div class="section-head"><h2>1. 🧠 Khái niệm lược đồ trí nhớ</h2><p>Đây là phần kiến thức cốt lõi của bài học.</p></div>
+<div class="definition"><div class="content-card"><div style="font-size:54px">🧠</div><div class="big-word">Lược đồ trí nhớ</div><p style="color:var(--muted)">Là những thông tin không gian về thế giới được giữ lại trong trí óc con người.</p></div>
+<div class="content-card"><h3>🔎 Đặc điểm</h3><p>Lược đồ trí nhớ được đặc trưng bởi sự đánh dấu các địa điểm mà một người từng gặp, từng đến...</p><p style="color:var(--muted)">Lược đồ trí nhớ của một người phản ánh sự cảm nhận của người đó về không gian sống và ý nghĩa của không gian ấy đối với cá nhân.</p>
+<div class="note">Ví dụ: Sau khi được bố mẹ dẫn đến trường lần đầu, những lần sau em có thể tự đi; trên đường em có thể nhớ con sông, cây, cửa hàng hoặc chợ.</div></div></div>
+</div></section>
+
+<section class="section"><div class="container"><div class="section-head"><h2>2. 🗺️ Lược đồ trí nhớ có gì?</h2><p>Những yếu tố thường xuất hiện khi chúng ta nhớ về một không gian.</p></div>
+<div class="feature-grid">
+<div class="feature"><div class="feature-icon">📍</div><h3>Địa điểm mốc</h3><p>Những nơi dễ nhận biết như trường học, chợ, bệnh viện, công viên, đình, chùa...</p></div>
+<div class="feature"><div class="feature-icon">🛣️</div><h3>Đường đi</h3><p>Các tuyến đường, đoạn rẽ, ngã ba, ngã tư hoặc hướng di chuyển mà em ghi nhớ.</p></div>
+<div class="feature"><div class="feature-icon">🏞️</div><h3>Không gian quen thuộc</h3><p>Cảnh quan và những đặc điểm không gian có ý nghĩa với người ghi nhớ.</p></div>
+</div>
+<div class="note">💡 Lược đồ trí nhớ không phải là bản đồ chính xác tuyệt đối. Nó thể hiện <strong>cách một người cảm nhận và ghi nhớ không gian</strong>.</div>
+</div></section>
+
+<section class="section"><div class="container"><div class="section-head"><h2>3. ✏️ Vẽ lược đồ trí nhớ đường đi</h2><p>Có thể hình dung quy trình theo 5 bước đơn giản.</p></div>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><h3>Xác định điểm đầu</h3><p>Chọn nơi bắt đầu, ví dụ: nhà.</p></div>
+<div class="step"><div class="step-num">2</div><h3>Nhớ tuyến đường</h3><p>Hình dung các đoạn đường và những chỗ rẽ.</p></div>
+<div class="step"><div class="step-num">3</div><h3>Chọn mốc</h3><p>Ghi nhớ các địa điểm dễ nhận biết trên đường.</p></div>
+<div class="step"><div class="step-num">4</div><h3>Đặt điểm đến</h3><p>Xác định nơi cần đến, ví dụ: trường học.</p></div>
+<div class="step"><div class="step-num">5</div><h3>Vẽ & mô tả</h3><p>Thể hiện tuyến và các mốc để người khác có thể hiểu.</p></div>
+</div></div></section>
+
+<section class="section"><div class="container"><div class="section-head"><h2>🧭 Khám phá một lược đồ trí nhớ mẫu</h2><p>Hãy quan sát cách một bạn học sinh ghi nhớ đường từ nhà đến trường.</p></div>
+<div class="memory-wrap">
+<div class="memory-map">
+<div class="map-compass">B<br>↑</div><div class="park-area"></div>
+<div class="road main r1"></div><div class="road main r2"></div><div class="road r3"></div><div class="road r4"></div><div class="road r5"></div>
+<div class="memory-route mr1"></div><div class="memory-route mr2"></div><div class="memory-route mr3"></div>
+<div class="landmark home"><div class="mark">🏠</div><span>Nhà</span></div>
+<div class="landmark cross"><div class="mark">🚦</div><span>Ngã tư</span></div>
+<div class="landmark market"><div class="mark">🛒</div><span>Chợ</span></div>
+<div class="landmark school"><div class="mark">🏫</div><span>Trường học</span></div>
+<div class="landmark temple"><div class="mark">⛩️</div><span>Đình</span></div>
+</div>
+<div class="memory-panel"><h3>📖 Cách đọc lược đồ</h3>
+<div class="memory-list">
+<div class="memory-item"><b>①</b><div><b>Điểm đầu:</b><span>Nhà là nơi bắt đầu hành trình.</span></div></div>
+<div class="memory-item"><b>②</b><div><b>Mốc:</b><span>Ngã tư và chợ là những địa điểm dễ nhận biết.</span></div></div>
+<div class="memory-item"><b>③</b><div><b>Đường đi:</b><span>Đường màu vàng biểu diễn tuyến đường được ghi nhớ.</span></div></div>
+<div class="memory-item"><b>④</b><div><b>Điểm đến:</b><span>Trường học là nơi kết thúc hành trình.</span></div></div>
+</div>
+<div class="note">🗣️ Có thể mô tả: “Từ nhà đi theo đường chính đến ngã tư, tiếp tục qua khu vực chợ rồi đi về phía trường học.”</div>
+</div>
+</div></div></section>
+
+<section class="section"><div class="container"><div class="section-head"><h2>🎨 Thử thiết kế lược đồ của em</h2><p>Chọn một kiểu địa điểm và xem các thành phần có thể đưa vào lược đồ trí nhớ.</p></div>
+<div class="builder"><div class="builder-grid">
+<div class="builder-controls">
+<label>Không gian muốn mô tả</label>
+<select id="space" onchange="updateBuilder()"><option value="school">🏫 Đường từ nhà đến trường</option><option value="market">🛒 Đường đến chợ</option><option value="friend">🏠 Đường đến nhà bạn</option></select>
+<label>Điểm mốc em muốn nhấn mạnh</label>
+<div class="choice-row"><button class="choice active" onclick="chooseMarker(this,'park')">🌳 Công viên</button><button class="choice" onclick="chooseMarker(this,'market')">🛒 Cửa hàng</button></div>
+<div class="choice-row"><button class="choice" onclick="chooseMarker(this,'cross')">🚦 Ngã tư</button><button class="choice" onclick="chooseMarker(this,'river')">🌊 Con sông</button></div>
+<div class="note" id="builderText">Một lược đồ chỉ đường tốt cần có điểm đầu, điểm đến, tuyến đường và những mốc dễ nhận biết.</div>
+</div>
+<div class="preview"><div class="preview-title" id="previewTitle">Lược đồ: Nhà → Trường</div>
+<div class="preview-road p1"></div><div class="preview-road p2"></div><div class="preview-road p3"></div>
+<div class="preview-node pn1">🏠<small>Điểm đầu</small></div><div class="preview-node pn2" id="chosenMarker">🌳<small>Mốc</small></div><div class="preview-node pn3">🛒<small>Địa điểm</small></div><div class="preview-node pn4" id="previewEnd">🏫<small>Điểm đến</small></div>
+</div></div></div></div></section>
+
+<section class="section" id="quiz"><div class="container"><div class="section-head"><h2>🎯 Luyện tập</h2><p>Kiểm tra nhanh kiến thức về lược đồ trí nhớ.</p></div>
+<div class="quiz">
+<div id="quizStart" class="quiz-start"><div class="quiz-start-icon">🧠</div><h2>Sẵn sàng thử trí nhớ không?</h2><p>Hãy kiểm tra khả năng hiểu khái niệm lược đồ trí nhớ và cách sử dụng các mốc, tuyến đường để mô tả không gian.</p>
+<div class="quiz-info"><span>📝 8 câu hỏi</span><span>⏱️ 10 giây / câu</span><span>🏆 Có chấm điểm</span></div><button class="start-btn" onclick="startQuiz()">▶ Bắt đầu làm bài</button></div>
+<div id="quizContent" style="display:none"><div class="quiz-top"><strong id="qNumber">Câu 1 / 8</strong><div class="timer">⏱️ <span id="time">10</span>s</div></div><div class="progress"><i id="progressBar"></i></div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div></div>
+<div id="quizResult" class="quiz-result" style="display:none"><div style="font-size:50px">🏆</div><div class="score" id="score">0/8</div><div class="result-msg" id="resultMsg"></div><button class="retry-btn" onclick="restartQuiz()">↻ Làm lại</button></div>
+</div></div></section>
+</main>
+<footer class="footer">Học liệu số Địa lí 6 · Bài 5 · Lược đồ trí nhớ</footer>
+
+<script>
+const PROGRESS_KEY='hoclieu6_progress_v1';
+function goHome(){window.location.href='index.html'}
+function updateBuilder(){
+ const s=document.getElementById('space').value;
+ const title=document.getElementById('previewTitle'),end=document.getElementById('previewEnd'),txt=document.getElementById('builderText');
+ if(s==='school'){title.textContent='Lược đồ: Nhà → Trường';end.innerHTML='🏫<small>Điểm đến</small>';txt.textContent='Một lược đồ chỉ đường tốt cần có điểm đầu, điểm đến, tuyến đường và những mốc dễ nhận biết.'}
+ if(s==='market'){title.textContent='Lược đồ: Nhà → Chợ';end.innerHTML='🛒<small>Điểm đến</small>';txt.textContent='Khi chỉ đường đến chợ, hãy nhớ những ngã rẽ và địa điểm nổi bật mà người khác dễ nhận ra.'}
+ if(s==='friend'){title.textContent='Lược đồ: Nhà → Nhà bạn';end.innerHTML='🏠<small>Điểm đến</small>';txt.textContent='Có thể dùng các địa điểm quen thuộc như trường, công viên, cửa hàng hoặc ngã tư làm mốc.'}
+}
+function chooseMarker(btn,type){
+ document.querySelectorAll('.choice').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+ const node=document.getElementById('chosenMarker');
+ const data={park:['🌳','Công viên'],market:['🛒','Cửa hàng'],cross:['🚦','Ngã tư'],river:['🌊','Con sông']}[type];
+ node.innerHTML=data[0]+'<small>'+data[1]+'</small>';
+}
+const questions=[
+{q:'Lược đồ trí nhớ là gì?',o:['Những thông tin không gian về thế giới được giữ lại trong trí óc','Một bản đồ hành chính chính xác','Một bảng thống kê dân số','Một loại bản đồ thời tiết'],a:0,e:'Lược đồ trí nhớ là những thông tin không gian về thế giới được giữ lại trong trí óc con người.'},
+{q:'Lược đồ trí nhớ phản ánh điều gì?',o:['Cách một người cảm nhận về không gian sống và ý nghĩa của không gian ấy','Chỉ độ cao địa hình','Chỉ diện tích lãnh thổ','Chỉ dân số của một nơi'],a:0,e:'Lược đồ trí nhớ phản ánh sự cảm nhận của mỗi người về không gian sống và ý nghĩa của không gian đó đối với cá nhân.'},
+{q:'Đặc điểm nào thường có trong lược đồ trí nhớ?',o:['Các địa điểm mà một người từng gặp, từng đến','Chỉ các quốc gia trên thế giới','Chỉ kinh tuyến và vĩ tuyến','Chỉ số liệu thống kê'],a:0,e:'Lược đồ trí nhớ được đặc trưng bởi sự đánh dấu các địa điểm mà một người từng gặp, từng đến.'},
+{q:'Khi mô tả đường từ nhà đến trường, yếu tố nào nên được chú ý?',o:['Các đoạn đường, chỗ rẽ và địa điểm mốc','Màu yêu thích của người vẽ','Dân số của cả tỉnh','Nhiệt độ trung bình năm'],a:0,e:'Đường đi, các chỗ rẽ và những địa điểm mốc giúp người nghe hình dung được lộ trình.'},
+{q:'Địa điểm nào dưới đây có thể là một mốc dễ nhận biết trên đường?',o:['Công viên','Mật độ dân số','Nhiệt độ','Lượng mưa'],a:0,e:'Công viên là một địa điểm cụ thể và quen thuộc, có thể được dùng làm mốc trong lược đồ trí nhớ.'},
+{q:'Lược đồ trí nhớ có nhất thiết phải chính xác như bản đồ địa lí không?',o:['Không, nó thể hiện cách cá nhân ghi nhớ và cảm nhận không gian','Có, phải giống hoàn toàn bản đồ địa lí','Có, phải có đủ kinh tuyến vĩ tuyến','Có, phải có bảng số liệu'],a:0,e:'Lược đồ trí nhớ thể hiện cách một người cảm nhận và ghi nhớ không gian, nên không nhất thiết chính xác như bản đồ địa lí.'},
+{q:'Muốn vẽ lược đồ chỉ đường cho bạn, việc nào phù hợp nhất?',o:['Xác định điểm đầu, điểm đến, tuyến đường và các mốc','Chỉ ghi tên điểm đến','Chỉ vẽ một đường thẳng bất kỳ','Không cần xác định địa điểm'],a:0,e:'Một lược đồ chỉ đường cần thể hiện điểm đầu, điểm đến, tuyến đường và các mốc giúp người khác định hướng.'},
+{q:'Tình huống nào thể hiện việc sử dụng lược đồ trí nhớ?',o:['Dựa vào những địa điểm quen thuộc để chỉ cho khách đường đến một nơi','Tính diện tích một tỉnh bằng công thức','Đọc nhiệt độ trên biểu đồ','Tính khoảng cách theo tỉ lệ bản đồ'],a:0,e:'Dựa vào những địa điểm và tuyến đường đã ghi nhớ để chỉ đường là một tình huống sử dụng lược đồ trí nhớ.'}
+];
+let currentQuestion=0,score=0,timer=null,timeLeft=10,answered=false;
+function startQuiz(){
+ clearInterval(timer);currentQuestion=0;score=0;
+ document.getElementById('quizStart').style.display='none';document.getElementById('quizContent').style.display='block';document.getElementById('quizResult').style.display='none';renderQuestion();
+}
+function renderQuestion(){
+ answered=false;clearInterval(timer);const q=questions[currentQuestion];
+ document.getElementById('qNumber').textContent=`Câu ${currentQuestion+1} / ${questions.length}`;
+ document.getElementById('progressBar').style.width=`${(currentQuestion/questions.length)*100}%`;
+ document.getElementById('question').textContent=q.q;const box=document.getElementById('answers');box.innerHTML='';
+ document.getElementById('feedback').className='feedback';document.getElementById('feedback').textContent='';
+ q.o.forEach((ans,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=ans;b.onclick=()=>chooseAnswer(i);box.appendChild(b)});
+ timeLeft=10;document.getElementById('time').textContent=timeLeft;
+ timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=timeLeft;if(timeLeft<=0){clearInterval(timer);chooseAnswer(-1)}},1000);
+}
+function chooseAnswer(i){
+ if(answered)return;answered=true;clearInterval(timer);const q=questions[currentQuestion],buttons=document.querySelectorAll('.answer');
+ buttons.forEach((b,idx)=>{b.disabled=true;if(idx===q.a)b.classList.add('correct');if(idx===i&&i!==q.a)b.classList.add('wrong')});
+ if(i===q.a)score++;const f=document.getElementById('feedback');f.textContent=(i===q.a?'✅ Chính xác! ':'❌ Chưa đúng. ')+q.e;f.className='feedback show';
+ setTimeout(()=>{currentQuestion++;if(currentQuestion<questions.length)renderQuestion();else finishQuiz()},1250);
+}
+function finishQuiz(){
+ document.getElementById('quizContent').style.display='none';document.getElementById('quizResult').style.display='block';document.getElementById('score').textContent=`${score}/${questions.length}`;
+ document.getElementById('progressBar').style.width='100%';
+ document.getElementById('resultMsg').textContent=score>=7?'Xuất sắc! Em đã hiểu rất tốt về lược đồ trí nhớ.':score>=5?'Tốt lắm! Em đã nắm được phần lớn kiến thức, hãy ôn lại một vài điểm nhỏ.':'Em hãy xem lại khái niệm lược đồ trí nhớ và cách mô tả đường đi nhé.';
+ const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');p.g05=true;localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));
+}
+function restartQuiz(){
+ clearInterval(timer);currentQuestion=0;score=0;document.getElementById('quizStart').style.display='block';document.getElementById('quizContent').style.display='none';document.getElementById('quizResult').style.display='none';
+}
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("g05");</script>
+</body>
+</html>

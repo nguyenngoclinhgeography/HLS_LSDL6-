@@ -1,0 +1,2569 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 22 - Lớp đất trên Trái Đất</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#050e18;
+    --bg2:#081a29;
+    --panel:#0b2134;
+    --panel2:#102c43;
+    --border:#23465e;
+    --cyan:#48dcff;
+    --blue:#398cff;
+    --green:#52dfad;
+    --yellow:#ffd45c;
+    --orange:#ffad61;
+    --red:#ff727a;
+    --brown:#a8784e;
+    --soil:#765238;
+    --text:#eaf7ff;
+    --muted:#9bb5c7;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -15%,#193b52 0%,#081827 38%,#030910 100%);
+}
+
+button,a{
+    font-family:inherit;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(4,14,25,.95);
+    border-bottom:1px solid #1c3b52;
+    backdrop-filter:blur(14px);
+}
+
+.header-inner{
+    max-width:1400px;
+    margin:auto;
+    padding:13px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:13px;
+    display:grid;
+    place-items:center;
+    font-size:24px;
+    background:linear-gradient(135deg,#159fbc,#1659bb);
+    box-shadow:0 0 25px rgba(47,204,255,.22);
+}
+
+.brand h1{
+    font-size:19px;
+}
+
+.brand p{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:#e7faff;
+    padding:10px 15px;
+    border-radius:10px;
+    background:#0c2236;
+    border:1px solid #2a526c;
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#123750;
+    border-color:#45dfff;
+}
+
+main{
+    max-width:1400px;
+    margin:auto;
+    padding:25px 22px 60px;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+    padding:40px 20px 44px;
+    margin-bottom:20px;
+    border:1px solid #1d4059;
+    border-radius:22px;
+    background:
+        radial-gradient(circle at 50% 110%,rgba(123,83,42,.25),transparent 58%),
+        linear-gradient(135deg,#0c2438,#071625);
+    box-shadow:0 20px 55px rgba(0,0,0,.25);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    left:-130px;
+    top:-150px;
+    border-radius:50%;
+    background:rgba(91,212,255,.05);
+}
+
+.tag{
+    display:inline-block;
+    padding:7px 14px;
+    border-radius:999px;
+    color:#70e7ff;
+    background:rgba(40,207,255,.08);
+    border:1px solid #21536c;
+    font-size:12px;
+    margin-bottom:14px;
+}
+
+.hero h2{
+    font-size:clamp(30px,4.5vw,48px);
+    margin-bottom:10px;
+}
+
+.hero p{
+    max-width:850px;
+    margin:auto;
+    color:var(--muted);
+    line-height:1.7;
+}
+
+.section{
+    margin-top:20px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:13px;
+}
+
+.section-number{
+    width:34px;
+    height:34px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:linear-gradient(135deg,#116eaa,#174eb0);
+    color:white;
+    font-weight:bold;
+}
+
+.section-title h3{
+    font-size:22px;
+}
+
+.section-title p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:2px;
+}
+
+/* OBJECTIVES */
+
+.objectives{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+}
+
+.objective{
+    padding:18px;
+    border-radius:15px;
+    background:linear-gradient(145deg,#0d2941,#091b2c);
+    border:1px solid var(--border);
+    transition:.2s;
+}
+
+.objective:hover{
+    transform:translateY(-3px);
+    border-color:#317895;
+}
+
+.objective .icon{
+    font-size:29px;
+    margin-bottom:9px;
+}
+
+.objective h4{
+    margin-bottom:6px;
+}
+
+.objective p{
+    color:#9eb7c8;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* DEFINITION */
+
+.definition{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:15px;
+}
+
+.info-card{
+    padding:20px;
+    border-radius:17px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0b2740,#071a2b);
+}
+
+.info-card h4{
+    font-size:20px;
+    margin-bottom:9px;
+}
+
+.info-card p{
+    color:#a8bfce;
+    line-height:1.75;
+    font-size:14px;
+}
+
+.phi-box{
+    margin-top:14px;
+    padding:14px;
+    border-radius:12px;
+    background:#071827;
+    border:1px solid #20455d;
+}
+
+.phi-box strong{
+    color:#65e5b5;
+}
+
+.phi-box span{
+    color:#a4bac9;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* SOIL PROFILE */
+
+.soil-section{
+    border-radius:20px;
+    border:1px solid #274c61;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(129,92,52,.12),transparent 50%),
+        linear-gradient(145deg,#0b2539,#061725);
+    padding:20px;
+}
+
+.soil-layout{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:20px;
+    align-items:stretch;
+}
+
+.profile-wrap{
+    min-height:530px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:10px;
+}
+
+.profile-title{
+    width:min(500px,100%);
+    margin-bottom:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#9fb8c8;
+    font-size:12px;
+}
+
+.profile-title strong{
+    color:#68e4ff;
+}
+
+.soil-profile{
+    width:min(500px,100%);
+    height:470px;
+    position:relative;
+    border-radius:18px;
+    overflow:hidden;
+    border:2px solid #36576a;
+    box-shadow:
+        inset 0 0 30px rgba(0,0,0,.45),
+        0 18px 40px rgba(0,0,0,.3);
+    background:#533a2b;
+}
+
+/* top vegetation */
+
+.surface{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:58px;
+    background:
+        linear-gradient(#173e27 0 17px,#285e32 17px 35px,#5e472d 35px 58px);
+    z-index:2;
+}
+
+.grass{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:8px;
+    height:35px;
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-end;
+    color:#69d276;
+    font-size:27px;
+    z-index:3;
+}
+
+.layer{
+    position:absolute;
+    left:0;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:.3s;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.layer:hover{
+    filter:brightness(1.15);
+}
+
+.layer.selected{
+    outline:3px solid var(--cyan);
+    outline-offset:-3px;
+    filter:brightness(1.2);
+    z-index:8;
+}
+
+.layer .layer-label{
+    padding:8px 13px;
+    border-radius:10px;
+    background:rgba(3,12,19,.73);
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(5px);
+    text-align:center;
+    pointer-events:none;
+}
+
+.layer .layer-label strong{
+    display:block;
+    font-size:14px;
+}
+
+.layer .layer-label span{
+    display:block;
+    color:#c1d1da;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.humus{
+    top:58px;
+    height:125px;
+    background:
+        radial-gradient(circle at 15% 30%,rgba(36,23,14,.55) 0 2px,transparent 3px),
+        radial-gradient(circle at 70% 60%,rgba(30,19,12,.55) 0 3px,transparent 4px),
+        linear-gradient(135deg,#5a3925,#704b2e,#4b3020);
+}
+
+.accumulation{
+    top:183px;
+    height:130px;
+    background:
+        radial-gradient(circle at 30% 35%,rgba(65,42,27,.5) 0 3px,transparent 4px),
+        radial-gradient(circle at 75% 65%,rgba(45,30,20,.5) 0 2px,transparent 3px),
+        linear-gradient(135deg,#8b6545,#745038,#65472f);
+}
+
+.parent{
+    top:313px;
+    height:157px;
+    background:
+        radial-gradient(circle at 20% 30%,#9b7a58 0 7px,transparent 8px),
+        radial-gradient(circle at 65% 55%,#a88964 0 10px,transparent 11px),
+        radial-gradient(circle at 35% 80%,#8c6d4d 0 8px,transparent 9px),
+        linear-gradient(135deg,#6c5948,#8b7256,#5c4a3b);
+}
+
+/* roots */
+
+.roots{
+    position:absolute;
+    z-index:5;
+    top:73px;
+    left:50%;
+    width:180px;
+    height:125px;
+    transform:translateX(-50%);
+    pointer-events:none;
+}
+
+.roots::before,
+.roots::after{
+    content:"";
+    position:absolute;
+    width:4px;
+    background:#332115;
+    border-radius:5px;
+}
+
+.roots::before{
+    left:90px;
+    top:0;
+    height:105px;
+    transform:rotate(2deg);
+}
+
+.roots::after{
+    left:72px;
+    top:34px;
+    height:72px;
+    transform:rotate(-28deg);
+    box-shadow:35px 8px 0 #332115;
+}
+
+/* info */
+
+.layer-info{
+    min-height:470px;
+    padding:22px;
+    border-radius:17px;
+    border:1px solid #264c63;
+    background:linear-gradient(145deg,#0d2940,#071927);
+}
+
+.info-tag{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:11px;
+    color:#70e8ff;
+    background:#08283a;
+    border:1px solid #205a73;
+    margin-bottom:12px;
+}
+
+.layer-info h4{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.layer-info .depth{
+    color:#78dfff;
+    font-size:12px;
+    margin-bottom:15px;
+}
+
+.layer-info p{
+    color:#a7bdcc;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.info-points{
+    margin-top:16px;
+    display:grid;
+    gap:9px;
+}
+
+.info-point{
+    padding:11px 12px;
+    border-radius:10px;
+    background:#071827;
+    border:1px solid #1d3d53;
+    color:#b8cbd6;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.info-point strong{
+    color:#e8f7ff;
+}
+
+.profile-hint{
+    width:min(500px,100%);
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:10px;
+    background:#071827;
+    border:1px solid #1c3d53;
+    color:#89a7ba;
+    font-size:11px;
+    text-align:center;
+}
+
+/* COMPONENTS */
+
+.components{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.component-chart{
+    padding:20px;
+    border-radius:17px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0b2740,#071a2b);
+}
+
+.component-chart h4{
+    font-size:19px;
+    margin-bottom:7px;
+}
+
+.component-chart>p{
+    color:#96afc0;
+    font-size:12px;
+    line-height:1.6;
+    margin-bottom:17px;
+}
+
+.stack{
+    height:65px;
+    display:flex;
+    overflow:hidden;
+    border-radius:12px;
+    border:1px solid #23475d;
+}
+
+.stack div{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#07131c;
+    transition:.3s;
+}
+
+.stack div:hover{
+    filter:brightness(1.12);
+}
+
+.mineral{
+    width:45%;
+    background:#9a744e;
+}
+
+.air{
+    width:25%;
+    background:#6db6cf;
+}
+
+.water{
+    width:25%;
+    background:#398fe0;
+}
+
+.organic{
+    width:5%;
+    background:#54bd80;
+    color:#06150d !important;
+}
+
+.component-list{
+    margin-top:15px;
+    display:grid;
+    gap:8px;
+}
+
+.component-item{
+    display:grid;
+    grid-template-columns:12px 1fr auto;
+    align-items:center;
+    gap:9px;
+    font-size:12px;
+    color:#a9bfcc;
+}
+
+.dot{
+    width:11px;
+    height:11px;
+    border-radius:50%;
+}
+
+.component-item strong{
+    color:#e8f7ff;
+}
+
+.organic-box{
+    margin-top:15px;
+    padding:14px;
+    border-radius:12px;
+    background:#071c2a;
+    border:1px solid #235448;
+}
+
+.organic-box strong{
+    color:#62e2b1;
+}
+
+.organic-box p{
+    margin-top:5px;
+    color:#9fb8c8;
+    font-size:12px;
+    line-height:1.6;
+}
+
+/* FACTORS */
+
+.factor-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.factor{
+    min-height:210px;
+    padding:17px;
+    border-radius:16px;
+    background:linear-gradient(145deg,#0c2941,#071a2c);
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:.22s;
+}
+
+.factor:hover{
+    transform:translateY(-4px);
+    border-color:#3a829c;
+}
+
+.factor.active{
+    border-color:#49dfff;
+    box-shadow:0 0 0 1px rgba(73,223,255,.25);
+}
+
+.factor-icon{
+    width:45px;
+    height:45px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:#09253a;
+    font-size:24px;
+    margin-bottom:12px;
+}
+
+.factor h4{
+    margin-bottom:7px;
+}
+
+.factor p{
+    color:#9db5c5;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.factor-detail{
+    margin-top:14px;
+    padding:16px;
+    border-radius:14px;
+    background:#071827;
+    border:1px solid #21455b;
+    color:#a9bfcc;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.factor-detail strong{
+    color:#69e3ff;
+}
+
+/* SOIL TYPES */
+
+.soil-types{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.type-card{
+    padding:20px;
+    border-radius:17px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0c2941,#071a2b);
+}
+
+.type-visual{
+    height:70px;
+    border-radius:12px;
+    margin-bottom:14px;
+    position:relative;
+    overflow:hidden;
+}
+
+.black-soil{
+    background:linear-gradient(#10100d,#211d17,#342d22);
+}
+
+.black-soil::after{
+    content:"";
+    position:absolute;
+    inset:12px;
+    background:radial-gradient(circle,#090806 0 5px,transparent 6px);
+    background-size:35px 20px;
+}
+
+.podz{
+    background:linear-gradient(#d6d0c5 0 30%,#a89070 30% 55%,#604b38 55% 100%);
+}
+
+.podz::after{
+    content:"";
+    position:absolute;
+    left:15%;
+    right:15%;
+    top:32px;
+    height:2px;
+    background:#3c3027;
+}
+
+.red-soil{
+    background:linear-gradient(135deg,#6f281c,#a53e22,#693021);
+}
+
+.red-soil::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 20% 50%,rgba(255,190,90,.2) 0 3px,transparent 4px);
+    background-size:25px 18px;
+}
+
+.type-card h4{
+    font-size:17px;
+    margin-bottom:7px;
+}
+
+.type-card p{
+    color:#9db6c6;
+    font-size:12px;
+    line-height:1.65;
+}
+
+.type-card .location{
+    margin-top:11px;
+    padding:9px 10px;
+    border-radius:9px;
+    background:#071827;
+    color:#8fdfff;
+    border:1px solid #1b4056;
+    font-size:11px;
+}
+
+/* PROTECTION */
+
+.protect{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.protect-card{
+    padding:20px;
+    border-radius:17px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#0c2941,#071a2b);
+}
+
+.protect-card h4{
+    margin-bottom:10px;
+}
+
+.protect-card p{
+    color:#a3bac8;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.actions{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.action{
+    padding:12px 9px;
+    text-align:center;
+    border-radius:10px;
+    background:#071827;
+    border:1px solid #1d4055;
+    color:#a8c1cf;
+    font-size:11px;
+}
+
+/* MEMORY */
+
+.memory{
+    margin-top:20px;
+    padding:20px;
+    border-radius:17px;
+    border:1px solid #224963;
+    background:linear-gradient(145deg,#0b263e,#071a2c);
+}
+
+.memory h3{
+    margin-bottom:13px;
+    color:#70eaff;
+}
+
+.memory-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.memory-item{
+    padding:13px;
+    border-radius:11px;
+    background:#071827;
+    border:1px solid #1b3a53;
+}
+
+.memory-item strong{
+    display:block;
+    margin-bottom:5px;
+    color:#dff8ff;
+    font-size:13px;
+}
+
+.memory-item span{
+    color:#8faabd;
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* QUIZ */
+
+.quiz{
+    margin-top:20px;
+    border-radius:19px;
+    overflow:hidden;
+    border:1px solid #28506a;
+    background:linear-gradient(145deg,#0b253d,#061827);
+    box-shadow:0 18px 45px rgba(0,0,0,.22);
+}
+
+.quiz-head{
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    border-bottom:1px solid #1e4058;
+}
+
+.quiz-head h3{
+    font-size:20px;
+}
+
+.quiz-head p{
+    color:#92adbf;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.timer{
+    min-width:65px;
+    padding:10px 12px;
+    text-align:center;
+    border-radius:10px;
+    color:#72eaff;
+    background:#08283b;
+    border:1px solid #205873;
+    font-weight:bold;
+}
+
+.quiz-body{
+    padding:20px;
+}
+
+.quiz-start{
+    text-align:center;
+    padding:22px 5px;
+}
+
+.big-icon{
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+.quiz-start p{
+    color:#9fb7c8;
+    max-width:650px;
+    margin:0 auto 17px;
+    line-height:1.7;
+    font-size:13px;
+}
+
+.start-btn{
+    padding:12px 24px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#0b8bb5,#155fd0);
+    border:1px solid #39d9ff;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.quiz-question{
+    display:none;
+}
+
+.progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:13px;
+    color:#9db6c8;
+    font-size:12px;
+}
+
+.progress-bar{
+    height:7px;
+    flex:1;
+    background:#061523;
+    border-radius:99px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#28cfff,#2474ff);
+    transition:.25s;
+}
+
+.question-text{
+    font-size:19px;
+    line-height:1.5;
+    margin-bottom:15px;
+}
+
+.answers{
+    display:grid;
+    gap:9px;
+}
+
+.answer{
+    width:100%;
+    text-align:left;
+    padding:13px 14px;
+    border-radius:11px;
+    border:1px solid #24465e;
+    background:#091d2e;
+    color:#cfe3ed;
+    cursor:pointer;
+    transition:.18s;
+    font-size:13px;
+}
+
+.answer:hover:not(:disabled){
+    background:#0d2c44;
+    border-color:#3aa8cf;
+}
+
+.answer.correct{
+    background:#0b3b36;
+    border-color:#43dcb5;
+    color:#b8ffea;
+}
+
+.answer.wrong{
+    background:#3d2028;
+    border-color:#ed6876;
+    color:#ffd0d5;
+}
+
+.answer:disabled{
+    cursor:default;
+}
+
+.feedback{
+    min-height:42px;
+    margin-top:13px;
+    padding:10px 12px;
+    border-radius:10px;
+    background:#071827;
+    border:1px solid #1b394f;
+    color:#9eb7c9;
+    font-size:12px;
+    line-height:1.55;
+}
+
+.next-btn{
+    margin-top:13px;
+    padding:10px 16px;
+    border-radius:9px;
+    border:1px solid #2a607c;
+    background:#10334c;
+    color:#e6f8ff;
+    cursor:pointer;
+    display:none;
+}
+
+.result{
+    display:none;
+    text-align:center;
+    padding:15px 5px 5px;
+}
+
+.result-icon{
+    font-size:55px;
+    margin-bottom:7px;
+}
+
+.result h3{
+    font-size:24px;
+    margin-bottom:5px;
+}
+
+.score{
+    font-size:42px;
+    font-weight:bold;
+    color:#60e4ff;
+    margin:7px 0;
+}
+
+.result p{
+    color:#9db6c8;
+    font-size:13px;
+    margin-bottom:17px;
+}
+
+.result-actions{
+    display:flex;
+    justify-content:center;
+    gap:9px;
+    flex-wrap:wrap;
+}
+
+footer{
+    text-align:center;
+    margin-top:25px;
+    color:#617d91;
+    font-size:11px;
+}
+
+@media(max-width:1100px){
+    .objectives{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .factor-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .memory-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:900px){
+    .definition,
+    .soil-layout,
+    .components,
+    .protect{
+        grid-template-columns:1fr;
+    }
+
+    .soil-layout{
+        gap:10px;
+    }
+
+    .soil-profile{
+        height:440px;
+    }
+
+    .profile-wrap{
+        min-height:470px;
+    }
+
+    .humus{
+        height:112px;
+    }
+
+    .accumulation{
+        top:170px;
+        height:122px;
+    }
+
+    .parent{
+        top:292px;
+        height:148px;
+    }
+
+    .roots{
+        top:67px;
+    }
+}
+
+@media(max-width:700px){
+    main{
+        padding:15px 12px 40px;
+    }
+
+    .header-inner{
+        padding:11px 12px;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .brand p{
+        display:none;
+    }
+
+    .objectives,
+    .factor-grid,
+    .soil-types{
+        grid-template-columns:1fr;
+    }
+
+    .memory-grid{
+        grid-template-columns:1fr;
+    }
+
+    .actions{
+        grid-template-columns:1fr;
+    }
+
+    .soil-profile{
+        height:400px;
+    }
+
+    .humus{
+        height:102px;
+    }
+
+    .accumulation{
+        top:160px;
+        height:110px;
+    }
+
+    .parent{
+        top:270px;
+        height:130px;
+    }
+
+    .roots{
+        top:65px;
+        transform:translateX(-50%) scale(.8);
+    }
+
+    .layer .layer-label strong{
+        font-size:12px;
+    }
+
+    .layer .layer-label span{
+        font-size:9px;
+    }
+
+    .question-text{
+        font-size:17px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header>
+<div class="header-inner">
+
+<div class="brand">
+<div class="logo">🌱</div>
+
+<div>
+<h1>Bài 22 - Lớp đất trên Trái Đất</h1>
+<p>Địa lí 6 · Kết nối tri thức với cuộc sống</p>
+</div>
+</div>
+
+<a href="index.html" class="home-btn">🏠 Trang chủ</a>
+
+</div>
+</header>
+
+
+<main>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="tag">
+🌱 CHƯƠNG 6 · ĐẤT VÀ SINH VẬT TRÊN TRÁI ĐẤT
+</div>
+
+<h2>Lớp đất trên Trái Đất</h2>
+
+<p>
+Khám phá cấu tạo của lớp đất, tìm hiểu các thành phần của đất,
+các nhân tố hình thành đất và một số nhóm đất điển hình trên Trái Đất.
+</p>
+
+</section>
+
+
+<!-- OBJECTIVES -->
+
+<section class="section">
+
+<div class="section-title">
+<div class="section-number">🎯</div>
+
+<div>
+<h3>Mục tiêu bài học</h3>
+<p>Sau bài học, em có thể...</p>
+</div>
+</div>
+
+
+<div class="objectives">
+
+<div class="objective">
+<div class="icon">🌱</div>
+<h4>Nhận biết các tầng đất</h4>
+<p>
+Nêu được các tầng đất và nhận biết đặc điểm cơ bản của từng tầng.
+</p>
+</div>
+
+<div class="objective">
+<div class="icon">🧪</div>
+<h4>Hiểu thành phần đất</h4>
+<p>
+Nhận biết các thành phần chính của đất và vai trò của chất hữu cơ.
+</p>
+</div>
+
+<div class="objective">
+<div class="icon">🌍</div>
+<h4>Giải thích sự hình thành</h4>
+<p>
+Trình bày được các nhân tố tham gia hình thành đất.
+</p>
+</div>
+
+<div class="objective">
+<div class="icon">🛡️</div>
+<h4>Bảo vệ đất</h4>
+<p>
+Biết sử dụng hợp lí và có ý thức bảo vệ tài nguyên đất.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- DEFINITION -->
+
+<section class="section">
+
+<div class="section-title">
+<div class="section-number">1</div>
+
+<div>
+<h3>Các tầng đất</h3>
+<p>Quan sát trực tiếp mô hình phẫu diện đất bên dưới</p>
+</div>
+</div>
+
+
+<div class="definition">
+
+<div class="info-card">
+
+<h4>🌍 Đất là gì?</h4>
+
+<p>
+Đất là lớp vật chất mỏng, vụn bở, bao phủ trên bề mặt
+các lục địa và đảo, được đặc trưng bởi <strong>độ phì</strong>.
+</p>
+
+<div class="phi-box">
+
+<strong>🌱 Độ phì của đất</strong>
+
+<br>
+
+<span>
+Là khả năng của đất cung cấp nước, chất dinh dưỡng
+và các yếu tố cần thiết khác như nhiệt độ, không khí...
+cho cây sinh trưởng và phát triển.
+</span>
+
+</div>
+
+</div>
+
+
+<div class="info-card">
+
+<h4>🔎 Vì sao có các tầng đất?</h4>
+
+<p>
+Khi đào đất theo chiều thẳng đứng, có thể thấy các tầng đất
+khác nhau. Ở những địa điểm khác nhau, độ dày, màu sắc
+và đặc điểm của các tầng đất cũng khác nhau.
+</p>
+
+<div class="phi-box">
+<strong>💡 Hãy khám phá!</strong>
+<br>
+<span>
+Bấm trực tiếp vào từng tầng trong mô hình để xem
+đặc điểm và vai trò của tầng đó.
+</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- INTERACTIVE SOIL PROFILE -->
+
+<section class="section">
+
+<div class="soil-section">
+
+<div class="section-title">
+<div class="section-number">🌱</div>
+
+<div>
+<h3>🔬 Mô hình trực quan các tầng đất</h3>
+<p>Bấm vào từng tầng để khám phá</p>
+</div>
+</div>
+
+
+<div class="soil-layout">
+
+<div class="profile-wrap">
+
+<div class="profile-title">
+<span>PHẪU DIỆN ĐẤT</span>
+<strong>Trên → Dưới</strong>
+</div>
+
+
+<div class="soil-profile" id="soilProfile">
+
+<div class="surface"></div>
+
+<div class="grass">
+<span>🌿</span>
+<span>🌱</span>
+<span>🌾</span>
+<span>🌱</span>
+<span>🌿</span>
+</div>
+
+<div class="roots"></div>
+
+
+<div class="layer humus selected"
+     data-layer="humus">
+
+<div class="layer-label">
+<strong>🌱 Tầng chứa mùn</strong>
+<span>Tầng trên cùng</span>
+</div>
+
+</div>
+
+
+<div class="layer accumulation"
+     data-layer="accumulation">
+
+<div class="layer-label">
+<strong>🪨 Tầng tích tụ</strong>
+<span>Tầng giữa</span>
+</div>
+
+</div>
+
+
+<div class="layer parent"
+     data-layer="parent">
+
+<div class="layer-label">
+<strong>⛰️ Tầng đá mẹ</strong>
+<span>Tầng dưới</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="profile-hint">
+👆 Hãy bấm vào <strong>tầng chứa mùn</strong>,
+<strong>tầng tích tụ</strong> hoặc <strong>tầng đá mẹ</strong>
+để xem thông tin.
+</div>
+
+</div>
+
+
+<div class="layer-info" id="layerInfo">
+
+<div class="info-tag">TẦNG ĐANG CHỌN</div>
+
+<h4 id="layerTitle">🌱 Tầng chứa mùn</h4>
+
+<div class="depth" id="layerDepth">
+Lớp trên cùng của phẫu diện đất
+</div>
+
+<p id="layerDescription">
+Đây là tầng nằm trên cùng của lớp đất,
+thường chứa nhiều chất hữu cơ và mùn.
+</p>
+
+<div class="info-points" id="layerPoints">
+
+<div class="info-point">
+<strong>🌿 Đặc điểm:</strong>
+Chứa nhiều chất hữu cơ và mùn.
+</div>
+
+<div class="info-point">
+<strong>🌱 Vai trò:</strong>
+Trực tiếp tác động đến sự sinh trưởng
+và phát triển của thực vật.
+</div>
+
+<div class="info-point">
+<strong>💡 Ghi nhớ:</strong>
+Tầng chứa mùn là tầng có vai trò đặc biệt
+quan trọng đối với cây trồng.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- COMPONENTS -->
+
+<section class="section">
+
+<div class="section-title">
+<div class="section-number">2</div>
+
+<div>
+<h3>Thành phần của đất</h3>
+<p>Đất là một hệ thống gồm nhiều thành phần khác nhau</p>
+</div>
+</div>
+
+
+<div class="components">
+
+<div class="component-chart">
+
+<h4>🧪 Tỉ lệ trung bình các thành phần trong đất</h4>
+
+<p>
+Tỉ lệ các thành phần trong đất thay đổi tùy thuộc
+vào điều kiện hình thành đất ở từng nơi.
+</p>
+
+
+<div class="stack">
+
+<div class="mineral">45%</div>
+<div class="air">25%</div>
+<div class="water">25%</div>
+<div class="organic">5%</div>
+
+</div>
+
+
+<div class="component-list">
+
+<div class="component-item">
+<span class="dot" style="background:#9a744e"></span>
+<span>Hạt khoáng</span>
+<strong>45%</strong>
+</div>
+
+<div class="component-item">
+<span class="dot" style="background:#6db6cf"></span>
+<span>Không khí</span>
+<strong>25%</strong>
+</div>
+
+<div class="component-item">
+<span class="dot" style="background:#398fe0"></span>
+<span>Nước</span>
+<strong>25%</strong>
+</div>
+
+<div class="component-item">
+<span class="dot" style="background:#54bd80"></span>
+<span>Chất hữu cơ</span>
+<strong>5%</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="component-chart">
+
+<h4>🌿 Vì sao chất hữu cơ quan trọng?</h4>
+
+<p>
+Mặc dù chất hữu cơ chỉ chiếm tỉ lệ nhỏ,
+nó có ý nghĩa quan trọng đối với cây trồng.
+</p>
+
+
+<div class="organic-box">
+
+<strong>🍂 Chất hữu cơ → mùn → dinh dưỡng cho cây</strong>
+
+<p>
+Chất hữu cơ là nguồn thức ăn và cung cấp những
+chất cần thiết cho thực vật tồn tại và phát triển.
+Chất hữu cơ cũng góp phần duy trì độ phì của đất.
+</p>
+
+</div>
+
+
+<div class="info-points">
+
+<div class="info-point">
+<strong>🪨 Hạt khoáng:</strong>
+chiếm tỉ lệ lớn nhất, khoảng 45%.
+</div>
+
+<div class="info-point">
+<strong>💧 Nước:</strong>
+chiếm khoảng 25%.
+</div>
+
+<div class="info-point">
+<strong>💨 Không khí:</strong>
+chiếm khoảng 25%.
+</div>
+
+<div class="info-point">
+<strong>🍂 Chất hữu cơ:</strong>
+chiếm khoảng 5% nhưng có ý nghĩa quan trọng đối với cây trồng.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FACTORS -->
+
+<section class="section">
+
+<div class="section-title">
+<div class="section-number">3</div>
+
+<div>
+<h3>Các nhân tố hình thành đất</h3>
+<p>Đất được hình thành do tác động đồng thời của nhiều nhân tố</p>
+</div>
+</div>
+
+
+<div class="factor-grid">
+
+<div class="factor active"
+     data-factor="parent-rock">
+
+<div class="factor-icon">🪨</div>
+<h4>Đá mẹ</h4>
+<p>
+Nguồn gốc sinh ra thành phần khoáng trong đất.
+</p>
+
+</div>
+
+
+<div class="factor"
+     data-factor="climate">
+
+<div class="factor-icon">☀️</div>
+<h4>Khí hậu</h4>
+<p>
+Tác động đến quá trình phá hủy, phân giải
+các chất khoáng và chất hữu cơ.
+</p>
+
+</div>
+
+
+<div class="factor"
+     data-factor="organisms">
+
+<div class="factor-icon">🌿</div>
+<h4>Sinh vật</h4>
+<p>
+Cung cấp và biến đổi chất hữu cơ trong đất.
+</p>
+
+</div>
+
+
+<div class="factor"
+     data-factor="relief">
+
+<div class="factor-icon">⛰️</div>
+<h4>Địa hình</h4>
+<p>
+Độ cao và độ dốc ảnh hưởng đến độ dày
+và độ phì của đất.
+</p>
+
+</div>
+
+
+<div class="factor"
+     data-factor="time">
+
+<div class="factor-icon">⏳</div>
+<h4>Thời gian</h4>
+<p>
+Thời gian hình thành càng lâu,
+tầng đất có thể càng dày.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="factor-detail" id="factorDetail">
+
+<strong>🪨 Đá mẹ:</strong>
+
+Đá mẹ là nguồn gốc sinh ra thành phần khoáng
+trong đất. Đất hình thành trên các loại đá mẹ khác nhau
+sẽ có tính chất và màu sắc khác nhau.
+
+</div>
+
+</section>
+
+
+<!-- SOIL TYPES -->
+
+<section class="section">
+
+<div class="section-title">
+<div class="section-number">4</div>
+
+<div>
+<h3>Một số nhóm đất điển hình trên Trái Đất</h3>
+<p>Phân loại dựa vào quá trình hình thành và tính chất đất</p>
+</div>
+</div>
+
+
+<div class="soil-types">
+
+
+<div class="type-card">
+
+<div class="type-visual black-soil"></div>
+
+<h4>🌑 Đất đen thảo nguyên ôn đới</h4>
+
+<p>
+Là một nhóm đất điển hình ở khu vực thảo nguyên
+ôn đới, thường giàu mùn và có màu đen đặc trưng.
+</p>
+
+<div class="location">
+📍 Phân bố chủ yếu: một số khu vực ở châu Mĩ,
+châu Á và châu Âu.
+</div>
+
+</div>
+
+
+<div class="type-card">
+
+<div class="type-visual podz"></div>
+
+<h4>🟤 Đất pốt dôn</h4>
+
+<p>
+Là nhóm đất điển hình ở các khu vực có khí hậu
+lạnh, gắn với các khu rừng lá kim ở vùng ôn đới lạnh.
+</p>
+
+<div class="location">
+📍 Phân bố chủ yếu: Bắc Mĩ và châu Âu.
+</div>
+
+</div>
+
+
+<div class="type-card">
+
+<div class="type-visual red-soil"></div>
+
+<h4>🟥 Đất đỏ vàng nhiệt đới</h4>
+
+<p>
+Là nhóm đất phổ biến ở khu vực nhiệt đới,
+thường có màu đỏ hoặc vàng do quá trình tích tụ
+các hợp chất sắt và nhôm.
+</p>
+
+<div class="location">
+📍 Phân bố chủ yếu: Nam Mĩ, châu Phi
+và Đông Nam Á.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PROTECTION -->
+
+<section class="section">
+
+<div class="section-title">
+<div class="section-number">🛡️</div>
+
+<div>
+<h3>Sử dụng hợp lí và bảo vệ đất</h3>
+<p>Đất cần được bảo vệ vì đây là tài nguyên quan trọng đối với sự sống</p>
+</div>
+</div>
+
+
+<div class="protect">
+
+<div class="protect-card">
+
+<h4>🌳 Phủ xanh đất trống, đồi núi trọc</h4>
+
+<p>
+Thảm thực vật giúp hạn chế sự bào mòn đất do dòng chảy,
+góp phần duy trì độ phì và bảo vệ các đặc tính của đất.
+</p>
+
+<div class="actions">
+
+<div class="action">🌳 Trồng cây</div>
+<div class="action">🌲 Bảo vệ rừng</div>
+<div class="action">🌱 Phủ xanh đất</div>
+
+</div>
+
+</div>
+
+
+<div class="protect-card">
+
+<h4>♻️ Sử dụng đất hợp lí</h4>
+
+<p>
+Cần sử dụng đất phù hợp với điều kiện tự nhiên,
+hạn chế các hoạt động làm suy thoái và ô nhiễm đất.
+</p>
+
+<div class="actions">
+
+<div class="action">💧 Hạn chế ô nhiễm</div>
+<div class="action">🌾 Sử dụng hợp lí</div>
+<div class="action">🛡️ Bảo vệ đất</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MEMORY -->
+
+<section class="memory">
+
+<h3>🧠 Ghi nhớ nhanh Bài 22</h3>
+
+<div class="memory-grid">
+
+<div class="memory-item">
+<strong>🌱 Các tầng đất</strong>
+<span>
+Tầng chứa mùn → tầng tích tụ → tầng đá mẹ.
+</span>
+</div>
+
+<div class="memory-item">
+<strong>🧪 Thành phần</strong>
+<span>
+Khoáng 45% · Không khí 25% · Nước 25% · Hữu cơ 5%.
+</span>
+</div>
+
+<div class="memory-item">
+<strong>🌍 Hình thành đất</strong>
+<span>
+Đá mẹ · khí hậu · sinh vật · địa hình · thời gian.
+</span>
+</div>
+
+<div class="memory-item">
+<strong>🌳 Bảo vệ đất</strong>
+<span>
+Sử dụng hợp lí, hạn chế suy thoái và bảo vệ đất.
+</span>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- QUIZ -->
+
+<section class="quiz">
+
+<div class="quiz-head">
+
+<div>
+<h3>🎮 Thử thách kiến thức</h3>
+<p>10 câu hỏi · 10 giây mỗi câu</p>
+</div>
+
+<div class="timer" id="timer">10s</div>
+
+</div>
+
+
+<div class="quiz-body">
+
+<div class="quiz-start" id="quizStart">
+
+<div class="big-icon">🌱</div>
+
+<p>
+Hãy kiểm tra xem bạn đã nắm được những kiến thức
+quan trọng của Bài 22 chưa nhé!
+</p>
+
+<button class="start-btn" id="startQuiz">
+🚀 Bắt đầu thử thách
+</button>
+
+</div>
+
+
+<div class="quiz-question" id="quizQuestion">
+
+<div class="progress-row">
+
+<span id="questionCount">Câu 1/10</span>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+
+<span id="scoreSmall">0 điểm</span>
+
+</div>
+
+
+<div class="question-text" id="questionText"></div>
+
+<div class="answers" id="answers"></div>
+
+<div class="feedback" id="feedback">
+Hãy chọn đáp án đúng.
+</div>
+
+<button class="next-btn" id="nextBtn">
+Câu tiếp theo →
+</button>
+
+</div>
+
+
+<div class="result" id="quizResult">
+
+<div class="result-icon" id="resultIcon">
+🏆
+</div>
+
+<h3>Hoàn thành thử thách!</h3>
+
+<div class="score" id="finalScore">
+0/10
+</div>
+
+<p id="resultText">...</p>
+
+<div class="result-actions">
+
+<button class="start-btn" id="retryQuiz">
+🔄 Làm lại
+</button>
+
+<button class="home-btn" id="finishLesson">
+✅ Hoàn thành bài học
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+Học liệu số Địa lí 6 · Bài 22: Lớp đất trên Trái Đất
+</footer>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   MÔ HÌNH CÁC TẦNG ĐẤT
+========================================================= */
+
+const layerData = {
+
+    humus:{
+        title:"🌱 Tầng chứa mùn",
+        depth:"Lớp trên cùng của phẫu diện đất",
+        description:
+        "Tầng chứa mùn nằm ở phía trên cùng của lớp đất, thường chứa nhiều chất hữu cơ và mùn.",
+        points:[
+            "<strong>🌿 Đặc điểm:</strong> chứa nhiều chất hữu cơ và mùn.",
+            "<strong>🌱 Vai trò:</strong> trực tiếp tác động đến sự sinh trưởng và phát triển của thực vật.",
+            "<strong>💡 Ghi nhớ:</strong> đây là tầng đặc biệt quan trọng đối với cây trồng."
+        ]
+    },
+
+    accumulation:{
+        title:"🪨 Tầng tích tụ",
+        depth:"Tầng nằm giữa phẫu diện đất",
+        description:
+        "Tầng tích tụ nằm dưới tầng chứa mùn. Đây là nơi có sự tích tụ của một số vật chất được vận chuyển từ phía trên xuống.",
+        points:[
+            "<strong>📍 Vị trí:</strong> nằm giữa tầng chứa mùn và tầng đá mẹ.",
+            "<strong>🪨 Đặc điểm:</strong> phản ánh quá trình vận chuyển và tích tụ vật chất trong đất.",
+            "<strong>💡 Ghi nhớ:</strong> đặc điểm của tầng này thay đổi tùy điều kiện hình thành đất."
+        ]
+    },
+
+    parent:{
+        title:"⛰️ Tầng đá mẹ",
+        depth:"Tầng nằm phía dưới của phẫu diện đất",
+        description:
+        "Tầng đá mẹ nằm phía dưới, là nguồn gốc cung cấp vật chất khoáng cho quá trình hình thành đất.",
+        points:[
+            "<strong>🪨 Nguồn gốc:</strong> hình thành từ vật chất của đá mẹ bị phá hủy.",
+            "<strong>🧪 Vai trò:</strong> cung cấp thành phần khoáng cho đất.",
+            "<strong>🎨 Đặc điểm:</strong> loại đá mẹ khác nhau có thể làm đất có tính chất và màu sắc khác nhau."
+        ]
+    }
+
+};
+
+const layerInfo = document.getElementById("layerInfo");
+const layerTitle = document.getElementById("layerTitle");
+const layerDepth = document.getElementById("layerDepth");
+const layerDescription = document.getElementById("layerDescription");
+const layerPoints = document.getElementById("layerPoints");
+
+document.querySelectorAll(".layer").forEach(layer=>{
+
+    layer.addEventListener("click",()=>{
+
+        const key = layer.dataset.layer;
+        const data = layerData[key];
+
+        document.querySelectorAll(".layer")
+            .forEach(item=>item.classList.remove("selected"));
+
+        layer.classList.add("selected");
+
+        layerTitle.textContent = data.title;
+        layerDepth.textContent = data.depth;
+        layerDescription.textContent = data.description;
+
+        layerPoints.innerHTML =
+            data.points.map(point =>
+                `<div class="info-point">${point}</div>`
+            ).join("");
+
+    });
+
+});
+
+
+/* =========================================================
+   NHÂN TỐ HÌNH THÀNH ĐẤT
+========================================================= */
+
+const factorData = {
+
+    "parent-rock":{
+        title:"🪨 Đá mẹ",
+        text:
+        "Đá mẹ là nguồn gốc sinh ra thành phần khoáng trong đất. Đất hình thành trên các loại đá mẹ khác nhau sẽ có tính chất và màu sắc khác nhau."
+    },
+
+    climate:{
+        title:"☀️ Khí hậu",
+        text:
+        "Khí hậu tạo thuận lợi hoặc khó khăn cho quá trình phân giải chất khoáng và chất hữu cơ trong đất. Nhiệt độ và lượng mưa có ảnh hưởng rõ rệt đến quá trình hình thành đất."
+    },
+
+    organisms:{
+        title:"🌿 Sinh vật",
+        text:
+        "Sinh vật là nguồn gốc sinh ra thành phần hữu cơ trong đất. Vi sinh vật phân hủy xác động, thực vật để hình thành mùn; động vật sống trong đất góp phần làm đất tơi xốp."
+    },
+
+    relief:{
+        title:"⛰️ Địa hình",
+        text:
+        "Độ cao và độ dốc của địa hình ảnh hưởng đến độ dày và độ phì của tầng đất. Địa hình dốc thường dễ xảy ra rửa trôi và xói mòn."
+    },
+
+    time:{
+        title:"⏳ Thời gian",
+        text:
+        "Đất cần thời gian để các nhân tố tác động và hình thành. Trong cùng điều kiện, nơi có thời gian hình thành đất lâu hơn thường có tầng đất dày hơn."
+    }
+
+};
+
+const factorDetail = document.getElementById("factorDetail");
+
+document.querySelectorAll(".factor").forEach(card=>{
+
+    card.addEventListener("click",()=>{
+
+        document.querySelectorAll(".factor")
+            .forEach(item=>item.classList.remove("active"));
+
+        card.classList.add("active");
+
+        const data = factorData[card.dataset.factor];
+
+        factorDetail.innerHTML =
+            `<strong>${data.title}:</strong> ${data.text}`;
+
+    });
+
+});
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const questions = [
+
+{
+    q:"Đất là lớp vật chất như thế nào trên bề mặt Trái Đất?",
+    options:[
+        "Lớp đá cứng nằm sâu dưới lòng đất",
+        "Lớp vật chất mỏng, vụn bở, bao phủ bề mặt các lục địa và đảo",
+        "Lớp nước bao phủ các đại dương",
+        "Lớp khí bao quanh Trái Đất"
+    ],
+    answer:1,
+    explain:
+    "Đất là lớp vật chất mỏng, vụn bở, bao phủ trên bề mặt các lục địa và đảo, được đặc trưng bởi độ phì."
+},
+
+{
+    q:"Lớp đất gồm những tầng chính nào?",
+    options:[
+        "Tầng nước, tầng khí và tầng đá",
+        "Tầng chứa mùn, tầng tích tụ và tầng đá mẹ",
+        "Tầng cát, tầng sét và tầng đá",
+        "Tầng phù sa, tầng nước và tầng đá"
+    ],
+    answer:1,
+    explain:
+    "Ba tầng chính là tầng chứa mùn, tầng tích tụ và tầng đá mẹ."
+},
+
+{
+    q:"Tầng nào trực tiếp tác động đến sự sinh trưởng và phát triển của thực vật?",
+    options:[
+        "Tầng đá mẹ",
+        "Tầng tích tụ",
+        "Tầng chứa mùn",
+        "Tầng đá gốc"
+    ],
+    answer:2,
+    explain:
+    "Tầng chứa mùn trực tiếp tác động đến sự sinh trưởng và phát triển của thực vật."
+},
+
+{
+    q:"Trong đất, hạt khoáng chiếm khoảng bao nhiêu phần trăm?",
+    options:[
+        "5%",
+        "25%",
+        "35%",
+        "45%"
+    ],
+    answer:3,
+    explain:
+    "Theo hình 2 của bài học, hạt khoáng chiếm khoảng 45% thành phần đất."
+},
+
+{
+    q:"Chất hữu cơ chiếm khoảng bao nhiêu phần trăm trong thành phần trung bình của đất?",
+    options:[
+        "5%",
+        "15%",
+        "25%",
+        "45%"
+    ],
+    answer:0,
+    explain:
+    "Chất hữu cơ chiếm khoảng 5%, nhưng có ý nghĩa quan trọng đối với cây trồng."
+},
+
+{
+    q:"Đất được hình thành do tác động đồng thời của bao nhiêu nhân tố chính?",
+    options:[
+        "3 nhân tố",
+        "4 nhân tố",
+        "5 nhân tố",
+        "6 nhân tố"
+    ],
+    answer:2,
+    explain:
+    "Năm nhân tố chính gồm đá mẹ, khí hậu, sinh vật, địa hình và thời gian."
+},
+
+{
+    q:"Nhân tố nào là nguồn gốc sinh ra thành phần khoáng trong đất?",
+    options:[
+        "Sinh vật",
+        "Địa hình",
+        "Đá mẹ",
+        "Thời gian"
+    ],
+    answer:2,
+    explain:
+    "Đá mẹ là nguồn gốc sinh ra thành phần khoáng trong đất."
+},
+
+{
+    q:"Sinh vật có vai trò gì trong quá trình hình thành đất?",
+    options:[
+        "Cung cấp thành phần hữu cơ",
+        "Làm tăng độ cao địa hình",
+        "Tạo ra đá mẹ",
+        "Làm thay đổi vị trí các lục địa"
+    ],
+    answer:0,
+    explain:
+    "Sinh vật là nguồn gốc sinh ra thành phần hữu cơ trong đất; vi sinh vật phân hủy xác sinh vật để hình thành mùn."
+},
+
+{
+    q:"Nhóm đất nào là một trong những nhóm đất điển hình ở vùng nhiệt đới?",
+    options:[
+        "Đất đỏ vàng nhiệt đới",
+        "Đất pốt dôn",
+        "Đất băng giá",
+        "Đất hoang mạc cực"
+    ],
+    answer:0,
+    explain:
+    "Đất đỏ vàng nhiệt đới là một trong những nhóm đất điển hình trên Trái Đất."
+},
+
+{
+    q:"Việc phủ xanh đất trống, đồi núi trọc có tác dụng quan trọng nào?",
+    options:[
+        "Làm tăng xói mòn đất",
+        "Hạn chế bào mòn đất và góp phần bảo vệ đất",
+        "Làm đất mất chất hữu cơ",
+        "Làm giảm độ phì của đất"
+    ],
+    answer:1,
+    explain:
+    "Thảm thực vật giúp hạn chế bào mòn đất do dòng chảy, góp phần duy trì độ phì và bảo vệ đất."
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let timer = 10;
+let timerInterval = null;
+let answered = false;
+
+const quizStart = document.getElementById("quizStart");
+const quizQuestion = document.getElementById("quizQuestion");
+const quizResult = document.getElementById("quizResult");
+
+const questionText = document.getElementById("questionText");
+const answers = document.getElementById("answers");
+const feedback = document.getElementById("feedback");
+
+const nextBtn = document.getElementById("nextBtn");
+const timerEl = document.getElementById("timer");
+
+const questionCount = document.getElementById("questionCount");
+const scoreSmall = document.getElementById("scoreSmall");
+const progressFill = document.getElementById("progressFill");
+
+
+function startQuiz(){
+
+    clearInterval(timerInterval);
+
+    currentQuestion = 0;
+    score = 0;
+
+    quizStart.style.display = "none";
+    quizResult.style.display = "none";
+    quizQuestion.style.display = "block";
+
+    showQuestion();
+}
+
+
+document.getElementById("startQuiz")
+.addEventListener("click",startQuiz);
+
+
+function showQuestion(){
+
+    clearInterval(timerInterval);
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    questionCount.textContent =
+        `Câu ${currentQuestion + 1}/10`;
+
+    scoreSmall.textContent =
+        `${score} điểm`;
+
+    progressFill.style.width =
+        `${(currentQuestion / questions.length) * 100}%`;
+
+    questionText.textContent = q.q;
+
+    answers.innerHTML = "";
+
+    q.options.forEach((option,index)=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "answer";
+        btn.textContent = option;
+
+        btn.addEventListener("click",()=>{
+            selectAnswer(index);
+        });
+
+        answers.appendChild(btn);
+
+    });
+
+    feedback.textContent =
+        "Hãy chọn đáp án đúng.";
+
+    nextBtn.style.display = "none";
+
+    startTimer();
+
+}
+
+
+function startTimer(){
+
+    timer = 10;
+
+    timerEl.textContent = "10s";
+
+    timerInterval = setInterval(()=>{
+
+        timer--;
+
+        timerEl.textContent = `${timer}s`;
+
+        if(timer <= 0){
+
+            clearInterval(timerInterval);
+
+            if(!answered){
+                selectAnswer(-1);
+            }
+
+        }
+
+    },1000);
+
+}
+
+
+function selectAnswer(index){
+
+    if(answered) return;
+
+    answered = true;
+
+    clearInterval(timerInterval);
+
+    const q = questions[currentQuestion];
+
+    const buttons =
+        document.querySelectorAll(".answer");
+
+    buttons.forEach((btn,i)=>{
+
+        btn.disabled = true;
+
+        if(i === q.answer){
+            btn.classList.add("correct");
+        }
+
+        if(i === index && i !== q.answer){
+            btn.classList.add("wrong");
+        }
+
+    });
+
+
+    if(index === q.answer){
+
+        score++;
+
+        feedback.innerHTML =
+            `✅ <strong>Chính xác!</strong> ${q.explain}`;
+
+    }
+
+    else if(index === -1){
+
+        feedback.innerHTML =
+            `⏰ <strong>Hết thời gian!</strong>
+            Đáp án đúng là
+            <strong>${q.options[q.answer]}</strong>.
+            ${q.explain}`;
+
+    }
+
+    else{
+
+        feedback.innerHTML =
+            `❌ <strong>Chưa chính xác.</strong>
+            Đáp án đúng là
+            <strong>${q.options[q.answer]}</strong>.
+            ${q.explain}`;
+
+    }
+
+
+    scoreSmall.textContent =
+        `${score} điểm`;
+
+    nextBtn.style.display = "inline-block";
+
+}
+
+
+nextBtn.addEventListener("click",()=>{
+
+    currentQuestion++;
+
+    if(currentQuestion >= questions.length){
+
+        showResult();
+
+    }else{
+
+        showQuestion();
+
+    }
+
+});
+
+
+function showResult(){
+
+    clearInterval(timerInterval);
+
+    quizQuestion.style.display = "none";
+    quizResult.style.display = "block";
+
+    document.getElementById("finalScore").textContent =
+        `${score}/10`;
+
+    const resultText =
+        document.getElementById("resultText");
+
+    const resultIcon =
+        document.getElementById("resultIcon");
+
+
+    if(score >= 9){
+
+        resultIcon.textContent = "🏆";
+
+        resultText.textContent =
+            "Xuất sắc! Bạn đã nắm rất chắc kiến thức về lớp đất trên Trái Đất.";
+
+    }
+
+    else if(score >= 7){
+
+        resultIcon.textContent = "🌟";
+
+        resultText.textContent =
+            "Rất tốt! Bạn đã hiểu phần lớn kiến thức trọng tâm của bài.";
+
+    }
+
+    else if(score >= 5){
+
+        resultIcon.textContent = "👍";
+
+        resultText.textContent =
+            "Khá tốt! Hãy xem lại phần các tầng đất và nhân tố hình thành đất.";
+
+    }
+
+    else{
+
+        resultIcon.textContent = "📚";
+
+        resultText.textContent =
+            "Bạn nên xem lại nội dung bài học rồi thử lại một lần nữa nhé.";
+
+    }
+
+}
+
+
+document.getElementById("retryQuiz")
+.addEventListener("click",startQuiz);
+
+
+/* =========================================================
+   LƯU TIẾN ĐỘ
+========================================================= */
+
+const PROGRESS_KEY = "hoclieu6_progress_v1";
+
+document.getElementById("finishLesson")
+.addEventListener("click",function(){
+
+    const p =
+        JSON.parse(
+            localStorage.getItem(PROGRESS_KEY) || "{}"
+        );
+
+    p.g22 = true;
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(p)
+    );
+
+    this.textContent = "✅ Đã hoàn thành";
+    this.disabled = true;
+    this.style.opacity = ".7";
+
+});
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g22");</script>
+</body>
+</html>

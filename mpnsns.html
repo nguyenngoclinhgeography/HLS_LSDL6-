@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Học Liệu Số 3D - Quá Trình Nội Sinh & Ngoại Sinh</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Three.js & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #070b14;
+            color: #f1f5f9;
+            overflow: hidden;
+        }
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-panel-dark {
+            background: rgba(8, 14, 26, 0.88);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        /* Custom range sliders */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #1e293b;
+            height: 6px;
+            border-radius: 4px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            transition: transform 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        /* Glowing effects */
+        .glow-blue { box-shadow: 0 0 20px rgba(14, 165, 233, 0.3); }
+        .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.35); }
+        .glow-amber { box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+
+        /* Hotspot Pins 2D Overlay */
+        .hotspot-pin {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 25;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .hotspot-pin:hover {
+            transform: translate(-50%, -50%) scale(1.25);
+        }
+        .pulse-ring {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            animation: pulse-ring-anim 2s infinite ease-out;
+            top: -6px;
+            left: -6px;
+            pointer-events: none;
+        }
+        @keyframes pulse-ring-anim {
+            0% { transform: scale(0.5); opacity: 0.9; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col relative select-none">
+
+    <!-- TOP HEADER BAR -->
+    <header class="h-16 border-b border-slate-800/80 px-6 flex items-center justify-between glass-panel z-30 shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 font-bold text-lg">
+                3D
+            </div>
+            <div>
+                <h1 class="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-cyan-400">
+                    HỌC LIỆU SỐ: QUÁ TRÌNH NỘI SINH VÀ NGOẠI SINH
+                </h1>
+                <p class="text-[11px] text-slate-400 font-medium">Chương trình Địa lý GDPT 2018 - Mô phỏng Động lực học Trái Đất</p>
+            </div>
+        </div>
+
+        <!-- Mode Indicator Badge & Controls -->
+        <div class="flex items-center gap-3">
+            <div id="mode-badge" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                <span id="mode-badge-text">Chế độ: 01 - NỘI SINH</span>
+            </div>
+            <button id="btn-toggle-xray" onclick="toggleXRayMode()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-bone text-cyan-400"></i> Cắt Lớp X-Ray
+            </button>
+            <button id="btn-reset-cam" onclick="resetCameraView()" class="p-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all" title="Đặt lại góc nhìn">
+                <i class="fa-solid fa-arrows-to-eye"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 relative flex overflow-hidden">
+
+        <!-- LEFT CONTROL SIDEBAR -->
+        <aside class="w-80 border-r border-slate-800/80 glass-panel-dark flex flex-col z-20 shadow-2xl shrink-0 transition-all duration-300">
+            <div class="p-4 border-b border-slate-800/80">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">BỘ THAO TÁC MÔ HÌNH</span>
+                <h2 class="text-sm font-bold text-white mt-0.5">Chọn chế độ quan sát</h2>
+            </div>
+
+            <div class="p-4 flex flex-col gap-5 overflow-y-auto flex-1">
+                <!-- Primary View Mode Tabs -->
+                <div class="grid grid-cols-3 gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+                    <button id="tab-endo" onclick="switchMainMode('endo')" class="py-2 text-xs font-semibold rounded-lg text-white bg-blue-600 shadow-md transition-all text-center">
+                        Nội Sinh
+                    </button>
+                    <button id="tab-exo" onclick="switchMainMode('exo')" class="py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition-all text-center">
+                        Ngoại Sinh
+                    </button>
+                    <button id="tab-combo" onclick="switchMainMode('combo')" class="py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition-all text-center">
+                        Tổng Quan
+                    </button>
+                </div>
+
+                <!-- ENDOGENIC CONTROLS PANEL -->
+                <div id="panel-controls-endo" class="space-y-4">
+                    <div class="text-xs font-bold text-red-400 flex items-center gap-1.5 uppercase tracking-wide">
+                        <i class="fa-solid fa-fire-flame-curved"></i> Động lực Năng lượng Lòng Đất
+                    </div>
+
+                    <!-- Tectonic Compression Slider -->
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-semibold text-slate-200">Lực nén ép kiến tạo</label>
+                            <span id="val-tectonic" class="text-xs font-bold text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded border border-orange-500/20">30%</span>
+                        </div>
+                        <input type="range" id="slider-tectonic" min="0" max="100" value="30" class="w-full">
+                        <p class="text-[10px] text-slate-400 mt-1.5">Gây uốn nếp dồn nén các tầng đá vỏ Trái Đất tạo núi cao.</p>
+                    </div>
+
+                    <!-- Magma Pressure Slider -->
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-semibold text-slate-200">Áp suất Magma / Phun trào</label>
+                            <span id="val-magma" class="text-xs font-bold text-red-400 bg-red-400/10 px-2 py-0.5 rounded border border-red-500/20">40%</span>
+                        </div>
+                        <input type="range" id="slider-magma" min="0" max="100" value="40" class="w-full">
+                        <p class="text-[10px] text-slate-400 mt-1.5">Mác-ma nóng chảy trào dâng qua ống phun tạo núi lửa.</p>
+                    </div>
+                </div>
+
+                <!-- EXOGENIC CONTROLS PANEL -->
+                <div id="panel-controls-exo" class="space-y-4 hidden">
+                    <div class="text-xs font-bold text-cyan-400 flex items-center gap-1.5 uppercase tracking-wide">
+                        <i class="fa-solid fa-cloud-showers-heavy"></i> Bức xạ & Khí hậu Ngoại sinh
+                    </div>
+
+                    <!-- Rainfall & Weathering Slider -->
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-semibold text-slate-200">Lượng mưa & Xói mòn</label>
+                            <span id="val-rain" class="text-xs font-bold text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded border border-cyan-500/20">50%</span>
+                        </div>
+                        <input type="range" id="slider-rain" min="0" max="100" value="50" class="w-full">
+                        <p class="text-[10px] text-slate-400 mt-1.5">Nước mưa bóc mòn đỉnh núi, rửa trôi đá phong hóa down slope.</p>
+                    </div>
+
+                    <!-- Sediment & Delta Deposition Slider -->
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-semibold text-slate-200">Bồi tụ dòng sông & Phù sa</label>
+                            <span id="val-sediment" class="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-500/20">40%</span>
+                        </div>
+                        <input type="range" id="slider-sediment" min="0" max="100" value="40" class="w-full">
+                        <p class="text-[10px] text-slate-400 mt-1.5">Vận chuyển vật chất hạ lưu lắng đọng mở rộng đồng bằng.</p>
+                    </div>
+                </div>
+
+                <!-- GLOBAL SETTINGS -->
+                <div class="pt-2 border-t border-slate-800/80 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-300 font-medium">Hiển thị Ghim chú thích (Pins)</span>
+                        <input type="checkbox" id="chk-hotspots" checked onchange="toggleHotspotsVisibility()" class="w-4 h-4 rounded accent-blue-500 cursor-pointer">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-300 font-medium">Tự động xoay camera</span>
+                        <input type="checkbox" id="chk-autorotate" onchange="toggleAutoRotate()" class="w-4 h-4 rounded accent-blue-500 cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Pedagogical Tip Box -->
+                <div class="mt-auto p-3 rounded-xl bg-blue-950/40 border border-blue-800/30 text-[11px] text-blue-300/90 leading-relaxed">
+                    <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i>
+                    <strong>Ghi nhớ kiến thức:</strong> Nội sinh làm cho địa hình gồ gề, nâng cao; Ngoại sinh có xu hướng bóc mòn, san bằng địa hình.
+                </div>
+            </div>
+        </aside>
+
+        <!-- 3D INTERACTIVE CANVAS VIEWPORT -->
+        <main class="flex-1 relative bg-slate-950 cursor-grab active:cursor-grabbing overflow-hidden">
+            <div id="canvas-container" class="w-full h-full"></div>
+
+            <!-- HTML HOTSPOTS OVERLAY -->
+            <div id="hotspots-container" class="absolute inset-0 pointer-events-none z-10">
+                <!-- Dynamic 3D pins projected here -->
+            </div>
+
+            <!-- Viewport Overlay Instructions -->
+            <div class="absolute bottom-4 left-4 pointer-events-none bg-slate-900/80 backdrop-blur border border-slate-800 px-3 py-2 rounded-lg text-[11px] text-slate-400 flex items-center gap-3">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-computer-mouse text-cyan-400"></i> Xoay: Chuột trái</span>
+                <span class="flex items-center gap-1"><i class="fa-solid fa-magnifying-glass-plus text-cyan-400"></i> Thu phóng: Cuộn chuột</span>
+                <span class="flex items-center gap-1"><i class="fa-solid fa-hand text-cyan-400"></i> Di chuyển: Chuột phải</span>
+            </div>
+        </main>
+
+        <!-- RIGHT ANALYSIS PANEL (EXPANDABLE DETAILS) -->
+        <aside id="right-panel" class="w-96 border-l border-slate-800/80 glass-panel-dark flex flex-col z-20 shadow-2xl shrink-0 translate-x-0 transition-transform duration-300">
+            <div class="p-4 border-b border-slate-800/80 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i id="info-icon" class="fa-solid fa-circle-info text-cyan-400"></i>
+                    <h3 id="info-title" class="text-sm font-bold text-white">Phân Tích Chi Tiết Hotspot</h3>
+                </div>
+                <button onclick="closeInfoPanel()" class="text-slate-400 hover:text-white text-xs p-1">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-5 text-slate-300 text-xs flex-1">
+                <!-- Dynamic Content Populated via JavaScript -->
+                <div id="info-badge" class="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                    NỘI SINH - KIẾN TẠO
+                </div>
+
+                <div>
+                    <h4 class="text-slate-400 text-[11px] font-semibold uppercase mb-1">Khái niệm & Bản chất</h4>
+                    <p id="info-concept" class="text-slate-200 leading-relaxed text-sm font-medium">
+                        Chọn một ghim chú thích trên mô hình 3D để xem phân tích cơ chế địa lý chi tiết.
+                    </p>
+                </div>
+
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                    <h4 class="text-amber-400 text-[11px] font-semibold uppercase mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-gear"></i> Cơ chế tác động Khoa học
+                    </h4>
+                    <p id="info-mechanism" class="text-slate-300 leading-relaxed">
+                        Nguồn năng lượng sinh ra từ lòng Trái Đất hoặc năng lượng bức xạ Mặt Trời tác động lên vỏ địa chất.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-cyan-400 text-[11px] font-semibold uppercase mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-mountain text-xs"></i> Kết quả dạng địa hình
+                    </h4>
+                    <p id="info-terrain" class="text-slate-200 leading-relaxed font-semibold">
+                        --
+                    </p>
+                </div>
+
+                <div class="bg-emerald-950/30 p-3.5 rounded-xl border border-emerald-800/30">
+                    <h4 class="text-emerald-400 text-[11px] font-semibold uppercase mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-map-location-dot"></i> Ví dụ thực tế tại Việt Nam
+                    </h4>
+                    <p id="info-example" class="text-emerald-200 leading-relaxed font-medium">
+                        --
+                    </p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        /* =========================================================================
+           1. SIMULATION STATE & PEDAGOGICAL DATA
+           ========================================================================= */
+        const SIM = {
+            mode: 'endo', // 'endo', 'exo', 'combo'
+            tectonicForce: 30,
+            magmaPressure: 40,
+            rainfall: 50,
+            sedimentation: 40,
+            xray: false,
+            autoRotate: false,
+            showHotspots: true,
+            activeHotspotId: 'hs1'
+        };
+
+        const HOTSPOTS_DATA = [
+            {
+                id: 'hs1',
+                title: 'Túi Magma & Núi Lửa',
+                category: 'endo',
+                badge: 'NỘI SINH - PHUN TRÀO MAGMA',
+                badgeColor: 'bg-red-500/10 text-red-400 border-red-500/30',
+                pos: new THREE.Vector3(-4.5, 2.2, -1.5),
+                concept: 'Do nhiệt độ và áp suất cực cao trong lòng Trái Đất, đá bị nóng chảy tạo thành mác-ma. Khi áp suất vượt ngưỡng, mác-ma theo các khe đứt gãy trào dâng lên bề mặt.',
+                mechanism: 'Phân rã chất phóng xạ và năng lượng tích tụ trong lớp Manti trên làm nung chảy đất đá, tạo lực đẩy áp suất cực đại thoát qua ống phun núi lửa.',
+                terrain: 'Núi lửa hiền hòa/dữ dội, cao nguyên đá bazan sương mù, nón tàn tro núi lửa.',
+                example: 'Núi lửa Hàm Rồng (Gia Lai), Cao nguyên Bazan Tây Nguyên, Núi lửa Chư Đăng Ya.'
+            },
+            {
+                id: 'hs2',
+                title: 'Uốn Nếp & Đứt Gãy Kiến Tạo',
+                category: 'endo',
+                badge: 'NỘI SINH - TẬP TRUNG NÉN ÉP',
+                badgeColor: 'bg-orange-500/10 text-orange-400 border-orange-500/30',
+                pos: new THREE.Vector3(-1.0, 3.8, 1.2),
+                concept: 'Lực nén ép nằm ngang do sự dịch chuyển của các mảng kiến tạo xô vào nhau khiến các tầng đá dẻo bị uốn cong thành các dãy núi nếp uốn.',
+                mechanism: 'Vận động nén ép diễn ra chậm chạp trong hàng triệu năm. Nếu cường độ quá mạnh vượt giới hạn dẻo sẽ sinh ra hiện tượng đứt gãy, địa sụt, địa lũy.',
+                terrain: 'Dãy núi cao uốn nếp trùng điệp, thung lũng kiến tạo sụt lún, địa hố.',
+                example: 'Dãy núi Hoàng Liên Sơn (được nâng cao do va chạm mảng Ấn Độ - Âu Á), Thung lũng Sông Hồng.'
+            },
+            {
+                id: 'hs3',
+                title: 'Phong Hóa Bức Xạ & Khí Hậu',
+                category: 'exo',
+                badge: 'NGOẠI SINH - PHONG HÓA',
+                badgeColor: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
+                pos: new THREE.Vector3(1.5, 3.2, -2.0),
+                concept: 'Quá trình phá hủy và làm biến đổi đá, khoáng vật do tác động của sự thay đổi nhiệt độ, nước, không khí và sinh vật trên bề mặt Trái Đất.',
+                mechanism: 'Nhiệt độ ngày đêm chênh lệch lớn làm đá co giãn đột ngột gây nứt nẻ (Phong hóa lý học); Nước mưa axit hòa tan vôi (Phong hóa hóa học).',
+                terrain: 'Sườn đá đổ, nón talus, địa hình Karst hang động vôi phong hóa.',
+                example: 'Cao nguyên đá Đồng Văn (Hà Giang), Hang Sơn Động, Vịnh Hạ Long.'
+            },
+            {
+                id: 'hs4',
+                title: 'Xói Mòn & Rửa Trôi Sườn Dốc',
+                category: 'exo',
+                badge: 'NGOẠI SINH - BÓC MÒN',
+                badgeColor: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+                pos: new THREE.Vector3(2.5, 1.8, 0.5),
+                concept: 'Nước mưa rơi xuống kết hợp dòng chảy bề mặt bóc tách các hạt đất đá phong hóa, cuốn trôi xuống khu vực thấp hơn.',
+                mechanism: 'Thế năng dòng nước chảy dốc tạo ra lực ma sát xé nát lớp đất bề mặt, khoét sâu các rãnh xói thành khe sâu và thung lũng sông.',
+                terrain: 'Các rãnh xói mòn, mương xói, sườn núi trọc trơ đá.',
+                example: 'Địa hình đồi trọc vùng Đồi đồi Trung du Bắc Bộ, Đất xói mòn trượt lở ở Tây Bắc.'
+            },
+            {
+                id: 'hs5',
+                title: 'Vận Chuyển & Bồi Tụ Phù Sa',
+                category: 'exo',
+                badge: 'NGOẠI SINH - BỒI TỤ CHÂU THỔ',
+                badgeColor: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+                pos: new THREE.Vector3(5.5, -0.2, 2.2),
+                concept: 'Dòng sông mang vật chất bào mòn từ thượng nguồn di chuyển xuống hạ lưu. Khi độ dốc giảm, vận tốc nước chậm lại làm phù sa lắng đọng bồi đắp.',
+                mechanism: 'Giảm động năng dòng chảy khi sông tiến ra biển, làm phù sa mịn rơi xuống đáy sông và cửa biển hình thành đồng bằng bằng phẳng.',
+                terrain: 'Đồng bằng châu thổ rộng lớn, bãi bồi ven sông, tam giác giang cửa biển.',
+                example: 'Đồng bằng Sông Cửu Long và Đồng bằng Sông Hồng.'
+            },
+            {
+                id: 'hs6',
+                title: 'Tầng Cắt Lớp Vỏ & Lớp Manti',
+                category: 'combo',
+                badge: 'TỔNG QUAN - CẤU TRÚC LÒNG ĐẤT',
+                badgeColor: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+                pos: new THREE.Vector3(-0.5, -2.5, 4.2),
+                concept: 'Cắt lớp cho thấy ranh giới rõ rệt giữa Vỏ Trái Đất lục địa (đá granit, trầm tích) và Lớp Manti đặc quánh bên dưới.',
+                mechanism: 'Sự tương tác liên tục giữa chuyển động nội sinh từ tầng manti và quá trình bào mòn ngoại sinh bề mặt tạo nên sự cân bằng đẳng tĩnh địa chất.',
+                terrain: 'Cấu trúc địa tầng phân lớp trầm tích, đá uốn nếp ngầm.',
+                example: 'Toàn bộ khối địa chất vỏ Trái Đất.'
+            }
+        ];
+
+        /* =========================================================================
+           2. THREE.JS ENGINE SETUP & SCENE CREATION
+           ========================================================================= */
+        let scene, camera, renderer, controls;
+        let earthBlockGroup, volcanoGroup, foldMountainMesh, deltaMesh, magmaChamberMesh, riverMesh;
+        let rainParticles, magmaParticles, smokeParticles, sedimentParticles;
+
+        const container = document.getElementById('canvas-container');
+
+        function init3D() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x070b14);
+            scene.fog = new THREE.FogExp2(0x070b14, 0.025);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(16, 12, 20);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 2 + 0.08; // Prevent going too far below floor
+            controls.minDistance = 6;
+            controls.maxDistance = 45;
+            controls.target.set(0, 0, 0);
+
+            // Lighting setup
+            const ambientLight = new THREE.AmbientLight(0x94a3b8, 0.6);
+            scene.add(ambientLight);
+
+            const sunLight = new THREE.DirectionalLight(0xfffbeb, 1.2);
+            sunLight.position.set(15, 25, 12);
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+            sunLight.shadow.camera.near = 0.5;
+            sunLight.shadow.camera.far = 60;
+            sunLight.shadow.camera.left = -15;
+            sunLight.shadow.camera.right = 15;
+            sunLight.shadow.camera.top = 15;
+            sunLight.shadow.camera.bottom = -15;
+            scene.add(sunLight);
+
+            // Red glowing point light inside magma chamber
+            const magmaLight = new THREE.PointLight(0xff3300, 2.5, 12);
+            magmaLight.position.set(-4.5, -2.0, -1.0);
+            scene.add(magmaLight);
+
+            // Build 3D Geometrical Models
+            build3DEarthCutawayBlock();
+            buildParticleSystems();
+            createHotspotDOMPins();
+
+            // Resize Event
+            window.addEventListener('resize', onWindowResize);
+
+            // Initial UI Update
+            updateHotspotInfo('hs1');
+        }
+
+        /* =========================================================================
+           3. PROCEDURAL 3D MODEL BUILDER (Earth Crust Cutaway)
+           ========================================================================= */
+        function build3DEarthCutawayBlock() {
+            earthBlockGroup = new THREE.Group();
+            scene.add(earthBlockGroup);
+
+            // 1. MAIN CUTAWAY BLOCK BASE (12 x 6 x 8)
+            const blockW = 14, blockH = 6, blockD = 10;
+            
+            // Side Cutaway Textures / Layered Strata Materials
+            const sideMaterial = new THREE.MeshStandardMaterial({
+                color: 0x334155,
+                roughness: 0.8
+            });
+
+            // 2. MAGMA CHAMBER & MANTLE (Red / Flame Emissive)
+            const magmaGeo = new THREE.SphereGeometry(2.2, 32, 16);
+            magmaGeo.scale(1.4, 0.8, 1.0);
+            const magmaMat = new THREE.MeshStandardMaterial({
+                color: 0xff2200,
+                emissive: 0xff3300,
+                emissiveIntensity: 0.8,
+                roughness: 0.3
+            });
+            magmaChamberMesh = new THREE.Mesh(magmaGeo, magmaMat);
+            magmaChamberMesh.position.set(-4.5, -1.8, -1.0);
+            earthBlockGroup.add(magmaChamberMesh);
+
+            // Conduit pipe to Volcano summit
+            const pipeGeo = new THREE.CylinderGeometry(0.35, 0.6, 4.5, 16);
+            const pipeMesh = new THREE.Mesh(pipeGeo, magmaMat);
+            pipeMesh.position.set(-4.5, 0.5, -1.0);
+            earthBlockGroup.add(pipeMesh);
+
+            // 3. LAYERED ROCK STRATA (Underground Side Faces Visuals)
+            // Mantle Base Box
+            const mantleGeo = new THREE.BoxGeometry(blockW, 1.8, blockD);
+            const mantleMat = new THREE.MeshStandardMaterial({ color: 0x450a0a, roughness: 0.9 });
+            const mantleBox = new THREE.Mesh(mantleGeo, mantleMat);
+            mantleBox.position.y = -2.1;
+            earthBlockGroup.add(mantleBox);
+
+            // Crust Rock Layers Box
+            const crustGeo = new THREE.BoxGeometry(blockW, 3.8, blockD);
+            const crustMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.8 });
+            const crustBox = new THREE.Mesh(crustGeo, crustMat);
+            crustBox.position.y = 0.6;
+            earthBlockGroup.add(crustBox);
+
+            // 4. TOP SURFACE TERRAIN (Dynamic Fold Mountains & Volcano)
+            // Custom Heightmap Vertex Displacement
+            const gridSubdiv = 64;
+            const terrainGeo = new THREE.PlaneGeometry(blockW, blockD, gridSubdiv, gridSubdiv);
+            terrainGeo.rotateX(-Math.PI / 2);
+
+            const posAttr = terrainGeo.attributes.position;
+            for (let i = 0; i < posAttr.count; i++) {
+                let x = posAttr.getX(i);
+                let z = posAttr.getZ(i);
+
+                let y = 0;
+
+                // Left Volcano Cone (around x = -4.5, z = -1.0)
+                let distVolc = Math.hypot(x - (-4.5), z - (-1.0));
+                if (distVolc < 3.2) {
+                    y += Math.max(0, (3.2 - distVolc) * 1.1);
+                    // Crater indentation
+                    if (distVolc < 0.8) {
+                        y -= (0.8 - distVolc) * 1.4;
+                    }
+                }
+
+                // Middle Fold Mountain Ridge (around x = -1.0 to 1.5)
+                let distFold = Math.abs(x - (-0.5));
+                if (distFold < 3.0) {
+                    let ridgeNoise = Math.sin(z * 1.2) * 0.6 + Math.cos(x * 2.0) * 0.4;
+                    y += Math.max(0, (3.0 - distFold) * 0.9) + ridgeNoise;
+                }
+
+                // Right Slope descending to Alluvial Fan / Delta (x = 3.0 to 7.0)
+                if (x > 2.0) {
+                    let drop = (x - 2.0) * 0.45;
+                    y = Math.max(-0.8, y - drop);
+                }
+
+                // River Valley Trench cutting through
+                let riverPathZ = Math.sin(x * 0.6) * 1.2 + 0.5;
+                let distRiver = Math.abs(z - riverPathZ);
+                if (x > -2.0 && distRiver < 1.2) {
+                    y -= (1.2 - distRiver) * 0.5;
+                }
+
+                posAttr.setY(i, y + 2.5); // Offset height
+            }
+            terrainGeo.computeVertexNormals();
+
+            const terrainMat = new THREE.MeshStandardMaterial({
+                color: 0x166534, // Lush green surface
+                roughness: 0.8,
+                metalness: 0.1,
+                flatShading: true
+            });
+
+            foldMountainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+            foldMountainMesh.receiveShadow = true;
+            foldMountainMesh.castShadow = true;
+            earthBlockGroup.add(foldMountainMesh);
+
+            // 5. RIVER MESH (Blue Ribbon)
+            const riverGeo = new THREE.PlaneGeometry(8, 1.2, 32, 8);
+            riverGeo.rotateX(-Math.PI / 2);
+            const riverMat = new THREE.MeshStandardMaterial({
+                color: 0x0284c7,
+                roughness: 0.1,
+                metalness: 0.8,
+                transparent: true,
+                opacity: 0.85
+            });
+            riverMesh = new THREE.Mesh(riverGeo, riverMat);
+            riverMesh.position.set(2.5, 2.1, 0.5);
+            riverMesh.rotation.y = -0.15;
+            earthBlockGroup.add(riverMesh);
+
+            // 6. ALLUVIAL DELTA PLAIN (Bồi tụ châu thổ)
+            const deltaGeo = new THREE.CircleGeometry(2.5, 16, 0, Math.PI * 1.2);
+            deltaGeo.rotateX(-Math.PI / 2);
+            const deltaMat = new THREE.MeshStandardMaterial({
+                color: 0xca8a04, // Yellowish sediment earth
+                roughness: 0.9
+            });
+            deltaMesh = new THREE.Mesh(deltaGeo, deltaMat);
+            deltaMesh.position.set(5.5, 1.72, 1.5);
+            earthBlockGroup.add(deltaMesh);
+
+            // 7. ENVIRONMENT DECORATIONS (Low poly trees & clouds)
+            buildTreesAndClouds();
+        }
+
+        function buildTreesAndClouds() {
+            // Mini 3D Pine Trees on mountain slopes
+            const treeGeo = new THREE.ConeGeometry(0.3, 0.8, 5);
+            const treeMat = new THREE.MeshStandardMaterial({ color: 0x14532d, flatShading: true });
+            
+            const treePositions = [
+                [-1.5, 3.2, 2.2], [-0.8, 3.0, 2.8], [0.5, 2.8, -1.8], 
+                [2.0, 2.2, 2.0], [3.2, 1.9, -1.2], [4.0, 1.8, 0.8]
+            ];
+
+            treePositions.forEach(p => {
+                const tree = new THREE.Mesh(treeGeo, treeMat);
+                tree.position.set(p[0], p[1], p[2]);
+                tree.castShadow = true;
+                earthBlockGroup.add(tree);
+            });
+
+            // Clouds overhead for Rain
+            const cloudGroup = new THREE.Group();
+            cloudGroup.position.set(2.5, 7.5, -0.5);
+
+            const cloudMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 1.0, transparent: true, opacity: 0.8 });
+            for (let i = 0; i < 5; i++) {
+                const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.8 + Math.random()*0.4, 8, 8), cloudMat);
+                sphere.position.set((i - 2) * 0.8, Math.random() * 0.3, Math.random() * 0.5);
+                cloudGroup.add(sphere);
+            }
+            earthBlockGroup.add(cloudGroup);
+        }
+
+        /* =========================================================================
+           4. PARTICLE SYSTEMS (Rain, Magma Eruption, Smoke, Sediment)
+           ========================================================================= */
+        function buildParticleSystems() {
+            // 1. RAIN SYSTEM
+            const rainCount = 300;
+            const rainGeo = new THREE.BufferGeometry();
+            const rainPos = new Float32Array(rainCount * 3);
+
+            for (let i = 0; i < rainCount * 3; i += 3) {
+                rainPos[i] = 1.0 + (Math.random() - 0.5) * 5.0;     // X
+                rainPos[i + 1] = 2.0 + Math.random() * 5.5;          // Y
+                rainPos[i + 2] = -1.0 + (Math.random() - 0.5) * 4.0;   // Z
+            }
+            rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
+
+            const rainMat = new THREE.PointsMaterial({
+                color: 0x38bdf8,
+                size: 0.12,
+                transparent: true,
+                opacity: 0.7
+            });
+            rainParticles = new THREE.Points(rainGeo, rainMat);
+            earthBlockGroup.add(rainParticles);
+
+            // 2. MAGMA ERUPTION SPARKS
+            const magmaCount = 120;
+            const magmaGeo = new THREE.BufferGeometry();
+            const magmaPos = new Float32Array(magmaCount * 3);
+
+            for (let i = 0; i < magmaCount * 3; i += 3) {
+                magmaPos[i] = -4.5 + (Math.random() - 0.5) * 0.6;
+                magmaPos[i + 1] = 3.8 + Math.random() * 2.0;
+                magmaPos[i + 2] = -1.0 + (Math.random() - 0.5) * 0.6;
+            }
+            magmaGeo.setAttribute('position', new THREE.BufferAttribute(magmaPos, 3));
+
+            const magmaSparkMat = new THREE.PointsMaterial({
+                color: 0xff4500,
+                size: 0.22,
+                transparent: true,
+                opacity: 0.9
+            });
+            magmaParticles = new THREE.Points(magmaGeo, magmaSparkMat);
+            earthBlockGroup.add(magmaParticles);
+
+            // 3. VOLCANIC SMOKE
+            const smokeCount = 80;
+            const smokeGeo = new THREE.BufferGeometry();
+            const smokePos = new Float32Array(smokeCount * 3);
+
+            for (let i = 0; i < smokeCount * 3; i += 3) {
+                smokePos[i] = -4.5 + (Math.random() - 0.5) * 1.2;
+                smokePos[i + 1] = 4.2 + Math.random() * 3.0;
+                smokePos[i + 2] = -1.0 + (Math.random() - 0.5) * 1.2;
+            }
+            smokeGeo.setAttribute('position', new THREE.BufferAttribute(smokePos, 3));
+
+            const smokeMat = new THREE.PointsMaterial({
+                color: 0x64748b,
+                size: 0.45,
+                transparent: true,
+                opacity: 0.4
+            });
+            smokeParticles = new THREE.Points(smokeGeo, smokeMat);
+            earthBlockGroup.add(smokeParticles);
+        }
+
+        function animateParticles() {
+            // Rain animation
+            if (rainParticles) {
+                const positions = rainParticles.geometry.attributes.position.array;
+                let speed = (SIM.rainfall / 100) * 0.25;
+
+                for (let i = 1; i < positions.length; i += 3) {
+                    positions[i] -= speed;
+                    if (positions[i] < 2.0) {
+                        positions[i] = 7.5; // Reset to top cloud
+                    }
+                }
+                rainParticles.geometry.attributes.position.needsUpdate = true;
+                rainParticles.visible = (SIM.mode === 'exo' || SIM.mode === 'combo') && SIM.rainfall > 5;
+            }
+
+            // Magma animation
+            if (magmaParticles && smokeParticles) {
+                const mPos = magmaParticles.geometry.attributes.position.array;
+                let mSpeed = (SIM.magmaPressure / 100) * 0.15;
+
+                for (let i = 0; i < mPos.length; i += 3) {
+                    mPos[i + 1] += mSpeed;
+                    if (mPos[i + 1] > 6.0) {
+                        mPos[i + 1] = 3.8;
+                        mPos[i] = -4.5 + (Math.random() - 0.5) * 0.6;
+                        mPos[i + 2] = -1.0 + (Math.random() - 0.5) * 0.6;
+                    }
+                }
+                magmaParticles.geometry.attributes.position.needsUpdate = true;
+
+                const sPos = smokeParticles.geometry.attributes.position.array;
+                for (let i = 0; i < sPos.length; i += 3) {
+                    sPos[i + 1] += 0.03;
+                    sPos[i] += (Math.random() - 0.5) * 0.02;
+                    if (sPos[i + 1] > 8.0) {
+                        sPos[i + 1] = 4.2;
+                        sPos[i] = -4.5 + (Math.random() - 0.5) * 1.0;
+                    }
+                }
+                smokeParticles.geometry.attributes.position.needsUpdate = true;
+
+                const isVolcanoActive = (SIM.mode === 'endo' || SIM.mode === 'combo') && SIM.magmaPressure > 10;
+                magmaParticles.visible = isVolcanoActive;
+                smokeParticles.visible = isVolcanoActive;
+            }
+        }
+
+        /* =========================================================================
+           5. HOTSPOT HTML PINS & SCREEN PROJECTION
+           ========================================================================= */
+        const hotspotsContainer = document.getElementById('hotspots-container');
+
+        function createHotspotDOMPins() {
+            hotspotsContainer.innerHTML = '';
+
+            HOTSPOTS_DATA.forEach((hs, idx) => {
+                const pin = document.createElement('div');
+                pin.id = `pin-${hs.id}`;
+                pin.className = 'hotspot-pin flex items-center justify-center';
+                pin.onclick = () => onHotspotClick(hs.id);
+
+                // Pulse ring color based on category
+                let ringColor = hs.category === 'endo' ? 'border-2 border-red-500 bg-red-500/20' : 
+                               (hs.category === 'exo' ? 'border-2 border-cyan-400 bg-cyan-400/20' : 'border-2 border-amber-400 bg-amber-400/20');
+                
+                let btnColor = hs.category === 'endo' ? 'bg-gradient-to-tr from-red-600 to-orange-500 text-white' : 
+                               (hs.category === 'exo' ? 'bg-gradient-to-tr from-cyan-600 to-blue-500 text-white' : 'bg-gradient-to-tr from-amber-600 to-yellow-500 text-white');
+
+                pin.innerHTML = `
+                    <div class="pulse-ring ${ringColor}"></div>
+                    <div class="w-7 h-7 rounded-full ${btnColor} shadow-lg font-bold text-xs flex items-center justify-center border border-white/40">
+                        ${idx + 1}
+                    </div>
+                `;
+                hotspotsContainer.appendChild(pin);
+            });
+        }
+
+        function updateHotspotPositions() {
+            if (!SIM.showHotspots) {
+                hotspotsContainer.style.display = 'none';
+                return;
+            }
+            hotspotsContainer.style.display = 'block';
+
+            const tempV = new THREE.Vector3();
+
+            HOTSPOTS_DATA.forEach(hs => {
+                const pin = document.getElementById(`pin-${hs.id}`);
+                if (!pin) return;
+
+                // Copy 3D position
+                tempV.copy(hs.pos);
+                // Project 3D vector to 2D Screen Normalized Device Coordinates (-1 to +1)
+                tempV.project(camera);
+
+                // Check if behind camera
+                if (tempV.z > 1) {
+                    pin.style.opacity = '0';
+                    return;
+                }
+
+                // Convert NDC to CSS coordinates
+                const x = (tempV.x *  .5 + .5) * container.clientWidth;
+                const y = (tempV.y * -.5 + .5) * container.clientHeight;
+
+                pin.style.left = `${x}px`;
+                pin.style.top = `${y}px`;
+                pin.style.opacity = '1';
+            });
+        }
+
+        function onHotspotClick(id) {
+            SIM.activeHotspotId = id;
+            updateHotspotInfo(id);
+
+            // Focus camera slightly towards position
+            const hs = HOTSPOTS_DATA.find(h => h.id === id);
+            if (hs) {
+                controls.target.copy(hs.pos);
+            }
+        }
+
+        function updateHotspotInfo(id) {
+            const hs = HOTSPOTS_DATA.find(h => h.id === id) || HOTSPOTS_DATA[0];
+
+            document.getElementById('info-title').innerText = hs.title;
+            document.getElementById('info-badge').innerText = hs.badge;
+            document.getElementById('info-badge').className = `inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${hs.badgeColor}`;
+            document.getElementById('info-concept').innerText = hs.concept;
+            document.getElementById('info-mechanism').innerText = hs.mechanism;
+            document.getElementById('info-terrain').innerText = hs.terrain;
+            document.getElementById('info-example').innerText = hs.example;
+
+            // Highlight active pin
+            HOTSPOTS_DATA.forEach(h => {
+                const p = document.getElementById(`pin-${h.id}`);
+                if (p) {
+                    if (h.id === id) {
+                        p.classList.add('scale-125', 'z-30');
+                    } else {
+                        p.classList.remove('scale-125', 'z-30');
+                    }
+                }
+            });
+        }
+
+        /* =========================================================================
+           6. USER INTERACTION & SLIDER CONTROLS HANDLERS
+           ========================================================================= */
+        function switchMainMode(mode) {
+            SIM.mode = mode;
+
+            // UI Tab Classes
+            const tabE = document.getElementById('tab-endo');
+            const tabX = document.getElementById('tab-exo');
+            const tabC = document.getElementById('tab-combo');
+
+            const pEndo = document.getElementById('panel-controls-endo');
+            const pExo = document.getElementById('panel-controls-exo');
+
+            tabE.className = "py-2 text-xs font-semibold rounded-lg transition-all text-center " + (mode === 'endo' ? "text-white bg-blue-600 shadow-md" : "text-slate-400 hover:text-white");
+            tabX.className = "py-2 text-xs font-semibold rounded-lg transition-all text-center " + (mode === 'exo' ? "text-white bg-blue-600 shadow-md" : "text-slate-400 hover:text-white");
+            tabC.className = "py-2 text-xs font-semibold rounded-lg transition-all text-center " + (mode === 'combo' ? "text-white bg-blue-600 shadow-md" : "text-slate-400 hover:text-white");
+
+            if (mode === 'endo') {
+                pEndo.classList.remove('hidden');
+                pExo.classList.add('hidden');
+                document.getElementById('mode-badge-text').innerText = "Chế độ: 01 - NỘI SINH";
+                document.getElementById('mode-badge').className = "px-3 py-1.5 rounded-full text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/30 flex items-center gap-2";
+            } else if (mode === 'exo') {
+                pEndo.classList.add('hidden');
+                pExo.classList.remove('hidden');
+                document.getElementById('mode-badge-text').innerText = "Chế độ: 02 - NGOẠI SINH";
+                document.getElementById('mode-badge').className = "px-3 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-2";
+            } else {
+                pEndo.classList.remove('hidden');
+                pExo.classList.remove('hidden');
+                document.getElementById('mode-badge-text').innerText = "Chế độ: 03 - TỔNG QUAN KẾT HỢP";
+                document.getElementById('mode-badge').className = "px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/30 flex items-center gap-2";
+            }
+        }
+
+        // Slider listeners
+        document.getElementById('slider-tectonic').addEventListener('input', (e) => {
+            SIM.tectonicForce = parseInt(e.target.value);
+            document.getElementById('val-tectonic').innerText = SIM.tectonicForce + '%';
+            deformFoldMountainMesh();
+        });
+
+        document.getElementById('slider-magma').addEventListener('input', (e) => {
+            SIM.magmaPressure = parseInt(e.target.value);
+            document.getElementById('val-magma').innerText = SIM.magmaPressure + '%';
+            if (magmaChamberMesh) {
+                magmaChamberMesh.material.emissiveIntensity = 0.3 + (SIM.magmaPressure / 100) * 1.2;
+            }
+        });
+
+        document.getElementById('slider-rain').addEventListener('input', (e) => {
+            SIM.rainfall = parseInt(e.target.value);
+            document.getElementById('val-rain').innerText = SIM.rainfall + '%';
+        });
+
+        document.getElementById('slider-sediment').addEventListener('input', (e) => {
+            SIM.sedimentation = parseInt(e.target.value);
+            document.getElementById('val-sediment').innerText = SIM.sedimentation + '%';
+            if (deltaMesh) {
+                let s = 1.0 + (SIM.sedimentation / 100) * 0.8;
+                deltaMesh.scale.set(s, s, s);
+            }
+        });
+
+        function deformFoldMountainMesh() {
+            if (!foldMountainMesh) return;
+            const posAttr = foldMountainMesh.geometry.attributes.position;
+            const force = SIM.tectonicForce / 100;
+
+            for (let i = 0; i < posAttr.count; i++) {
+                let x = posAttr.getX(i);
+                let z = posAttr.getZ(i);
+
+                // Apply dynamic mountain uplift to fold region
+                let distFold = Math.abs(x - (-0.5));
+                if (distFold < 3.0) {
+                    let baseH = 2.5 + Math.max(0, (3.0 - distFold) * 0.9) + Math.sin(z * 1.2) * 0.6;
+                    let newH = baseH + (force * 1.5);
+                    posAttr.setY(i, newH);
+                }
+            }
+            foldMountainMesh.geometry.attributes.position.needsUpdate = true;
+            foldMountainMesh.geometry.computeVertexNormals();
+        }
+
+        function toggleXRayMode() {
+            SIM.xray = !SIM.xray;
+            const btn = document.getElementById('btn-toggle-xray');
+            
+            if (SIM.xray) {
+                btn.classList.add('bg-cyan-600', 'text-white');
+                foldMountainMesh.material.transparent = true;
+                foldMountainMesh.material.opacity = 0.45;
+            } else {
+                btn.classList.remove('bg-cyan-600', 'text-white');
+                foldMountainMesh.material.transparent = false;
+                foldMountainMesh.material.opacity = 1.0;
+            }
+        }
+
+        function toggleHotspotsVisibility() {
+            SIM.showHotspots = document.getElementById('chk-hotspots').checked;
+            updateHotspotPositions();
+        }
+
+        function toggleAutoRotate() {
+            SIM.autoRotate = document.getElementById('chk-autorotate').checked;
+            controls.autoRotate = SIM.autoRotate;
+            controls.autoRotateSpeed = 1.2;
+        }
+
+        function resetCameraView() {
+            camera.position.set(16, 12, 20);
+            controls.target.set(0, 0, 0);
+            controls.reset();
+        }
+
+        function closeInfoPanel() {
+            document.getElementById('right-panel').classList.add('translate-x-full');
+        }
+
+        function onWindowResize() {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        /* =========================================================================
+           7. MAIN ANIMATION LOOP
+           ========================================================================= */
+        function animate() {
+            requestAnimationFrame(animate);
+
+            controls.update();
+            animateParticles();
+            updateHotspotPositions();
+
+            // Magma chamber subtle pulse
+            if (magmaChamberMesh) {
+                let time = Date.now() * 0.003;
+                let pulse = Math.sin(time) * 0.15;
+                magmaChamberMesh.scale.set(1.4 + pulse*0.1, 0.8 + pulse*0.05, 1.0 + pulse*0.1);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Initialize on Window Load
+        window.onload = function() {
+            init3D();
+            animate();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,3412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô phỏng 3D - Nhiệt độ thay đổi theo vĩ độ</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#061321;
+    color:#eaf6ff;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    min-height:76px;
+    padding:14px 24px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #081d34,
+            #0b2945
+        );
+
+    border-bottom:
+        1px solid rgba(91,190,255,.18);
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.28);
+}
+
+.title-wrap{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.title-icon{
+    width:46px;
+    height:46px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+
+    background:#103b5b;
+
+    border:
+        1px solid rgba(101,200,255,.25);
+}
+
+.title{
+    margin:0;
+
+    font-size:20px;
+    font-weight:800;
+}
+
+.subtitle{
+    margin-top:4px;
+
+    color:#9ec2d9;
+
+    font-size:13px;
+}
+
+.back-btn{
+
+    border:
+        1px solid rgba(112,202,255,.25);
+
+    background:#0c2b45;
+
+    color:#dff4ff;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.back-btn:hover{
+
+    background:#124363;
+
+    transform:translateY(-1px);
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+
+    width:min(1450px,96%);
+
+    margin:
+        20px auto
+        35px;
+}
+
+.layout{
+
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        340px;
+
+    gap:18px;
+}
+
+
+/* =========================
+   SIMULATION CARD
+========================= */
+
+.sim-card{
+
+    position:relative;
+
+    min-height:700px;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    border:
+        1px solid rgba(82,177,230,.2);
+
+    background:
+
+        radial-gradient(
+            circle at 50% 46%,
+            rgba(17,66,100,.25),
+            transparent 42%
+        ),
+
+        linear-gradient(
+            180deg,
+            #061423,
+            #071b2e
+        );
+
+    box-shadow:
+
+        0 25px 70px rgba(0,0,0,.35),
+
+        inset 0 0 70px
+        rgba(42,145,202,.06);
+}
+
+#scene{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    cursor:grab;
+}
+
+#scene:active{
+
+    cursor:grabbing;
+}
+
+
+/* =========================
+   LABELS
+========================= */
+
+.scene-label{
+
+    position:absolute;
+
+    pointer-events:none;
+
+    z-index:5;
+
+    padding:8px 11px;
+
+    border-radius:9px;
+
+    background:
+        rgba(3,14,25,.78);
+
+    border:
+        1px solid rgba(111,199,247,.2);
+
+    backdrop-filter:blur(7px);
+
+    color:#e8f8ff;
+
+    font-size:12px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.2);
+}
+
+.sun-label{
+
+    top:22px;
+    left:22px;
+}
+
+.drag-label{
+
+    bottom:18px;
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    color:#a9d7ee;
+}
+
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.panel{
+
+    border:
+        1px solid rgba(82,177,230,.2);
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0a2136,
+            #071a2c
+        );
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.25);
+
+    padding:18px;
+}
+
+.panel-title{
+
+    font-size:17px;
+
+    font-weight:800;
+
+    margin-bottom:5px;
+}
+
+.panel-subtitle{
+
+    color:#91b5ca;
+
+    font-size:12px;
+
+    line-height:1.5;
+
+    margin-bottom:17px;
+}
+
+.selected{
+
+    padding:16px;
+
+    border-radius:15px;
+
+    background:#0b2941;
+
+    border:
+        1px solid rgba(94,190,244,.18);
+}
+
+.selected-name{
+
+    font-size:19px;
+
+    font-weight:800;
+
+    margin-bottom:4px;
+}
+
+.temperature{
+
+    font-size:38px;
+
+    font-weight:900;
+
+    margin:7px 0;
+
+    color:#f5cf72;
+}
+
+.small{
+
+    color:#9dbdce;
+
+    font-size:12px;
+
+    line-height:1.55;
+}
+
+.info-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:9px 0;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+
+    font-size:13px;
+}
+
+.info-row:last-child{
+
+    border-bottom:0;
+}
+
+.info-row span:last-child{
+
+    font-weight:700;
+
+    text-align:right;
+}
+
+
+/* =========================
+   POINT BUTTONS
+========================= */
+
+.point-list{
+
+    margin-top:16px;
+
+    display:grid;
+
+    gap:8px;
+}
+
+.point-btn{
+
+    width:100%;
+
+    text-align:left;
+
+    border:
+        1px solid rgba(98,190,235,.16);
+
+    background:#092239;
+
+    color:#dceff8;
+
+    padding:11px 12px;
+
+    border-radius:11px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.point-btn:hover{
+
+    background:#0e304b;
+
+    border-color:
+        rgba(98,190,235,.38);
+}
+
+.point-btn.active{
+
+    background:#10415e;
+
+    border-color:#57b8e9;
+}
+
+.point-main{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    font-weight:750;
+}
+
+.point-temp{
+
+    color:#f1ce76;
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls{
+
+    margin-top:17px;
+
+    padding-top:15px;
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+}
+
+.control-title{
+
+    font-size:13px;
+
+    font-weight:750;
+
+    margin-bottom:8px;
+}
+
+.range{
+
+    width:100%;
+
+    accent-color:#52b6e8;
+
+    cursor:pointer;
+}
+
+.scale{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#789caf;
+
+    font-size:10px;
+
+    margin-top:4px;
+}
+
+.btn-row{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:8px;
+
+    margin-top:12px;
+}
+
+.control-btn{
+
+    border:
+        1px solid rgba(90,190,240,.2);
+
+    background:#0b2b44;
+
+    color:#dff5ff;
+
+    border-radius:10px;
+
+    padding:10px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.control-btn:hover{
+
+    background:#12415f;
+}
+
+.control-btn.primary{
+
+    background:#12506e;
+}
+
+
+/* =========================
+   EXPLANATION
+========================= */
+
+.explanation{
+
+    margin-top:17px;
+
+    padding:14px;
+
+    border-radius:13px;
+
+    background:#07192a;
+
+    border:
+        1px solid rgba(92,183,229,.15);
+}
+
+.explanation-title{
+
+    font-weight:800;
+
+    margin-bottom:6px;
+
+    color:#bfeaff;
+}
+
+.explanation p{
+
+    margin:0;
+
+    color:#a6c6d8;
+
+    font-size:12px;
+
+    line-height:1.65;
+}
+
+
+/* =========================
+   FOOTER NOTE
+========================= */
+
+.note{
+
+    margin-top:18px;
+
+    padding:15px 17px;
+
+    border-radius:14px;
+
+    background:#081b2c;
+
+    border:
+        1px solid rgba(83,179,232,.13);
+
+    color:#9dbccc;
+
+    font-size:12px;
+
+    line-height:1.65;
+}
+
+.note strong{
+
+    color:#d8f1ff;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1050px){
+
+    .layout{
+
+        grid-template-columns:1fr;
+    }
+
+    .sim-card{
+
+        min-height:620px;
+    }
+}
+
+@media(max-width:650px){
+
+    .header{
+
+        padding:12px 15px;
+    }
+
+    .title{
+
+        font-size:16px;
+    }
+
+    .subtitle{
+
+        font-size:11px;
+    }
+
+    .back-btn{
+
+        padding:8px 10px;
+
+        font-size:12px;
+    }
+
+    .main{
+
+        width:94%;
+    }
+
+    .sim-card{
+
+        min-height:520px;
+    }
+
+    .temperature{
+
+        font-size:32px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="title-wrap">
+
+        <div class="title-icon">
+            🌍
+        </div>
+
+        <div>
+
+            <h1 class="title">
+                Mô phỏng 3D: Nhiệt độ thay đổi theo vĩ độ
+            </h1>
+
+            <div class="subtitle">
+                Quan sát mối quan hệ giữa vĩ độ – góc chiếu Mặt Trời – nhiệt độ
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="back-btn"
+        onclick="goBack()"
+    >
+
+        ← Quay lại bài học
+
+    </button>
+
+</header>
+
+
+
+<main class="main">
+
+<div class="layout">
+
+
+<!-- ======================================================
+     TRÁI ĐẤT 3D
+====================================================== -->
+
+<section class="sim-card">
+
+    <div id="scene"></div>
+
+
+    <div class="scene-label sun-label">
+
+        ☀️ Tia sáng Mặt Trời
+
+    </div>
+
+
+    <div class="scene-label drag-label">
+
+        🖱️ Kéo chuột để xoay Trái Đất
+        • Cuộn để phóng to/thu nhỏ
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     PANEL
+====================================================== -->
+
+<aside class="panel">
+
+
+    <div class="panel-title">
+
+        📍 Điểm đang chọn
+
+    </div>
+
+
+    <div class="panel-subtitle">
+
+        Nhấp vào một điểm trên địa cầu
+        để xem thông tin.
+
+    </div>
+
+
+
+    <div class="selected">
+
+
+        <div
+            id="selectedName"
+            class="selected-name"
+        >
+
+            Ma-ni-la
+
+        </div>
+
+
+        <div
+            id="selectedTemp"
+            class="temperature"
+        >
+
+            25,4°C
+
+        </div>
+
+
+        <div
+            id="selectedDescription"
+            class="small"
+        >
+
+            Ma-ni-la nằm ở vĩ độ thấp,
+            nhận được góc chiếu Mặt Trời lớn
+            hơn so với các địa điểm ở vĩ độ cao.
+
+        </div>
+
+
+        <div style="margin-top:12px">
+
+
+            <div class="info-row">
+
+                <span>
+                    Vĩ độ
+                </span>
+
+                <span id="selectedLat">
+                    14°B
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span>
+                    Đới
+                </span>
+
+                <span id="selectedZone">
+                    Đới nóng
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span>
+                    Góc chiếu
+                </span>
+
+                <span id="selectedAngle">
+                    Lớn
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ĐIỂM -->
+
+    <div class="point-list">
+
+
+        <button
+            class="point-btn active"
+            id="btnManila"
+            onclick="selectPoint('manila')"
+        >
+
+            <div class="point-main">
+
+                <span>
+                    📍 Ma-ni-la
+                </span>
+
+                <span class="point-temp">
+                    25,4°C
+                </span>
+
+            </div>
+
+        </button>
+
+
+
+        <button
+            class="point-btn"
+            id="btnSeoul"
+            onclick="selectPoint('seoul')"
+        >
+
+            <div class="point-main">
+
+                <span>
+                    📍 Xơ-un
+                </span>
+
+                <span class="point-temp">
+                    13,3°C
+                </span>
+
+            </div>
+
+        </button>
+
+
+
+        <button
+            class="point-btn"
+            id="btnThixi"
+            onclick="selectPoint('thixi')"
+        >
+
+            <div class="point-main">
+
+                <span>
+                    📍 Tích-xi
+                </span>
+
+                <span class="point-temp">
+                    12,8°C
+                </span>
+
+            </div>
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- SLIDER -->
+
+    <div class="controls">
+
+
+        <div class="control-title">
+
+            🌐 Khảo sát theo vĩ độ
+
+        </div>
+
+
+        <input
+            id="latSlider"
+            class="range"
+            type="range"
+            min="-90"
+            max="90"
+            value="14"
+            step="1"
+        >
+
+
+        <div class="scale">
+
+            <span>
+                90°N
+            </span>
+
+            <span>
+                60°N
+            </span>
+
+            <span>
+                30°N
+            </span>
+
+            <span>
+                0°
+            </span>
+
+            <span>
+                30°B
+            </span>
+
+            <span>
+                60°B
+            </span>
+
+            <span>
+                90°B
+            </span>
+
+        </div>
+
+
+
+        <div class="btn-row">
+
+
+            <button
+                class="control-btn primary"
+                id="rotateBtn"
+                onclick="toggleRotation()"
+            >
+
+                ⏸ Dừng xoay
+
+            </button>
+
+
+            <button
+                class="control-btn"
+                onclick="resetGlobe()"
+            >
+
+                ↺ Đặt lại
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- GIẢI THÍCH -->
+
+    <div class="explanation">
+
+
+        <div class="explanation-title">
+
+            💡 Em quan sát được gì?
+
+        </div>
+
+
+        <p id="explanationText">
+
+            Ở Ma-ni-la, vĩ độ thấp hơn nên
+            tia sáng Mặt Trời chiếu tương đối
+            gần vuông góc với bề mặt,
+            năng lượng nhận được lớn hơn.
+
+        </p>
+
+
+    </div>
+
+
+</aside>
+
+</div>
+
+
+
+<div class="note">
+
+    <strong>📚 Kết luận:</strong>
+
+    Nhiệt độ không khí trên bề mặt Trái Đất
+    có xu hướng
+    <strong>
+        giảm dần từ xích đạo về hai cực
+    </strong>.
+
+    Nguyên nhân chủ yếu là do càng xa xích đạo,
+    góc chiếu của tia sáng Mặt Trời càng nhỏ,
+    năng lượng nhận được trên một đơn vị diện tích
+    càng ít.
+
+
+    <br><br>
+
+
+    <strong>⚠️ Lưu ý:</strong>
+
+    Các giá trị 12,8°C; 13,3°C và 25,4°C
+    được sử dụng theo hình minh họa bạn cung cấp.
+    Đây là nhiệt độ của các địa điểm cụ thể,
+    không phải nhiệt độ cố định cho mọi địa điểm
+    cùng vĩ độ.
+
+</div>
+
+
+</main>
+
+
+
+<!-- ======================================================
+     THREE.JS
+====================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+
+<script>
+
+
+/* ======================================================
+   CẤU HÌNH
+====================================================== */
+
+const BACK_TO_LESSON =
+    "g16.html";
+
+
+/* ======================================================
+   DỮ LIỆU
+====================================================== */
+
+const points = {
+
+    manila:{
+        name:"Ma-ni-la",
+        lat:14,
+        lon:120.98,
+        temp:"25,4°C",
+        zone:"Đới nóng",
+        angle:"Lớn",
+        description:
+        "Ma-ni-la nằm ở vĩ độ thấp. Tia sáng Mặt Trời chiếu tương đối gần vuông góc nên bề mặt nhận được nhiều năng lượng hơn."
+    },
+
+
+    seoul:{
+        name:"Xơ-un",
+        lat:37.5,
+        lon:126.98,
+        temp:"13,3°C",
+        zone:"Đới ôn hòa",
+        angle:"Trung bình",
+        description:
+        "Xơ-un nằm ở vĩ độ cao hơn Ma-ni-la. Tia sáng Mặt Trời chiếu xiên hơn nên năng lượng nhận được trên một đơn vị diện tích giảm."
+    },
+
+
+    thixi:{
+        name:"Thị-xi",
+        lat:66,
+        lon:18,
+        temp:"12,8°C",
+        zone:"Đới lạnh",
+        angle:"Nhỏ",
+        description:
+        "Thị-xi nằm ở vĩ độ cao. Tia sáng Mặt Trời chiếu rất xiên, năng lượng phân bố trên diện tích lớn hơn nên nhiệt độ thấp hơn."
+    }
+
+};
+
+
+/* ======================================================
+   BIẾN THREE
+====================================================== */
+
+let scene;
+let camera;
+let renderer;
+
+let globeGroup;
+let earth;
+let atmosphere;
+
+let raycaster;
+let mouse;
+
+let selectedPoint = null;
+
+let autoRotate = true;
+
+let isDragging = false;
+
+let previousMouse = {
+    x:0,
+    y:0
+};
+
+let rotationVelocity = {
+    x:0,
+    y:0
+};
+
+
+/* ======================================================
+   KHỞI TẠO
+====================================================== */
+
+function init(){
+
+    const container =
+        document.getElementById("scene");
+
+
+    /* SCENE */
+
+    scene =
+        new THREE.Scene();
+
+
+    /* CAMERA
+
+       ĐÃ CHỈNH:
+       camera thấp hơn một chút
+       để Trái Đất nằm giữa khung.
+    */
+
+    camera =
+        new THREE.PerspectiveCamera(
+            45,
+            container.clientWidth /
+            container.clientHeight,
+            .1,
+            1000
+        );
+
+
+    camera.position.set(
+        0,
+        .35,
+        8
+    );
+
+
+    /* RENDERER */
+
+    renderer =
+        new THREE.WebGLRenderer({
+
+            antialias:true,
+
+            alpha:true
+
+        });
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
+    );
+
+
+    renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+    );
+
+
+    renderer.outputEncoding =
+        THREE.sRGBEncoding;
+
+
+    container.appendChild(
+        renderer.domElement
+    );
+
+
+    /* RAYCASTER */
+
+    raycaster =
+        new THREE.Raycaster();
+
+
+    mouse =
+        new THREE.Vector2();
+
+
+    /* ÁNH SÁNG */
+
+    const ambient =
+        new THREE.AmbientLight(
+            0x7299b0,
+            .72
+        );
+
+
+    scene.add(ambient);
+
+
+    const sunLight =
+        new THREE.DirectionalLight(
+            0xffe5a0,
+            2.4
+        );
+
+
+    sunLight.position.set(
+        -7,
+        2,
+        4
+    );
+
+
+    scene.add(sunLight);
+
+
+    /* GROUP */
+
+    globeGroup =
+        new THREE.Group();
+
+
+    /*
+       Đưa tâm Trái Đất
+       lên một chút trong khung.
+    */
+
+    globeGroup.position.y =
+        .12;
+
+
+    scene.add(
+        globeGroup
+    );
+
+
+    /* TẠO */
+
+    createEarth();
+
+    createLatitudeLines();
+
+    createEquator();
+
+    createPoints();
+
+    createSunRays();
+
+    createStars();
+
+
+    /* EVENTS */
+
+    renderer.domElement.addEventListener(
+        "pointerdown",
+        onPointerDown
+    );
+
+    renderer.domElement.addEventListener(
+        "pointermove",
+        onPointerMove
+    );
+
+    renderer.domElement.addEventListener(
+        "pointerup",
+        onPointerUp
+    );
+
+    renderer.domElement.addEventListener(
+        "pointerleave",
+        onPointerUp
+    );
+
+    renderer.domElement.addEventListener(
+        "click",
+        onCanvasClick
+    );
+
+
+    window.addEventListener(
+        "resize",
+        onResize
+    );
+
+
+    document
+        .getElementById("latSlider")
+        .addEventListener(
+            "input",
+            onLatitudeChange
+        );
+
+
+    selectPoint(
+        "manila"
+    );
+
+
+    animate();
+
+}
+
+
+/* ======================================================
+   TẠO BỀ MẶT TRÁI ĐẤT
+====================================================== */
+
+function createEarth(){
+
+    const geometry =
+        new THREE.SphereGeometry(
+            2.35,
+            64,
+            64
+        );
+
+
+    /*
+       TEXTURE 2048 × 1024
+       để các châu lục rõ hơn.
+    */
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width =
+        2048;
+
+    canvas.height =
+        1024;
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    /* =========================
+       ĐẠI DƯƠNG
+    ========================= */
+
+    const ocean =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            1024
+        );
+
+
+    ocean.addColorStop(
+        0,
+        "#123e61"
+    );
+
+
+    ocean.addColorStop(
+        .45,
+        "#0d6687"
+    );
+
+
+    ocean.addColorStop(
+        .7,
+        "#0c5978"
+    );
+
+
+    ocean.addColorStop(
+        1,
+        "#082e50"
+    );
+
+
+    ctx.fillStyle =
+        ocean;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        2048,
+        1024
+    );
+
+
+    /* =========================
+       LƯỚI NHẸ
+    ========================= */
+
+    ctx.strokeStyle =
+        "rgba(150,220,245,.07)";
+
+    ctx.lineWidth =
+        2;
+
+
+    for(
+        let x=0;
+        x<2048;
+        x+=128
+    ){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            0
+        );
+
+        ctx.lineTo(
+            x,
+            1024
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    for(
+        let y=0;
+        y<1024;
+        y+=128
+    ){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            y
+        );
+
+        ctx.lineTo(
+            2048,
+            y
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    /* =========================
+       CHÂU LỤC
+    ========================= */
+
+
+    /*
+       Hàm vẽ polygon.
+    */
+
+    function continent(
+        pts,
+        fill="#72a967"
+    ){
+
+        ctx.beginPath();
+
+        pts.forEach(
+            (p,i)=>{
+
+                if(i===0){
+
+                    ctx.moveTo(
+                        p[0],
+                        p[1]
+                    );
+
+                }else{
+
+                    ctx.lineTo(
+                        p[0],
+                        p[1]
+                    );
+
+                }
+
+            }
+        );
+
+        ctx.closePath();
+
+        ctx.fillStyle =
+            fill;
+
+        ctx.fill();
+
+
+        /*
+           viền bờ biển
+        */
+
+        ctx.strokeStyle =
+            "rgba(196,226,150,.62)";
+
+        ctx.lineWidth =
+            3;
+
+        ctx.stroke();
+
+    }
+
+
+    /* =========================
+       1. BẮC MỸ
+    ========================= */
+
+    continent([
+
+        [210,190],
+        [255,145],
+        [330,120],
+        [405,145],
+        [475,195],
+        [500,260],
+        [465,305],
+        [420,315],
+        [390,355],
+        [350,345],
+        [325,300],
+        [285,290],
+        [245,250]
+
+    ]);
+
+
+    /* =========================
+       2. NAM MỸ
+    ========================= */
+
+    continent([
+
+        [430,405],
+        [470,420],
+        [500,470],
+        [520,530],
+        [505,600],
+        [475,675],
+        [450,760],
+        [420,820],
+        [390,770],
+        [380,690],
+        [365,610],
+        [375,540],
+        [400,470]
+
+    ]);
+
+
+    /* =========================
+       3. CHÂU ÂU - CHÂU Á
+    ========================= */
+
+    continent([
+
+        [790,180],
+        [855,145],
+        [930,125],
+        [1010,135],
+        [1090,115],
+        [1180,125],
+        [1280,150],
+        [1390,135],
+        [1490,160],
+        [1580,205],
+        [1660,255],
+        [1640,315],
+        [1570,330],
+        [1510,360],
+        [1420,345],
+        [1360,380],
+        [1280,360],
+        [1200,390],
+        [1120,365],
+        [1050,395],
+        [970,365],
+        [900,340],
+        [840,310],
+        [805,270]
+
+    ]);
+
+
+    /*
+       Châu Âu nhỏ hơn
+       nằm ở phía tây của Á-Âu.
+    */
+
+    continent([
+
+        [760,210],
+        [790,180],
+        [835,185],
+        [870,205],
+        [850,235],
+        [810,245],
+        [775,235]
+
+    ],"#7eae70");
+
+
+    /* =========================
+       4. CHÂU PHI
+    ========================= */
+
+    continent([
+
+        [880,400],
+        [940,390],
+        [990,430],
+        [1015,500],
+        [1005,575],
+        [970,650],
+        [935,735],
+        [900,810],
+        [865,760],
+        [845,690],
+        [820,615],
+        [815,545],
+        [830,470]
+
+    ]);
+
+
+    /* =========================
+       5. CHÂU ĐẠI DƯƠNG
+    ========================= */
+
+    continent([
+
+        [1430,610],
+        [1490,580],
+        [1560,590],
+        [1620,620],
+        [1660,665],
+        [1640,720],
+        [1570,750],
+        [1500,735],
+        [1440,700],
+        [1415,655]
+
+    ]);
+
+
+    /* NEW ZEALAND */
+
+    continent([
+
+        [1690,705],
+        [1715,690],
+        [1735,715],
+        [1715,750],
+        [1690,765]
+
+    ]);
+
+
+    /* =========================
+       6. NAM CỰC
+    ========================= */
+
+    continent([
+
+        [330,900],
+        [450,875],
+        [590,885],
+        [730,870],
+        [880,890],
+        [1040,875],
+        [1190,890],
+        [1340,875],
+        [1500,895],
+        [1660,875],
+        [1810,905],
+        [1760,970],
+        [1540,985],
+        [1280,970],
+        [1030,990],
+        [800,975],
+        [560,985],
+        [350,965]
+
+    ],"#d9dfbd");
+
+
+    /* =========================
+       MÀU SẮC NHỎ TRÊN LỤC ĐỊA
+    ========================= */
+
+    ctx.fillStyle =
+        "rgba(181,160,105,.30)";
+
+
+    for(
+        let i=0;
+        i<70;
+        i++
+    ){
+
+        const x =
+            150 +
+            Math.random()*1750;
+
+        const y =
+            120 +
+            Math.random()*760;
+
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            x,
+            y,
+            10+Math.random()*30,
+            5+Math.random()*16,
+            Math.random(),
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    /* =========================
+       4 ĐẠI DƯƠNG
+    ========================= */
+
+    ctx.fillStyle =
+        "rgba(190,232,246,.27)";
+
+    ctx.font =
+        "bold 25px Arial";
+
+    ctx.textAlign =
+        "center";
+
+
+    /*
+       Thái Bình Dương
+    */
+
+    ctx.fillText(
+        "THÁI BÌNH DƯƠNG",
+        1750,
+        480
+    );
+
+
+    /*
+       Đại Tây Dương
+    */
+
+    ctx.fillText(
+        "ĐẠI TÂY DƯƠNG",
+        650,
+        390
+    );
+
+
+    /*
+       Ấn Độ Dương
+    */
+
+    ctx.fillText(
+        "ẤN ĐỘ DƯƠNG",
+        1280,
+        500
+    );
+
+
+    /*
+       Bắc Băng Dương
+    */
+
+    ctx.font =
+        "bold 22px Arial";
+
+    ctx.fillText(
+        "BẮC BĂNG DƯƠNG",
+        1020,
+        65
+    );
+
+
+    /* =========================
+       ĐƯỜNG BIÊN GIỚI ĐƠN GIẢN
+    ========================= */
+
+    ctx.strokeStyle =
+        "rgba(45,100,70,.42)";
+
+    ctx.lineWidth =
+        2;
+
+
+    /*
+       Một số đường nét nội bộ
+       tạo cảm giác bản đồ hơn.
+    */
+
+    const internalLines = [
+
+        [
+            [280,210],
+            [340,240],
+            [400,260]
+        ],
+
+        [
+            [840,220],
+            [980,240],
+            [1130,225],
+            [1280,250]
+        ],
+
+        [
+            [900,470],
+            [950,520],
+            [930,590],
+            [900,670]
+        ],
+
+        [
+            [1470,630],
+            [1530,670],
+            [1600,680]
+        ],
+
+        [
+            [460,470],
+            [430,550],
+            [450,640]
+        ]
+
+    ];
+
+
+    internalLines.forEach(
+        line=>{
+
+            ctx.beginPath();
+
+            line.forEach(
+                (p,i)=>{
+
+                    if(i===0){
+
+                        ctx.moveTo(
+                            p[0],
+                            p[1]
+                        );
+
+                    }else{
+
+                        ctx.lineTo(
+                            p[0],
+                            p[1]
+                        );
+
+                    }
+
+                }
+            );
+
+            ctx.stroke();
+
+        }
+    );
+
+
+    /* =========================
+       VÙNG BĂNG
+    ========================= */
+
+    ctx.fillStyle =
+        "rgba(235,248,255,.68)";
+
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        1024,
+        27,
+        720,
+        28,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* =========================
+       TEXTURE
+    ========================= */
+
+    for(
+        let i=0;
+        i<180;
+        i++
+    ){
+
+        ctx.fillStyle =
+            "rgba(255,255,255,.025)";
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            Math.random()*2048,
+
+            Math.random()*1024,
+
+            Math.random()*8+1,
+
+            0,
+            Math.PI*2
+
+        );
+
+        ctx.fill();
+
+    }
+
+
+    /* =========================
+       THREE TEXTURE
+    ========================= */
+
+    const texture =
+        new THREE.CanvasTexture(
+            canvas
+        );
+
+
+    texture.encoding =
+        THREE.sRGBEncoding;
+
+
+    const material =
+        new THREE.MeshPhongMaterial({
+
+            map:texture,
+
+            shininess:10,
+
+            specular:0x17394e
+
+        });
+
+
+    earth =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+
+    globeGroup.add(
+        earth
+    );
+
+
+    /* =========================
+       KHÍ QUYỂN
+    ========================= */
+
+    const atmosphereGeometry =
+        new THREE.SphereGeometry(
+            2.43,
+            64,
+            64
+        );
+
+
+    const atmosphereMaterial =
+        new THREE.MeshBasicMaterial({
+
+            color:0x4bbcff,
+
+            transparent:true,
+
+            opacity:.13,
+
+            side:THREE.BackSide
+
+        });
+
+
+    atmosphere =
+        new THREE.Mesh(
+            atmosphereGeometry,
+            atmosphereMaterial
+        );
+
+
+    globeGroup.add(
+        atmosphere
+    );
+
+}
+
+
+/* ======================================================
+   VĨ TUYẾN
+====================================================== */
+
+function createLatitudeLines(){
+
+    const latitudes = [
+
+        -60,
+        -30,
+        30,
+        60
+
+    ];
+
+
+    latitudes.forEach(
+        lat=>{
+
+            const r =
+                2.37 *
+                Math.cos(
+                    THREE.MathUtils.degToRad(lat)
+                );
+
+
+            const y =
+                2.37 *
+                Math.sin(
+                    THREE.MathUtils.degToRad(lat)
+                );
+
+
+            const points = [];
+
+
+            const segments = 128;
+
+
+            for(
+                let i=0;
+                i<=segments;
+                i++
+            ){
+
+                const a =
+                    i/segments *
+                    Math.PI*2;
+
+
+                points.push(
+
+                    new THREE.Vector3(
+
+                        r*Math.cos(a),
+
+                        y,
+
+                        r*Math.sin(a)
+
+                    )
+
+                );
+
+            }
+
+
+            const geometry =
+                new THREE.BufferGeometry()
+                    .setFromPoints(
+                        points
+                    );
+
+
+            const material =
+                new THREE.LineBasicMaterial({
+
+                    color:0x9bd7ec,
+
+                    transparent:true,
+
+                    opacity:.34
+
+                });
+
+
+            const line =
+                new THREE.Line(
+                    geometry,
+                    material
+                );
+
+
+            globeGroup.add(
+                line
+            );
+
+        }
+    );
+
+}
+
+
+/* ======================================================
+   XÍCH ĐẠO
+====================================================== */
+
+function createEquator(){
+
+    const r =
+        2.38;
+
+
+    const points = [];
+
+
+    for(
+        let i=0;
+        i<=128;
+        i++
+    ){
+
+        const a =
+            i/128 *
+            Math.PI*2;
+
+
+        points.push(
+
+            new THREE.Vector3(
+
+                r*Math.cos(a),
+
+                0,
+
+                r*Math.sin(a)
+
+            )
+
+        );
+
+    }
+
+
+    const geometry =
+        new THREE.BufferGeometry()
+            .setFromPoints(
+                points
+            );
+
+
+    const material =
+        new THREE.LineBasicMaterial({
+
+            color:0xb7ebff,
+
+            transparent:true,
+
+            opacity:.65
+
+        });
+
+
+    const line =
+        new THREE.Line(
+            geometry,
+            material
+        );
+
+
+    globeGroup.add(
+        line
+    );
+
+}
+
+
+/* ======================================================
+   CÁC ĐIỂM
+====================================================== */
+
+function createPoints(){
+
+    Object.keys(points)
+        .forEach(
+            key=>{
+
+                const data =
+                    points[key];
+
+
+                const position =
+                    latLonToVector3(
+
+                        data.lat,
+
+                        data.lon,
+
+                        2.40
+
+                    );
+
+
+                /* DOT */
+
+                const geometry =
+                    new THREE.SphereGeometry(
+                        .075,
+                        20,
+                        20
+                    );
+
+
+                const material =
+                    new THREE.MeshBasicMaterial({
+
+                        color:0xffd45c
+
+                    });
+
+
+                const mesh =
+                    new THREE.Mesh(
+                        geometry,
+                        material
+                    );
+
+
+                mesh.position.copy(
+                    position
+                );
+
+
+                mesh.userData.key =
+                    key;
+
+
+                globeGroup.add(
+                    mesh
+                );
+
+
+                /* RING */
+
+                const ringGeometry =
+                    new THREE.RingGeometry(
+                        .10,
+                        .13,
+                        24
+                    );
+
+
+                const ringMaterial =
+                    new THREE.MeshBasicMaterial({
+
+                        color:0xffd45c,
+
+                        transparent:true,
+
+                        opacity:.7,
+
+                        side:THREE.DoubleSide
+
+                    });
+
+
+                const ring =
+                    new THREE.Mesh(
+
+                        ringGeometry,
+
+                        ringMaterial
+
+                    );
+
+
+                ring.position.copy(
+                    position
+                );
+
+
+                ring.lookAt(
+                    position
+                        .clone()
+                        .multiplyScalar(2)
+                );
+
+
+                ring.userData.key =
+                    key;
+
+
+                globeGroup.add(
+                    ring
+                );
+
+
+                /* LINE */
+
+                const outer =
+                    position
+                        .clone()
+                        .normalize()
+                        .multiplyScalar(
+                            2.62
+                        );
+
+
+                const lineGeometry =
+                    new THREE.BufferGeometry()
+                        .setFromPoints([
+
+                            position,
+
+                            outer
+
+                        ]);
+
+
+                const lineMaterial =
+                    new THREE.LineBasicMaterial({
+
+                        color:0xffd45c,
+
+                        transparent:true,
+
+                        opacity:.65
+
+                    });
+
+
+                const line =
+                    new THREE.Line(
+
+                        lineGeometry,
+
+                        lineMaterial
+
+                    );
+
+
+                globeGroup.add(
+                    line
+                );
+
+            }
+        );
+
+}
+
+
+/* ======================================================
+   LAT/LON
+====================================================== */
+
+function latLonToVector3(
+    lat,
+    lon,
+    radius
+){
+
+    const phi =
+        THREE.MathUtils.degToRad(
+            90-lat
+        );
+
+
+    const theta =
+        THREE.MathUtils.degToRad(
+            lon
+        );
+
+
+    return new THREE.Vector3(
+
+        radius *
+        Math.sin(phi) *
+        Math.cos(theta),
+
+        radius *
+        Math.cos(phi),
+
+        radius *
+        Math.sin(phi) *
+        Math.sin(theta)
+
+    );
+
+}
+
+
+/* ======================================================
+   TIA SÁNG
+====================================================== */
+
+function createSunRays(){
+
+    const rayGroup =
+        new THREE.Group();
+
+
+    for(
+        let i=-3;
+        i<=3;
+        i++
+    ){
+
+        const y =
+            i*.38;
+
+
+        const start =
+            new THREE.Vector3(
+                -7,
+                y,
+                0
+            );
+
+
+        const end =
+            new THREE.Vector3(
+                -2.0,
+                y,
+                0
+            );
+
+
+        const geometry =
+            new THREE.BufferGeometry()
+                .setFromPoints([
+
+                    start,
+
+                    end
+
+                ]);
+
+
+        const material =
+            new THREE.LineBasicMaterial({
+
+                color:0xffd66d,
+
+                transparent:true,
+
+                opacity:.68
+
+            });
+
+
+        const line =
+            new THREE.Line(
+
+                geometry,
+
+                material
+
+            );
+
+
+        rayGroup.add(
+            line
+        );
+
+    }
+
+
+    scene.add(
+        rayGroup
+    );
+
+}
+
+
+/* ======================================================
+   SAO
+====================================================== */
+
+function createStars(){
+
+    const geometry =
+        new THREE.BufferGeometry();
+
+
+    const positions = [];
+
+
+    for(
+        let i=0;
+        i<650;
+        i++
+    ){
+
+        positions.push(
+
+            (Math.random()-.5)*35,
+
+            (Math.random()-.5)*22,
+
+            (Math.random()-.5)*35
+
+        );
+
+    }
+
+
+    geometry.setAttribute(
+
+        "position",
+
+        new THREE.Float32BufferAttribute(
+
+            positions,
+
+            3
+
+        )
+
+    );
+
+
+    const material =
+        new THREE.PointsMaterial({
+
+            color:0x9cc9df,
+
+            size:.035,
+
+            transparent:true,
+
+            opacity:.6
+
+        });
+
+
+    const stars =
+        new THREE.Points(
+
+            geometry,
+
+            material
+
+        );
+
+
+    scene.add(
+        stars
+    );
+
+}
+
+
+/* ======================================================
+   CHỌN ĐIỂM
+====================================================== */
+
+function selectPoint(key){
+
+    const data =
+        points[key];
+
+
+    if(!data){
+
+        return;
+
+    }
+
+
+    selectedPoint =
+        key;
+
+
+    document
+        .getElementById(
+            "selectedName"
+        )
+        .textContent =
+        data.name;
+
+
+    document
+        .getElementById(
+            "selectedTemp"
+        )
+        .textContent =
+        data.temp;
+
+
+    document
+        .getElementById(
+            "selectedDescription"
+        )
+        .textContent =
+        data.description;
+
+
+    document
+        .getElementById(
+            "selectedLat"
+        )
+        .textContent =
+        formatLatitude(
+            data.lat
+        );
+
+
+    document
+        .getElementById(
+            "selectedZone"
+        )
+        .textContent =
+        data.zone;
+
+
+    document
+        .getElementById(
+            "selectedAngle"
+        )
+        .textContent =
+        data.angle;
+
+
+    document
+        .getElementById(
+            "explanationText"
+        )
+        .textContent =
+        data.description;
+
+
+    document
+        .getElementById(
+            "latSlider"
+        )
+        .value =
+        data.lat;
+
+
+    document
+        .getElementById(
+            "btnManila"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "btnSeoul"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "btnThixi"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    if(key==="manila"){
+
+        document
+            .getElementById(
+                "btnManila"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+
+    if(key==="seoul"){
+
+        document
+            .getElementById(
+                "btnSeoul"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+
+    if(key==="thixi"){
+
+        document
+            .getElementById(
+                "btnThixi"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+}
+
+
+/* ======================================================
+   FORMAT VĨ ĐỘ
+====================================================== */
+
+function formatLatitude(lat){
+
+    if(lat===0){
+
+        return "0°";
+
+    }
+
+
+    return Math.abs(lat)
+        +
+        "°"
+        +
+        (
+            lat>0
+            ? "B"
+            : "N"
+        );
+
+}
+
+
+/* ======================================================
+   SLIDER
+====================================================== */
+
+function onLatitudeChange(){
+
+    const lat =
+        Number(
+            document
+                .getElementById(
+                    "latSlider"
+                )
+                .value
+        );
+
+
+    let nearest =
+        null;
+
+
+    let minDistance =
+        Infinity;
+
+
+    Object.keys(points)
+        .forEach(
+            key=>{
+
+                const distance =
+                    Math.abs(
+                        points[key].lat-lat
+                    );
+
+
+                if(
+                    distance <
+                    minDistance
+                ){
+
+                    minDistance =
+                        distance;
+
+                    nearest =
+                        key;
+
+                }
+
+            }
+        );
+
+
+    if(
+        minDistance<=2
+    ){
+
+        selectPoint(
+            nearest
+        );
+
+        return;
+
+    }
+
+
+    selectedPoint =
+        null;
+
+
+    document
+        .getElementById(
+            "selectedName"
+        )
+        .textContent =
+        "Vĩ độ đang khảo sát";
+
+
+    document
+        .getElementById(
+            "selectedTemp"
+        )
+        .textContent =
+        getIllustrativeTemp(
+            lat
+        ).toFixed(1)
+        +
+        "°C";
+
+
+    document
+        .getElementById(
+            "selectedLat"
+        )
+        .textContent =
+        formatLatitude(
+            lat
+        );
+
+
+    let zone;
+
+
+    if(
+        Math.abs(lat)<23.5
+    ){
+
+        zone =
+            "Đới nóng";
+
+    }
+
+    else if(
+        Math.abs(lat)<66.5
+    ){
+
+        zone =
+            "Đới ôn hòa";
+
+    }
+
+    else{
+
+        zone =
+            "Đới lạnh";
+
+    }
+
+
+    document
+        .getElementById(
+            "selectedZone"
+        )
+        .textContent =
+        zone;
+
+
+    document
+        .getElementById(
+            "selectedAngle"
+        )
+        .textContent =
+        getAngleText(
+            lat
+        );
+
+
+    const explanation =
+        getLatitudeExplanation(
+            lat
+        );
+
+
+    document
+        .getElementById(
+            "selectedDescription"
+        )
+        .textContent =
+        explanation;
+
+
+    document
+        .getElementById(
+            "explanationText"
+        )
+        .textContent =
+        explanation;
+
+
+    document
+        .getElementById(
+            "btnManila"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "btnSeoul"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "btnThixi"
+        )
+        .classList.remove(
+            "active"
+        );
+
+}
+
+
+/* ======================================================
+   NHIỆT ĐỘ MINH HỌA
+====================================================== */
+
+function getIllustrativeTemp(lat){
+
+    const a =
+        Math.abs(lat);
+
+
+    return Math.max(
+
+        -5,
+
+        28
+        -
+        a*.18
+        -
+        a*a*.00065
+
+    );
+
+}
+
+
+/* ======================================================
+   GÓC CHIẾU
+====================================================== */
+
+function getAngleText(lat){
+
+    const a =
+        Math.abs(lat);
+
+
+    if(a<23.5){
+
+        return "Lớn";
+
+    }
+
+
+    if(a<66.5){
+
+        return "Trung bình";
+
+    }
+
+
+    return "Nhỏ";
+
+}
+
+
+/* ======================================================
+   GIẢI THÍCH
+====================================================== */
+
+function getLatitudeExplanation(lat){
+
+    const a =
+        Math.abs(lat);
+
+
+    if(a<23.5){
+
+        return "Ở vĩ độ thấp, gần xích đạo, tia sáng Mặt Trời chiếu tương đối gần vuông góc với bề mặt. Năng lượng nhận được tập trung hơn nên nhiệt độ thường cao hơn.";
+
+    }
+
+
+    if(a<66.5){
+
+        return "Khi đi xa xích đạo, góc chiếu của tia sáng Mặt Trời nhỏ dần. Cùng một lượng bức xạ được phân bố trên diện tích lớn hơn nên bề mặt nhận được ít nhiệt hơn.";
+
+    }
+
+
+    return "Ở vĩ độ cao, gần hai cực, tia sáng Mặt Trời chiếu rất xiên. Năng lượng phân bố trên diện tích lớn nên bề mặt nhận được ít nhiệt hơn.";
+
+}
+
+
+/* ======================================================
+   CLICK TRÊN TRÁI ĐẤT
+====================================================== */
+
+function onCanvasClick(event){
+
+    const rect =
+        renderer
+            .domElement
+            .getBoundingClientRect();
+
+
+    mouse.x =
+        (
+            (event.clientX -
+            rect.left)
+            /
+            rect.width
+        )*2-1;
+
+
+    mouse.y =
+        -(
+            (event.clientY -
+            rect.top)
+            /
+            rect.height
+        )*2+1;
+
+
+    raycaster.setFromCamera(
+        mouse,
+        camera
+    );
+
+
+    const objects =
+        globeGroup.children.filter(
+            obj =>
+                obj.userData &&
+                obj.userData.key
+        );
+
+
+    const hits =
+        raycaster.intersectObjects(
+            objects,
+            false
+        );
+
+
+    if(hits.length){
+
+        selectPoint(
+            hits[0]
+                .object
+                .userData
+                .key
+        );
+
+    }
+
+}
+
+
+/* ======================================================
+   XOAY BẰNG CHUỘT
+====================================================== */
+
+function onPointerDown(event){
+
+    isDragging =
+        true;
+
+
+    previousMouse.x =
+        event.clientX;
+
+
+    previousMouse.y =
+        event.clientY;
+
+
+    rotationVelocity.x=0;
+    rotationVelocity.y=0;
+
+}
+
+
+function onPointerMove(event){
+
+    if(!isDragging){
+
+        return;
+
+    }
+
+
+    const dx =
+        event.clientX -
+        previousMouse.x;
+
+
+    const dy =
+        event.clientY -
+        previousMouse.y;
+
+
+    globeGroup.rotation.y +=
+        dx*.006;
+
+
+    globeGroup.rotation.x +=
+        dy*.004;
+
+
+    globeGroup.rotation.x =
+        THREE.MathUtils.clamp(
+
+            globeGroup.rotation.x,
+
+            -1.2,
+
+            1.2
+
+        );
+
+
+    rotationVelocity.y =
+        dx*.006;
+
+
+    rotationVelocity.x =
+        dy*.004;
+
+
+    previousMouse.x =
+        event.clientX;
+
+
+    previousMouse.y =
+        event.clientY;
+
+}
+
+
+function onPointerUp(){
+
+    isDragging =
+        false;
+
+}
+
+
+/* ======================================================
+   TỰ XOAY
+====================================================== */
+
+function toggleRotation(){
+
+    autoRotate =
+        !autoRotate;
+
+
+    document
+        .getElementById(
+            "rotateBtn"
+        )
+        .textContent =
+        autoRotate
+        ? "⏸ Dừng xoay"
+        : "▶ Tự động xoay";
+
+}
+
+
+/* ======================================================
+   RESET
+====================================================== */
+
+function resetGlobe(){
+
+    globeGroup.rotation.set(
+        0,
+        0,
+        0
+    );
+
+
+    /*
+       Camera mới được căn giữa.
+    */
+
+    camera.position.set(
+        0,
+        .35,
+        8
+    );
+
+
+    autoRotate =
+        true;
+
+
+    document
+        .getElementById(
+            "rotateBtn"
+        )
+        .textContent =
+        "⏸ Dừng xoay";
+
+
+    selectPoint(
+        "manila"
+    );
+
+}
+
+
+/* ======================================================
+   ANIMATION
+====================================================== */
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    if(
+        autoRotate &&
+        !isDragging
+    ){
+
+        globeGroup.rotation.y +=
+            .0018;
+
+    }
+
+
+    if(
+        !isDragging &&
+        Math.abs(
+            rotationVelocity.y
+        )>.0001
+    ){
+
+        globeGroup.rotation.y +=
+            rotationVelocity.y;
+
+
+        rotationVelocity.y *=
+            .94;
+
+    }
+
+
+    if(
+        !isDragging &&
+        Math.abs(
+            rotationVelocity.x
+        )>.0001
+    ){
+
+        globeGroup.rotation.x +=
+            rotationVelocity.x;
+
+
+        rotationVelocity.x *=
+            .94;
+
+    }
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+/* ======================================================
+   RESIZE
+====================================================== */
+
+function onResize(){
+
+    const container =
+        document.getElementById(
+            "scene"
+        );
+
+
+    camera.aspect =
+        container.clientWidth /
+        container.clientHeight;
+
+
+    camera.updateProjectionMatrix();
+
+
+    renderer.setSize(
+
+        container.clientWidth,
+
+        container.clientHeight
+
+    );
+
+}
+
+
+/* ======================================================
+   QUAY LẠI
+====================================================== */
+
+function goBack(){
+
+    window.location.href =
+        BACK_TO_LESSON;
+
+}
+
+
+/* ======================================================
+   START
+====================================================== */
+
+init();
+
+</script>
+
+</body>
+</html>

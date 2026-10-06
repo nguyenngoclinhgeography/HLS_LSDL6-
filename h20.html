@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bài 20 - Vương quốc Phù Nam</title>
+<style>
+:root{--bg:#07131f;--panel:#0d2030;--line:#28516a;--cyan:#62e7ff;--gold:#e7b65d;--text:#eef8ff;--muted:#a4bdcd;--green:#69dda6;--red:#ff8080}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#173952,transparent 34%),radial-gradient(circle at 90% 15%,#163248,transparent 30%),var(--bg);color:var(--text);font:16px/1.65 Inter,Segoe UI,Arial,sans-serif}
+.top{position:sticky;top:0;z-index:20;padding:13px 5%;display:flex;justify-content:space-between;align-items:center;background:#06101bd9;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{font-weight:900;color:var(--cyan);letter-spacing:1px}.home{padding:8px 14px;border:1px solid var(--line);border-radius:12px;color:#d8f5ff}
+.wrap{width:min(1180px,92%);margin:auto}.hero{padding:58px 0 35px;display:grid;grid-template-columns:1.35fr .65fr;gap:22px}.kicker,.num{color:var(--gold);font-weight:900;letter-spacing:2px;font-size:13px}
+h1{font-size:clamp(34px,5vw,60px);line-height:1.05;margin:12px 0}.lead{font-size:18px;color:#c8dce8}.badges{display:flex;gap:9px;flex-wrap:wrap}.badge{padding:7px 12px;border:1px solid var(--line);border-radius:99px;background:#0a1d2c;color:#c8f4ff}
+.heroCard,.card,.panel,.quiz{background:linear-gradient(145deg,var(--panel),#091827);border:1px solid var(--line);border-radius:20px}.heroCard{padding:28px;display:flex;flex-direction:column;justify-content:center}.big{font-size:70px}.heroCard strong{font-size:24px;color:#ffe0a0}
+section{margin:30px 0 45px}.head{display:flex;align-items:end;gap:14px;margin-bottom:18px}h2{margin:0;font-size:28px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{padding:21px;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#3d7898}.icon{font-size:32px}.card h3{margin:5px 0 8px}.muted{color:var(--muted)}
+.timeline{position:relative;padding:5px 0}.timeline:before{content:"";position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(var(--gold),var(--cyan))}
+.event{position:relative;padding-left:62px;margin-bottom:18px}.dot{position:absolute;left:13px;top:5px;width:19px;height:19px;border-radius:50%;background:var(--gold);border:4px solid var(--bg)}.eventbox{padding:17px 19px;background:var(--panel);border:1px solid var(--line);border-radius:16px}.year{font-size:20px;color:#ffe0a0;font-weight:900}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.flowitem{min-height:105px;padding:15px;text-align:center;background:#0a1c2b;border:1px solid var(--line);border-radius:15px;display:flex;align-items:center;justify-content:center;font-weight:800}.arrow{display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:25px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:15px}.box{padding:19px;border-radius:16px;border:1px solid var(--line);background:#0a1b2a}.box.good{background:#0b2928;border-color:#27665b}.box h3{margin-top:0}
+.iconGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.culture{padding:18px;text-align:center;background:#0b1c2b;border:1px solid var(--line);border-radius:16px}.culture .bigIcon{font-size:42px}
+.trade{display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:stretch}.tradeArrow{display:flex;align-items:center;justify-content:center;font-size:40px;color:var(--gold)}
+.quiz{padding:26px}.start{text-align:center;padding:22px}.start h3{font-size:28px}.progress{height:8px;background:#162b3b;border-radius:99px;overflow:hidden;margin:14px 0 22px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold))}
+.q{font-size:21px;font-weight:800;margin:15px 0}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer{text-align:left;cursor:pointer;padding:14px;border-radius:13px;border:1px solid var(--line);background:#0a1c2b;color:#edf8ff;font:inherit}.answer.correct{border-color:var(--green);background:#103126}.answer.wrong{border-color:var(--red);background:#351d25}.feedback{display:none;margin-top:14px;padding:14px;background:#091827;border-radius:13px;color:#c9deea}.bottom{display:flex;justify-content:space-between;margin-top:16px}.result{text-align:center;display:none}.score{font-size:54px;font-weight:900;color:#ffe0a0}
+.btn{font:inherit;cursor:pointer;padding:10px 14px;border-radius:12px;border:1px solid #35637d;background:#0c2234;color:#d9f5ff}
+footer{text-align:center;padding:30px;color:#7894a7;border-top:1px solid var(--line)}
+@media(max-width:850px){.hero,.compare,.trade{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.iconGrid{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.answers{grid-template-columns:1fr}}@media(max-width:560px){.grid,.iconGrid{grid-template-columns:1fr}h1{font-size:38px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+<header class="top"><div class="brand">HỌC LIỆU SỐ 6 · LỊCH SỬ</div><a class="home" href="index.html">⌂ Trang chủ</a></header>
+<main class="wrap">
+
+<section class="hero">
+<div><div class="kicker">CHƯƠNG 5 · VIỆT NAM TỪ KHOẢNG TK VII TCN ĐẾN ĐẦU TK X</div>
+<h1>Vương quốc<br>Phù Nam</h1>
+<p class="lead">Tìm hiểu sự ra đời, phát triển, hoạt động kinh tế, tổ chức xã hội và những dấu ấn văn hóa của một vương quốc cổ từng phát triển mạnh ở khu vực Nam Bộ.</p>
+<div class="badges"><span class="badge">🏺 Văn hóa Óc Eo</span><span class="badge">⚓ Thương mại biển</span><span class="badge">🌾 Nông nghiệp</span><span class="badge">🌏 Giao lưu quốc tế</span></div></div>
+<div class="heroCard"><div class="big">🏺⚓🌴</div><strong>Phù Nam · vùng đất phương Nam</strong><p class="muted">Một trung tâm kinh tế – văn hóa quan trọng của Đông Nam Á thời cổ.</p></div>
+</section>
+
+<section>
+<div class="head"><div class="num">01</div><h2>Khởi động · Óc Eo kể chuyện gì?</h2></div>
+<div class="card"><p>Những di vật được tìm thấy ở Óc Eo như đồ trang sức, tiền, đồ gốm và các hiện vật có nguồn gốc từ nhiều khu vực cho thấy nơi đây từng có hoạt động trao đổi, buôn bán rộng mở. Từ đó, ta có thể tìm hiểu về một vương quốc cổ ở Nam Bộ: Phù Nam.</p>
+<div class="flow"><div class="flowitem">🏺 Di tích<br>Óc Eo</div><div class="arrow">→</div><div class="flowitem">⚓ Giao thương<br>đường biển</div><div class="arrow">→</div><div class="flowitem">👑 Vương quốc<br>Phù Nam</div></div></div>
+</section>
+
+<section>
+<div class="head"><div class="num">02</div><h2>Sự ra đời, phát triển và suy vong</h2></div>
+<div class="timeline">
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">Khoảng thế kỉ I</div><b>Phù Nam ra đời</b><br>Trên cơ sở văn hóa Óc Eo và sự giao lưu, ảnh hưởng của văn hóa Ấn Độ, Vương quốc Phù Nam được hình thành ở khu vực Nam Bộ.</div></div>
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">Thế kỉ III – V</div><b>Phát triển mạnh</b><br>Phù Nam trở thành một trong những quốc gia có thế lực ở Đông Nam Á, có quan hệ giao lưu và buôn bán rộng với nhiều khu vực.</div></div>
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">Thế kỉ VI</div><b>Bắt đầu suy yếu</b><br>Vương quốc dần suy yếu trong bối cảnh khu vực có nhiều biến động.</div></div>
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">Đầu thế kỉ VII</div><b>Chân Lạp thôn tính</b><br>Phù Nam bị Chân Lạp thôn tính, chấm dứt sự tồn tại của vương quốc.</div></div>
+</div>
+</section>
+
+<section>
+<div class="head"><div class="num">03</div><h2>Kinh tế · Vì sao Phù Nam phát triển mạnh?</h2></div>
+<div class="grid">
+<div class="card"><div class="icon">🌾</div><h3>Nông nghiệp</h3><p>Cư dân Phù Nam dựa vào điều kiện tự nhiên thuận lợi để sản xuất nông nghiệp, đặc biệt là trồng lúa.</p></div>
+<div class="card"><div class="icon">🐟</div><h3>Khai thác & thủ công</h3><p>Đánh bắt thủy – hải sản, chế tác kim hoàn và nhiều sản phẩm thủ công phục vụ đời sống và trao đổi.</p></div>
+<div class="card"><div class="icon">⚓</div><h3>Buôn bán</h3><p>Hoạt động trao đổi, buôn bán phát triển; Phù Nam có vị trí thuận lợi để kết nối các tuyến giao thương trong khu vực.</p></div>
+</div>
+<div class="trade" style="margin-top:15px">
+<div class="box good"><h3>🌊 Lợi thế tự nhiên</h3><p>Mạng lưới sông ngòi, vùng đồng bằng và vị trí gần các tuyến đường biển tạo điều kiện cho sản xuất và giao thương.</p></div>
+<div class="box"><h3>🧭 Lợi thế giao thông</h3><p>Các tuyến đường thủy và hàng hải giúp Phù Nam kết nối với các khu vực khác của Đông Nam Á và xa hơn.</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><div class="num">04</div><h2>Óc Eo · Dấu ấn của một trung tâm giao thương</h2></div>
+<div class="grid">
+<div class="card"><div class="icon">🏺</div><h3>Di vật đa dạng</h3><p>Các hiện vật khảo cổ phản ánh đời sống vật chất và sự giao lưu với bên ngoài.</p></div>
+<div class="card"><div class="icon">🪙</div><h3>Tiền & hàng hóa</h3><p>Những đồng tiền và vật phẩm từ nhiều nơi cho thấy hoạt động trao đổi, buôn bán diễn ra sôi động.</p></div>
+<div class="card"><div class="icon">🚤</div><h3>Đường thủy</h3><p>Kênh rạch và đường biển giữ vai trò quan trọng trong giao thông và kết nối các khu vực.</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><div class="num">05</div><h2>Xã hội và văn hóa Phù Nam</h2></div>
+<div class="compare">
+<div class="box">
+<h3>👑 Tổ chức xã hội</h3>
+<p>Đứng đầu nhà nước là vua. Xã hội có sự phân hóa thành nhiều tầng lớp, trong đó có quý tộc, tăng lữ, nông dân, thợ thủ công và thương nhân.</p>
+</div>
+<div class="box good">
+<h3>🛕 Đời sống văn hóa</h3>
+<p>Phù Nam chịu ảnh hưởng rõ nét của văn hóa Ấn Độ. Cư dân tiếp thu và biến đổi các yếu tố văn hóa bên ngoài, tạo nên những nét riêng trong đời sống tín ngưỡng, tôn giáo và nghệ thuật.</p>
+</div>
+</div>
+<div class="iconGrid" style="margin-top:15px">
+<div class="culture"><div class="bigIcon">☀️</div><b>Tín ngưỡng</b><p class="muted">Gắn với đời sống tự nhiên</p></div>
+<div class="culture"><div class="bigIcon">🕉️</div><b>Ấn Độ giáo</b><p class="muted">Ảnh hưởng văn hóa Ấn Độ</p></div>
+<div class="culture"><div class="bigIcon">☸️</div><b>Phật giáo</b><p class="muted">Một tôn giáo được truyền bá</p></div>
+<div class="culture"><div class="bigIcon">💎</div><b>Kim hoàn</b><p class="muted">Kĩ thuật thủ công phát triển</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><div class="num">06</div><h2>Ghép mảnh kiến thức · “Phù Nam trong 6 biểu tượng”</h2></div>
+<div class="grid">
+<div class="card"><div class="icon">🏺</div><h3>Óc Eo</h3><p class="muted">Trung tâm khảo cổ quan trọng, giúp tìm hiểu đời sống và giao thương Phù Nam.</p></div>
+<div class="card"><div class="icon">🌾</div><h3>Nông nghiệp</h3><p class="muted">Một cơ sở quan trọng của nền kinh tế.</p></div>
+<div class="card"><div class="icon">⚓</div><h3>Thương mại</h3><p class="muted">Kết nối Phù Nam với mạng lưới giao thương khu vực.</p></div>
+<div class="card"><div class="icon">🕉️</div><h3>Giao lưu Ấn Độ</h3><p class="muted">Tạo ảnh hưởng đến tín ngưỡng, tôn giáo và văn hóa.</p></div>
+<div class="card"><div class="icon">👑</div><h3>Nhà nước</h3><p class="muted">Vua đứng đầu, xã hội có sự phân hóa.</p></div>
+<div class="card"><div class="icon">📉</div><h3>Suy vong</h3><p class="muted">Suy yếu từ thế kỉ VI và bị Chân Lạp thôn tính đầu thế kỉ VII.</p></div>
+</div>
+</section>
+
+<section id="quizSection">
+<div class="head"><div class="num">07</div><h2>Thử thách · 10 giây mỗi câu</h2></div>
+<div class="quiz">
+<div class="start" id="start"><div class="icon">🧠</div><h3>Đấu trường Phù Nam</h3><p class="muted">10 câu · 10 giây/câu · phản hồi và giải thích ngay sau mỗi câu.</p><button class="btn" onclick="startQuiz()">BẮT ĐẦU</button></div>
+<div id="game" style="display:none"><b id="count">Câu 1/10</b><span style="float:right">⏱️ <b id="timer">10</b>s</span><div class="progress"><span id="bar"></span></div><div class="q" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><div class="bottom"><span id="live">Điểm: 0</span><button class="btn" id="next" style="display:none" onclick="nextQ()">Câu tiếp →</button></div></div>
+<div class="result" id="result"><div class="icon">🏆</div><h3>Hoàn thành!</h3><div class="score" id="score">0/10</div><p id="resultText"></p><button class="btn" onclick="restart()">LÀM LẠI</button> <button class="btn" onclick="finishLesson()">✓ HOÀN THÀNH BÀI 20</button></div>
+</div>
+</section>
+</main>
+<footer>HỌC LIỆU SỐ 6 · LỊCH SỬ VÀ ĐỊA LÍ · BÀI 20</footer>
+
+<script>
+const qs=[
+{q:'Vương quốc Phù Nam ra đời khoảng thời gian nào?',a:['Thế kỉ VII TCN','Khoảng thế kỉ I','Thế kỉ V','Thế kỉ X'],c:1,e:'Vương quốc Phù Nam được hình thành khoảng thế kỉ I, trên cơ sở văn hóa Óc Eo và sự giao lưu với văn hóa Ấn Độ.'},
+{q:'Phù Nam chủ yếu hình thành ở khu vực nào của Việt Nam ngày nay?',a:['Bắc Bộ','Bắc Trung Bộ','Nam Bộ','Tây Bắc'],c:2,e:'Phạm vi chủ yếu của Phù Nam thuộc khu vực Nam Bộ Việt Nam ngày nay.'},
+{q:'Khoảng thời gian nào Phù Nam phát triển mạnh?',a:['Thế kỉ III – V','Thế kỉ VIII – X','Thế kỉ I TCN','Thế kỉ VI – VII'],c:0,e:'Từ thế kỉ III đến thế kỉ V, Phù Nam trở thành một trong những quốc gia có thế lực ở Đông Nam Á.'},
+{q:'Di chỉ khảo cổ nào gắn đặc biệt với việc tìm hiểu Phù Nam?',a:['Đông Sơn','Óc Eo','Cổ Loa','Mỹ Sơn'],c:1,e:'Óc Eo là một trung tâm khảo cổ quan trọng, cung cấp nhiều tư liệu về Phù Nam.'},
+{q:'Hoạt động kinh tế nào sau đây phù hợp với cư dân Phù Nam?',a:['Chỉ săn bắt hái lượm','Nông nghiệp, thủy – hải sản, thủ công và buôn bán','Chỉ trồng lúa','Chỉ chăn nuôi'],c:1,e:'Kinh tế Phù Nam khá đa dạng, gồm nông nghiệp, đánh bắt, thủ công và trao đổi buôn bán.'},
+{q:'Yếu tố nào góp phần tạo thuận lợi cho Phù Nam phát triển thương mại?',a:['Vị trí gần các tuyến giao thương và hệ thống đường thủy','Khí hậu lạnh quanh năm','Địa hình núi cao hiểm trở','Xa biển'],c:0,e:'Vị trí và điều kiện giao thông đường thủy giúp Phù Nam tham gia mạng lưới giao thương khu vực.'},
+{q:'Văn hóa Phù Nam chịu ảnh hưởng rõ nét của nền văn hóa nào?',a:['Ai Cập','Ấn Độ','Hy Lạp','Nhật Bản'],c:1,e:'Văn hóa Ấn Độ có ảnh hưởng rõ nét đến tín ngưỡng, tôn giáo và văn hóa Phù Nam.'},
+{q:'Phù Nam bắt đầu suy yếu từ thời gian nào?',a:['Thế kỉ II','Thế kỉ IV','Thế kỉ VI','Thế kỉ IX'],c:2,e:'Bước vào thế kỉ VI, Phù Nam dần suy yếu.'},
+{q:'Đầu thế kỉ VII, Phù Nam bị vương quốc nào thôn tính?',a:['Chăm-pa','Chân Lạp','Đại Việt','Nam Hán'],c:1,e:'Đến khoảng đầu thế kỉ VII, Phù Nam bị Chân Lạp thôn tính.'},
+{q:'Chuỗi nào đúng với diễn biến lịch sử của Phù Nam?',a:['Ra đời → phát triển → suy yếu → bị Chân Lạp thôn tính','Suy yếu → ra đời → phát triển → thôn tính','Phát triển → ra đời → thôn tính → suy yếu','Ra đời → thôn tính → phát triển → suy yếu'],c:0,e:'Trình tự khái quát: khoảng thế kỉ I ra đời → thế kỉ III–V phát triển → thế kỉ VI suy yếu → đầu thế kỉ VII bị Chân Lạp thôn tính.'}
+];
+let i=0,scoreN=0,timer=null,left=10,answered=false;
+function startQuiz(){document.getElementById('start').style.display='none';document.getElementById('result').style.display='none';document.getElementById('game').style.display='block';i=0;scoreN=0;render()}
+function render(){answered=false;left=10;document.getElementById('timer').textContent=10;document.getElementById('count').textContent='Câu '+(i+1)+'/10';document.getElementById('bar').style.width=(i*10)+'%';document.getElementById('live').textContent='Điểm: '+scoreN;document.getElementById('feedback').style.display='none';document.getElementById('next').style.display='none';let q=qs[i];document.getElementById('question').textContent=q.q;let box=document.getElementById('answers');box.innerHTML='';q.a.forEach((x,j)=>{let b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+j)+'. '+x;b.onclick=()=>answer(j,b);box.appendChild(b)});clearInterval(timer);timer=setInterval(()=>{left--;document.getElementById('timer').textContent=left;if(left<=0){clearInterval(timer);answer(-1,null)}},1000)}
+function answer(j,b){if(answered)return;answered=true;clearInterval(timer);let q=qs[i];document.querySelectorAll('.answer').forEach((x,k)=>{x.disabled=true;if(k===q.c)x.classList.add('correct')});let f=document.getElementById('feedback');if(j===q.c){scoreN++;if(b)b.classList.add('correct');f.innerHTML='<b>✓ Chính xác!</b> '+q.e}else{if(b)b.classList.add('wrong');f.innerHTML='<b>Chưa đúng.</b> '+q.e}f.style.display='block';document.getElementById('live').textContent='Điểm: '+scoreN;document.getElementById('next').style.display='inline-block';document.getElementById('next').textContent=i===9?'Xem kết quả →':'Câu tiếp →'}
+function nextQ(){if(!answered)return;i++;if(i>=10){showResult();return}render()}
+function showResult(){document.getElementById('game').style.display='none';document.getElementById('result').style.display='block';document.getElementById('score').textContent=scoreN+'/10';document.getElementById('resultText').textContent=scoreN>=8?'Xuất sắc! Bạn đã nắm chắc những nét chính về Phù Nam.':scoreN>=5?'Khá tốt! Hãy xem lại timeline và vai trò của Óc Eo.':'Hãy ôn lại nội dung bài rồi thử lại nhé.'}
+function restart(){document.getElementById('result').style.display='none';startQuiz()}
+function finishLesson(){let p=JSON.parse(localStorage.getItem('hoclieu6_progress_v1')||'{}');p.h20=true;localStorage.setItem('hoclieu6_progress_v1',JSON.stringify(p));alert('Đã ghi nhận hoàn thành Bài 20!')}
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("h20");</script>
+</body>
+</html>'''

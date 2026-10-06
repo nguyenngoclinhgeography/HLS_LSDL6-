@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 4 - Kí hiệu và bảng chú giải bản đồ | Học liệu số Địa lí 6</title>
+<style>
+:root{
+ --bg:#07111f;--bg2:#0b1b2d;--panel:#10263b;--panel2:#132f47;--line:#1f4967;
+ --cyan:#27d3e8;--cyan2:#72e8f4;--blue:#3f8cff;--green:#40d99a;
+ --yellow:#ffd166;--orange:#ff9f43;--red:#ff6b6b;--text:#edf7ff;--muted:#9fb7ca;
+ --shadow:0 18px 50px rgba(0,0,0,.28)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);
+ background:radial-gradient(circle at 15% 0%,rgba(39,211,232,.12),transparent 28%),
+ radial-gradient(circle at 85% 10%,rgba(63,140,255,.10),transparent 25%),var(--bg);line-height:1.65}
+button,input{font:inherit}button{cursor:pointer}.container{width:min(1180px,calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:rgba(7,17,31,.88);border-bottom:1px solid rgba(114,232,244,.12)}
+.nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{font-weight:800;color:var(--cyan2);letter-spacing:.2px}.nav-actions{display:flex;gap:9px;flex-wrap:wrap}
+.nav-btn,.home-btn{border:1px solid var(--line);background:rgba(16,38,59,.75);color:var(--text);padding:9px 14px;border-radius:12px}
+.nav-btn:hover,.home-btn:hover{border-color:var(--cyan);transform:translateY(-1px)}
+.hero{padding:68px 0 42px}.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:24px;align-items:stretch}
+.eyebrow{display:inline-flex;padding:7px 12px;border:1px solid rgba(39,211,232,.3);border-radius:999px;color:var(--cyan2);background:rgba(39,211,232,.07);font-size:13px;font-weight:700}
+h1{font-size:clamp(34px,5vw,58px);line-height:1.08;margin:18px 0 14px;letter-spacing:-1px}
+.hero p{color:var(--muted);font-size:17px;max-width:760px}
+.hero-card{background:linear-gradient(145deg,rgba(16,38,59,.95),rgba(11,27,45,.9));border:1px solid var(--line);border-radius:24px;padding:25px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center}
+.map-icon{font-size:74px;text-align:center;margin-bottom:10px}.hero-card strong{color:var(--cyan2);font-size:18px}.hero-card span{color:var(--muted);font-size:14px}
+.section{padding:28px 0 54px}.section-head{margin-bottom:22px}.section-head h2{margin:0 0 6px;font-size:30px}.section-head p{margin:0;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:linear-gradient(145deg,rgba(16,38,59,.94),rgba(11,27,45,.88));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.card .icon{font-size:30px}.card h3{margin:8px 0 6px}.card p{margin:0;color:var(--muted);font-size:14px}
+.note{margin-top:18px;padding:16px 18px;border-left:3px solid var(--cyan);background:rgba(39,211,232,.06);border-radius:12px;color:#dff8fc}
+.symbol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.symbol-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;text-align:center}
+.symbol-demo{height:92px;display:flex;align-items:center;justify-content:center;font-size:45px;margin-bottom:8px}
+.symbol-card h3{margin:4px 0}.symbol-card p{color:var(--muted);margin:0;font-size:14px}
+.legend-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.legend-map{position:relative;min-height:390px;border-radius:22px;overflow:hidden;border:1px solid var(--line);
+ background:linear-gradient(135deg,#0c3141,#0b2438 48%,#102c48)}
+.land{position:absolute;background:#183f4a;border:1px solid #2d6672;border-radius:38% 62% 54% 46%/48% 37% 63% 52%;opacity:.9}
+.land.a{width:47%;height:53%;left:6%;top:18%;transform:rotate(-8deg)}
+.land.b{width:34%;height:40%;right:7%;bottom:9%;transform:rotate(13deg)}
+.river{position:absolute;height:4px;background:var(--cyan);border-radius:99px;transform-origin:left center;box-shadow:0 0 12px rgba(39,211,232,.35)}
+.r1{width:210px;left:19%;top:50%;transform:rotate(-13deg)}.r2{width:150px;right:19%;top:37%;transform:rotate(24deg)}
+.map-symbol{position:absolute;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;
+ background:rgba(7,17,31,.85);border:1px solid var(--cyan);font-size:19px;box-shadow:0 0 0 5px rgba(39,211,232,.08)}
+.ms1{left:28%;top:31%}.ms2{left:48%;top:55%}.ms3{right:23%;top:27%}.ms4{right:30%;bottom:20%}
+.legend-box{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px}
+.legend-box h3{margin-top:0}.legend-row{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid rgba(114,232,244,.09)}
+.legend-row:last-child{border-bottom:0}.legend-symbol{width:38px;text-align:center;font-size:25px}.legend-row span:last-child{color:var(--muted)}
+.tabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.tab{padding:10px 15px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px}.tab.active{background:rgba(39,211,232,.12);border-color:var(--cyan);color:var(--cyan2)}
+.tab-content{display:none}.tab-content.active{display:block}
+.read-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.read-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px}
+.steps{display:grid;gap:12px}.step{display:flex;gap:14px;align-items:flex-start}.num{min-width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(39,211,232,.12);border:1px solid var(--cyan);color:var(--cyan2);font-weight:800}
+.step strong{display:block}.step span{color:var(--muted);font-size:14px}
+.route-box{background:linear-gradient(145deg,rgba(16,38,59,.96),rgba(10,28,45,.94));border:1px solid var(--line);border-radius:22px;padding:20px}
+.route-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:16px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}.field select{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#091a2a;color:var(--text)}
+.route-btn{padding:12px 17px;border:1px solid var(--cyan);border-radius:11px;background:rgba(39,211,232,.12);color:var(--cyan2);font-weight:700}
+.city-map{position:relative;min-height:420px;border-radius:20px;overflow:hidden;border:1px solid #244d65;background:
+ linear-gradient(90deg,rgba(114,232,244,.05) 1px,transparent 1px),
+ linear-gradient(rgba(114,232,244,.05) 1px,transparent 1px),#0a2335;
+ background-size:55px 55px}
+.road{position:absolute;height:8px;background:#39576a;border-radius:99px;transform-origin:left center}.road.main{height:12px;background:#567286}
+.road.r1{width:350px;left:9%;top:70%;transform:rotate(-22deg)}.road.r2{width:320px;left:29%;top:54%;transform:rotate(18deg)}.road.r3{width:270px;left:52%;top:72%;transform:rotate(-52deg)}.road.r4{width:260px;left:21%;top:34%;transform:rotate(7deg)}.road.r5{width:230px;left:62%;top:31%;transform:rotate(40deg)}
+.place{position:absolute;z-index:3;display:flex;flex-direction:column;align-items:center;gap:4px}.place button{width:42px;height:42px;border-radius:50%;border:2px solid var(--text);background:#0a1a2a;color:white;font-size:19px;box-shadow:0 8px 18px rgba(0,0,0,.25)}
+.place span{font-size:12px;background:rgba(7,17,31,.86);padding:3px 7px;border-radius:7px;white-space:nowrap}
+.school{left:10%;top:67%}.park{left:38%;top:48%}.hospital{left:63%;top:20%}.market{right:10%;bottom:12%}.museum{left:68%;bottom:19%}
+.route-line{position:absolute;z-index:2;height:7px;background:var(--yellow);border-radius:99px;transform-origin:left center;box-shadow:0 0 15px rgba(255,209,102,.5);display:none}
+.route-line.a{width:310px;left:13%;top:67%;transform:rotate(-19deg)}.route-line.b{width:260px;left:42%;top:57%;transform:rotate(-40deg)}.route-line.c{width:260px;left:62%;top:29%;transform:rotate(53deg)}
+.route-info{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}.info-box{padding:14px;border-radius:13px;background:rgba(39,211,232,.06);border:1px solid rgba(39,211,232,.16)}.info-box strong{color:var(--cyan2)}.info-box span{display:block;color:var(--muted);font-size:14px}
+.quiz{background:linear-gradient(145deg,rgba(16,38,59,.96),rgba(10,27,44,.94));border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:var(--shadow)}
+.quiz-start{text-align:center;padding:28px 10px}.quiz-start-icon{font-size:54px}.quiz-start h2{margin:8px 0}.quiz-start p{color:var(--muted);max-width:650px;margin:0 auto 18px}.quiz-info{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}.quiz-info span{padding:8px 12px;border-radius:999px;background:rgba(39,211,232,.08);border:1px solid rgba(39,211,232,.18);color:var(--cyan2);font-size:13px}
+.start-btn,.retry-btn{padding:13px 22px;border:1px solid var(--cyan);border-radius:13px;background:linear-gradient(135deg,rgba(39,211,232,.2),rgba(63,140,255,.14));color:var(--text);font-weight:800}
+.start-btn:hover,.retry-btn:hover{transform:translateY(-1px);box-shadow:0 10px 25px rgba(39,211,232,.12)}
+.quiz-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}.timer{font-weight:800;color:var(--yellow);padding:7px 12px;border-radius:10px;background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2)}
+.progress{height:8px;background:#091a2a;border-radius:99px;overflow:hidden;margin-bottom:20px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));width:0}
+.question{font-size:20px;font-weight:800;margin-bottom:16px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{padding:14px 16px;text-align:left;border:1px solid var(--line);border-radius:13px;background:#0c2033;color:var(--text)}.answer:hover{border-color:var(--cyan)}.answer.correct{border-color:var(--green);background:rgba(64,217,154,.1)}.answer.wrong{border-color:var(--red);background:rgba(255,107,107,.1)}
+.feedback{margin-top:14px;padding:13px 15px;border-radius:12px;background:rgba(114,232,244,.06);color:#dff8fc;display:none}.feedback.show{display:block}
+.quiz-result{text-align:center;padding:30px 10px}.score{font-size:48px;font-weight:900;color:var(--cyan2)}.result-msg{color:var(--muted);margin-bottom:20px}
+.footer{padding:30px 0 50px;color:#718ca0;text-align:center;font-size:13px}
+@media(max-width:900px){.hero-grid,.legend-wrap,.read-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.route-controls{grid-template-columns:1fr 1fr}.route-btn{grid-column:1/-1}}
+@media(max-width:600px){.nav{align-items:flex-start;padding:12px 0}.cards,.symbol-grid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.route-controls,.route-info{grid-template-columns:1fr}.hero{padding-top:42px}.city-map{min-height:350px}.route-line.a{width:240px}.route-line.b{width:200px}.route-line.c{width:190px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+<div class="container nav">
+<div class="brand">🌎 HỌC LIỆU SỐ ĐỊA LÍ 6</div>
+<div class="nav-actions">
+<button class="home-btn" onclick="goHome()">⌂ Trang chủ</button>
+<button class="nav-btn" onclick="document.getElementById('quiz').scrollIntoView()">🎯 Luyện tập</button>
+</div>
+</div>
+</header>
+
+<main>
+<section class="hero">
+<div class="container hero-grid">
+<div>
+<span class="eyebrow">CHƯƠNG 1 · BẢN ĐỒ</span>
+<h1>Bài 4. Kí hiệu và bảng chú giải bản đồ.<br>Tìm đường đi trên bản đồ</h1>
+<p>Học cách đọc kí hiệu, khai thác bảng chú giải, nhận biết các đối tượng trên bản đồ và vận dụng bản đồ để tìm đường đi.</p>
+</div>
+<div class="hero-card">
+<div class="map-icon">🗺️</div>
+<strong>Đọc bản đồ → hiểu kí hiệu → tìm đường</strong>
+<span>Học bằng trực quan và tương tác ngay trên trang.</span>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head"><h2>🎯 Mục tiêu học tập</h2><p>Sau bài học, em có thể:</p></div>
+<div class="cards">
+<div class="card"><div class="icon">🔎</div><h3>Nhận biết kí hiệu</h3><p>Nhận biết các loại kí hiệu thường dùng để thể hiện đối tượng địa lí trên bản đồ.</p></div>
+<div class="card"><div class="icon">📖</div><h3>Đọc chú giải</h3><p>Biết dựa vào bảng chú giải để hiểu ý nghĩa của các kí hiệu.</p></div>
+<div class="card"><div class="icon">📍</div><h3>Đọc bản đồ</h3><p>Xác định vị trí và nhận biết các đối tượng địa lí cần quan tâm.</p></div>
+<div class="card"><div class="icon">🧭</div><h3>Tìm đường đi</h3><p>Biết vận dụng bản đồ để lựa chọn và mô tả một tuyến đường.</p></div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head"><h2>1. Kí hiệu và bảng chú giải bản đồ</h2><p>Kí hiệu là những quy ước dùng để thể hiện các đối tượng địa lí trên bản đồ.</p></div>
+<div class="symbol-grid">
+<div class="symbol-card"><div class="symbol-demo">📍</div><h3>Kí hiệu điểm</h3><p>Thường dùng cho các đối tượng có vị trí cụ thể như nhà ga, chợ, trường học, bệnh viện, sân bay...</p></div>
+<div class="symbol-card"><div class="symbol-demo">〰️</div><h3>Kí hiệu đường</h3><p>Thường dùng cho các đối tượng kéo dài như đường giao thông, sông, đường dây tải điện, đường ống...</p></div>
+<div class="symbol-card"><div class="symbol-demo">▰</div><h3>Kí hiệu diện tích</h3><p>Dùng để thể hiện những khu vực có phạm vi nhất định như lãnh thổ, rừng, vùng trồng cây...</p></div>
+</div>
+<div class="note">💡 <strong>Ghi nhớ:</strong> Muốn hiểu các kí hiệu trên một bản đồ cụ thể, hãy tìm <strong>bảng chú giải</strong>. Bảng chú giải giải thích ý nghĩa của những kí hiệu được sử dụng trên bản đồ.</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head"><h2>🗺️ Thử đọc một bảng chú giải</h2><p>Quan sát bản đồ minh họa và đối chiếu từng kí hiệu với bảng chú giải.</p></div>
+<div class="legend-wrap">
+<div class="legend-map">
+<div class="land a"></div><div class="land b"></div><div class="river r1"></div><div class="river r2"></div>
+<div class="map-symbol ms1">🏫</div><div class="map-symbol ms2">🏥</div><div class="map-symbol ms3">⚓</div><div class="map-symbol ms4">🌳</div>
+</div>
+<div class="legend-box">
+<h3>📖 Bảng chú giải</h3>
+<div class="legend-row"><div class="legend-symbol">🏫</div><div><strong>Trường học</strong><br><span>Kí hiệu điểm</span></div></div>
+<div class="legend-row"><div class="legend-symbol">🏥</div><div><strong>Bệnh viện</strong><br><span>Kí hiệu điểm</span></div></div>
+<div class="legend-row"><div class="legend-symbol">⚓</div><div><strong>Cảng biển</strong><br><span>Kí hiệu điểm</span></div></div>
+<div class="legend-row"><div class="legend-symbol">🌳</div><div><strong>Rừng</strong><br><span>Kí hiệu diện tích</span></div></div>
+<div class="legend-row"><div class="legend-symbol">〰️</div><div><strong>Sông</strong><br><span>Kí hiệu đường</span></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head"><h2>2. Đọc bản đồ thông dụng</h2><p>Một quy trình đơn giản giúp em không bị “rối” khi nhìn vào bản đồ.</p></div>
+<div class="tabs">
+<button class="tab active" onclick="showTab('read')">📚 Các bước đọc bản đồ</button>
+<button class="tab" onclick="showTab('examples')">🌍 Ví dụ</button>
+</div>
+<div id="read" class="tab-content active">
+<div class="read-grid">
+<div class="read-card"><h3>🔎 Quy trình đọc bản đồ</h3><div class="steps">
+<div class="step"><div class="num">1</div><div><strong>Đọc tên bản đồ</strong><span>Biết bản đồ thể hiện nội dung gì và lãnh thổ nào.</span></div></div>
+<div class="step"><div class="num">2</div><div><strong>Xem tỉ lệ</strong><span>Biết mức độ thu nhỏ và có thể tính khoảng cách giữa các đối tượng.</span></div></div>
+<div class="step"><div class="num">3</div><div><strong>Đọc kí hiệu, bảng chú giải</strong><span>Nhận biết các đối tượng được thể hiện trên bản đồ.</span></div></div>
+<div class="step"><div class="num">4</div><div><strong>Xác định đối tượng cần tìm</strong><span>Tập trung vào vị trí, mối quan hệ và thông tin cần khai thác.</span></div></div>
+</div></div>
+<div class="read-card"><h3>🧠 Mẹo nhớ nhanh</h3>
+<p style="color:var(--muted)">Hãy nhớ theo chuỗi:</p>
+<div style="font-size:24px;font-weight:900;color:var(--cyan2);margin:18px 0">TÊN → TỈ LỆ → CHÚ GIẢI → ĐỐI TƯỢNG</div>
+<p style="color:var(--muted)">Đọc đúng thứ tự sẽ giúp em hiểu nội dung bản đồ trước khi tìm một địa điểm hay một tuyến đường.</p>
+</div>
+</div>
+</div>
+<div id="examples" class="tab-content">
+<div class="cards">
+<div class="card"><div class="icon">🏙️</div><h3>Bản đồ hành chính</h3><p>Có thể thể hiện ranh giới, tỉnh/thành phố, thủ đô và các đơn vị hành chính.</p></div>
+<div class="card"><div class="icon">⛰️</div><h3>Bản đồ tự nhiên</h3><p>Có thể thể hiện địa hình, sông ngòi, hồ, biển và các đối tượng tự nhiên khác.</p></div>
+<div class="card"><div class="icon">🛣️</div><h3>Bản đồ giao thông</h3><p>Chú trọng các tuyến đường và những địa điểm phục vụ giao thông.</p></div>
+<div class="card"><div class="icon">🌾</div><h3>Bản đồ kinh tế</h3><p>Có thể thể hiện sự phân bố cây trồng, khoáng sản, cơ sở sản xuất...</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-head"><h2>3. 🧭 Tìm đường đi trên bản đồ</h2><p>Chọn điểm xuất phát và điểm đến để xem một tuyến đường minh họa.</p></div>
+<div class="route-box">
+<div class="route-controls">
+<div class="field"><label>Điểm xuất phát</label><select id="startPoint"><option value="school">🏫 Trường học</option><option value="market">🛒 Chợ</option><option value="museum">🏛️ Bảo tàng</option></select></div>
+<div class="field"><label>Điểm đến</label><select id="endPoint"><option value="hospital">🏥 Bệnh viện</option><option value="park">🌳 Công viên</option><option value="museum">🏛️ Bảo tàng</option></select></div>
+<button class="route-btn" onclick="findRoute()">🧭 Tìm đường</button>
+</div>
+<div class="city-map">
+<div class="road main r1"></div><div class="road main r2"></div><div class="road r3"></div><div class="road r4"></div><div class="road r5"></div>
+<div class="route-line a"></div><div class="route-line b"></div><div class="route-line c"></div>
+<div class="place school"><button>🏫</button><span>Trường học</span></div>
+<div class="place park"><button>🌳</button><span>Công viên</span></div>
+<div class="place hospital"><button>🏥</button><span>Bệnh viện</span></div>
+<div class="place market"><button>🛒</button><span>Chợ</span></div>
+<div class="place museum"><button>🏛️</button><span>Bảo tàng</span></div>
+</div>
+<div class="route-info">
+<div class="info-box"><strong id="routeTitle">Chưa chọn tuyến</strong><span id="routeText">Hãy chọn điểm xuất phát và điểm đến rồi nhấn “Tìm đường”.</span></div>
+<div class="info-box"><strong>💡 Khi tìm đường cần chú ý</strong><span>Xác định đúng vị trí, đọc kí hiệu, quan sát mạng lưới đường và chọn tuyến phù hợp.</span></div>
+</div>
+</div>
+<div class="note">📌 <strong>Liên hệ thực tế:</strong> Khi tìm đường từ nhà đến trường, em cần xác định điểm xuất phát, điểm đến, đọc bản đồ và mô tả những tuyến đường chính đi qua.</div>
+</div>
+</section>
+
+<section class="section" id="quiz">
+<div class="container">
+<div class="section-head"><h2>🎯 Luyện tập</h2><p>Kiểm tra nhanh kiến thức sau bài học.</p></div>
+<div class="quiz">
+<div id="quizStart" class="quiz-start">
+<div class="quiz-start-icon">🎯</div><h2>Sẵn sàng thử sức?</h2>
+<p>Hãy kiểm tra khả năng nhận biết kí hiệu, đọc bảng chú giải và vận dụng bản đồ để tìm đường đi.</p>
+<div class="quiz-info"><span>📝 8 câu hỏi</span><span>⏱️ 10 giây / câu</span><span>🏆 Có chấm điểm</span></div>
+<button class="start-btn" onclick="startQuiz()">▶ Bắt đầu làm bài</button>
+</div>
+
+<div id="quizContent" style="display:none">
+<div class="quiz-top"><strong id="qNumber">Câu 1 / 8</strong><div class="timer">⏱️ <span id="time">10</span>s</div></div>
+<div class="progress"><i id="progressBar"></i></div>
+<div class="question" id="question"></div>
+<div class="answers" id="answers"></div>
+<div class="feedback" id="feedback"></div>
+</div>
+
+<div id="quizResult" class="quiz-result" style="display:none">
+<div style="font-size:50px">🏆</div><div class="score" id="score">0/8</div>
+<div class="result-msg" id="resultMsg"></div>
+<button class="retry-btn" onclick="restartQuiz()">↻ Làm lại</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="footer">Học liệu số Địa lí 6 · Bài 4 · Kí hiệu và bảng chú giải bản đồ. Tìm đường đi trên bản đồ</footer>
+
+<script>
+const PROGRESS_KEY='hoclieu6_progress_v1';
+
+function goHome(){window.location.href='index.html'}
+
+function showTab(id){
+ document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ event.currentTarget.classList.add('active');
+}
+
+function findRoute(){
+ const s=document.getElementById('startPoint').value;
+ const e=document.getElementById('endPoint').value;
+ const names={school:'🏫 Trường học',market:'🛒 Chợ',museum:'🏛️ Bảo tàng',hospital:'🏥 Bệnh viện',park:'🌳 Công viên'};
+ const title=document.getElementById('routeTitle'),text=document.getElementById('routeText');
+ document.querySelectorAll('.route-line').forEach(x=>x.style.display='none');
+
+ if(s===e){
+  title.textContent='⚠️ Điểm xuất phát và điểm đến giống nhau';
+  text.textContent='Hãy chọn hai địa điểm khác nhau.';
+  return;
+ }
+
+ let desc='';
+ if(s==='school'&&e==='hospital'){document.querySelector('.route-line.a').style.display='block';document.querySelector('.route-line.b').style.display='block';desc='Đi theo tuyến chính qua khu vực trung tâm rồi tiếp tục về phía bệnh viện.'}
+ else if(s==='school'&&e==='park'){document.querySelector('.route-line.a').style.display='block';desc='Đi theo tuyến đường chính về phía công viên.'}
+ else if(s==='market'&&e==='hospital'){document.querySelector('.route-line.c').style.display='block';desc='Từ chợ đi theo tuyến đường nối về khu vực bệnh viện.'}
+ else if(s==='market'&&e==='park'){document.querySelector('.route-line.c').style.display='block';document.querySelector('.route-line.b').style.display='block';desc='Đi theo tuyến đường nối từ chợ qua khu vực trung tâm đến công viên.'}
+ else if(s==='museum'&&e==='hospital'){document.querySelector('.route-line.c').style.display='block';desc='Từ bảo tàng đi theo tuyến đường về phía bệnh viện.'}
+ else {document.querySelector('.route-line.a').style.display='block';document.querySelector('.route-line.c').style.display='block';desc='Quan sát các tuyến đường chính và lựa chọn tuyến nối phù hợp giữa hai địa điểm.'}
+
+ title.textContent=names[s]+' → '+names[e];
+ text.textContent=desc;
+}
+
+const questions=[
+ {q:'Kí hiệu bản đồ dùng để làm gì?',o:['Thể hiện các đối tượng địa lí trên bản đồ','Tính tuổi của Trái Đất','Thay thế tỉ lệ bản đồ','Xác định thời tiết'],a:0,e:'Kí hiệu bản đồ là những quy ước dùng để thể hiện các đối tượng địa lí trên bản đồ.'},
+ {q:'Kí hiệu nào thường dùng để thể hiện một trường học hoặc bệnh viện?',o:['Kí hiệu điểm','Kí hiệu đường','Kí hiệu diện tích','Không cần kí hiệu'],a:0,e:'Trường học, bệnh viện là những đối tượng có vị trí cụ thể nên thường được thể hiện bằng kí hiệu điểm.'},
+ {q:'Đường giao thông và sông thường được thể hiện bằng loại kí hiệu nào?',o:['Kí hiệu điểm','Kí hiệu đường','Kí hiệu diện tích','Kí hiệu chữ'],a:1,e:'Các đối tượng có dạng kéo dài như đường giao thông và sông thường dùng kí hiệu đường.'},
+ {q:'Muốn biết ý nghĩa của các kí hiệu trên một bản đồ, em cần xem gì?',o:['Tên sách','Bảng chú giải','Màu nền của trang web','Số trang'],a:1,e:'Bảng chú giải giải thích ý nghĩa của các kí hiệu được sử dụng trên bản đồ.'},
+ {q:'Khi bắt đầu đọc một bản đồ, việc nào giúp biết bản đồ thể hiện nội dung và lãnh thổ nào?',o:['Đọc tên bản đồ','Đo chiều dài màn hình','Đổi màu bản đồ','Tắt bảng chú giải'],a:0,e:'Đọc tên bản đồ giúp xác định nội dung và lãnh thổ được thể hiện.'},
+ {q:'Sau khi đọc tên và tỉ lệ, bước quan trọng để nhận biết các đối tượng trên bản đồ là gì?',o:['Đọc kí hiệu và bảng chú giải','Đóng bản đồ','Xóa tên địa điểm','Chỉ nhìn màu nền'],a:0,e:'Kí hiệu và bảng chú giải giúp nhận biết các đối tượng được thể hiện trên bản đồ.'},
+ {q:'Khi tìm đường đi trên bản đồ, điều nào cần làm trước?',o:['Xác định điểm xuất phát và điểm đến','Bỏ qua bảng chú giải','Chỉ nhìn một kí hiệu','Xóa tỉ lệ bản đồ'],a:0,e:'Cần xác định rõ điểm xuất phát và điểm đến, sau đó đọc bản đồ để lựa chọn tuyến phù hợp.'},
+ {q:'Một bạn muốn đi từ nhà đến trường bằng bản đồ. Thông tin nào phù hợp nhất để mô tả lộ trình?',o:['Các tuyến đường chính đi qua','Màu yêu thích của bạn','Tên bài học','Số câu hỏi trong bài'],a:0,e:'Mô tả lộ trình nên nêu những tuyến đường chính mà người đi qua để đến điểm đích.'}
+];
+let currentQuestion=0,score=0,timer=null,timeLeft=10,answered=false;
+
+function startQuiz(){
+ clearInterval(timer);currentQuestion=0;score=0;
+ document.getElementById('quizStart').style.display='none';
+ document.getElementById('quizContent').style.display='block';
+ document.getElementById('quizResult').style.display='none';
+ renderQuestion();
+}
+function renderQuestion(){
+ answered=false;clearInterval(timer);
+ const q=questions[currentQuestion];
+ document.getElementById('qNumber').textContent=`Câu ${currentQuestion+1} / ${questions.length}`;
+ document.getElementById('progressBar').style.width=`${(currentQuestion/questions.length)*100}%`;
+ document.getElementById('question').textContent=q.q;
+ const box=document.getElementById('answers');box.innerHTML='';
+ document.getElementById('feedback').className='feedback';document.getElementById('feedback').textContent='';
+ q.o.forEach((ans,i)=>{
+  const b=document.createElement('button');b.className='answer';b.textContent=ans;
+  b.onclick=()=>chooseAnswer(i);box.appendChild(b);
+ });
+ timeLeft=10;document.getElementById('time').textContent=timeLeft;
+ timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=timeLeft;if(timeLeft<=0){clearInterval(timer);chooseAnswer(-1)}},1000);
+}
+function chooseAnswer(i){
+ if(answered)return;answered=true;clearInterval(timer);
+ const q=questions[currentQuestion],buttons=document.querySelectorAll('.answer');
+ buttons.forEach((b,idx)=>{b.disabled=true;if(idx===q.a)b.classList.add('correct');if(idx===i&&i!==q.a)b.classList.add('wrong')});
+ if(i===q.a)score++;
+ const f=document.getElementById('feedback');
+ f.textContent=(i===q.a?'✅ Chính xác! ':'❌ Chưa đúng. ')+q.e;f.className='feedback show';
+ setTimeout(()=>{currentQuestion++;if(currentQuestion<questions.length)renderQuestion();else finishQuiz()},1250);
+}
+function finishQuiz(){
+ document.getElementById('quizContent').style.display='none';
+ document.getElementById('quizResult').style.display='block';
+ document.getElementById('score').textContent=`${score}/${questions.length}`;
+ document.getElementById('progressBar').style.width='100%';
+ let msg=score>=7?'Xuất sắc! Em đã nắm rất chắc kiến thức bài học.':score>=5?'Tốt lắm! Em đã hiểu phần lớn nội dung, hãy ôn lại một vài điểm nhỏ.':'Cố gắng thêm nhé! Em nên xem lại phần kí hiệu, bảng chú giải và cách tìm đường.';
+ document.getElementById('resultMsg').textContent=msg;
+ const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');p.g04=true;localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));
+}
+function restartQuiz(){
+ clearInterval(timer);currentQuestion=0;score=0;
+ document.getElementById('quizStart').style.display='block';
+ document.getElementById('quizContent').style.display='none';
+ document.getElementById('quizResult').style.display='none';
+}
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("g04");</script>
+</body>
+</html>

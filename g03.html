@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 3 - Tỉ lệ bản đồ | Học liệu số Địa lí 6</title>
+
+<style>
+:root{
+    --bg:#07111f;
+    --bg2:#0b1b2d;
+    --panel:#10263b;
+    --panel2:#132f47;
+    --line:#1f4967;
+    --cyan:#27d3e8;
+    --cyan2:#72e8f4;
+    --blue:#3f8cff;
+    --green:#40d99a;
+    --yellow:#ffd166;
+    --orange:#ff9f43;
+    --red:#ff6b6b;
+    --text:#edf7ff;
+    --muted:#9fb7ca;
+    --shadow:0 18px 50px rgba(0,0,0,.28);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(circle at 15% 0%,rgba(39,211,232,.12),transparent 28%),
+        radial-gradient(circle at 85% 10%,rgba(63,140,255,.10),transparent 25%),
+        var(--bg);
+    line-height:1.65;
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.container{
+    width:min(1180px,calc(100% - 32px));
+    margin:auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter:blur(16px);
+    background:rgba(7,17,31,.88);
+    border-bottom:1px solid rgba(114,232,244,.12);
+}
+
+.nav{
+    min-height:68px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-weight:800;
+    color:white;
+}
+
+.brand-icon{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#113f5b,#176c81);
+    box-shadow:0 8px 24px rgba(39,211,232,.18);
+    font-size:21px;
+}
+
+.nav-actions{
+    display:flex;
+    gap:9px;
+}
+
+.nav-btn{
+    border:1px solid var(--line);
+    color:var(--text);
+    background:#0c2032;
+    border-radius:12px;
+    padding:8px 13px;
+    transition:.2s;
+}
+
+.nav-btn:hover{
+    border-color:var(--cyan);
+    transform:translateY(-1px);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    padding:62px 0 42px;
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:28px;
+    align-items:stretch;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 12px;
+    border:1px solid rgba(39,211,232,.28);
+    border-radius:999px;
+    color:var(--cyan2);
+    background:rgba(39,211,232,.07);
+    font-size:13px;
+    font-weight:700;
+}
+
+h1{
+    font-size:clamp(34px,5vw,58px);
+    line-height:1.08;
+    margin:18px 0 16px;
+    letter-spacing:-1.8px;
+}
+
+.gradient{
+    color:var(--cyan2);
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:730px;
+    font-size:17px;
+}
+
+.hero-card{
+    background:
+        linear-gradient(145deg,rgba(19,47,71,.95),rgba(8,25,41,.95));
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:25px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+}
+
+.hero-card:before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(39,211,232,.08);
+    right:-50px;
+    top:-60px;
+}
+
+.scale-preview{
+    position:relative;
+    z-index:1;
+}
+
+.scale-title{
+    color:var(--muted);
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.big-scale{
+    font-size:38px;
+    font-weight:900;
+    color:var(--cyan2);
+    margin:4px 0 16px;
+}
+
+.mini-ruler{
+    height:38px;
+    display:flex;
+    align-items:flex-end;
+    gap:0;
+    margin-top:18px;
+}
+
+.mini-ruler span{
+    width:25%;
+    height:20px;
+    border-left:1px solid #bdeef4;
+    position:relative;
+}
+
+.mini-ruler span:last-child{
+    border-right:1px solid #bdeef4;
+}
+
+.mini-ruler span:after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    border-bottom:2px solid var(--cyan);
+}
+
+.mini-ruler small{
+    position:absolute;
+    bottom:-22px;
+    left:50%;
+    transform:translateX(-50%);
+    color:var(--muted);
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+section{
+    padding:38px 0;
+}
+
+.section-head{
+    margin-bottom:22px;
+}
+
+.eyebrow{
+    color:var(--cyan);
+    font-size:12px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+}
+
+.section-title{
+    font-size:30px;
+    margin:4px 0 8px;
+}
+
+.section-desc{
+    color:var(--muted);
+    margin:0;
+}
+
+.grid-2{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.grid-4{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.card{
+    background:linear-gradient(145deg,rgba(16,38,59,.96),rgba(10,27,43,.96));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px;
+    box-shadow:0 12px 35px rgba(0,0,0,.16);
+}
+
+.card h3{
+    margin:7px 0 7px;
+}
+
+.card p{
+    color:var(--muted);
+    margin:0;
+}
+
+.icon{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    background:#0b3045;
+    border:1px solid #1b5771;
+    font-size:21px;
+}
+
+/* =========================
+   CONCEPT
+========================= */
+
+.definition{
+    border-left:4px solid var(--cyan);
+    padding:20px 23px;
+    background:rgba(39,211,232,.055);
+    border-radius:0 18px 18px 0;
+    font-size:18px;
+}
+
+.definition strong{
+    color:var(--cyan2);
+}
+
+.example{
+    margin-top:15px;
+    padding:15px 17px;
+    border-radius:14px;
+    background:#091b2b;
+    border:1px solid #173b56;
+}
+
+.example code{
+    color:var(--yellow);
+    font-size:16px;
+}
+
+/* =========================
+   SCALE COMPARE
+========================= */
+
+.scale-compare{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.scale-box{
+    background:#091b2b;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px;
+}
+
+.scale-box h3{
+    margin-top:0;
+}
+
+.map-demo{
+    height:145px;
+    border-radius:14px;
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(rgba(39,211,232,.09) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(39,211,232,.09) 1px,transparent 1px),
+        #0b2437;
+    background-size:22px 22px;
+    border:1px solid #17435c;
+}
+
+.land{
+    position:absolute;
+    background:#2e6671;
+    opacity:.9;
+}
+
+.land.a{
+    width:110px;
+    height:70px;
+    border-radius:48% 28% 58% 35%;
+    left:28px;
+    top:38px;
+    transform:rotate(-13deg);
+}
+
+.land.b{
+    width:78px;
+    height:92px;
+    border-radius:45% 55% 28% 65%;
+    right:40px;
+    top:23px;
+    transform:rotate(17deg);
+}
+
+.detail-point{
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--yellow);
+    box-shadow:0 0 0 5px rgba(255,209,102,.12);
+}
+
+.large-scale .detail-point{
+    width:10px;
+    height:10px;
+}
+
+.small-scale .detail-point{
+    width:5px;
+    height:5px;
+}
+
+/* =========================
+   INTERACTIVE LAB
+========================= */
+
+.lab{
+    background:
+        linear-gradient(145deg,rgba(14,42,63,.98),rgba(8,24,39,.98));
+    border:1px solid #21506d;
+    border-radius:26px;
+    padding:25px;
+    box-shadow:var(--shadow);
+}
+
+.lab-grid{
+    display:grid;
+    grid-template-columns:1fr 350px;
+    gap:22px;
+}
+
+.map-workspace{
+    min-height:470px;
+    position:relative;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #1d4a65;
+    background:
+        radial-gradient(circle at 50% 45%,rgba(39,211,232,.05),transparent 38%),
+        #071a2b;
+}
+
+.map-workspace:before,
+.map-workspace:after{
+    content:"";
+    position:absolute;
+    pointer-events:none;
+}
+
+.map-workspace:before{
+    left:50%;
+    top:0;
+    bottom:0;
+    width:1px;
+    background:rgba(114,232,244,.12);
+}
+
+.map-workspace:after{
+    top:50%;
+    left:0;
+    right:0;
+    height:1px;
+    background:rgba(114,232,244,.12);
+}
+
+.map-title{
+    position:absolute;
+    top:15px;
+    left:17px;
+    z-index:4;
+    font-size:13px;
+    color:var(--muted);
+    background:rgba(7,17,31,.72);
+    padding:6px 10px;
+    border-radius:9px;
+}
+
+.city{
+    position:absolute;
+    width:15px;
+    height:15px;
+    border-radius:50%;
+    background:var(--yellow);
+    border:3px solid #071a2b;
+    box-shadow:0 0 0 5px rgba(255,209,102,.13);
+    z-index:5;
+}
+
+.city:after{
+    content:"";
+    position:absolute;
+    left:14px;
+    top:-3px;
+    white-space:nowrap;
+    color:#d8edf7;
+    font-size:12px;
+    font-weight:700;
+}
+
+.city.hanoi{
+    left:70%;
+    top:36%;
+}
+
+.city.hanoi:after{
+    content:"Hà Nội";
+}
+
+.city.hphong{
+    left:74%;
+    top:34%;
+}
+
+.city.hphong:after{
+    content:"Hải Phòng";
+}
+
+.city.vinh{
+    left:66%;
+    top:48%;
+}
+
+.city.vinh:after{
+    content:"Vinh";
+}
+
+.route{
+    position:absolute;
+    height:4px;
+    background:linear-gradient(90deg,var(--cyan),var(--yellow));
+    transform-origin:left center;
+    z-index:3;
+    border-radius:5px;
+    box-shadow:0 0 12px rgba(39,211,232,.28);
+}
+
+.route.hn-hp{
+    left:71%;
+    top:37%;
+    width:8%;
+    transform:rotate(-23deg);
+}
+
+.route.hn-vinh{
+    left:70%;
+    top:39%;
+    width:16%;
+    transform:rotate(135deg);
+}
+
+.continent-shape{
+    position:absolute;
+    background:#174e61;
+    border:1px solid #28697b;
+    opacity:.72;
+}
+
+.vn{
+    width:25px;
+    height:150px;
+    border-radius:55% 35% 60% 30%;
+    right:24%;
+    top:28%;
+    transform:rotate(-8deg);
+}
+
+.sea-label{
+    position:absolute;
+    color:#39667d;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.sea-label.one{
+    left:14%;
+    top:28%;
+}
+
+.sea-label.two{
+    right:15%;
+    bottom:20%;
+}
+
+/* ruler */
+
+.measure-panel{
+    background:#081a2b;
+    border:1px solid #1a425c;
+    border-radius:20px;
+    padding:21px;
+}
+
+.measure-panel h3{
+    margin-top:0;
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+label{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:6px;
+}
+
+input,
+select{
+    width:100%;
+    border:1px solid #28516b;
+    background:#0b2235;
+    color:var(--text);
+    border-radius:11px;
+    padding:10px 11px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:var(--cyan);
+}
+
+.primary-btn{
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:12px 14px;
+    font-weight:800;
+    color:#03141d;
+    background:linear-gradient(135deg,var(--cyan2),var(--cyan));
+    margin-top:7px;
+}
+
+.secondary-btn{
+    width:100%;
+    border:1px solid #2b5872;
+    border-radius:12px;
+    padding:11px 14px;
+    font-weight:700;
+    color:var(--text);
+    background:#0b2235;
+    margin-top:9px;
+}
+
+.result{
+    margin-top:17px;
+    padding:17px;
+    border-radius:15px;
+    background:#0b2639;
+    border:1px solid #1b4e68;
+}
+
+.result-label{
+    font-size:12px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.8px;
+}
+
+.result-value{
+    color:var(--cyan2);
+    font-size:27px;
+    font-weight:900;
+    margin-top:2px;
+}
+
+.formula{
+    margin-top:12px;
+    font-size:13px;
+    color:#b9d1df;
+}
+
+/* =========================
+   RULER
+========================= */
+
+.ruler-section{
+    margin-top:20px;
+    padding:20px;
+    background:#091b2b;
+    border:1px solid #1a425c;
+    border-radius:18px;
+}
+
+.ruler{
+    height:72px;
+    position:relative;
+    border-bottom:3px solid var(--cyan);
+    display:flex;
+    align-items:flex-end;
+    padding:0 4px;
+}
+
+.tick{
+    position:relative;
+    flex:1;
+    height:28px;
+    border-left:1px solid #7ccbd6;
+}
+
+.tick:nth-child(5n+1){
+    height:42px;
+}
+
+.tick span{
+    position:absolute;
+    bottom:-26px;
+    left:-4px;
+    font-size:11px;
+    color:var(--muted);
+}
+
+.distance-highlight{
+    position:absolute;
+    left:12%;
+    width:32%;
+    bottom:6px;
+    height:8px;
+    border-radius:10px;
+    background:var(--yellow);
+    box-shadow:0 0 12px rgba(255,209,102,.3);
+}
+
+/* =========================
+   TWO SCALE TYPES
+========================= */
+
+.scale-types{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.type-card{
+    padding:23px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:linear-gradient(145deg,#102b42,#0a2033);
+}
+
+.type-number{
+    font-size:31px;
+    font-weight:900;
+    color:var(--cyan2);
+}
+
+.type-ruler{
+    margin-top:18px;
+    height:35px;
+    display:flex;
+}
+
+.type-ruler div{
+    flex:1;
+    border-top:3px solid var(--cyan);
+    border-bottom:3px solid var(--cyan);
+    border-left:1px solid var(--cyan);
+}
+
+.type-ruler div:nth-child(even){
+    background:rgba(39,211,232,.08);
+}
+
+.type-ruler div:last-child{
+    border-right:1px solid var(--cyan);
+}
+
+/* =========================
+   FORMULA
+========================= */
+
+.formula-card{
+    text-align:center;
+    padding:27px;
+    background:linear-gradient(145deg,#102c44,#0b2033);
+    border:1px solid #24536e;
+    border-radius:22px;
+}
+
+.formula-main{
+    font-size:clamp(22px,4vw,36px);
+    color:var(--cyan2);
+    font-weight:900;
+    margin:12px 0;
+}
+
+.formula-note{
+    color:var(--muted);
+}
+
+.conversion{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:20px;
+}
+
+.conversion div{
+    padding:15px;
+    border-radius:14px;
+    background:#091b2b;
+    border:1px solid #183d56;
+}
+
+.conversion strong{
+    display:block;
+    color:var(--yellow);
+    font-size:18px;
+}
+
+/* =========================
+   SCALE COMPARATOR
+========================= */
+
+.compare-controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:17px;
+}
+
+.scale-choice{
+    border:1px solid #2a5770;
+    background:#0b2133;
+    color:var(--text);
+    border-radius:11px;
+    padding:9px 13px;
+}
+
+.scale-choice.active{
+    border-color:var(--cyan);
+    background:rgba(39,211,232,.11);
+    color:var(--cyan2);
+}
+
+.compare-map{
+    height:250px;
+    position:relative;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid #1c4965;
+    background:
+        linear-gradient(rgba(39,211,232,.06) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(39,211,232,.06) 1px,transparent 1px),
+        #071a2b;
+    background-size:24px 24px;
+}
+
+.compare-land{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    background:#225a68;
+    border:1px solid #34798a;
+    transition:.35s;
+}
+
+.compare-city{
+    position:absolute;
+    width:9px;
+    height:9px;
+    background:var(--yellow);
+    border-radius:50%;
+    transition:.35s;
+}
+
+.compare-text{
+    margin-top:15px;
+    color:var(--muted);
+}
+
+.compare-text strong{
+    color:var(--cyan2);
+}
+
+/* =========================
+   MEMORY
+========================= */
+
+.memory{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+}
+
+.memory-item{
+    text-align:center;
+    padding:19px 12px;
+    background:#0b2032;
+    border:1px solid #1a415a;
+    border-radius:17px;
+}
+
+.memory-item b{
+    display:block;
+    color:var(--cyan2);
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+.memory-item span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-box{
+    background:linear-gradient(145deg,#102b42,#091d30);
+    border:1px solid #22526d;
+    border-radius:24px;
+    padding:25px;
+    box-shadow:var(--shadow);
+}
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:17px;
+}
+
+.progress-wrap{
+    flex:1;
+}
+
+.progress-text{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.progress-bar{
+    margin-top:7px;
+    height:8px;
+    background:#071724;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,var(--cyan),var(--blue));
+    transition:.3s;
+}
+
+.timer{
+    min-width:68px;
+    text-align:center;
+    padding:9px 12px;
+    border-radius:12px;
+    background:#071724;
+    border:1px solid #214961;
+    color:var(--yellow);
+    font-weight:900;
+}
+
+.question{
+    font-size:21px;
+    font-weight:800;
+    margin:18px 0;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.answer{
+    text-align:left;
+    padding:14px 16px;
+    border:1px solid #25516a;
+    border-radius:14px;
+    background:#0b2134;
+    color:var(--text);
+    transition:.2s;
+}
+
+.answer:hover{
+    border-color:var(--cyan);
+    transform:translateY(-1px);
+}
+
+.answer.correct{
+    border-color:var(--green);
+    background:rgba(64,217,154,.09);
+}
+
+.answer.wrong{
+    border-color:var(--red);
+    background:rgba(255,107,107,.08);
+}
+
+.feedback{
+    min-height:25px;
+    margin-top:15px;
+    font-weight:700;
+}
+
+.next-btn{
+    margin-top:10px;
+    border:0;
+    border-radius:12px;
+    padding:11px 18px;
+    background:var(--cyan);
+    color:#04131c;
+    font-weight:800;
+}
+
+.quiz-result{
+    display:none;
+    text-align:center;
+    padding:30px 10px;
+}
+
+.score-circle{
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    margin:0 auto 18px;
+    border:8px solid rgba(39,211,232,.2);
+    box-shadow:inset 0 0 30px rgba(39,211,232,.08);
+}
+
+.score-circle strong{
+    font-size:31px;
+    color:var(--cyan2);
+}
+
+/* =========================
+   QUIZ START SCREEN
+========================= */
+
+.quiz-start{
+    text-align:center;
+    padding:32px 15px 25px;
+}
+
+.quiz-start-icon{
+    width:78px;
+    height:78px;
+    margin:0 auto 17px;
+    border-radius:23px;
+    display:grid;
+    place-items:center;
+    font-size:36px;
+    background:rgba(39,211,232,.08);
+    border:1px solid rgba(39,211,232,.22);
+}
+
+.quiz-start h2{
+    margin:0 0 8px;
+}
+
+.quiz-start p{
+    color:var(--muted);
+    max-width:620px;
+    margin:0 auto 18px;
+}
+
+.quiz-info{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-bottom:21px;
+}
+
+.quiz-info span{
+    padding:8px 12px;
+    border-radius:10px;
+    background:#091b2b;
+    border:1px solid #183d56;
+    color:#cfe5ef;
+    font-size:13px;
+}
+
+.start-btn{
+    border:0;
+    border-radius:12px;
+    padding:12px 22px;
+    background:linear-gradient(135deg,var(--cyan2),var(--cyan));
+    color:#04131c;
+    font-weight:900;
+    transition:.2s;
+}
+
+.start-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 25px rgba(39,211,232,.16);
+}
+
+@media(max-width:600px){
+    .answers{
+        grid-template-columns:1fr;
+    }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.finish{
+    text-align:center;
+    padding:50px 0 75px;
+}
+
+.finish-btn{
+    border:0;
+    border-radius:14px;
+    padding:14px 25px;
+    background:linear-gradient(135deg,var(--cyan2),var(--cyan));
+    color:#03131c;
+    font-weight:900;
+    font-size:16px;
+    box-shadow:0 10px 30px rgba(39,211,232,.15);
+}
+
+.footer{
+    border-top:1px solid rgba(114,232,244,.1);
+    padding:25px 0;
+    color:#7590a4;
+    font-size:13px;
+    text-align:center;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+    .hero-grid,
+    .lab-grid{
+        grid-template-columns:1fr;
+    }
+
+    .grid-4{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .memory{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:650px){
+    .container{
+        width:min(100% - 22px,1180px);
+    }
+
+    .hero{
+        padding-top:35px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4,
+    .scale-compare,
+    .scale-types{
+        grid-template-columns:1fr;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    .conversion{
+        grid-template-columns:1fr;
+    }
+
+    .memory{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .nav-actions .nav-btn:first-child{
+        display:none;
+    }
+
+    .map-workspace{
+        min-height:390px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<!-- =========================
+     NAV
+========================= -->
+
+<header class="topbar">
+    <div class="container nav">
+        <div class="brand">
+            <div class="brand-icon">📏</div>
+            <div>HỌC LIỆU SỐ ĐỊA LÍ 6</div>
+        </div>
+
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="goHome()">⌂ Trang chủ</button>
+            <button class="nav-btn" onclick="scrollToId('quiz')">📝 Luyện tập</button>
+        </div>
+    </div>
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<main>
+
+<section class="hero">
+    <div class="container hero-grid">
+
+        <div>
+            <span class="badge">🌎 ĐỊA LÍ 6 · CHƯƠNG 1</span>
+
+            <h1>
+                Bài 3.<br>
+                <span class="gradient">
+                    Tỉ lệ bản đồ. Tính khoảng cách thực tế dựa vào tỉ lệ bản đồ.
+                </span>
+            </h1>
+
+            <p>
+                Tìm hiểu cách biểu hiện tỉ lệ bản đồ và thực hành
+                tính khoảng cách thực tế giữa hai địa điểm dựa vào
+                tỉ lệ bản đồ.
+            </p>
+        </div>
+
+        <div class="hero-card">
+            <div class="scale-preview">
+
+                <div class="scale-title">
+                    Ví dụ tỉ lệ số
+                </div>
+
+                <div class="big-scale">
+                    1 : 1 000 000
+                </div>
+
+                <div>
+                    1 cm trên bản đồ
+                    <br>
+                    <span style="color:var(--cyan2);font-weight:800">
+                        = 10 km ngoài thực tế
+                    </span>
+                </div>
+
+                <div class="mini-ruler">
+                    <span><small>0</small></span>
+                    <span><small>10 km</small></span>
+                    <span><small>20 km</small></span>
+                    <span><small>30 km</small></span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     OBJECTIVES
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">MỤC TIÊU</div>
+        <h2 class="section-title">Học xong bài này, em có thể...</h2>
+    </div>
+
+    <div class="grid-4">
+
+        <div class="card">
+            <div class="icon">📐</div>
+            <h3>Hiểu tỉ lệ</h3>
+            <p>
+                Biết tỉ lệ bản đồ cho biết mức độ thu nhỏ
+                độ dài giữa bản đồ và thực tế.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔢</div>
+            <h3>Đọc tỉ lệ số</h3>
+            <p>
+                Hiểu ý nghĩa của dạng tỉ lệ như
+                1 : 1 000 000.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📏</div>
+            <h3>Đọc tỉ lệ thước</h3>
+            <p>
+                Biết cách sử dụng thước tỉ lệ để xác định
+                khoảng cách thực tế.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🧮</div>
+            <h3>Tính khoảng cách</h3>
+            <p>
+                Tính được khoảng cách thực tế giữa hai
+                địa điểm trên bản đồ.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     DEFINITION
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">01 · KIẾN THỨC CỐT LÕI</div>
+        <h2 class="section-title">Tỉ lệ bản đồ là gì?</h2>
+    </div>
+
+    <div class="definition">
+        <strong>Tỉ lệ bản đồ</strong>
+        cho biết mức độ thu nhỏ độ dài giữa các đối tượng
+        trên bản đồ so với thực tế là bao nhiêu.
+    </div>
+
+    <div class="example">
+        <strong>Ví dụ:</strong>
+        <br><br>
+        Tỉ lệ <code>1 : 1 000 000</code> có nghĩa là:
+        <br>
+        <b>1 cm trên bản đồ = 1 000 000 cm ngoài thực tế.</b>
+        <br>
+        Vì 1 000 000 cm = 10 km nên:
+        <br>
+        <span style="color:var(--cyan2);font-weight:800">
+            1 cm trên bản đồ = 10 km ngoài thực tế.
+        </span>
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     LARGE / SMALL SCALE
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">02 · SO SÁNH</div>
+        <h2 class="section-title">Tỉ lệ lớn và tỉ lệ nhỏ</h2>
+        <p class="section-desc">
+            Mẫu số của tỉ lệ số càng nhỏ thì tỉ lệ càng lớn.
+            Tỉ lệ lớn thường thể hiện được nhiều chi tiết hơn.
+        </p>
+    </div>
+
+    <div class="scale-compare">
+
+        <div class="scale-box">
+
+            <h3 style="color:var(--cyan2)">
+                🔎 Tỉ lệ lớn
+            </h3>
+
+            <div class="map-demo large-scale">
+                <div class="land a"></div>
+                <div class="land b"></div>
+
+                <span class="detail-point" style="left:30%;top:40%"></span>
+                <span class="detail-point" style="left:40%;top:48%"></span>
+                <span class="detail-point" style="left:48%;top:35%"></span>
+                <span class="detail-point" style="left:61%;top:57%"></span>
+                <span class="detail-point" style="left:69%;top:41%"></span>
+            </div>
+
+            <p style="margin-top:13px">
+                Mẫu số nhỏ hơn → mức độ thu nhỏ ít hơn →
+                có thể thể hiện <b style="color:var(--cyan2)">
+                nhiều chi tiết hơn</b>.
+            </p>
+
+        </div>
+
+
+        <div class="scale-box">
+
+            <h3 style="color:var(--yellow)">
+                🌍 Tỉ lệ nhỏ
+            </h3>
+
+            <div class="map-demo small-scale">
+                <div class="land a"></div>
+                <div class="land b"></div>
+
+                <span class="detail-point" style="left:30%;top:40%"></span>
+                <span class="detail-point" style="left:48%;top:35%"></span>
+                <span class="detail-point" style="left:69%;top:41%"></span>
+            </div>
+
+            <p style="margin-top:13px">
+                Mẫu số lớn hơn → mức độ thu nhỏ nhiều hơn →
+                lãnh thổ thể hiện được <b style="color:var(--yellow)">
+                rộng hơn nhưng ít chi tiết hơn</b>.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     TWO TYPES
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">03 · HAI CÁCH BIỂU HIỆN</div>
+        <h2 class="section-title">Tỉ lệ số và tỉ lệ thước</h2>
+    </div>
+
+    <div class="scale-types">
+
+        <div class="type-card">
+
+            <div class="eyebrow">TỈ LỆ SỐ</div>
+
+            <div class="type-number">
+                1 : 6 000 000
+            </div>
+
+            <p>
+                Được viết dưới dạng một phân số mà tử số thường
+                là 1. Mẫu số cho biết mức độ thu nhỏ.
+            </p>
+
+            <div class="example">
+                <b>1 cm trên bản đồ</b>
+                <br>
+                = 6 000 000 cm thực tế
+                <br>
+                = <span style="color:var(--cyan2)">60 km</span>
+            </div>
+
+        </div>
+
+
+        <div class="type-card">
+
+            <div class="eyebrow">TỈ LỆ THƯỚC</div>
+
+            <p>
+                Được thể hiện bằng một thước đo đã tính sẵn,
+                mỗi đoạn trên thước tương ứng với một khoảng
+                cách ngoài thực tế.
+            </p>
+
+            <div class="type-ruler">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                color:var(--muted);
+                font-size:12px;
+                margin-top:7px;
+            ">
+                <span>0</span>
+                <span>10 km</span>
+                <span>20 km</span>
+                <span>30 km</span>
+                <span>40 km</span>
+                <span>50 km</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     FORMULA
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">04 · CÔNG THỨC</div>
+        <h2 class="section-title">Tính khoảng cách thực tế</h2>
+    </div>
+
+    <div class="formula-card">
+
+        <div>
+            Khi biết khoảng cách trên bản đồ và tỉ lệ số:
+        </div>
+
+        <div class="formula-main">
+            Khoảng cách thực tế
+            = Khoảng cách bản đồ × Mẫu số tỉ lệ
+        </div>
+
+        <div class="formula-note">
+            Sau khi tính, cần đổi đơn vị về km hoặc đơn vị phù hợp.
+        </div>
+
+        <div class="conversion">
+
+            <div>
+                <strong>100 cm</strong>
+                = 1 m
+            </div>
+
+            <div>
+                <strong>100 000 cm</strong>
+                = 1 km
+            </div>
+
+            <div>
+                <strong>1 000 m</strong>
+                = 1 km
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     INTERACTIVE CALCULATOR
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">05 · PHÒNG THỰC HÀNH</div>
+        <h2 class="section-title">
+            🧮 Máy tính khoảng cách bản đồ
+        </h2>
+        <p class="section-desc">
+            Nhập khoảng cách đo được trên bản đồ và tỉ lệ số.
+            Hệ thống sẽ tự tính khoảng cách thực tế.
+        </p>
+    </div>
+
+
+    <div class="lab">
+
+        <div class="lab-grid">
+
+            <!-- MAP -->
+
+            <div>
+
+                <div class="map-workspace">
+
+                    <div class="map-title">
+                        🗺️ BẢN ĐỒ MINH HỌA
+                    </div>
+
+                    <div class="sea-label one">
+                        VIỆT NAM
+                    </div>
+
+                    <div class="sea-label two">
+                        BIỂN ĐÔNG
+                    </div>
+
+                    <div class="continent-shape vn"></div>
+
+                    <div class="city hanoi"></div>
+                    <div class="city hphong"></div>
+                    <div class="city vinh"></div>
+
+                    <div class="route hn-hp"></div>
+                    <div class="route hn-vinh"></div>
+
+                </div>
+
+
+                <div class="ruler-section">
+
+                    <b style="color:var(--cyan2)">
+                        📏 Thước đo khoảng cách trên bản đồ
+                    </b>
+
+                    <div class="ruler">
+
+                        <div class="distance-highlight"></div>
+
+                        <div class="tick"><span>0</span></div>
+                        <div class="tick"><span>1</span></div>
+                        <div class="tick"><span>2</span></div>
+                        <div class="tick"><span>3</span></div>
+                        <div class="tick"><span>4</span></div>
+                        <div class="tick"><span>5</span></div>
+                        <div class="tick"><span>6</span></div>
+                        <div class="tick"><span>7</span></div>
+                        <div class="tick"><span>8</span></div>
+                        <div class="tick"><span>9</span></div>
+                        <div class="tick"><span>10</span></div>
+
+                    </div>
+
+                    <div style="
+                        margin-top:34px;
+                        color:var(--muted);
+                        font-size:13px;
+                    ">
+                        Đơn vị trên thước: <b style="color:white">cm</b>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CALCULATOR -->
+
+            <div class="measure-panel">
+
+                <h3>⚙️ Thiết lập phép tính</h3>
+
+                <div class="form-row">
+
+                    <div>
+                        <label>
+                            Khoảng cách trên bản đồ
+                        </label>
+
+                        <input
+                            id="mapDistance"
+                            type="number"
+                            value="1.5"
+                            min="0"
+                            step="0.1"
+                        >
+                    </div>
+
+                    <div>
+                        <label>
+                            Đơn vị
+                        </label>
+
+                        <select id="mapUnit">
+                            <option value="cm">cm</option>
+                            <option value="mm">mm</option>
+                            <option value="m">m</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div>
+                    <label>
+                        Tỉ lệ bản đồ
+                    </label>
+
+                    <select id="scaleSelect">
+                        <option value="6000000">
+                            1 : 6 000 000
+                        </option>
+
+                        <option value="1000000">
+                            1 : 1 000 000
+                        </option>
+
+                        <option value="2000000">
+                            1 : 2 000 000
+                        </option>
+
+                        <option value="5000000">
+                            1 : 5 000 000
+                        </option>
+
+                        <option value="10000000">
+                            1 : 10 000 000
+                        </option>
+                    </select>
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="calculateDistance()"
+                >
+                    🧮 Tính khoảng cách
+                </button>
+
+                <button
+                    class="secondary-btn"
+                    onclick="loadExample()"
+                >
+                    ↻ Nạp ví dụ Hà Nội – Hải Phòng
+                </button>
+
+
+                <div class="result">
+
+                    <div class="result-label">
+                        Kết quả
+                    </div>
+
+                    <div
+                        class="result-value"
+                        id="resultValue"
+                    >
+                        90 km
+                    </div>
+
+                    <div
+                        class="formula"
+                        id="formulaText"
+                    >
+                        1,5 cm × 6 000 000
+                        = 9 000 000 cm
+                        = 90 km
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     SCALE COMPARISON
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">06 · KHÁM PHÁ</div>
+        <h2 class="section-title">
+            🔍 Tỉ lệ thay đổi thì bản đồ thay đổi thế nào?
+        </h2>
+    </div>
+
+
+    <div class="card">
+
+        <div class="compare-controls">
+
+            <button
+                class="scale-choice active"
+                onclick="changeCompareScale(1000000,this)"
+            >
+                1 : 1 000 000
+            </button>
+
+            <button
+                class="scale-choice"
+                onclick="changeCompareScale(5000000,this)"
+            >
+                1 : 5 000 000
+            </button>
+
+            <button
+                class="scale-choice"
+                onclick="changeCompareScale(10000000,this)"
+            >
+                1 : 10 000 000
+            </button>
+
+        </div>
+
+
+        <div class="compare-map">
+
+            <div
+                class="compare-land"
+                id="compareLand"
+                style="width:290px;height:170px;border-radius:50% 35% 45% 30%"
+            ></div>
+
+            <div
+                class="compare-city"
+                id="compareCity1"
+                style="left:43%;top:42%"
+            ></div>
+
+            <div
+                class="compare-city"
+                id="compareCity2"
+                style="left:58%;top:57%"
+            ></div>
+
+        </div>
+
+
+        <div class="compare-text" id="compareText">
+
+            Với tỉ lệ
+            <strong>1 : 1 000 000</strong>,
+            mức độ thu nhỏ ít hơn nên có thể thể hiện
+            nhiều chi tiết hơn.
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     EXAMPLE
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">07 · VÍ DỤ MẪU</div>
+        <h2 class="section-title">
+            🧠 Cùng giải một bài toán
+        </h2>
+    </div>
+
+
+    <div class="grid-2">
+
+        <div class="card">
+
+            <h3>
+                📌 Đề bài
+            </h3>
+
+            <p>
+                Trên bản đồ hành chính có tỉ lệ
+                <b style="color:var(--cyan2)">
+                    1 : 6 000 000
+                </b>,
+                khoảng cách từ Hà Nội đến Hải Phòng trên
+                bản đồ là <b>1,5 cm</b>.
+                Hỏi khoảng cách thực tế là bao nhiêu?
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                ✏️ Cách giải
+            </h3>
+
+            <p>
+                Khoảng cách thực tế:
+            </p>
+
+            <div style="
+                margin-top:10px;
+                padding:15px;
+                border-radius:13px;
+                background:#091b2b;
+                color:var(--cyan2);
+                font-weight:800;
+            ">
+                1,5 × 6 000 000
+                = 9 000 000 cm
+                <br><br>
+                = 90 km
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     MEMORY
+========================= -->
+
+<section>
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">08 · GHI NHỚ</div>
+        <h2 class="section-title">
+            ⚡ 4 điều cần nhớ
+        </h2>
+    </div>
+
+
+    <div class="memory">
+
+        <div class="memory-item">
+            <b>1</b>
+            <span>
+                Tỉ lệ bản đồ cho biết mức độ thu nhỏ.
+            </span>
+        </div>
+
+        <div class="memory-item">
+            <b>2</b>
+            <span>
+                Có tỉ lệ số và tỉ lệ thước.
+            </span>
+        </div>
+
+        <div class="memory-item">
+            <b>3</b>
+            <span>
+                Đo khoảng cách trên bản đồ trước.
+            </span>
+        </div>
+
+        <div class="memory-item">
+            <b>4</b>
+            <span>
+                Đổi đơn vị về km khi cần.
+            </span>
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     QUIZ
+========================= -->
+
+<section id="quiz">
+<div class="container">
+
+    <div class="section-head">
+        <div class="eyebrow">09 · LUYỆN TẬP</div>
+        <h2 class="section-title">
+            🎯 Thử thách 8 câu
+        </h2>
+        <p class="section-desc">
+            Mỗi câu có 10 giây. Chọn đáp án rồi xem phản hồi ngay.
+        </p>
+    </div>
+
+
+    <div class="quiz-box">
+
+        <!-- MÀN HÌNH BẮT ĐẦU -->
+        <div
+            class="quiz-start"
+            id="quizStart"
+        >
+
+            <div class="quiz-start-icon">
+                🎯
+            </div>
+
+            <h2>Sẵn sàng thử sức?</h2>
+
+            <p>
+                Hãy kiểm tra mức độ hiểu bài của em qua 8 câu hỏi về tỉ lệ bản đồ.
+                Đồng hồ chỉ bắt đầu chạy sau khi em bấm nút bắt đầu.
+            </p>
+
+            <div class="quiz-info">
+                <span>📝 8 câu hỏi</span>
+                <span>⏱️ 10 giây / câu</span>
+                <span>🏆 Có chấm điểm</span>
+            </div>
+
+            <button
+                class="start-btn"
+                onclick="startQuiz()"
+            >
+                ▶ Bắt đầu làm bài
+            </button>
+
+        </div>
+
+
+        <!-- NỘI DUNG CÂU HỎI -->
+        <div
+            id="quizContent"
+            style="display:none"
+        >
+
+            <div class="quiz-top">
+
+                <div class="progress-wrap">
+
+                    <div
+                        class="progress-text"
+                        id="progressText"
+                    >
+                        Câu 1 / 8
+                    </div>
+
+                    <div class="progress-bar">
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                        ></div>
+                    </div>
+
+                </div>
+
+                <div
+                    class="timer"
+                    id="timer"
+                >
+                    10s
+                </div>
+
+            </div>
+
+
+            <div
+                class="question"
+                id="question"
+            ></div>
+
+            <div
+                class="answers"
+                id="answers"
+            ></div>
+
+            <div
+                class="feedback"
+                id="feedback"
+            ></div>
+
+            <button
+                class="next-btn"
+                id="nextBtn"
+                style="display:none"
+                onclick="nextQuestion()"
+            >
+                Câu tiếp theo →
+            </button>
+
+        </div>
+
+
+        <!-- KẾT QUẢ -->
+        <div
+            class="quiz-result"
+            id="quizResult"
+        >
+
+            <div class="score-circle">
+                <strong id="scoreNumber">
+                    0/8
+                </strong>
+            </div>
+
+            <h2 id="resultTitle">
+                Hoàn thành!
+            </h2>
+
+            <p
+                id="resultMessage"
+                style="color:var(--muted)"
+            ></p>
+
+            <button
+                class="primary-btn"
+                style="width:auto;padding:12px 25px"
+                onclick="restartQuiz()"
+            >
+                ↻ Làm lại
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     FINISH
+========================= -->
+
+<section class="finish">
+
+    <div class="container">
+
+        <div style="
+            font-size:45px;
+            margin-bottom:7px;
+        ">
+            🗺️📏
+        </div>
+
+        <h2>
+            Em đã sẵn sàng đọc tỉ lệ bản đồ chưa?
+        </h2>
+
+        <p style="
+            color:var(--muted);
+            max-width:600px;
+            margin:8px auto 22px;
+        ">
+            Hoàn thành bài học để lưu tiến độ và tiếp tục
+            khám phá các bài Địa lí 6.
+        </p>
+
+        <button
+            class="finish-btn"
+            onclick="finishLesson()"
+        >
+            ✓ Hoàn thành Bài 3
+        </button>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer class="footer">
+    Học liệu số Lịch sử & Địa lí 6 · Bài 3 · Tỉ lệ bản đồ
+</footer>
+
+
+<script>
+
+/* =====================================================
+   ĐIỀU HƯỚNG
+===================================================== */
+
+function goHome(){
+    window.location.href="index.html";
+}
+
+function scrollToId(id){
+    const el=document.getElementById(id);
+
+    if(el){
+        el.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+    }
+}
+
+
+/* =====================================================
+   MÁY TÍNH KHOẢNG CÁCH
+===================================================== */
+
+function calculateDistance(){
+
+    const distance=parseFloat(
+        document.getElementById("mapDistance").value
+    );
+
+    const unit=document.getElementById("mapUnit").value;
+
+    const scale=parseFloat(
+        document.getElementById("scaleSelect").value
+    );
+
+    if(
+        isNaN(distance) ||
+        distance<=0 ||
+        isNaN(scale)
+    ){
+
+        document.getElementById("resultValue").textContent=
+            "Hãy nhập số hợp lệ";
+
+        document.getElementById("formulaText").textContent=
+            "Khoảng cách phải lớn hơn 0.";
+
+        return;
+    }
+
+
+    /*
+        Quy đổi khoảng cách trên bản đồ về cm
+    */
+
+    let distanceCm=distance;
+
+    if(unit==="mm"){
+        distanceCm=distance/10;
+    }
+
+    if(unit==="m"){
+        distanceCm=distance*100;
+    }
+
+
+    /*
+        Khoảng cách thực tế tính bằng cm
+    */
+
+    const realCm=distanceCm*scale;
+
+
+    /*
+        Đổi sang km
+    */
+
+    const realKm=realCm/100000;
+
+
+    const formattedKm=
+        Number(realKm.toFixed(3))
+        .toLocaleString("vi-VN");
+
+
+    document.getElementById("resultValue").textContent=
+        formattedKm+" km";
+
+
+    let unitText=unit;
+
+    let displayDistance=
+        Number(distance.toFixed(3))
+        .toLocaleString("vi-VN");
+
+
+    let formula=
+        displayDistance+" "+unitText+
+        " × "+scale.toLocaleString("vi-VN");
+
+
+    if(unit!=="cm"){
+
+        formula+=
+            " → quy đổi về cm";
+
+    }
+
+
+    formula+=
+        " = "+
+        realCm.toLocaleString("vi-VN")+
+        " cm = "+
+        formattedKm+
+        " km";
+
+
+    document.getElementById("formulaText").textContent=
+        formula;
+}
+
+
+/* =====================================================
+   VÍ DỤ MẪU
+===================================================== */
+
+function loadExample(){
+
+    document.getElementById("mapDistance").value=1.5;
+
+    document.getElementById("mapUnit").value="cm";
+
+    document.getElementById("scaleSelect").value="6000000";
+
+    calculateDistance();
+}
+
+
+/* =====================================================
+   SO SÁNH TỈ LỆ
+===================================================== */
+
+function changeCompareScale(scale,button){
+
+    document
+        .querySelectorAll(".scale-choice")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+
+    const land=
+        document.getElementById("compareLand");
+
+    const city1=
+        document.getElementById("compareCity1");
+
+    const city2=
+        document.getElementById("compareCity2");
+
+    const text=
+        document.getElementById("compareText");
+
+
+    if(scale===1000000){
+
+        land.style.width="290px";
+        land.style.height="170px";
+
+        city1.style.left="43%";
+        city1.style.top="42%";
+
+        city2.style.left="58%";
+        city2.style.top="57%";
+
+        text.innerHTML=
+            'Với tỉ lệ <strong>1 : 1 000 000</strong>, '+
+            'mức độ thu nhỏ ít hơn nên có thể thể hiện '+
+            'nhiều chi tiết hơn.';
+
+    }
+
+
+    if(scale===5000000){
+
+        land.style.width="220px";
+        land.style.height="130px";
+
+        city1.style.left="46%";
+        city1.style.top="44%";
+
+        city2.style.left="55%";
+        city2.style.top="54%";
+
+        text.innerHTML=
+            'Với tỉ lệ <strong>1 : 5 000 000</strong>, '+
+            'mức độ thu nhỏ nhiều hơn so với 1 : 1 000 000.';
+
+    }
+
+
+    if(scale===10000000){
+
+        land.style.width="155px";
+        land.style.height="95px";
+
+        city1.style.left="48%";
+        city1.style.top="46%";
+
+        city2.style.left="53%";
+        city2.style.top="52%";
+
+        text.innerHTML=
+            'Với tỉ lệ <strong>1 : 10 000 000</strong>, '+
+            'mức độ thu nhỏ rất lớn; lãnh thổ thể hiện rộng hơn '+
+            'nhưng mức độ chi tiết giảm.';
+    }
+
+}
+
+
+/* =====================================================
+   QUIZ
+===================================================== */
+
+const questions=[
+
+    {
+        q:"Tỉ lệ bản đồ cho biết điều gì?",
+        a:[
+            "Kích thước thật của bản đồ",
+            "Mức độ thu nhỏ độ dài giữa các đối tượng trên bản đồ so với thực tế",
+            "Số lượng đối tượng địa lí trên bản đồ",
+            "Độ cao của địa hình"
+        ],
+        c:1,
+        e:"Tỉ lệ bản đồ cho biết mức độ thu nhỏ độ dài giữa các đối tượng trên bản đồ so với thực tế."
+    },
+
+    {
+        q:"Tỉ lệ bản đồ được biểu hiện bằng những dạng nào?",
+        a:[
+            "Tỉ lệ số và tỉ lệ thước",
+            "Tỉ lệ chữ và tỉ lệ hình",
+            "Tỉ lệ km và tỉ lệ m",
+            "Tỉ lệ lớn và tỉ lệ nhỏ"
+        ],
+        c:0,
+        e:"Có hai cách biểu hiện chính: tỉ lệ số và tỉ lệ thước."
+    },
+
+    {
+        q:"Tỉ lệ 1 : 1 000 000 có nghĩa là gì?",
+        a:[
+            "1 cm trên bản đồ bằng 1 km thực tế",
+            "1 cm trên bản đồ bằng 10 km thực tế",
+            "1 cm trên bản đồ bằng 100 km thực tế",
+            "1 cm trên bản đồ bằng 1 000 km thực tế"
+        ],
+        c:1,
+        e:"1 000 000 cm = 10 km."
+    },
+
+    {
+        q:"Trên bản đồ có tỉ lệ 1 : 6 000 000, khoảng cách Hà Nội – Hải Phòng là 1,5 cm. Khoảng cách thực tế là:",
+        a:[
+            "9 km",
+            "60 km",
+            "90 km",
+            "900 km"
+        ],
+        c:2,
+        e:"1,5 × 6 000 000 = 9 000 000 cm = 90 km."
+    },
+
+    {
+        q:"Muốn tính khoảng cách thực tế khi biết tỉ lệ số, trước hết cần làm gì?",
+        a:[
+            "Đo khoảng cách giữa hai điểm trên bản đồ",
+            "Đổi bản đồ sang tỉ lệ thước",
+            "Đo diện tích bản đồ",
+            "Xác định độ cao của hai điểm"
+        ],
+        c:0,
+        e:"Cần đo khoảng cách giữa hai điểm trên bản đồ rồi dựa vào tỉ lệ để tính."
+    },
+
+    {
+        q:"Giữa hai bản đồ có tỉ lệ 1 : 10 000 000 và 1 : 15 000 000. Bản đồ nào có tỉ lệ lớn hơn?",
+        a:[
+            "1 : 15 000 000",
+            "1 : 10 000 000",
+            "Hai bản đồ bằng nhau",
+            "Không thể xác định"
+        ],
+        c:1,
+        e:"Mẫu số nhỏ hơn thì tỉ lệ lớn hơn, nên 1 : 10 000 000 là tỉ lệ lớn hơn."
+    },
+
+    {
+        q:"Bản đồ có tỉ lệ càng nhỏ thì thường:",
+        a:[
+            "Thể hiện lãnh thổ nhỏ hơn và chi tiết hơn",
+            "Thể hiện lãnh thổ lớn hơn nhưng ít chi tiết hơn",
+            "Luôn có kích thước giấy nhỏ hơn",
+            "Không thể xác định khoảng cách"
+        ],
+        c:1,
+        e:"Tỉ lệ càng nhỏ thì mức độ thu nhỏ càng nhiều, nên có thể bao quát lãnh thổ lớn hơn nhưng mức độ chi tiết giảm."
+    },
+
+    {
+        q:"Hai địa điểm cách nhau 25 km ngoài thực tế. Bản đồ có tỉ lệ 1 : 500 000. Khoảng cách trên bản đồ là:",
+        a:[
+            "2,5 cm",
+            "5 cm",
+            "10 cm",
+            "50 cm"
+        ],
+        c:1,
+        e:"25 km = 2 500 000 cm. Chia cho 500 000 được 5 cm."
+    }
+
+];
+
+
+let currentQuestion=0;
+let score=0;
+let answered=false;
+let timer=null;
+let timeLeft=10;
+
+
+/* ---------- start ---------- */
+
+function startQuiz(){
+
+    clearInterval(timer);
+
+    currentQuestion=0;
+
+    score=0;
+
+    document.getElementById("quizStart").style.display=
+        "none";
+
+    document.getElementById("quizContent").style.display=
+        "block";
+
+    document.getElementById("quizResult").style.display=
+        "none";
+
+    renderQuestion();
+
+}
+
+
+/* ---------- render ---------- */
+
+function renderQuestion(){
+
+    clearInterval(timer);
+
+    answered=false;
+
+    const q=questions[currentQuestion];
+
+    document.getElementById("progressText").textContent=
+        "Câu "+(currentQuestion+1)+" / "+questions.length;
+
+    document.getElementById("progressFill").style.width=
+        ((currentQuestion)/questions.length*100)+"%";
+
+    document.getElementById("question").textContent=
+        q.q;
+
+    const answers=
+        document.getElementById("answers");
+
+    answers.innerHTML="";
+
+
+    q.a.forEach((answer,index)=>{
+
+        const btn=document.createElement("button");
+
+        btn.className="answer";
+
+        btn.textContent=
+            String.fromCharCode(65+index)+". "+answer;
+
+        btn.onclick=()=>selectAnswer(index,btn);
+
+        answers.appendChild(btn);
+
+    });
+
+
+    document.getElementById("feedback").textContent="";
+
+    document.getElementById("nextBtn").style.display="none";
+
+
+    timeLeft=10;
+
+    document.getElementById("timer").textContent=
+        timeLeft+"s";
+
+
+    timer=setInterval(()=>{
+
+        timeLeft--;
+
+        document.getElementById("timer").textContent=
+            timeLeft+"s";
+
+
+        if(timeLeft<=0){
+
+            clearInterval(timer);
+
+            if(!answered){
+
+                selectAnswer(-1,null);
+
+            }
+
+        }
+
+    },1000);
+
+}
+
+
+/* ---------- answer ---------- */
+
+function selectAnswer(index,button){
+
+    if(answered) return;
+
+    answered=true;
+
+    clearInterval(timer);
+
+
+    const q=questions[currentQuestion];
+
+    const buttons=
+        document.querySelectorAll(".answer");
+
+
+    buttons.forEach((btn,i)=>{
+
+        btn.disabled=true;
+
+        if(i===q.c){
+            btn.classList.add("correct");
+        }
+
+    });
+
+
+    if(index===q.c){
+
+        score++;
+
+        document.getElementById("feedback").innerHTML=
+            "✅ Chính xác! "+q.e;
+
+    }else{
+
+        if(button){
+            button.classList.add("wrong");
+        }
+
+        document.getElementById("feedback").innerHTML=
+            "❌ Chưa đúng. "+q.e;
+    }
+
+
+    document.getElementById("nextBtn").style.display=
+        "inline-block";
+}
+
+
+/* ---------- next ---------- */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion>=questions.length){
+
+        showResult();
+
+    }else{
+
+        renderQuestion();
+
+    }
+
+}
+
+
+/* ---------- result ---------- */
+
+function showResult(){
+
+    clearInterval(timer);
+
+    document.getElementById("quizContent").style.display=
+        "none";
+
+    document.getElementById("quizResult").style.display=
+        "block";
+
+
+    document.getElementById("scoreNumber").textContent=
+        score+"/"+questions.length;
+
+
+    const percent=
+        score/questions.length*100;
+
+
+    let title="";
+    let message="";
+
+
+    if(percent>=87.5){
+
+        title="🏆 Xuất sắc!";
+
+        message=
+            "Em đã nắm rất chắc cách đọc tỉ lệ và tính khoảng cách thực tế.";
+
+    }else if(percent>=62.5){
+
+        title="🌟 Làm tốt!";
+
+        message=
+            "Em đã hiểu phần lớn kiến thức. Hãy xem lại các câu sai để chắc hơn.";
+
+    }else{
+
+        title="📚 Cố gắng thêm nhé!";
+
+        message=
+            "Em nên xem lại tỉ lệ số, tỉ lệ thước và các bước tính khoảng cách.";
+
+    }
+
+
+    document.getElementById("resultTitle").textContent=
+        title;
+
+    document.getElementById("resultMessage").textContent=
+        message;
+
+}
+
+
+/* ---------- restart ---------- */
+
+function restartQuiz(){
+
+    clearInterval(timer);
+
+    currentQuestion=0;
+
+    score=0;
+
+    document.getElementById("quizStart").style.display=
+        "block";
+
+    document.getElementById("quizContent").style.display=
+        "none";
+
+    document.getElementById("quizResult").style.display=
+        "none";
+
+}
+
+
+/* =====================================================
+   HOÀN THÀNH BÀI
+===================================================== */
+
+function finishLesson(){
+
+    const PROGRESS_KEY=
+        "hoclieu6_progress_v1";
+
+    const p=
+        JSON.parse(
+            localStorage.getItem(PROGRESS_KEY)||"{}"
+        );
+
+
+    p.g03=true;
+
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(p)
+    );
+
+
+    alert(
+        "🎉 Đã hoàn thành Bài 3!\n\n"+
+        "Tiến độ học tập của em đã được lưu."
+    );
+
+}
+
+
+/* =====================================================
+   KHỞI TẠO
+===================================================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    calculateDistance();
+
+});
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g03");</script>
+</body>
+</html>

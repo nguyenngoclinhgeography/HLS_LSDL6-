@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 12 - Núi lửa và động đất | Học liệu số 6</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#071525;
+    --bg2:#0b1f35;
+    --panel:#102a45;
+    --panel2:#123653;
+    --line:#23506f;
+    --blue:#38bdf8;
+    --blue2:#60a5fa;
+    --cyan:#22d3ee;
+    --text:#eaf6ff;
+    --muted:#a9c3d8;
+    --green:#34d399;
+    --yellow:#fbbf24;
+    --red:#fb7185;
+    --shadow:0 18px 45px rgba(0,0,0,.28);
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at 15% 10%,rgba(34,211,238,.10),transparent 30%),
+        radial-gradient(circle at 85% 20%,rgba(96,165,250,.10),transparent 28%),
+        linear-gradient(145deg,#06111f,#0a1c31 55%,#071525);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button{
+    font-family:inherit;
+}
+
+.topbar{
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 34px;
+    border-bottom:1px solid rgba(96,165,250,.22);
+    background:rgba(5,17,31,.86);
+    backdrop-filter:blur(14px);
+    position:sticky;
+    top:0;
+    z-index:50;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.logo{
+    width:44px;
+    height:44px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    background:linear-gradient(135deg,#0e7490,#2563eb);
+    box-shadow:0 8px 25px rgba(34,211,238,.18);
+}
+
+.brand-title{
+    font-weight:800;
+    letter-spacing:.8px;
+    font-size:16px;
+}
+
+.brand-sub{
+    color:#8fb2ca;
+    font-size:12px;
+    margin-top:2px;
+}
+
+.home-btn{
+    border:1px solid #285474;
+    color:#dff6ff;
+    background:#0c243b;
+    padding:10px 17px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#123652;
+    border-color:#3b82f6;
+}
+
+.container{
+    width:min(1180px,calc(100% - 32px));
+    margin:30px auto 60px;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    border:1px solid #23506f;
+    border-radius:24px;
+    padding:32px;
+    background:
+        radial-gradient(circle at 90% 20%,rgba(34,211,238,.12),transparent 28%),
+        linear-gradient(135deg,#0c2843,#0b1e34);
+    box-shadow:var(--shadow);
+}
+
+.hero:after{
+    content:"🌋";
+    position:absolute;
+    right:45px;
+    bottom:-20px;
+    font-size:130px;
+    opacity:.12;
+    transform:rotate(-8deg);
+}
+
+.tag{
+    display:inline-block;
+    padding:7px 12px;
+    border-radius:999px;
+    color:#a7edff;
+    background:rgba(34,211,238,.10);
+    border:1px solid rgba(34,211,238,.24);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.6px;
+}
+
+.hero h1{
+    font-size:38px;
+    margin:15px 0 10px;
+    line-height:1.15;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:800px;
+    line-height:1.7;
+}
+
+.status{
+    margin-top:22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#b9d6e8;
+    font-size:14px;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--yellow);
+}
+
+.status-dot.done{
+    background:var(--green);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.65fr) minmax(290px,.8fr);
+    gap:22px;
+    margin-top:22px;
+}
+
+.panel{
+    border:1px solid var(--line);
+    background:linear-gradient(145deg,rgba(16,42,69,.96),rgba(9,29,49,.96));
+    border-radius:20px;
+    padding:25px;
+    box-shadow:var(--shadow);
+}
+
+.panel + .panel{
+    margin-top:20px;
+}
+
+.panel h2{
+    font-size:22px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.panel h3{
+    color:#ccecff;
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.panel p{
+    color:#b9cede;
+    line-height:1.75;
+}
+
+.goal-list{
+    list-style:none;
+    display:grid;
+    gap:10px;
+}
+
+.goal-list li{
+    padding:12px 14px;
+    border-radius:12px;
+    background:rgba(56,189,248,.07);
+    border:1px solid rgba(56,189,248,.13);
+    color:#cce5f3;
+    line-height:1.55;
+}
+
+.goal-list li:before{
+    content:"✓";
+    color:var(--green);
+    font-weight:900;
+    margin-right:9px;
+}
+
+.lesson-section{
+    padding:19px 0;
+    border-top:1px solid rgba(82,130,160,.20);
+}
+
+.lesson-section:first-of-type{
+    border-top:none;
+    padding-top:0;
+}
+
+.lesson-section h3{
+    margin-bottom:10px;
+}
+
+.highlight{
+    margin-top:13px;
+    padding:15px 17px;
+    border-left:4px solid var(--cyan);
+    border-radius:10px;
+    background:rgba(34,211,238,.07);
+    color:#d4eff8;
+    line-height:1.65;
+}
+
+.compare{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    overflow:hidden;
+    border-radius:12px;
+}
+
+.compare th,
+.compare td{
+    border:1px solid #28506b;
+    padding:12px;
+    text-align:left;
+    vertical-align:top;
+    line-height:1.5;
+}
+
+.compare th{
+    background:#0d3553;
+    color:#dff7ff;
+}
+
+.compare td{
+    color:#bcd3e3;
+    background:rgba(8,28,46,.55);
+}
+
+.info-cards{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:16px;
+}
+
+.info-card{
+    border:1px solid #27516d;
+    border-radius:15px;
+    padding:17px;
+    background:rgba(7,27,45,.72);
+}
+
+.info-card .big{
+    font-size:29px;
+    margin-bottom:8px;
+}
+
+.info-card strong{
+    display:block;
+    margin-bottom:6px;
+}
+
+.info-card span{
+    color:#a9c5d7;
+    font-size:14px;
+    line-height:1.55;
+}
+
+.sim-card{
+    position:relative;
+    overflow:hidden;
+    padding:22px;
+    border-radius:18px;
+    border:1px solid #28607d;
+    background:
+        radial-gradient(circle at 90% 10%,rgba(251,113,133,.10),transparent 30%),
+        linear-gradient(145deg,#102f4b,#0a2036);
+    margin-top:15px;
+}
+
+.sim-card.earthquake{
+    background:
+        radial-gradient(circle at 90% 10%,rgba(250,204,21,.09),transparent 30%),
+        linear-gradient(145deg,#102f4b,#0a2036);
+}
+
+.sim-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+}
+
+.sim-icon{
+    width:54px;
+    height:54px;
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:29px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.09);
+}
+
+.sim-card h3{
+    margin:0;
+    font-size:19px;
+}
+
+.sim-card p{
+    font-size:14px;
+    margin-top:5px;
+    line-height:1.55;
+}
+
+.sim-btn{
+    margin-top:17px;
+    width:100%;
+    padding:12px 15px;
+    border:none;
+    border-radius:11px;
+    cursor:pointer;
+    color:white;
+    font-weight:800;
+    background:linear-gradient(135deg,#0891b2,#2563eb);
+    transition:.2s;
+}
+
+.sim-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(37,99,235,.23);
+}
+
+.note{
+    margin-top:16px;
+    color:#8fb0c5;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.quiz-panel{
+    margin-top:22px;
+}
+
+.quiz-start{
+    text-align:center;
+    padding:25px 10px 10px;
+}
+
+.quiz-start .quiz-icon{
+    font-size:54px;
+    margin-bottom:10px;
+}
+
+.quiz-start h3{
+    font-size:22px;
+    margin-bottom:8px;
+}
+
+.quiz-start p{
+    max-width:650px;
+    margin:0 auto;
+}
+
+.start-btn,
+.complete-btn,
+.retry-btn,
+.back-btn{
+    border:none;
+    cursor:pointer;
+    border-radius:11px;
+    padding:12px 18px;
+    font-weight:800;
+    margin-top:18px;
+}
+
+.start-btn{
+    color:#fff;
+    background:linear-gradient(135deg,#0284c7,#2563eb);
+}
+
+.quiz-content{
+    display:none;
+}
+
+.quiz-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.question-count{
+    color:#91d8f4;
+    font-weight:800;
+}
+
+.timer{
+    min-width:85px;
+    text-align:center;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(251,191,36,.35);
+    background:rgba(251,191,36,.08);
+    color:#ffd976;
+    font-weight:900;
+}
+
+.timer.danger{
+    color:#ff8b9e;
+    border-color:rgba(251,113,133,.45);
+    background:rgba(251,113,133,.10);
+}
+
+.progress-bar{
+    height:7px;
+    border-radius:999px;
+    background:#17344d;
+    overflow:hidden;
+    margin-bottom:22px;
+}
+
+.progress-fill{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#22d3ee,#3b82f6);
+    transition:.25s;
+}
+
+.question{
+    font-size:20px;
+    line-height:1.5;
+    margin-bottom:18px;
+    color:#e9f8ff;
+}
+
+.options{
+    display:grid;
+    gap:11px;
+}
+
+.option{
+    width:100%;
+    text-align:left;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid #28516d;
+    background:#0a2238;
+    color:#cfe3ef;
+    cursor:pointer;
+    line-height:1.5;
+    transition:.18s;
+}
+
+.option:hover:not(:disabled){
+    border-color:#38bdf8;
+    background:#10324e;
+    transform:translateX(2px);
+}
+
+.option.correct{
+    border-color:#34d399;
+    background:rgba(52,211,153,.12);
+    color:#d7fff0;
+}
+
+.option.wrong{
+    border-color:#fb7185;
+    background:rgba(251,113,133,.11);
+    color:#ffe0e6;
+}
+
+.option:disabled{
+    cursor:default;
+}
+
+.feedback{
+    display:none;
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:12px;
+    line-height:1.6;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.correct{
+    border:1px solid rgba(52,211,153,.35);
+    background:rgba(52,211,153,.08);
+}
+
+.feedback.wrong{
+    border:1px solid rgba(251,113,133,.35);
+    background:rgba(251,113,133,.08);
+}
+
+.next-btn{
+    display:none;
+    margin-top:15px;
+    border:none;
+    background:#164d70;
+    color:#e6f7ff;
+    padding:11px 17px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:800;
+}
+
+.quiz-result{
+    display:none;
+    text-align:center;
+    padding:25px 10px 8px;
+}
+
+.result-icon{
+    font-size:55px;
+}
+
+.score{
+    font-size:42px;
+    font-weight:900;
+    margin:10px 0;
+    color:#67e8f9;
+}
+
+.result-text{
+    color:#aac6d8;
+    line-height:1.6;
+}
+
+.result-actions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.retry-btn{
+    background:#164d70;
+    color:#e9f8ff;
+}
+
+.complete-btn{
+    background:linear-gradient(135deg,#059669,#0d9488);
+    color:#fff;
+}
+
+.complete-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.back-btn{
+    background:#263b4d;
+    color:#d8e8f2;
+}
+
+.right-panel{
+    position:sticky;
+    top:94px;
+    align-self:start;
+}
+
+.quick-list{
+    display:grid;
+    gap:10px;
+}
+
+.quick{
+    padding:13px 14px;
+    border-radius:12px;
+    border:1px solid rgba(80,130,160,.22);
+    background:rgba(5,24,40,.65);
+    color:#b8d2e1;
+    line-height:1.45;
+}
+
+.quick b{
+    color:#e4f6ff;
+}
+
+.progress-card{
+    margin-top:20px;
+}
+
+.progress-number{
+    font-size:30px;
+    font-weight:900;
+    margin:5px 0;
+}
+
+.progress-line{
+    height:8px;
+    border-radius:999px;
+    background:#17354d;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-line span{
+    display:block;
+    height:100%;
+    background:linear-gradient(90deg,#22d3ee,#2563eb);
+}
+
+.action-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.action-btn{
+    padding:12px 17px;
+    border-radius:11px;
+    border:none;
+    cursor:pointer;
+    font-weight:800;
+}
+
+.primary{
+    background:linear-gradient(135deg,#0284c7,#2563eb);
+    color:white;
+}
+
+.secondary{
+    background:#19364d;
+    border:1px solid #2c5872;
+    color:#dceef8;
+}
+
+footer{
+    text-align:center;
+    color:#68869c;
+    font-size:12px;
+    padding:20px;
+}
+
+.toast{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    padding:13px 17px;
+    border-radius:12px;
+    background:#123a55;
+    border:1px solid #2b6685;
+    color:#e6f7ff;
+    box-shadow:var(--shadow);
+    transform:translateY(120px);
+    opacity:0;
+    transition:.3s;
+    z-index:100;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+@media(max-width:900px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .right-panel{
+        position:static;
+    }
+
+    .hero h1{
+        font-size:31px;
+    }
+}
+
+@media(max-width:620px){
+    .topbar{
+        padding:0 15px;
+    }
+
+    .brand-sub{
+        display:none;
+    }
+
+    .container{
+        width:min(100% - 20px,1180px);
+        margin-top:18px;
+    }
+
+    .hero,
+    .panel{
+        padding:19px;
+    }
+
+    .info-cards{
+        grid-template-columns:1fr;
+    }
+
+    .compare{
+        font-size:13px;
+    }
+
+    .compare th,
+    .compare td{
+        padding:9px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="logo">🌍</div>
+        <div>
+            <div class="brand-title">HỌC LIỆU SỐ</div>
+            <div class="brand-sub">Lịch sử & Địa lí 6</div>
+        </div>
+    </div>
+
+    <button class="home-btn" onclick="goHome()">
+        ← Danh sách Địa lí
+    </button>
+</header>
+
+<main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <span class="tag">ĐỊA LÍ 6 • CHƯƠNG 3</span>
+
+        <h1>🌋 Bài 12. Núi lửa và động đất</h1>
+
+        <p>
+            Khám phá hai hiện tượng tự nhiên mạnh mẽ xảy ra do các quá trình
+            bên trong Trái Đất. Tìm hiểu nguyên nhân, đặc điểm, tác động
+            và cách con người chủ động ứng phó với núi lửa và động đất.
+        </p>
+
+        <div class="status">
+            <span id="statusDot" class="status-dot"></span>
+            <span id="statusText">Bài học chưa hoàn thành</span>
+        </div>
+
+    </section>
+
+
+    <div class="grid">
+
+        <!-- CỘT TRÁI -->
+        <div>
+
+            <!-- MỤC TIÊU -->
+            <section class="panel">
+
+                <h2>🎯 Mục tiêu bài học</h2>
+
+                <ul class="goal-list">
+
+                    <li>
+                        Nêu được khái niệm và nguyên nhân khái quát
+                        của núi lửa và động đất.
+                    </li>
+
+                    <li>
+                        Mô tả được một số đặc điểm chính của núi lửa
+                        và động đất.
+                    </li>
+
+                    <li>
+                        Nhận biết được tác động của núi lửa và động đất
+                        đối với tự nhiên và đời sống con người.
+                    </li>
+
+                    <li>
+                        Biết một số biện pháp ứng phó phù hợp khi xảy ra
+                        núi lửa và động đất.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- NỘI DUNG -->
+            <section class="panel">
+
+                <h2>📖 Nội dung bài học</h2>
+
+                <!-- 1 -->
+                <div class="lesson-section">
+
+                    <h3>1. Núi lửa</h3>
+
+                    <p>
+                        Núi lửa là hiện tượng vật chất nóng chảy ở bên trong
+                        Trái Đất theo các khe nứt của vỏ Trái Đất phun trào
+                        ra ngoài. Hoạt động núi lửa thường gắn với các quá
+                        trình vận động bên trong Trái Đất và hoạt động của
+                        các mảng kiến tạo.
+                    </p>
+
+                    <div class="highlight">
+                        💡 <b>Hiểu đơn giản:</b>
+                        Khi vật chất nóng chảy và khí ở bên trong Trái Đất
+                        chịu áp lực lớn, chúng có thể theo các khe nứt đi lên
+                        và phun ra ngoài tại khu vực núi lửa.
+                    </div>
+
+                </div>
+
+
+                <!-- Đặc điểm núi lửa -->
+                <div class="lesson-section">
+
+                    <h3>🔴 Hoạt động của núi lửa</h3>
+
+                    <p>
+                        Khi núi lửa hoạt động, vật chất nóng chảy cùng khí,
+                        tro và các sản phẩm núi lửa có thể được phun ra ngoài.
+                        Hoạt động này có thể làm thay đổi địa hình khu vực
+                        xung quanh.
+                    </p>
+
+                    <div class="info-cards">
+
+                        <div class="info-card">
+                            <div class="big">🌋</div>
+                            <strong>Phun trào</strong>
+                            <span>
+                                Vật chất nóng chảy, tro và khí được phun
+                                ra từ khu vực núi lửa.
+                            </span>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="big">🏔️</div>
+                            <strong>Địa hình</strong>
+                            <span>
+                                Hoạt động núi lửa có thể tạo nên hoặc
+                                làm biến đổi địa hình.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 2 -->
+                <div class="lesson-section">
+
+                    <h3>2. Động đất</h3>
+
+                    <p>
+                        Động đất là sự rung chuyển đột ngột và mạnh của
+                        vỏ Trái Đất. Hiện tượng này thường liên quan đến
+                        sự giải phóng năng lượng do vận động của các mảng
+                        kiến tạo và các quá trình xảy ra bên trong Trái Đất.
+                    </p>
+
+                    <div class="highlight">
+                        💡 <b>Hiểu đơn giản:</b>
+                        Khi năng lượng tích tụ trong vỏ Trái Đất được giải
+                        phóng đột ngột, các rung động lan truyền ra xung quanh
+                        và làm mặt đất rung chuyển.
+                    </div>
+
+                </div>
+
+
+                <!-- Động đất -->
+                <div class="lesson-section">
+
+                    <h3>📳 Đặc điểm của động đất</h3>
+
+                    <p>
+                        Động đất có thể xảy ra đột ngột, thời gian rung chuyển
+                        có thể ngắn nhưng tác động rất lớn. Mức độ ảnh hưởng
+                        phụ thuộc vào độ mạnh của chấn động, vị trí xảy ra,
+                        điều kiện địa hình và mức độ tập trung dân cư, cơ sở
+                        vật chất.
+                    </p>
+
+                </div>
+
+
+                <!-- 3 -->
+                <div class="lesson-section">
+
+                    <h3>3. Tác động của núi lửa và động đất</h3>
+
+                    <table class="compare">
+
+                        <thead>
+                            <tr>
+                                <th>Hiện tượng</th>
+                                <th>Tác động có thể xảy ra</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td><b>🌋 Núi lửa</b></td>
+                                <td>
+                                    Có thể gây thiệt hại cho người và tài sản,
+                                    ảnh hưởng đến môi trường sống và làm biến
+                                    đổi địa hình. Một số sản phẩm núi lửa sau
+                                    khi nguội có thể góp phần hình thành đất
+                                    và địa hình mới.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><b>📳 Động đất</b></td>
+                                <td>
+                                    Có thể làm rung chuyển và phá hủy nhà cửa,
+                                    công trình, gây sạt lở và ảnh hưởng nghiêm
+                                    trọng đến đời sống con người.
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- 4 -->
+                <div class="lesson-section">
+
+                    <h3>4. Ứng phó với núi lửa và động đất</h3>
+
+                    <p>
+                        Con người cần theo dõi, cảnh báo và chủ động thực hiện
+                        các biện pháp phòng tránh nhằm giảm thiểu thiệt hại.
+                    </p>
+
+                    <div class="info-cards">
+
+                        <div class="info-card">
+                            <div class="big">📢</div>
+                            <strong>Trước khi xảy ra</strong>
+                            <span>
+                                Theo dõi cảnh báo, chuẩn bị phương án
+                                sơ tán và các vật dụng cần thiết.
+                            </span>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="big">🛡️</div>
+                            <strong>Khi xảy ra</strong>
+                            <span>
+                                Bình tĩnh, tránh xa khu vực nguy hiểm,
+                                tìm nơi an toàn và thực hiện hướng dẫn
+                                của cơ quan chức năng.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- HAI MÔ PHỎNG -->
+            <section class="panel">
+
+                <h2>🧪 Hai mô phỏng tương tác</h2>
+
+                <p>
+                    Hãy mở từng mô phỏng để quan sát trực quan cách
+                    núi lửa phun trào và cách chấn động lan truyền
+                    trong một trận động đất.
+                </p>
+
+
+                <!-- NÚI LỬA -->
+                <div class="sim-card">
+
+                    <div class="sim-top">
+
+                        <div>
+                            <h3>🌋 Mô phỏng núi lửa</h3>
+
+                            <p>
+                                Quan sát quá trình tích tụ áp lực và
+                                phun trào của núi lửa.
+                            </p>
+                        </div>
+
+                        <div class="sim-icon">🌋</div>
+
+                    </div>
+
+                    <button class="sim-btn" onclick="openVolcano()">
+                        ▶ Mở mô phỏng núi lửa
+                    </button>
+
+                </div>
+
+
+                <!-- ĐỘNG ĐẤT -->
+                <div class="sim-card earthquake">
+
+                    <div class="sim-top">
+
+                        <div>
+                            <h3>📳 Mô phỏng động đất</h3>
+
+                            <p>
+                                Quan sát chấn động phát sinh và
+                                lan truyền từ khu vực xảy ra động đất.
+                            </p>
+                        </div>
+
+                        <div class="sim-icon">📳</div>
+
+                    </div>
+
+                    <button class="sim-btn" onclick="openEarthquake()">
+                        ▶ Mở mô phỏng động đất
+                    </button>
+
+                </div>
+
+                <div class="note">
+                    💡 Hai mô phỏng được thiết kế thành các trang HTML riêng,
+                    vì vậy bạn có thể chỉnh sửa hoặc thay thế từng mô phỏng
+                    mà không cần sửa toàn bộ bài học.
+                </div>
+
+            </section>
+
+
+            <!-- QUIZ -->
+            <section class="panel quiz-panel">
+
+                <h2>🧩 Kiểm tra kiến thức</h2>
+
+                <!-- START -->
+                <div id="quizStart" class="quiz-start">
+
+                    <div class="quiz-icon">🎯</div>
+
+                    <h3>Sẵn sàng thử sức?</h3>
+
+                    <p>
+                        Bài kiểm tra gồm 10 câu hỏi.
+                        Mỗi câu có 10 giây để trả lời.
+                        Sau khi chọn đáp án, em sẽ được xem kết quả
+                        và giải thích.
+                    </p>
+
+                    <button class="start-btn" onclick="startQuiz()">
+                        ▶ Bắt đầu
+                    </button>
+
+                </div>
+
+
+                <!-- QUIZ -->
+                <div id="quizContent" class="quiz-content">
+
+                    <div class="quiz-head">
+
+                        <span id="questionCount" class="question-count">
+                            Câu 1/10
+                        </span>
+
+                        <span id="timer" class="timer">
+                            ⏱ 10s
+                        </span>
+
+                    </div>
+
+                    <div class="progress-bar">
+                        <div id="quizProgress" class="progress-fill"></div>
+                    </div>
+
+                    <div id="questionText" class="question"></div>
+
+                    <div id="options" class="options"></div>
+
+                    <div id="feedback" class="feedback"></div>
+
+                    <button id="nextBtn" class="next-btn" onclick="nextQuestion()">
+                        Câu tiếp theo →
+                    </button>
+
+                </div>
+
+
+                <!-- RESULT -->
+                <div id="quizResult" class="quiz-result">
+
+                    <div class="result-icon">🏆</div>
+
+                    <h3>Hoàn thành bài kiểm tra!</h3>
+
+                    <div id="score" class="score">
+                        0/10
+                    </div>
+
+                    <p id="resultText" class="result-text"></p>
+
+                    <div class="result-actions">
+
+                        <button class="retry-btn" onclick="retryQuiz()">
+                            🔄 Làm lại
+                        </button>
+
+                        <button
+                            id="completeBtn"
+                            class="complete-btn"
+                            onclick="finishLesson()"
+                        >
+                            ✓ Hoàn thành bài học
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- NÚT CUỐI -->
+            <div class="action-row">
+
+                <button class="action-btn primary" onclick="finishLesson()">
+                    ✓ Hoàn thành bài học
+                </button>
+
+                <button class="action-btn secondary" onclick="goHome()">
+                    ← Về danh sách Địa lí
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CỘT PHẢI -->
+        <aside class="right-panel">
+
+            <section class="panel">
+
+                <h2>🧭 Ghi nhớ nhanh</h2>
+
+                <div class="quick-list">
+
+                    <div class="quick">
+                        <b>🌋 Núi lửa</b><br>
+                        Hiện tượng vật chất nóng chảy bên trong Trái Đất
+                        phun trào ra ngoài.
+                    </div>
+
+                    <div class="quick">
+                        <b>📳 Động đất</b><br>
+                        Sự rung chuyển đột ngột của vỏ Trái Đất.
+                    </div>
+
+                    <div class="quick">
+                        <b>🌎 Nguyên nhân</b><br>
+                        Có liên quan đến hoạt động bên trong Trái Đất
+                        và vận động của các mảng kiến tạo.
+                    </div>
+
+                    <div class="quick">
+                        <b>🛡️ Ứng phó</b><br>
+                        Chủ động theo dõi cảnh báo, sơ tán và tìm nơi an toàn.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- TIẾN ĐỘ -->
+            <section class="panel progress-card">
+
+                <h2>📈 Tiến độ bài học</h2>
+
+                <div id="progressNumber" class="progress-number">
+                    Chưa hoàn thành
+                </div>
+
+                <div class="progress-line">
+                    <span id="lessonProgress" style="width:0%"></span>
+                </div>
+
+                <p style="margin-top:12px;font-size:13px">
+                    Tiến độ chỉ được ghi nhận khi em bấm
+                    <b>“Hoàn thành bài học”</b>.
+                </p>
+
+            </section>
+
+
+            <!-- TỪ KHÓA -->
+            <section class="panel">
+
+                <h2>🔑 Từ khóa</h2>
+
+                <div class="quick-list">
+
+                    <div class="quick">🌋 Núi lửa</div>
+                    <div class="quick">📳 Động đất</div>
+                    <div class="quick">🌎 Mảng kiến tạo</div>
+                    <div class="quick">🔥 Vật chất nóng chảy</div>
+                    <div class="quick">⚠️ Thiên tai</div>
+                    <div class="quick">🛡️ Phòng tránh</div>
+
+                </div>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<footer>
+    Học liệu số – Lịch sử và Địa lí 6
+</footer>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   CẤU HÌNH 2 MÔ PHỎNG
+   Chỉ cần đổi tên file tại đây nếu bạn đặt tên khác.
+   ========================================================= */
+
+const VOLCANO_SIMULATION_FILE = "mpnl.html";
+
+const EARTHQUAKE_SIMULATION_FILE = "mpdd.html";
+
+
+/* =========================================================
+   TIẾN ĐỘ
+   ========================================================= */
+
+const PROGRESS_KEY = "hoclieu6_progress_v1";
+
+const LESSON_ID = "g12";
+
+
+function getProgress(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(PROGRESS_KEY) || "{}"
+        );
+
+    }catch(e){
+
+        return {};
+
+    }
+
+}
+
+
+function saveProgress(data){
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =========================================================
+   ĐIỀU HƯỚNG
+   ========================================================= */
+
+function goHome(){
+
+    window.location.href = "index.html";
+
+}
+
+
+function openVolcano(){
+
+    window.location.href = VOLCANO_SIMULATION_FILE;
+
+}
+
+
+function openEarthquake(){
+
+    window.location.href = EARTHQUAKE_SIMULATION_FILE;
+
+}
+
+
+/* =========================================================
+   TRẠNG THÁI BÀI HỌC
+   ========================================================= */
+
+function updateLessonStatus(){
+
+    const p = getProgress();
+
+    const dot = document.getElementById("statusDot");
+
+    const text = document.getElementById("statusText");
+
+    const number = document.getElementById("progressNumber");
+
+    const bar = document.getElementById("lessonProgress");
+
+
+    if(p[LESSON_ID]){
+
+        dot.classList.add("done");
+
+        text.textContent = "✓ Bài học đã hoàn thành";
+
+        number.textContent = "Đã hoàn thành";
+
+        bar.style.width = "100%";
+
+    }else{
+
+        dot.classList.remove("done");
+
+        text.textContent = "Bài học chưa hoàn thành";
+
+        number.textContent = "Chưa hoàn thành";
+
+        bar.style.width = "0%";
+
+    }
+
+}
+
+
+updateLessonStatus();
+
+
+/* =========================================================
+   DỮ LIỆU CÂU HỎI
+   ========================================================= */
+
+const quizData = [
+
+    {
+        question:
+            "Núi lửa là hiện tượng nào sau đây?",
+
+        options:[
+            "Vật chất nóng chảy bên trong Trái Đất phun trào ra ngoài",
+            "Nước biển dâng cao vào mùa hè",
+            "Gió thổi mạnh trên bề mặt Trái Đất",
+            "Đá bị phong hóa trên bề mặt"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Núi lửa là hiện tượng vật chất nóng chảy bên trong Trái Đất theo các khe nứt phun trào ra ngoài."
+    },
+
+
+    {
+        question:
+            "Động đất được hiểu là gì?",
+
+        options:[
+            "Sự rung chuyển đột ngột của vỏ Trái Đất",
+            "Sự thay đổi hướng gió",
+            "Sự chuyển động của mây",
+            "Sự thay đổi mực nước biển theo mùa"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Động đất là sự rung chuyển đột ngột và mạnh của vỏ Trái Đất."
+    },
+
+
+    {
+        question:
+            "Núi lửa và động đất thường có mối liên hệ với yếu tố nào?",
+
+        options:[
+            "Hoạt động bên trong Trái Đất và vận động của các mảng kiến tạo",
+            "Sự thay đổi ngày và đêm",
+            "Sự thay đổi mùa",
+            "Hoạt động của thủy triều"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Cả núi lửa và động đất đều thường liên quan đến các quá trình bên trong Trái Đất và vận động của các mảng kiến tạo."
+    },
+
+
+    {
+        question:
+            "Trong quá trình núi lửa phun trào, vật chất nào có thể được phun ra?",
+
+        options:[
+            "Vật chất nóng chảy, tro và khí",
+            "Chỉ có nước biển",
+            "Chỉ có không khí lạnh",
+            "Chỉ có cát khô"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Hoạt động núi lửa có thể phun ra vật chất nóng chảy cùng tro, khí và các sản phẩm núi lửa khác."
+    },
+
+
+    {
+        question:
+            "Một trong những tác động nguy hiểm của động đất là gì?",
+
+        options:[
+            "Làm rung chuyển và phá hủy nhà cửa, công trình",
+            "Làm tăng độ dài ngày",
+            "Làm thay đổi hướng tự quay của Trái Đất",
+            "Làm xuất hiện mưa hằng ngày"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Động đất có thể gây rung chuyển mạnh, phá hủy nhà cửa và công trình, đồng thời gây nhiều thiệt hại khác."
+    },
+
+
+    {
+        question:
+            "Khi có cảnh báo thiên tai, việc làm nào phù hợp?",
+
+        options:[
+            "Theo dõi cảnh báo và thực hiện hướng dẫn sơ tán",
+            "Tập trung đến gần khu vực nguy hiểm để quan sát",
+            "Bỏ qua thông tin cảnh báo",
+            "Đứng sát các công trình có nguy cơ đổ"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Theo dõi cảnh báo và thực hiện hướng dẫn của cơ quan chức năng giúp giảm nguy cơ thiệt hại."
+    },
+
+
+    {
+        question:
+            "Điều nào sau đây mô tả đúng về động đất?",
+
+        options:[
+            "Có thể xảy ra đột ngột và làm mặt đất rung chuyển",
+            "Luôn xảy ra cùng lúc với núi lửa",
+            "Chỉ xảy ra trên đại dương",
+            "Chỉ xảy ra vào ban ngày"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Động đất có thể xảy ra đột ngột và gây rung chuyển mặt đất; không phải mọi trận động đất đều đi kèm núi lửa."
+    },
+
+
+    {
+        question:
+            "Hoạt động núi lửa có thể làm thay đổi yếu tố nào?",
+
+        options:[
+            "Địa hình khu vực",
+            "Độ dài một ngày trên Trái Đất",
+            "Hướng chuyển động quanh Mặt Trời",
+            "Vị trí các cực địa lí"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Các sản phẩm núi lửa có thể tạo nên hoặc làm biến đổi địa hình khu vực."
+    },
+
+
+    {
+        question:
+            "Khi xảy ra động đất, lựa chọn nào an toàn hơn?",
+
+        options:[
+            "Bình tĩnh, tìm nơi an toàn và thực hiện hướng dẫn ứng phó",
+            "Chạy đến khu vực có nhiều kính",
+            "Đứng ngay cạnh công trình có nguy cơ đổ",
+            "Tụ tập gần khu vực xảy ra sự cố"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Khi xảy ra động đất, cần bình tĩnh, tránh các khu vực nguy hiểm và thực hiện hướng dẫn ứng phó."
+    },
+
+
+    {
+        question:
+            "Ý nào thể hiện đúng mối quan hệ giữa núi lửa, động đất và Trái Đất?",
+
+        options:[
+            "Đều có liên quan đến các quá trình nội sinh của Trái Đất",
+            "Đều do mưa lớn gây ra",
+            "Đều do sự thay đổi nhiệt độ không khí",
+            "Đều do hoạt động của sông ngòi"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Núi lửa và động đất là những hiện tượng gắn với các quá trình nội sinh, tức các quá trình diễn ra do năng lượng và hoạt động bên trong Trái Đất."
+    }
+
+];
+
+
+/* =========================================================
+   BIẾN QUIZ
+   ========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timer = null;
+
+let timeLeft = 10;
+
+let answered = false;
+
+
+/* =========================================================
+   BẮT ĐẦU QUIZ
+   ========================================================= */
+
+function startQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    clearInterval(timer);
+
+    document.getElementById("quizStart").style.display = "none";
+
+    document.getElementById("quizResult").style.display = "none";
+
+    document.getElementById("quizContent").style.display = "block";
+
+    loadQuestion();
+
+}
+
+
+/* =========================================================
+   HIỂN THỊ CÂU HỎI
+   ========================================================= */
+
+function loadQuestion(){
+
+    clearInterval(timer);
+
+    answered = false;
+
+    timeLeft = 10;
+
+    const q = quizData[currentQuestion];
+
+    document.getElementById("questionCount").textContent =
+        `Câu ${currentQuestion + 1}/${quizData.length}`;
+
+    document.getElementById("quizProgress").style.width =
+        `${((currentQuestion) / quizData.length) * 100}%`;
+
+    document.getElementById("questionText").textContent =
+        q.question;
+
+
+    const options = document.getElementById("options");
+
+    options.innerHTML = "";
+
+
+    q.options.forEach((option,index)=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "option";
+
+        btn.textContent =
+            `${String.fromCharCode(65 + index)}. ${option}`;
+
+        btn.onclick = () => selectAnswer(index);
+
+        options.appendChild(btn);
+
+    });
+
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.className = "feedback";
+
+    feedback.innerHTML = "";
+
+
+    document.getElementById("nextBtn").style.display = "none";
+
+
+    updateTimer();
+
+
+    timer = setInterval(()=>{
+
+        timeLeft--;
+
+        updateTimer();
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            timeOut();
+
+        }
+
+    },1000);
+
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function updateTimer(){
+
+    const timerElement =
+        document.getElementById("timer");
+
+    timerElement.textContent =
+        `⏱ ${timeLeft}s`;
+
+    if(timeLeft <= 3){
+
+        timerElement.classList.add("danger");
+
+    }else{
+
+        timerElement.classList.remove("danger");
+
+    }
+
+}
+
+
+/* =========================================================
+   CHỌN ĐÁP ÁN
+   ========================================================= */
+
+function selectAnswer(index){
+
+    if(answered) return;
+
+    answered = true;
+
+    clearInterval(timer);
+
+    const q = quizData[currentQuestion];
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach(btn=>{
+        btn.disabled = true;
+    });
+
+
+    buttons[q.correct].classList.add("correct");
+
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    if(index === q.correct){
+
+        score++;
+
+        feedback.className =
+            "feedback correct show";
+
+        feedback.innerHTML =
+            `✅ <b>Chính xác!</b><br>${q.explanation}`;
+
+    }else{
+
+        buttons[index].classList.add("wrong");
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.innerHTML =
+            `❌ <b>Chưa chính xác.</b><br>${q.explanation}`;
+
+    }
+
+
+    showNextButton();
+
+}
+
+
+/* =========================================================
+   HẾT THỜI GIAN
+   ========================================================= */
+
+function timeOut(){
+
+    if(answered) return;
+
+    answered = true;
+
+    const q = quizData[currentQuestion];
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach(btn=>{
+        btn.disabled = true;
+    });
+
+
+    buttons[q.correct].classList.add("correct");
+
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.className =
+        "feedback wrong show";
+
+    feedback.innerHTML =
+        `⏰ <b>Hết thời gian!</b><br>${q.explanation}`;
+
+
+    showNextButton();
+
+}
+
+
+/* =========================================================
+   NÚT CÂU TIẾP
+   ========================================================= */
+
+function showNextButton(){
+
+    const next =
+        document.getElementById("nextBtn");
+
+    next.style.display = "inline-block";
+
+    if(currentQuestion === quizData.length - 1){
+
+        next.textContent = "Xem kết quả →";
+
+    }else{
+
+        next.textContent = "Câu tiếp theo →";
+
+    }
+
+}
+
+
+function nextQuestion(){
+
+    if(currentQuestion <
+       quizData.length - 1){
+
+        currentQuestion++;
+
+        loadQuestion();
+
+    }else{
+
+        showResult();
+
+    }
+
+}
+
+
+/* =========================================================
+   KẾT QUẢ
+   ========================================================= */
+
+function showResult(){
+
+    clearInterval(timer);
+
+    document.getElementById("quizContent").style.display =
+        "none";
+
+    document.getElementById("quizResult").style.display =
+        "block";
+
+
+    document.getElementById("score").textContent =
+        `${score}/${quizData.length}`;
+
+
+    let text = "";
+
+
+    if(score >= 9){
+
+        text =
+            "🌟 Xuất sắc! Em đã nắm rất tốt kiến thức về núi lửa và động đất.";
+
+    }else if(score >= 7){
+
+        text =
+            "👏 Rất tốt! Em đã hiểu phần lớn nội dung của bài.";
+
+    }else if(score >= 5){
+
+        text =
+            "👍 Đạt yêu cầu. Em nên xem lại một số nội dung trước khi làm lại.";
+
+    }else{
+
+        text =
+            "💪 Hãy xem lại bài học và thử lại nhé!";
+
+    }
+
+
+    document.getElementById("resultText").textContent =
+        text;
+
+
+    document.getElementById("quizProgress").style.width =
+        "100%";
+
+}
+
+
+/* =========================================================
+   LÀM LẠI
+   ========================================================= */
+
+function retryQuiz(){
+
+    startQuiz();
+
+}
+
+
+/* =========================================================
+   HOÀN THÀNH BÀI HỌC
+   ========================================================= */
+
+function finishLesson(){
+
+    const p = getProgress();
+
+    p[LESSON_ID] = true;
+
+    saveProgress(p);
+
+    updateLessonStatus();
+
+    showToast(
+        "🎉 Đã ghi nhận hoàn thành Bài 12!"
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2600);
+
+}
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g12");</script>
+</body>
+</html>

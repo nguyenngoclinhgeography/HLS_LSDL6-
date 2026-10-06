@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Địa lí 6 - Bài 6. Trái Đất trong hệ Mặt Trời</title>
+<style>
+:root{--bg:#071425;--panel:#0d2037;--panel2:#102a45;--cyan:#42d9ff;--cyan2:#8cecff;--gold:#ffd166;--text:#eaf7ff;--muted:#a9bfd3;--green:#55e39b;--red:#ff7185}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -10%,#12375a 0,#071425 45%,#050d18 100%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.6}
+.top{position:sticky;top:0;z-index:20;background:rgba(5,14,27,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1c405f;padding:10px 18px;display:flex;justify-content:space-between;align-items:center}.brand{font-weight:800;color:var(--cyan)}.nav{display:flex;gap:8px}.btn{border:1px solid #2c5878;background:#102a43;color:var(--text);padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:700}.btn:hover{border-color:var(--cyan);transform:translateY(-1px)}.btn.primary{background:linear-gradient(135deg,#11658a,#0d385a);border-color:#3ed7ff}
+.wrap{max-width:1180px;margin:auto;padding:24px 18px 70px}.hero{padding:42px 26px 35px;border:1px solid #1e4867;border-radius:24px;background:linear-gradient(145deg,rgba(13,42,69,.92),rgba(7,23,40,.96));box-shadow:0 20px 55px #0006}.tag{display:inline-block;color:#06131f;background:var(--cyan);font-weight:900;border-radius:999px;padding:5px 12px;font-size:13px}.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.08;margin:15px 0 10px}.hero p{max-width:850px;color:var(--muted);font-size:17px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:20px}.card{background:rgba(13,32,55,.9);border:1px solid #1c4563;border-radius:17px;padding:18px}.card h3{margin:0 0 7px;color:var(--cyan2);font-size:17px}.card p{margin:0;color:var(--muted);font-size:14px}.section{margin-top:28px}.section-title{display:flex;gap:12px;align-items:end;margin-bottom:14px}.section-title h2{margin:0;font-size:28px}.section-title span{color:var(--cyan);font-weight:800;font-size:13px}.two{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.panel{background:rgba(10,29,49,.92);border:1px solid #1d4766;border-radius:19px;padding:20px}.panel h3{margin-top:0;color:var(--cyan2)}.facts{display:grid;gap:10px}.fact{padding:12px 14px;border-left:3px solid var(--cyan);background:#0b2138;border-radius:9px}.fact b{color:#fff}.note{color:var(--muted);font-size:14px}.pill{display:inline-block;border:1px solid #2c5878;border-radius:999px;padding:3px 9px;margin:3px;color:#bfefff;background:#0a1d31}
+
+#solarCanvas{width:100%;height:560px;display:block;border-radius:16px;background:#020813;border:1px solid #1c4563;cursor:grab}.sim-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.control-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.range{accent-color:var(--cyan)}.info-box{margin-top:13px;min-height:76px;padding:13px 15px;border:1px solid #275575;background:#091c2f;border-radius:12px}.info-box b{color:var(--gold)}
+.scale-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px}.earth-demo{height:350px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:16px;background:radial-gradient(circle,#102f4b,#030b15 70%)}.earth{width:210px;height:210px;border-radius:50%;position:relative;background:radial-gradient(circle at 35% 30%,#74dcff 0 8%,#1876a6 35%,#073b65 72%,#031a2e);box-shadow:inset -35px -20px 55px #000b,0 0 35px #2ecfff55;overflow:hidden}.land{position:absolute;background:#59c47b;opacity:.9;border-radius:55% 45% 48% 52%;filter:saturate(.8)}.l1{width:62px;height:88px;left:42px;top:45px;transform:rotate(18deg)}.l2{width:38px;height:58px;left:112px;top:75px;transform:rotate(-25deg)}.l3{width:50px;height:35px;left:133px;top:130px;transform:rotate(18deg)}.l4{width:28px;height:45px;left:76px;top:142px}.orbit-ring{position:absolute;width:320px;height:130px;border:1px solid #4edbff55;border-radius:50%;transform:rotate(-16deg)}.measure{position:absolute;bottom:16px;left:18px;right:18px;text-align:center;color:var(--muted);font-size:13px}
+.planet-list{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}.planet{padding:10px;border:1px solid #244d69;background:#0b2138;border-radius:10px;cursor:pointer}.planet:hover,.planet.active{border-color:var(--cyan);background:#10304b}.planet small{display:block;color:var(--muted)}.planet strong{color:#fff}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.step{padding:15px;background:#0b2138;border:1px solid #204965;border-radius:13px}.step b{color:var(--cyan);font-size:22px}.step p{font-size:14px;color:var(--muted);margin:5px 0 0}
+.quiz{margin-top:25px}.quiz-start{text-align:center;padding:35px}.quiz-q{font-size:21px;font-weight:800;margin-bottom:15px}.answers{display:grid;gap:9px}.ans{text-align:left;width:100%;border:1px solid #2b5674;background:#0b2138;color:var(--text);padding:13px;border-radius:11px;cursor:pointer}.ans:hover{border-color:var(--cyan);background:#10304b}.ans.correct{border-color:var(--green);background:#0c3a2a}.ans.wrong{border-color:var(--red);background:#431d28}.quiz-meta{display:flex;justify-content:space-between;color:var(--muted);margin-bottom:12px}.feedback{min-height:30px;margin-top:10px;font-weight:700}.result{text-align:center;padding:30px}.score{font-size:42px;color:var(--gold);font-weight:900}
+footer{text-align:center;color:#7590a5;margin-top:35px;font-size:13px}
+@media(max-width:850px){.grid,.planet-list{grid-template-columns:repeat(2,1fr)}.two,.scale-wrap{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}#solarCanvas{height:460px}}
+@media(max-width:520px){.grid,.planet-list,.steps{grid-template-columns:1fr}.hero{padding:30px 18px}.wrap{padding:15px 12px 50px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+<div class="top"><div class="brand">🌍 HỌC LIỆU SỐ ĐỊA LÍ 6</div><div class="nav"><button class="btn" onclick="goHome()">⌂ Trang chủ</button><button class="btn primary" onclick="document.getElementById('quiz').scrollIntoView()">📝 Luyện tập</button></div></div>
+
+<main class="wrap">
+<section class="hero">
+<span class="tag">ĐỊA LÍ 6 · KẾT NỐI TRI THỨC</span>
+<h1>Bài 6. Trái Đất trong hệ Mặt Trời</h1>
+<p>Khám phá vị trí của Trái Đất trong hệ Mặt Trời, tìm hiểu vì sao khoảng cách đến Mặt Trời có ý nghĩa đối với sự sống và quan sát mô hình Trái Đất dạng cầu.</p>
+<div class="grid">
+<div class="card"><h3>☀️ Hệ Mặt Trời</h3><p>Mặt Trời ở trung tâm, có 8 hành tinh chuyển động xung quanh.</p></div>
+<div class="card"><h3>🌍 Vị trí Trái Đất</h3><p>Trái Đất là hành tinh thứ ba tính từ Mặt Trời.</p></div>
+<div class="card"><h3>🔵 Hình dạng</h3><p>Trái Đất có dạng khối cầu.</p></div>
+<div class="card"><h3>📏 Kích thước</h3><p>Bán kính xích đạo khoảng 6 378 km; diện tích bề mặt khoảng 510 triệu km².</p></div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-title"><span>01</span><h2>Vị trí của Trái Đất trong hệ Mặt Trời</h2></div>
+<div class="panel">
+<p>Vũ trụ có vô số thiên hà; hệ Mặt Trời thuộc <b>Dải Ngân Hà</b>. Ở trung tâm hệ Mặt Trời là <b>Mặt Trời</b>, một ngôi sao tự phát sáng. Có <b>8 hành tinh</b> chuyển động xung quanh Mặt Trời; các hành tinh cũng tự quay quanh mình.</p>
+<div class="facts">
+<div class="fact">🌎 <b>Trái Đất đứng thứ 3</b> theo thứ tự xa dần Mặt Trời.</div>
+<div class="fact">☀️ Khoảng cách từ Trái Đất đến Mặt Trời là <b>khoảng cách lí tưởng</b> giúp Trái Đất nhận lượng nhiệt và ánh sáng phù hợp để sự sống có thể tồn tại và phát triển.</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-title"><span>02</span><h2>🔭 Mô phỏng hệ Mặt Trời</h2></div>
+<div class="panel">
+<p class="note">Kéo chuột để xoay góc nhìn. Dùng thanh tốc độ để điều chỉnh chuyển động. Nhấp vào một hành tinh để xem thông tin. Mô hình mang tính trực quan, không dùng tỉ lệ khoảng cách thực tế.</p>
+<canvas id="solarCanvas"></canvas>
+<div class="sim-controls">
+<button class="btn primary" id="pauseBtn" onclick="togglePause()">⏸ Tạm dừng</button>
+<button class="btn" onclick="resetView()">↺ Đặt lại</button>
+<button class="btn" onclick="focusEarth()">🌍 Tập trung Trái Đất</button>
+<label class="btn">Tốc độ <input class="range" id="speed" type="range" min="0" max="3" value="1" step=".1"></label>
+</div>
+<div class="info-box" id="solarInfo"><b>💡 Hãy chọn một hành tinh</b><br>Quan sát thứ tự các hành tinh từ Mặt Trời ra xa.</div>
+<div class="planet-list" id="planetList"></div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-title"><span>03</span><h2>🌍 Trái Đất có dạng hình cầu</h2></div>
+<div class="two">
+<div class="panel">
+<h3>Vì sao không phải là một mặt phẳng?</h3>
+<div class="facts">
+<div class="fact">👀 Từ thực tế và quan sát, có nhiều bằng chứng cho thấy Trái Đất có dạng khối cầu.</div>
+<div class="fact">🛰️ Hình ảnh Trái Đất được chụp từ không gian cho thấy rõ dạng gần cầu của Trái Đất.</div>
+<div class="fact">🌅 Khi quan sát một vật ở xa trên mặt biển, phần dưới có thể khuất trước phần trên — phù hợp với bề mặt cong của Trái Đất.</div>
+</div>
+<p class="note">Trong SGK, A-ri-xtốt (Aristotle) ở thế kỉ IV trước Công nguyên đã đưa ra các bằng chứng cho thấy Trái Đất có dạng hình cầu.</p>
+</div>
+<div class="panel">
+<div class="earth-demo">
+<div class="orbit-ring"></div><div class="earth" id="earth"><i class="land l1"></i><i class="land l2"></i><i class="land l3"></i><i class="land l4"></i></div>
+<div class="measure">Mô hình minh họa dạng cầu của Trái Đất</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-title"><span>04</span><h2>📏 Kích thước của Trái Đất</h2></div>
+<div class="scale-wrap">
+<div class="panel"><h3>Bán kính xích đạo</h3><div style="font-size:40px;font-weight:900;color:var(--gold)">6 378 km</div><p class="note">Giá trị được nêu trong tài liệu tham khảo của bài học.</p></div>
+<div class="panel"><h3>Diện tích bề mặt</h3><div style="font-size:40px;font-weight:900;color:var(--gold)">510 triệu km²</div><p class="note">Kích thước và khối lượng đủ lớn giúp Trái Đất giữ được các chất khí tạo thành lớp vỏ bảo vệ.</p></div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-title"><span>05</span><h2>🧠 Ghi nhớ nhanh</h2></div>
+<div class="steps">
+<div class="step"><b>1</b><p>Hệ Mặt Trời thuộc Dải Ngân Hà.</p></div>
+<div class="step"><b>2</b><p>Mặt Trời ở trung tâm và là một ngôi sao.</p></div>
+<div class="step"><b>3</b><p>Có 8 hành tinh chuyển động quanh Mặt Trời.</p></div>
+<div class="step"><b>4</b><p>Trái Đất là hành tinh thứ 3 tính từ Mặt Trời.</p></div>
+<div class="step"><b>5</b><p>Trái Đất có dạng khối cầu và kích thước lớn.</p></div>
+</div>
+</section>
+
+<section class="section quiz" id="quiz">
+<div class="section-title"><span>06</span><h2>📝 Luyện tập 8 câu</h2></div>
+<div class="panel">
+<div id="quizStart" class="quiz-start"><h3>🚀 Sẵn sàng khám phá?</h3><p class="note">8 câu · 10 giây/câu · phản hồi ngay sau mỗi lựa chọn</p><button class="btn primary" onclick="startQuiz()">▶ Bắt đầu</button></div>
+<div id="quizContent" style="display:none">
+<div class="quiz-meta"><span id="qCount"></span><span>⏱ <b id="timer">10</b>s</span></div>
+<div class="quiz-q" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div>
+</div>
+<div id="quizResult" class="result" style="display:none"><div>🎉 Hoàn thành!</div><div class="score" id="scoreText"></div><p id="resultMsg"></p><button class="btn primary" onclick="restartQuiz()">↻ Làm lại</button></div>
+</div>
+</section>
+<footer>Học liệu số Địa lí 6 · Bài 6 · Thiết kế theo định hướng trực quan và tương tác · Hoạt động offline</footer>
+</main>
+
+<script>
+const PROGRESS_KEY='hoclieu6_progress_v1';
+function goHome(){window.location.href='index.html'}
+
+const planets=[
+{name:'Mặt Trời',emoji:'☀️',r:0,color:'#ffd166',desc:'Ngôi sao ở trung tâm hệ Mặt Trời, tự phát sáng.'},
+{name:'Sao Thủy',emoji:'☿',r:66,color:'#aaa',desc:'Hành tinh thứ nhất tính từ Mặt Trời.'},
+{name:'Sao Kim',emoji:'♀',r:102,color:'#e6b56a',desc:'Hành tinh thứ hai tính từ Mặt Trời.'},
+{name:'Trái Đất',emoji:'🌍',r:140,color:'#45c8ff',desc:'Hành tinh thứ ba tính từ Mặt Trời; khoảng cách đến Mặt Trời phù hợp cho sự sống tồn tại và phát triển.'},
+{name:'Sao Hỏa',emoji:'♂',r:178,color:'#e66a4d',desc:'Hành tinh thứ tư tính từ Mặt Trời.'},
+{name:'Sao Mộc',emoji:'♃',r:225,color:'#d9ae7c',desc:'Hành tinh thứ năm tính từ Mặt Trời.'},
+{name:'Sao Thổ',emoji:'♄',r:270,color:'#e4c67a',desc:'Hành tinh thứ sáu tính từ Mặt Trời.'},
+{name:'Thiên Vương',emoji:'♅',r:315,color:'#83e8ef',desc:'Hành tinh thứ bảy tính từ Mặt Trời.'},
+{name:'Hải Vương',emoji:'♆',r:355,color:'#4b82ff',desc:'Hành tinh thứ tám tính từ Mặt Trời.'}
+];
+const list=document.getElementById('planetList');
+planets.slice(1).forEach((p,i)=>{const d=document.createElement('div');d.className='planet';d.innerHTML='<strong>'+p.emoji+' '+p.name+'</strong><small>Vị trí '+(i+1)+' từ Mặt Trời</small>';d.onclick=()=>selectPlanet(i+1);list.appendChild(d)});
+
+const canvas=document.getElementById('solarCanvas'),ctx=canvas.getContext('2d');
+let W=0,H=0,dpr=1,angle=0,paused=false,drag=false,lastX=0,viewOffset=0,focus=0;
+let speed=.01;
+function resize(){dpr=devicePixelRatio||1;W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+window.addEventListener('resize',resize);resize();
+document.getElementById('speed').oninput=e=>speed=Number(e.target.value)*.012;
+function draw(){
+ ctx.clearRect(0,0,W,H);
+ const bg=ctx.createRadialGradient(W*.5,H*.5,0,W*.5,H*.5,Math.max(W,H)*.65);bg.addColorStop(0,'#0b2945');bg.addColorStop(1,'#020813');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+ for(let i=0;i<90;i++){let x=(i*83)%W,y=(i*47)%H;ctx.fillStyle=i%5===0?'#9eeeff':'#ffffff55';ctx.fillRect(x,y,1.2,1.2)}
+ const cx=W/2+viewOffset,cy=H/2;
+ const scale=Math.min(W/800,H/560);
+ ctx.save();ctx.translate(cx,cy);
+ planets.slice(1).forEach((p,i)=>{ctx.beginPath();ctx.ellipse(0,0,p.r*scale,p.r*scale*.38,0,0,Math.PI*2);ctx.strokeStyle='#3ccff522';ctx.stroke()});
+ const sun=ctx.createRadialGradient(0,0,5,0,0,38*scale);sun.addColorStop(0,'#fff6a3');sun.addColorStop(.5,'#ffd166');sun.addColorStop(1,'#ff9f1c00');ctx.fillStyle=sun;ctx.beginPath();ctx.arc(0,0,43*scale,0,Math.PI*2);ctx.fill();
+ planets.slice(1).forEach((p,i)=>{
+   let a=angle*(i%2?-.75:1)*(0.5+1/(i+1));
+   let x=Math.cos(a)*p.r*scale,y=Math.sin(a)*p.r*scale*.38;
+   let rr=(i===2?9:i<4?5:7)*scale;
+   if(i===5){ctx.strokeStyle='#d8c27b99';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y,rr*1.9,rr*.7,a*.2,0,Math.PI*2);ctx.stroke()}
+   ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=12;ctx.beginPath();ctx.arc(x,y,rr,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+   if(focus===i+1){ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,rr+6,0,Math.PI*2);ctx.stroke()}
+   ctx.fillStyle='#ccefff';ctx.font='12px Segoe UI';ctx.fillText(p.name,x+rr+4,y+4);
+ });
+ ctx.restore();
+ if(!paused){angle+=speed;requestAnimationFrame(draw)}else requestAnimationFrame(()=>{if(paused)drawPaused()});
+}
+function drawPaused(){ctx.fillStyle='#ffffffaa';ctx.font='700 14px Segoe UI';ctx.fillText('ĐANG TẠM DỪNG',18,28)}
+function togglePause(){paused=!paused;document.getElementById('pauseBtn').textContent=paused?'▶ Tiếp tục':'⏸ Tạm dừng';if(!paused)draw()}
+function resetView(){angle=0;viewOffset=0;focus=0;paused=false;document.getElementById('pauseBtn').textContent='⏸ Tạm dừng';document.getElementById('solarInfo').innerHTML='<b>💡 Hãy chọn một hành tinh</b><br>Quan sát thứ tự các hành tinh từ Mặt Trời ra xa.';draw()}
+function focusEarth(){focus=3;document.getElementById('solarInfo').innerHTML='<b>🌍 Trái Đất — hành tinh thứ 3</b><br>Khoảng cách đến Mặt Trời là khoảng cách lí tưởng giúp Trái Đất nhận nhiệt và ánh sáng phù hợp cho sự sống.'}
+function selectPlanet(i){focus=i;const p=planets[i];document.getElementById('solarInfo').innerHTML='<b>'+p.emoji+' '+p.name+'</b><br>'+p.desc}
+canvas.addEventListener('mousedown',e=>{drag=true;lastX=e.clientX;canvas.style.cursor='grabbing'});
+window.addEventListener('mouseup',()=>{drag=false;canvas.style.cursor='grab'});
+window.addEventListener('mousemove',e=>{if(drag){viewOffset+=(e.clientX-lastX)*.7;lastX=e.clientX}});
+canvas.addEventListener('click',e=>{if(Math.abs(e.clientX-lastX)>5)return});
+draw();
+
+const qs=[
+['Trái Đất là hành tinh thứ mấy tính từ Mặt Trời?',['Thứ nhất','Thứ hai','Thứ ba','Thứ tư'],2,'Trái Đất là hành tinh thứ ba tính từ Mặt Trời.'],
+['Hệ Mặt Trời nằm trong thiên hà nào?',['Tiên Nữ','Dải Ngân Hà','Tam Giác','Sombrero'],1,'Hệ Mặt Trời thuộc Dải Ngân Hà.'],
+['Thiên thể nào ở trung tâm hệ Mặt Trời?',['Trái Đất','Mặt Trăng','Mặt Trời','Sao Mộc'],2,'Mặt Trời là ngôi sao ở trung tâm hệ Mặt Trời.'],
+['Hệ Mặt Trời có bao nhiêu hành tinh?',['6','7','8','9'],2,'Có 8 hành tinh chuyển động xung quanh Mặt Trời.'],
+['Khoảng cách Trái Đất – Mặt Trời có ý nghĩa gì?',['Giúp Trái Đất nhận nhiệt và ánh sáng phù hợp cho sự sống','Làm Trái Đất không có khí quyển','Làm Trái Đất đứng yên','Làm Trái Đất không tự quay'],0,'Khoảng cách này là khoảng cách lí tưởng cho sự sống tồn tại và phát triển.'],
+['Trái Đất có dạng gì?',['Mặt phẳng','Khối cầu','Hình vuông','Hình trụ'],1,'Trái Đất có dạng khối cầu.'],
+['Bán kính xích đạo của Trái Đất khoảng bao nhiêu?',['637,8 km','6 378 km','63 780 km','637 800 km'],1,'Bán kính xích đạo được nêu khoảng 6 378 km.'],
+['Diện tích bề mặt Trái Đất khoảng bao nhiêu?',['51 triệu km²','510 nghìn km²','510 triệu km²','5,1 triệu km²'],2,'Diện tích bề mặt Trái Đất khoảng 510 triệu km².']
+];
+let qi=0,score=0,timer=null,timeLeft=10,answered=false;
+function startQuiz(){clearInterval(timer);qi=0;score=0;document.getElementById('quizStart').style.display='none';document.getElementById('quizContent').style.display='block';document.getElementById('quizResult').style.display='none';renderQ()}
+function renderQ(){answered=false;const q=qs[qi];document.getElementById('qCount').textContent=`Câu ${qi+1}/${qs.length}`;document.getElementById('question').textContent=q[0];document.getElementById('feedback').textContent='';const box=document.getElementById('answers');box.innerHTML='';q[1].forEach((a,i)=>{const b=document.createElement('button');b.className='ans';b.textContent=String.fromCharCode(65+i)+'. '+a;b.onclick=()=>answer(i,b);box.appendChild(b)});timeLeft=10;document.getElementById('timer').textContent=timeLeft;clearInterval(timer);timer=setInterval(()=>{timeLeft--;document.getElementById('timer').textContent=timeLeft;if(timeLeft<=0){clearInterval(timer);if(!answered)answer(-1,null)}},1000)}
+function answer(i,btn){if(answered)return;answered=true;clearInterval(timer);const q=qs[qi],buttons=document.querySelectorAll('.ans');buttons.forEach((b,j)=>{b.disabled=true;if(j===q[2])b.classList.add('correct')});if(i===q[2]){score++;document.getElementById('feedback').textContent='✓ Chính xác! '+q[3]}else{if(btn)btn.classList.add('wrong');document.getElementById('feedback').textContent=(i===-1?'⏰ Hết giờ! ':'✗ Chưa đúng. ')+q[3]}setTimeout(()=>{qi++;if(qi<qs.length)renderQ();else finishQuiz()},1200)}
+function finishQuiz(){document.getElementById('quizContent').style.display='none';document.getElementById('quizResult').style.display='block';document.getElementById('scoreText').textContent=score+'/'+qs.length;document.getElementById('resultMsg').textContent=score>=7?'Xuất sắc! Em đã nắm rất chắc kiến thức bài học.':score>=5?'Khá tốt! Hãy xem lại những câu em còn nhầm.':'Hãy đọc lại phần ghi nhớ rồi thử lại nhé.';const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');p.g06=true;localStorage.setItem(PROGRESS_KEY,JSON.stringify(p))}
+function restartQuiz(){document.getElementById('quizResult').style.display='none';document.getElementById('quizStart').style.display='block'}
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("g06");</script>
+</body>
+</html>

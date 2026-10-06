@@ -1,0 +1,2992 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 14 - Thực hành đọc lược đồ địa hình</title>
+
+<style>
+
+:root{
+    --bg:#07111f;
+    --bg2:#0b1c31;
+    --card:#102640;
+    --card2:#132d49;
+    --blue:#35b9ff;
+    --cyan:#63ddff;
+    --green:#54e39b;
+    --yellow:#ffd166;
+    --red:#ff6b81;
+    --text:#edf7ff;
+    --muted:#9bb4ca;
+    --line:rgba(255,255,255,.09);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            rgba(29,120,190,.22),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(0,210,255,.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #07111f,
+            #091827 45%,
+            #06101d
+        );
+
+    color:var(--text);
+    min-height:100vh;
+    line-height:1.65;
+}
+
+/* ================= HEADER ================= */
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    height:68px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 5%;
+
+    background:rgba(5,16,29,.88);
+    backdrop-filter:blur(15px);
+
+    border-bottom:1px solid var(--line);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-weight:900;
+    letter-spacing:.5px;
+}
+
+.logo-icon{
+    width:40px;
+    height:40px;
+
+    border-radius:12px;
+
+    display:grid;
+    place-items:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #178bd0,
+            #37d5ff
+        );
+
+    box-shadow:
+        0 8px 25px rgba(30,180,255,.25);
+}
+
+.home-btn{
+    border:1px solid rgba(90,210,255,.25);
+
+    background:#10263e;
+
+    color:white;
+
+    border-radius:12px;
+
+    padding:10px 16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#173652;
+    transform:translateY(-1px);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    padding:80px 5% 65px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(18,89,145,.35),
+            rgba(6,22,40,.1)
+        );
+
+    border-bottom:1px solid var(--line);
+}
+
+.hero-inner{
+    max-width:1180px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+
+    gap:50px;
+
+    align-items:center;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+
+    gap:8px;
+
+    padding:7px 13px;
+
+    border-radius:30px;
+
+    background:rgba(48,187,255,.12);
+
+    border:1px solid rgba(74,208,255,.2);
+
+    color:var(--cyan);
+
+    font-size:13px;
+    font-weight:800;
+
+    letter-spacing:.6px;
+}
+
+.hero h1{
+    font-size:clamp(38px,5vw,64px);
+
+    line-height:1.05;
+
+    margin:22px 0 18px;
+
+    letter-spacing:-1.5px;
+}
+
+.gradient{
+    background:
+        linear-gradient(
+            90deg,
+            #fff,
+            #64dcff
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+
+    max-width:720px;
+
+    font-size:17px;
+}
+
+/* ================= HERO VISUAL ================= */
+
+.map-preview{
+    min-height:310px;
+
+    border-radius:28px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border:1px solid rgba(75,205,255,.2);
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(25,145,210,.18),
+            transparent 60%
+        ),
+        #0a1c31;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.35);
+}
+
+.contour{
+    position:absolute;
+
+    border:2px solid rgba(80,210,255,.25);
+
+    border-radius:50%;
+}
+
+.c1{
+    width:250px;
+    height:180px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.c2{
+    width:210px;
+    height:145px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.c3{
+    width:165px;
+    height:110px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.c4{
+    width:120px;
+    height:75px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.map-mountain{
+    position:absolute;
+
+    width:0;
+    height:0;
+
+    border-left:65px solid transparent;
+    border-right:65px solid transparent;
+    border-bottom:120px solid rgba(60,190,225,.3);
+
+    left:50%;
+    top:34%;
+
+    transform:translateX(-50%);
+}
+
+.map-label{
+    position:absolute;
+
+    left:50%;
+    top:53%;
+
+    transform:translateX(-50%);
+
+    color:white;
+
+    font-size:13px;
+    font-weight:800;
+
+    background:rgba(5,18,31,.75);
+
+    padding:5px 10px;
+
+    border-radius:8px;
+}
+
+/* ================= GENERAL ================= */
+
+.container{
+    width:min(1180px,90%);
+
+    margin:auto;
+}
+
+section.content-section{
+    padding:70px 0;
+}
+
+.section-head{
+    margin-bottom:30px;
+}
+
+.eyebrow{
+    color:var(--cyan);
+
+    font-size:13px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+    margin-bottom:7px;
+}
+
+.section-title{
+    font-size:32px;
+
+    line-height:1.2;
+
+    margin-bottom:8px;
+}
+
+.section-subtitle{
+    color:var(--muted);
+}
+
+/* ================= OBJECTIVES ================= */
+
+.objectives{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:18px;
+}
+
+.objective{
+    padding:23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(19,50,78,.95),
+            rgba(10,29,49,.95)
+        );
+
+    border:1px solid var(--line);
+
+    border-radius:18px;
+
+    transition:.25s;
+}
+
+.objective:hover{
+    transform:translateY(-5px);
+
+    border-color:
+        rgba(72,205,255,.35);
+}
+
+.objective .icon{
+    font-size:30px;
+    margin-bottom:13px;
+}
+
+.objective h3{
+    margin-bottom:8px;
+}
+
+.objective p{
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+/* ================= THEORY ================= */
+
+.theory-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:20px;
+}
+
+.info-card{
+    background:var(--card);
+
+    border:1px solid var(--line);
+
+    border-radius:20px;
+
+    padding:26px;
+}
+
+.info-card h3{
+    margin-bottom:12px;
+
+    color:#eaf9ff;
+}
+
+.info-card p{
+    color:var(--muted);
+}
+
+.highlight{
+    color:var(--cyan);
+    font-weight:800;
+}
+
+.note{
+    margin-top:20px;
+
+    padding:17px 20px;
+
+    border-radius:15px;
+
+    background:rgba(48,187,255,.08);
+
+    border:1px solid rgba(48,187,255,.18);
+
+    color:#c9ebfa;
+}
+
+/* ================= PRACTICE MAP ================= */
+
+.practice-box{
+    background:
+        linear-gradient(
+            145deg,
+            #0c2239,
+            #081827
+        );
+
+    border:1px solid rgba(81,205,255,.18);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.25);
+}
+
+.map-area{
+    position:relative;
+
+    height:470px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b3044,
+            #0b2537
+        );
+}
+
+/* contour lines */
+
+.map-area .line{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%)
+        rotate(-8deg);
+
+    border:2px solid rgba(122,225,255,.55);
+
+    border-radius:50%;
+}
+
+.level-1{
+    width:720px;
+    height:360px;
+}
+
+.level-2{
+    width:590px;
+    height:290px;
+}
+
+.level-3{
+    width:470px;
+    height:225px;
+}
+
+.level-4{
+    width:350px;
+    height:165px;
+}
+
+.level-5{
+    width:230px;
+    height:105px;
+}
+
+/* mountain */
+
+.peak{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:0;
+    height:0;
+
+    border-left:85px solid transparent;
+    border-right:85px solid transparent;
+    border-bottom:135px solid rgba(81,193,221,.3);
+
+    filter:
+        drop-shadow(
+            0 8px 18px rgba(0,0,0,.2)
+        );
+}
+
+.peak::after{
+    content:"";
+
+    position:absolute;
+
+    width:0;
+    height:0;
+
+    border-left:28px solid transparent;
+    border-right:28px solid transparent;
+    border-bottom:48px solid rgba(240,250,255,.55);
+
+    left:-28px;
+    top:55px;
+}
+
+/* north arrow */
+
+.north{
+    position:absolute;
+
+    top:18px;
+    right:20px;
+
+    width:65px;
+    height:65px;
+
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    background:rgba(3,15,28,.75);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    font-size:28px;
+}
+
+.map-point{
+    position:absolute;
+
+    width:18px;
+    height:18px;
+
+    border-radius:50%;
+
+    background:var(--yellow);
+
+    border:3px solid white;
+
+    box-shadow:
+        0 0 0 7px rgba(255,209,102,.12);
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.map-point:hover{
+    transform:scale(1.25);
+}
+
+.point-a{
+    left:27%;
+    top:60%;
+}
+
+.point-b{
+    left:50%;
+    top:31%;
+}
+
+.point-c{
+    left:72%;
+    top:66%;
+}
+
+.point-label{
+    position:absolute;
+
+    transform:translate(15px,-4px);
+
+    white-space:nowrap;
+
+    font-size:13px;
+
+    font-weight:900;
+
+    color:white;
+}
+
+/* ================= CONTROLS ================= */
+
+.map-controls{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:18px;
+}
+
+.control-btn{
+    border:none;
+
+    border-radius:12px;
+
+    padding:10px 15px;
+
+    background:#173651;
+
+    color:white;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.control-btn:hover{
+    background:#215071;
+}
+
+.control-btn.active{
+    background:
+        linear-gradient(
+            135deg,
+            #168bcf,
+            #35c8f5
+        );
+}
+
+/* ================= INFO PANEL ================= */
+
+.map-info{
+    margin-top:20px;
+
+    padding:20px;
+
+    border-radius:17px;
+
+    background:rgba(255,255,255,.035);
+
+    border:1px solid var(--line);
+
+    min-height:80px;
+}
+
+.map-info strong{
+    color:var(--cyan);
+}
+
+/* ================= PROFILE ================= */
+
+.profile-grid{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:20px;
+}
+
+.profile-card{
+    background:var(--card);
+
+    border-radius:20px;
+
+    border:1px solid var(--line);
+
+    padding:25px;
+}
+
+.profile-card h3{
+    margin-bottom:14px;
+}
+
+.profile-list{
+    display:grid;
+
+    gap:10px;
+}
+
+.profile-item{
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    padding:11px 0;
+
+    border-bottom:1px dashed rgba(255,255,255,.08);
+
+    color:var(--muted);
+}
+
+.profile-item b{
+    color:white;
+}
+
+/* ================= CROSS SECTION ================= */
+
+.cross-section{
+    background:#0a1c2e;
+
+    border:1px solid var(--line);
+
+    border-radius:22px;
+
+    padding:25px;
+}
+
+.cross-canvas-wrap{
+    position:relative;
+
+    height:360px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            #102c43 0 48%,
+            #183c36 48% 100%
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.cross-ground{
+    position:absolute;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+
+    height:55%;
+
+    background:
+        linear-gradient(
+            160deg,
+            #244d3c,
+            #0e342e
+        );
+
+    clip-path:
+        polygon(
+            0 75%,
+            8% 70%,
+            16% 57%,
+            24% 45%,
+            32% 55%,
+            40% 32%,
+            48% 16%,
+            56% 38%,
+            65% 62%,
+            74% 50%,
+            83% 64%,
+            92% 42%,
+            100% 50%,
+            100% 100%,
+            0 100%
+        );
+}
+
+.cross-line{
+    position:absolute;
+
+    left:8%;
+    right:8%;
+
+    height:2px;
+
+    background:rgba(255,255,255,.45);
+
+    border-top:2px dashed rgba(255,255,255,.5);
+}
+
+.cross-line.one{
+    top:44%;
+}
+
+.cross-line.two{
+    top:62%;
+}
+
+.cross-label{
+    position:absolute;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    background:rgba(3,14,25,.72);
+
+    padding:5px 8px;
+
+    border-radius:7px;
+}
+
+.cl1{
+    left:9%;
+    top:40%;
+}
+
+.cl2{
+    left:30%;
+    top:57%;
+}
+
+.cl3{
+    left:47%;
+    top:19%;
+}
+
+.cl4{
+    right:15%;
+    top:40%;
+}
+
+.cross-point{
+    position:absolute;
+
+    width:13px;
+    height:13px;
+
+    border-radius:50%;
+
+    background:var(--yellow);
+
+    border:2px solid white;
+}
+
+.cp-a{
+    left:18%;
+    top:64%;
+}
+
+.cp-b{
+    left:47%;
+    top:20%;
+}
+
+.cp-c{
+    left:75%;
+    top:55%;
+}
+
+/* ================= PRACTICE TASK ================= */
+
+.task-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+}
+
+.task-card{
+    padding:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #112b46,
+            #0b2035
+        );
+
+    border:1px solid var(--line);
+
+    border-radius:19px;
+}
+
+.task-number{
+    width:38px;
+    height:38px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:12px;
+
+    background:
+        rgba(53,185,255,.13);
+
+    color:var(--cyan);
+
+    font-weight:900;
+
+    margin-bottom:13px;
+}
+
+.task-card h3{
+    margin-bottom:8px;
+}
+
+.task-card p{
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+/* ================= QUIZ ================= */
+
+.quiz-wrapper{
+    max-width:850px;
+
+    margin:auto;
+
+    background:
+        linear-gradient(
+            145deg,
+            #102944,
+            #0b1d31
+        );
+
+    border:1px solid var(--line);
+
+    border-radius:25px;
+
+    padding:30px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.3);
+}
+
+.quiz-start{
+    text-align:center;
+
+    padding:30px 10px;
+}
+
+.quiz-start .big-icon{
+    font-size:60px;
+
+    margin-bottom:10px;
+}
+
+.primary-btn{
+    border:none;
+
+    border-radius:13px;
+
+    padding:12px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #168dd2,
+            #34c9f5
+        );
+
+    color:white;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    margin-top:18px;
+
+    box-shadow:
+        0 10px 25px rgba(28,171,235,.2);
+}
+
+.primary-btn:hover{
+    transform:translateY(-1px);
+}
+
+.quiz-head{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:20px;
+}
+
+.progress-text{
+    color:var(--muted);
+
+    font-size:14px;
+}
+
+.timer{
+    min-width:58px;
+
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:12px;
+
+    background:
+        rgba(255,209,102,.1);
+
+    border:1px solid rgba(255,209,102,.2);
+
+    color:var(--yellow);
+
+    font-weight:900;
+
+    font-size:18px;
+}
+
+.timer.warning{
+    color:var(--red);
+
+    border-color:
+        rgba(255,107,129,.3);
+}
+
+.quiz-progress{
+    height:7px;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    background:#18334d;
+
+    margin-bottom:25px;
+}
+
+.quiz-progress i{
+    display:block;
+
+    height:100%;
+
+    width:0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #27a9e1,
+            #5de0ff
+        );
+
+    transition:.3s;
+}
+
+.question{
+    font-size:21px;
+
+    font-weight:800;
+
+    line-height:1.45;
+
+    margin-bottom:20px;
+}
+
+.answers{
+    display:grid;
+
+    gap:11px;
+}
+
+.answer{
+    width:100%;
+
+    text-align:left;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    background:#122c47;
+
+    color:white;
+
+    border-radius:13px;
+
+    padding:13px 15px;
+
+    cursor:pointer;
+
+    transition:.18s;
+
+    font-size:15px;
+}
+
+.answer:hover:not(:disabled){
+    background:#193c5c;
+
+    border-color:
+        rgba(71,204,255,.3);
+}
+
+.answer.correct{
+    background:
+        rgba(48,207,137,.14);
+
+    border-color:
+        rgba(48,207,137,.6);
+}
+
+.answer.wrong{
+    background:
+        rgba(255,91,116,.13);
+
+    border-color:
+        rgba(255,91,116,.55);
+}
+
+.answer:disabled{
+    cursor:default;
+}
+
+.feedback{
+    margin-top:18px;
+
+    padding:15px;
+
+    border-radius:13px;
+
+    display:none;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.good{
+    background:rgba(48,207,137,.1);
+
+    border:
+        1px solid rgba(48,207,137,.25);
+}
+
+.feedback.bad{
+    background:rgba(255,91,116,.1);
+
+    border:
+        1px solid rgba(255,91,116,.25);
+}
+
+.next-btn{
+    display:none;
+
+    margin-top:18px;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:11px 17px;
+
+    background:#244a68;
+
+    color:white;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.next-btn.show{
+    display:inline-block;
+}
+
+/* ================= RESULT ================= */
+
+.result{
+    display:none;
+
+    text-align:center;
+
+    padding:25px;
+}
+
+.result.show{
+    display:block;
+}
+
+.score-circle{
+    width:125px;
+    height:125px;
+
+    margin:10px auto 20px;
+
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    background:
+        radial-gradient(
+            circle,
+            #123652,
+            #0b1d31
+        );
+
+    border:
+        5px solid rgba(73,208,255,.35);
+
+    font-size:29px;
+
+    font-weight:900;
+
+    color:var(--cyan);
+}
+
+.result p{
+    color:var(--muted);
+}
+
+.result-actions{
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    padding:35px 5%;
+
+    text-align:center;
+
+    color:#6e899f;
+
+    border-top:1px solid var(--line);
+
+    font-size:13px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+    .hero-inner{
+        grid-template-columns:1fr;
+    }
+
+    .objectives{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .theory-grid,
+    .profile-grid{
+        grid-template-columns:1fr;
+    }
+
+    .task-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        padding:0 4%;
+    }
+
+    .logo span{
+        font-size:13px;
+    }
+
+    .hero{
+        padding:55px 5%;
+    }
+
+    .hero h1{
+        font-size:39px;
+    }
+
+    .objectives{
+        grid-template-columns:1fr;
+    }
+
+    .map-area{
+        height:350px;
+    }
+
+    .level-1{
+        width:540px;
+        height:280px;
+    }
+
+    .level-2{
+        width:440px;
+        height:225px;
+    }
+
+    .level-3{
+        width:350px;
+        height:175px;
+    }
+
+    .level-4{
+        width:270px;
+        height:130px;
+    }
+
+    .level-5{
+        width:190px;
+        height:90px;
+    }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="topbar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🗺️
+        </div>
+
+        <span>
+            HỌC LIỆU SỐ ĐỊA LÍ 6
+        </span>
+
+    </div>
+
+    <button class="home-btn" onclick="goHome()">
+        🏠 Trang chủ
+    </button>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+<div class="hero-inner">
+
+    <div>
+
+        <div class="badge">
+            🗺️ ĐỊA LÍ 6 · BÀI 14 · THỰC HÀNH
+        </div>
+
+        <h1>
+            Đọc lược đồ địa hình
+            <br>
+            <span class="gradient">
+                và lát cắt địa hình
+            </span>
+        </h1>
+
+        <p>
+            Cùng thực hành đọc lược đồ địa hình tỉ lệ lớn,
+            nhận biết đường đồng mức, xác định độ cao và
+            phân tích lát cắt địa hình đơn giản.
+        </p>
+
+    </div>
+
+
+    <div class="map-preview">
+
+        <div class="contour c1"></div>
+        <div class="contour c2"></div>
+        <div class="contour c3"></div>
+        <div class="contour c4"></div>
+
+        <div class="map-mountain"></div>
+
+        <div class="map-label">
+            Đường đồng mức
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     OBJECTIVES
+========================================================= -->
+
+<section class="content-section">
+
+<div class="container">
+
+    <div class="section-head">
+
+        <div class="eyebrow">
+            MỤC TIÊU
+        </div>
+
+        <h2 class="section-title">
+            Học xong bài này, em có thể...
+        </h2>
+
+        <p class="section-subtitle">
+            Rèn luyện kĩ năng đọc và phân tích lược đồ địa hình,
+            đồng thời biết cách đọc một lát cắt địa hình đơn giản.
+        </p>
+
+    </div>
+
+
+    <div class="objectives">
+
+        <div class="objective">
+
+            <div class="icon">
+                🗺️
+            </div>
+
+            <h3>
+                Đọc lược đồ
+            </h3>
+
+            <p>
+                Xác định được các thông tin thể hiện trên
+                lược đồ địa hình.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="icon">
+                📏
+            </div>
+
+            <h3>
+                Đường đồng mức
+            </h3>
+
+            <p>
+                Nhận biết và khai thác thông tin từ
+                các đường đồng mức.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="icon">
+                ⛰️
+            </div>
+
+            <h3>
+                Xác định độ cao
+            </h3>
+
+            <p>
+                Xác định độ cao của các điểm dựa vào
+                đường đồng mức và chú giải.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="icon">
+                📈
+            </div>
+
+            <h3>
+                Đọc lát cắt
+            </h3>
+
+            <p>
+                Nhận biết dạng địa hình qua lát cắt
+                địa hình đơn giản.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     KIẾN THỨC CẦN NHỚ
+========================================================= -->
+
+<section class="content-section">
+
+<div class="container">
+
+    <div class="section-head">
+
+        <div class="eyebrow">
+            KIẾN THỨC CẦN NHỚ
+        </div>
+
+        <h2 class="section-title">
+            Trước khi thực hành, hãy nhớ...
+        </h2>
+
+    </div>
+
+
+    <div class="theory-grid">
+
+        <div class="info-card">
+
+            <h3>
+                🌀 Đường đồng mức là gì?
+            </h3>
+
+            <p>
+                Đường đồng mức là đường nối những điểm có
+                <span class="highlight">
+                    cùng độ cao
+                </span>
+                trên bề mặt địa hình.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                📐 Khoảng cao đều
+            </h3>
+
+            <p>
+                Khoảng chênh lệch độ cao giữa hai đường đồng mức
+                liên tiếp gọi là
+                <span class="highlight">
+                    khoảng cao đều
+                </span>.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                ⛰️ Độ dốc địa hình
+            </h3>
+
+            <p>
+                Các đường đồng mức càng gần nhau thì địa hình
+                càng dốc; các đường càng xa nhau thì địa hình
+                càng thoải.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                📍 Độ cao của điểm
+            </h3>
+
+            <p>
+                Dựa vào vị trí của điểm so với các đường đồng mức
+                để xác định hoặc ước tính độ cao của điểm đó.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="note">
+
+        💡
+        <strong>Mẹo đọc nhanh:</strong>
+        Hãy đọc chú giải và xác định khoảng cao đều trước,
+        sau đó mới xác định độ cao và dạng địa hình.
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     LƯỢC ĐỒ TƯƠNG TÁC
+========================================================= -->
+
+<section class="content-section">
+
+<div class="container">
+
+    <div class="section-head">
+
+        <div class="eyebrow">
+            THỰC HÀNH 1
+        </div>
+
+        <h2 class="section-title">
+            🔎 Khám phá lược đồ địa hình
+        </h2>
+
+        <p class="section-subtitle">
+            Quan sát các đường đồng mức và bấm vào các điểm
+            A, B, C để tìm hiểu địa hình.
+        </p>
+
+    </div>
+
+
+    <div class="practice-box">
+
+        <div class="map-area">
+
+            <div class="line level-1"></div>
+            <div class="line level-2"></div>
+            <div class="line level-3"></div>
+            <div class="line level-4"></div>
+            <div class="line level-5"></div>
+
+            <div class="peak"></div>
+
+
+            <div class="north">
+                ↑
+            </div>
+
+
+            <div
+                class="map-point point-a"
+                onclick="showPoint('A')"
+            >
+                <span class="point-label">
+                    A
+                </span>
+            </div>
+
+
+            <div
+                class="map-point point-b"
+                onclick="showPoint('B')"
+            >
+                <span class="point-label">
+                    B
+                </span>
+            </div>
+
+
+            <div
+                class="map-point point-c"
+                onclick="showPoint('C')"
+            >
+                <span class="point-label">
+                    C
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="map-controls">
+
+            <button
+                class="control-btn active"
+                onclick="showMapInfo('general',this)"
+            >
+                🗺️ Đọc lược đồ
+            </button>
+
+            <button
+                class="control-btn"
+                onclick="showMapInfo('contour',this)"
+            >
+                🌀 Đường đồng mức
+            </button>
+
+            <button
+                class="control-btn"
+                onclick="showMapInfo('slope',this)"
+            >
+                ⛰️ Độ dốc
+            </button>
+
+        </div>
+
+
+        <div
+            class="map-info"
+            id="mapInfo"
+        >
+
+            <strong>
+                Cách đọc lược đồ:
+            </strong>
+
+            Quan sát chú giải, hướng bắc,
+            các đường đồng mức và vị trí các điểm.
+            Sau đó xác định độ cao và dạng địa hình.
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     XÁC ĐỊNH ĐỘ CAO
+========================================================= -->
+
+<section class="content-section">
+
+<div class="container">
+
+    <div class="section-head">
+
+        <div class="eyebrow">
+            THAO TÁC ĐỌC LƯỢC ĐỒ
+        </div>
+
+        <h2 class="section-title">
+            📍 Xác định độ cao các điểm
+        </h2>
+
+        <p class="section-subtitle">
+            Bấm vào từng điểm trên lược đồ để xem cách phân tích.
+        </p>
+
+    </div>
+
+
+    <div class="profile-grid">
+
+        <div class="profile-card">
+
+            <h3>
+                🟡 Các điểm trên lược đồ
+            </h3>
+
+            <div class="profile-list">
+
+                <div class="profile-item">
+                    <span>Điểm A</span>
+                    <b>Vùng sườn</b>
+                </div>
+
+                <div class="profile-item">
+                    <span>Điểm B</span>
+                    <b>Gần đỉnh</b>
+                </div>
+
+                <div class="profile-item">
+                    <span>Điểm C</span>
+                    <b>Vùng sườn</b>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="profile-card"
+            id="pointInfo"
+        >
+
+            <h3>
+                💡 Hướng dẫn phân tích
+            </h3>
+
+            <p style="color:var(--muted)">
+
+                Hãy bấm vào A, B hoặc C trên lược đồ
+                phía trên để xem thông tin.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     LÁT CẮT ĐỊA HÌNH
+========================================================= -->
+
+<section class="content-section">
+
+<div class="container">
+
+    <div class="section-head">
+
+        <div class="eyebrow">
+            THỰC HÀNH 2
+        </div>
+
+        <h2 class="section-title">
+            📈 Đọc lát cắt địa hình đơn giản
+        </h2>
+
+        <p class="section-subtitle">
+            Lát cắt địa hình cho phép hình dung sự thay đổi
+            độ cao của địa hình theo một tuyến nhất định.
+        </p>
+
+    </div>
+
+
+    <div class="cross-section">
+
+        <div class="cross-canvas-wrap">
+
+            <div class="cross-ground"></div>
+
+            <div class="cross-line one"></div>
+            <div class="cross-line two"></div>
+
+            <div class="cross-label cl1">
+                100 m
+            </div>
+
+            <div class="cross-label cl2">
+                200 m
+            </div>
+
+            <div class="cross-label cl3">
+                500 m
+            </div>
+
+            <div class="cross-label cl4">
+                100 m
+            </div>
+
+
+            <div class="cross-point cp-a"></div>
+            <div class="cross-point cp-b"></div>
+            <div class="cross-point cp-c"></div>
+
+        </div>
+
+
+        <div class="note">
+
+            <strong>
+                Cách đọc lát cắt:
+            </strong>
+
+            Đi từ trái sang phải theo tuyến cắt,
+            quan sát sự thay đổi độ cao để nhận biết
+            các khu vực thấp, cao, sườn dốc và đỉnh địa hình.
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     QUY TRÌNH THỰC HÀNH
+========================================================= -->
+
+<section class="content-section">
+
+<div class="container">
+
+    <div class="section-head">
+
+        <div class="eyebrow">
+            QUY TRÌNH
+        </div>
+
+        <h2 class="section-title">
+            🧭 4 bước đọc lược đồ địa hình
+        </h2>
+
+    </div>
+
+
+    <div class="task-grid">
+
+        <div class="task-card">
+
+            <div class="task-number">
+                1
+            </div>
+
+            <h3>
+                Xác định thông tin chung
+            </h3>
+
+            <p>
+                Đọc tên lược đồ, bảng chú giải,
+                hướng bắc và tỉ lệ bản đồ.
+            </p>
+
+        </div>
+
+
+        <div class="task-card">
+
+            <div class="task-number">
+                2
+            </div>
+
+            <h3>
+                Đọc đường đồng mức
+            </h3>
+
+            <p>
+                Xác định độ cao và khoảng cao đều
+                giữa các đường đồng mức.
+            </p>
+
+        </div>
+
+
+        <div class="task-card">
+
+            <div class="task-number">
+                3
+            </div>
+
+            <h3>
+                Phân tích địa hình
+            </h3>
+
+            <p>
+                Xác định nơi cao, thấp, dốc, thoải
+                và dạng địa hình nổi bật.
+            </p>
+
+        </div>
+
+
+        <div class="task-card">
+
+            <div class="task-number">
+                4
+            </div>
+
+            <h3>
+                Đọc lát cắt
+            </h3>
+
+            <p>
+                Theo dõi tuyến cắt và mô tả sự thay đổi
+                độ cao của địa hình.
+            </p>
+
+        </div>
+
+
+        <div class="task-card">
+
+            <div class="task-number">
+                ✓
+            </div>
+
+            <h3>
+                Kiểm tra lại
+            </h3>
+
+            <p>
+                Đối chiếu với chú giải và các giá trị
+                độ cao để tránh nhầm lẫn.
+            </p>
+
+        </div>
+
+
+        <div class="task-card">
+
+            <div class="task-number">
+                🎯
+            </div>
+
+            <h3>
+                Rút ra nhận xét
+            </h3>
+
+            <p>
+                Trình bày ngắn gọn đặc điểm địa hình
+                dựa trên những gì quan sát được.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     QUIZ
+========================================================= -->
+
+<section class="content-section">
+
+<div class="container">
+
+    <div class="section-head">
+
+        <div class="eyebrow">
+            KIỂM TRA CUỐI BÀI
+        </div>
+
+        <h2 class="section-title">
+            🎯 Thử thách đọc lược đồ
+        </h2>
+
+        <p class="section-subtitle">
+            10 câu hỏi · mỗi câu có 10 giây suy nghĩ.
+        </p>
+
+    </div>
+
+
+    <div class="quiz-wrapper">
+
+
+        <!-- START -->
+
+        <div
+            class="quiz-start"
+            id="quizStart"
+        >
+
+            <div class="big-icon">
+                🗺️
+            </div>
+
+            <h2>
+                Sẵn sàng thực hành?
+            </h2>
+
+            <p style="color:var(--muted);margin-top:8px">
+
+                Hãy vận dụng kiến thức về đường đồng mức,
+                độ cao và lát cắt địa hình.
+
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="startQuiz()"
+            >
+                ▶ Bắt đầu
+            </button>
+
+        </div>
+
+
+        <!-- QUESTION -->
+
+        <div id="quizContent" style="display:none">
+
+            <div class="quiz-head">
+
+                <div class="progress-text">
+                    Câu
+                    <span id="questionNumber">
+                        1
+                    </span>
+                    / 10
+                </div>
+
+                <div
+                    class="timer"
+                    id="timer"
+                >
+                    10
+                </div>
+
+            </div>
+
+
+            <div class="quiz-progress">
+                <i id="quizBar"></i>
+            </div>
+
+
+            <div
+                class="question"
+                id="question"
+            ></div>
+
+
+            <div
+                class="answers"
+                id="answers"
+            ></div>
+
+
+            <div
+                class="feedback"
+                id="feedback"
+            ></div>
+
+
+            <button
+                class="next-btn"
+                id="nextBtn"
+                onclick="nextQuestion()"
+            >
+                Câu tiếp theo →
+            </button>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div
+            class="result"
+            id="result"
+        >
+
+            <div class="score-circle">
+                <span id="scoreText">
+                    0/10
+                </span>
+            </div>
+
+            <h2>
+                Hoàn thành thử thách! 🎉
+            </h2>
+
+            <p id="resultMessage">
+                Em đã hoàn thành phần kiểm tra.
+            </p>
+
+
+            <div class="result-actions">
+
+                <button
+                    class="primary-btn"
+                    onclick="restartQuiz()"
+                >
+                    ↻ Làm lại
+                </button>
+
+                <button
+                    class="primary-btn"
+                    onclick="finishLesson()"
+                >
+                    ✓ Hoàn thành bài học
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+    Học liệu số Địa lí 6 · Bài 14
+    <br>
+    Thực hành: Đọc lược đồ địa hình tỉ lệ lớn và lát cắt địa hình đơn giản
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   CẤU HÌNH
+========================================================= */
+
+const PROGRESS_KEY = 'hoclieu6_progress_v1';
+
+
+/* =========================================================
+   TRANG CHỦ
+========================================================= */
+
+function goHome(){
+
+    window.location.href = 'index.html';
+
+}
+
+
+/* =========================================================
+   LƯỢC ĐỒ
+========================================================= */
+
+function showMapInfo(type,button){
+
+    document
+        .querySelectorAll('.control-btn')
+        .forEach(btn => btn.classList.remove('active'));
+
+    button.classList.add('active');
+
+    const box =
+        document.getElementById('mapInfo');
+
+    if(type === 'general'){
+
+        box.innerHTML = `
+            <strong>Cách đọc lược đồ:</strong>
+            Quan sát tên lược đồ, hướng bắc, chú giải,
+            tỉ lệ và hệ thống đường đồng mức.
+            Từ đó xác định đặc điểm địa hình.
+        `;
+
+    }
+
+    if(type === 'contour'){
+
+        box.innerHTML = `
+            <strong>Đường đồng mức:</strong>
+            Mỗi đường nối các điểm có cùng độ cao.
+            Khoảng chênh lệch độ cao giữa hai đường
+            đồng mức liên tiếp là khoảng cao đều.
+        `;
+
+    }
+
+    if(type === 'slope'){
+
+        box.innerHTML = `
+            <strong>Độ dốc:</strong>
+            Các đường đồng mức càng gần nhau thì
+            địa hình càng dốc. Các đường càng cách xa
+            nhau thì địa hình càng thoải.
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   ĐIỂM A B C
+========================================================= */
+
+function showPoint(point){
+
+    const box =
+        document.getElementById('pointInfo');
+
+    const data = {
+
+        A:{
+            title:'Điểm A',
+            text:
+                'Điểm A nằm trên khu vực sườn núi. ' +
+                'Khi xác định độ cao, cần đối chiếu vị trí ' +
+                'của điểm A với các đường đồng mức gần đó.'
+        },
+
+        B:{
+            title:'Điểm B',
+            text:
+                'Điểm B nằm gần khu vực cao nhất của địa hình. ' +
+                'Các đường đồng mức bao quanh điểm B cho thấy ' +
+                'địa hình nâng cao dần về phía trung tâm.'
+        },
+
+        C:{
+            title:'Điểm C',
+            text:
+                'Điểm C nằm ở sườn phía đối diện. ' +
+                'Có thể dựa vào khoảng cách giữa các đường đồng mức ' +
+                'để nhận xét mức độ dốc của khu vực.'
+        }
+
+    };
+
+    box.innerHTML = `
+
+        <h3>
+            📍 ${data[point].title}
+        </h3>
+
+        <p style="color:var(--muted);margin-top:10px">
+            ${data[point].text}
+        </p>
+
+    `;
+
+}
+
+
+/* =========================================================
+   QUIZ DATA
+========================================================= */
+
+const questions = [
+
+    {
+        q:
+        'Đường đồng mức là đường nối các điểm có đặc điểm nào?',
+
+        a:[
+            'Cùng hướng',
+            'Cùng độ cao',
+            'Cùng khoảng cách',
+            'Cùng độ dốc'
+        ],
+
+        c:1,
+
+        e:
+        'Đường đồng mức nối các điểm có cùng độ cao trên bề mặt địa hình.'
+    },
+
+
+    {
+        q:
+        'Các đường đồng mức càng gần nhau thì địa hình thường như thế nào?',
+
+        a:[
+            'Càng thoải',
+            'Càng bằng phẳng',
+            'Càng dốc',
+            'Càng thấp'
+        ],
+
+        c:2,
+
+        e:
+        'Đường đồng mức càng gần nhau cho thấy độ cao thay đổi nhanh trong một khoảng cách ngắn, địa hình càng dốc.'
+    },
+
+
+    {
+        q:
+        'Khoảng cao đều là gì?',
+
+        a:[
+            'Khoảng cách giữa hai điểm bất kỳ',
+            'Chênh lệch độ cao giữa hai đường đồng mức liên tiếp',
+            'Khoảng cách từ chân núi đến đỉnh núi',
+            'Khoảng cách trên bản đồ'
+        ],
+
+        c:1,
+
+        e:
+        'Khoảng cao đều là chênh lệch độ cao giữa hai đường đồng mức liên tiếp.'
+    },
+
+
+    {
+        q:
+        'Khi bắt đầu đọc một lược đồ địa hình, yếu tố nào cần được chú ý trước?',
+
+        a:[
+            'Màu sắc màn hình',
+            'Tên lược đồ, chú giải và tỉ lệ',
+            'Kích thước giấy',
+            'Số lượng đường đồng mức'
+        ],
+
+        c:1,
+
+        e:
+        'Tên lược đồ, chú giải, tỉ lệ và hướng bắc giúp định hướng việc đọc lược đồ.'
+    },
+
+
+    {
+        q:
+        'Nếu các đường đồng mức nằm rất xa nhau thì địa hình thường:',
+
+        a:[
+            'Rất dốc',
+            'Thoải hơn',
+            'Luôn là đỉnh núi',
+            'Luôn là thung lũng'
+        ],
+
+        c:1,
+
+        e:
+        'Các đường đồng mức xa nhau cho thấy địa hình thay đổi độ cao chậm hơn, thường thoải hơn.'
+    },
+
+
+    {
+        q:
+        'Lát cắt địa hình giúp chúng ta làm gì?',
+
+        a:[
+            'Xác định dân số',
+            'Quan sát sự thay đổi độ cao địa hình theo một tuyến',
+            'Tính nhiệt độ',
+            'Xác định hướng gió'
+        ],
+
+        c:1,
+
+        e:
+        'Lát cắt địa hình thể hiện sự thay đổi độ cao của địa hình theo một tuyến cắt.'
+    },
+
+
+    {
+        q:
+        'Muốn xác định độ cao của một điểm trên lược đồ địa hình, cần dựa vào:',
+
+        a:[
+            'Đường đồng mức và chú giải',
+            'Màu nền của trang web',
+            'Tên địa phương',
+            'Hướng gió'
+        ],
+
+        c:0,
+
+        e:
+        'Cần dựa vào các đường đồng mức, giá trị độ cao và chú giải của lược đồ.'
+    },
+
+
+    {
+        q:
+        'Một khu vực có các đường đồng mức rất sít nhau. Nhận xét nào phù hợp nhất?',
+
+        a:[
+            'Địa hình khá dốc',
+            'Địa hình rất bằng phẳng',
+            'Không có sự thay đổi độ cao',
+            'Chắc chắn là đồng bằng'
+        ],
+
+        c:0,
+
+        e:
+        'Các đường đồng mức sít nhau thể hiện địa hình dốc.'
+    },
+
+
+    {
+        q:
+        'Khi đọc lát cắt địa hình từ trái sang phải, ta nên chú ý điều gì?',
+
+        a:[
+            'Sự thay đổi độ cao',
+            'Số lượng chữ trên bản đồ',
+            'Màu của màn hình',
+            'Tên người vẽ'
+        ],
+
+        c:0,
+
+        e:
+        'Cần theo dõi sự thay đổi độ cao để nhận biết các khu vực cao, thấp, dốc và thoải.'
+    },
+
+
+    {
+        q:
+        'Trình tự nào phù hợp khi đọc lược đồ địa hình?',
+
+        a:[
+            'Đo khoảng cách → đo nhiệt độ → đọc tên',
+            'Đọc chú giải → xác định đường đồng mức → phân tích địa hình',
+            'Đọc màu → bỏ qua chú giải → kết luận',
+            'Xác định dân số → xác định khí hậu → kết luận'
+        ],
+
+        c:1,
+
+        e:
+        'Có thể bắt đầu từ tên, chú giải, tỉ lệ và hướng bắc; sau đó đọc đường đồng mức rồi phân tích địa hình.'
+    }
+
+];
+
+
+/* =========================================================
+   QUIZ STATE
+========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let answered = false;
+
+let timer = null;
+
+let timeLeft = 10;
+
+
+/* =========================================================
+   START QUIZ
+========================================================= */
+
+function startQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    document
+        .getElementById('quizStart')
+        .style.display = 'none';
+
+    document
+        .getElementById('quizContent')
+        .style.display = 'block';
+
+    document
+        .getElementById('result')
+        .classList.remove('show');
+
+    loadQuestion();
+
+}
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion(){
+
+    clearInterval(timer);
+
+    answered = false;
+
+    timeLeft = 10;
+
+    const q =
+        questions[currentQuestion];
+
+    document
+        .getElementById('questionNumber')
+        .textContent =
+        currentQuestion + 1;
+
+    document
+        .getElementById('question')
+        .textContent =
+        q.q;
+
+    document
+        .getElementById('quizBar')
+        .style.width =
+        ((currentQuestion + 1) /
+        questions.length * 100) + '%';
+
+    const answers =
+        document.getElementById('answers');
+
+    answers.innerHTML = '';
+
+    q.a.forEach((answer,index)=>{
+
+        const button =
+            document.createElement('button');
+
+        button.className = 'answer';
+
+        button.textContent =
+            String.fromCharCode(65 + index)
+            + '. '
+            + answer;
+
+        button.onclick =
+            ()=>chooseAnswer(index);
+
+        answers.appendChild(button);
+
+    });
+
+
+    const feedback =
+        document.getElementById('feedback');
+
+    feedback.className = 'feedback';
+
+    feedback.innerHTML = '';
+
+    document
+        .getElementById('nextBtn')
+        .classList.remove('show');
+
+    updateTimer();
+
+    timer =
+        setInterval(()=>{
+
+            timeLeft--;
+
+            updateTimer();
+
+            if(timeLeft <= 0){
+
+                clearInterval(timer);
+
+                timeOut();
+
+            }
+
+        },1000);
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function updateTimer(){
+
+    const timerBox =
+        document.getElementById('timer');
+
+    timerBox.textContent =
+        timeLeft;
+
+    timerBox.classList.toggle(
+        'warning',
+        timeLeft <= 3
+    );
+
+}
+
+
+/* =========================================================
+   CHOOSE ANSWER
+========================================================= */
+
+function chooseAnswer(index){
+
+    if(answered) return;
+
+    answered = true;
+
+    clearInterval(timer);
+
+    const q =
+        questions[currentQuestion];
+
+    const buttons =
+        document
+            .getElementById('answers')
+            .querySelectorAll('.answer');
+
+    buttons.forEach((button,i)=>{
+
+        button.disabled = true;
+
+        if(i === q.c){
+
+            button.classList.add('correct');
+
+        }
+
+    });
+
+
+    const feedback =
+        document.getElementById('feedback');
+
+
+    if(index === q.c){
+
+        score++;
+
+        feedback.className =
+            'feedback show good';
+
+        feedback.innerHTML =
+            `
+            <strong>✓ Chính xác!</strong>
+            <br>
+            ${q.e}
+            `;
+
+    }else{
+
+        buttons[index]
+            .classList.add('wrong');
+
+        feedback.className =
+            'feedback show bad';
+
+        feedback.innerHTML =
+            `
+            <strong>✗ Chưa chính xác.</strong>
+            <br>
+            ${q.e}
+            `;
+
+    }
+
+
+    document
+        .getElementById('nextBtn')
+        .classList.add('show');
+
+}
+
+
+/* =========================================================
+   TIME OUT
+========================================================= */
+
+function timeOut(){
+
+    if(answered) return;
+
+    answered = true;
+
+    const q =
+        questions[currentQuestion];
+
+    const buttons =
+        document
+            .getElementById('answers')
+            .querySelectorAll('.answer');
+
+    buttons.forEach((button,i)=>{
+
+        button.disabled = true;
+
+        if(i === q.c){
+
+            button.classList.add('correct');
+
+        }
+
+    });
+
+
+    const feedback =
+        document.getElementById('feedback');
+
+    feedback.className =
+        'feedback show bad';
+
+    feedback.innerHTML =
+        `
+        <strong>⏰ Hết thời gian!</strong>
+        <br>
+        ${q.e}
+        `;
+
+
+    document
+        .getElementById('nextBtn')
+        .classList.add('show');
+
+}
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+function nextQuestion(){
+
+    if(currentQuestion <
+        questions.length - 1){
+
+        currentQuestion++;
+
+        loadQuestion();
+
+    }else{
+
+        showResult();
+
+    }
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function showResult(){
+
+    clearInterval(timer);
+
+    document
+        .getElementById('quizContent')
+        .style.display = 'none';
+
+    document
+        .getElementById('result')
+        .classList.add('show');
+
+    document
+        .getElementById('scoreText')
+        .textContent =
+        score + '/10';
+
+
+    let message = '';
+
+    if(score >= 9){
+
+        message =
+            'Xuất sắc! Em đã nắm rất tốt cách đọc lược đồ và lát cắt địa hình. 🌟';
+
+    }else if(score >= 7){
+
+        message =
+            'Rất tốt! Em đã hiểu khá chắc các kĩ năng thực hành. 👏';
+
+    }else if(score >= 5){
+
+        message =
+            'Khá tốt! Hãy xem lại phần đường đồng mức và cách đọc lát cắt nhé. 📖';
+
+    }else{
+
+        message =
+            'Em hãy xem lại nội dung bài học và thử lại một lần nữa nhé! 💪';
+
+    }
+
+
+    document
+        .getElementById('resultMessage')
+        .textContent =
+        message;
+
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+function restartQuiz(){
+
+    clearInterval(timer);
+
+    document
+        .getElementById('result')
+        .classList.remove('show');
+
+    document
+        .getElementById('quizContent')
+        .style.display = 'block';
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    loadQuestion();
+
+}
+
+
+/* =========================================================
+   FINISH LESSON
+========================================================= */
+
+function finishLesson(){
+
+    const progress =
+        JSON.parse(
+            localStorage.getItem(PROGRESS_KEY)
+            || '{}'
+        );
+
+    progress.g14 = true;
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(progress)
+    );
+
+
+    alert(
+        '🎉 Chúc mừng! Em đã hoàn thành Bài 14.'
+    );
+
+
+    window.location.href =
+        '../index.html';
+
+}
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g14");</script>
+</body>
+</html>

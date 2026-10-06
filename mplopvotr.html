@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cấu Tạo Trong Của Trái Đất - Mô phỏng 3D Địa lí</title>
+    <!-- Tailwind CSS CDN for modern grid layouts & cards -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for clean educational and control icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls for full interactive rotation/pan/zoom capabilities -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #030712;
+        }
+        /* Custom styled scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.3);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.5);
+        }
+        /* Range slider styling */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #374151;
+            height: 6px;
+            border-radius: 9999px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #60a5fa;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col text-slate-100 selection:bg-blue-500/30 selection:text-blue-200">
+
+<!-- Top Header Navigation -->
+<header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center shrink-0 gap-4 z-10">
+    <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
+            <i class="fa-solid fa-earth-asia text-xl text-white animate-pulse"></i>
+        </div>
+        <div>
+<h1 class="font-extrabold text-lg md:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-200 to-amber-300">
+                CẤU TẠO TRONG CỦA TRÁI ĐẤT
+            </h1>
+            <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-green-500"></span> Mô phỏng trực quan 3D theo chuẩn SGK Địa Lí
+            </p>
+        </div>
+    </div>
+    
+    <div class="flex items-center gap-2">
+        <button onclick="openQRModal()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 transition-all text-xs font-semibold rounded-lg flex items-center gap-2 border border-slate-700/50">
+            <i class="fa-solid fa-qrcode text-emerald-400"></i> Chia sẻ QR
+        </button>
+        <button onclick="openHelpModal()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 transition-all text-xs font-semibold rounded-lg flex items-center gap-2 border border-slate-700/50">
+            <i class="fa-solid fa-circle-question text-blue-400"></i> Hướng dẫn dùng
+        </button>
+        <button onclick="toggleSound()" id="sound-btn" class="p-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700/50 text-slate-300 transition-all">
+            <i class="fa-solid fa-volume-high"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Main Workspace Container -->
+<main class="flex-1 flex flex-col lg:flex-row min-h-0 relative">
+    
+    <!-- 3D Canvas viewport container -->
+    <div id="canvas-container" class="flex-1 w-full h-full relative cursor-grab active:cursor-grabbing bg-radial-at-c from-slate-950 via-slate-900 to-black">
+        <!-- Loading Indicator Inside Canvas -->
+        <div id="loading-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-slate-950/90 z-20 transition-opacity duration-500">
+            <div class="relative w-24 h-24 mb-4">
+                <div class="absolute inset-0 rounded-full border-4 border-slate-800 border-t-blue-500 animate-spin"></div>
+                <i class="fa-solid fa-earth-americas text-4xl text-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-200">Đang khởi tạo Mô hình 3D...</h3>
+            <p class="text-sm text-slate-400 mt-1">Chuẩn bị vật liệu địa chất và hiệu ứng ánh sáng</p>
+        </div>
+
+        <!-- Orbit Control HUD Guides -->
+        <div class="absolute bottom-6 left-6 z-10 pointer-events-none hidden md:flex flex-col gap-1 bg-slate-900/60 backdrop-blur-md px-4 py-3 rounded-xl border border-slate-800 text-[11px] text-slate-400">
+            <p class="font-bold text-slate-300 mb-1 uppercase tracking-wider text-xs">Thao tác 3D</p>
+<p><i class="fa-solid fa-mouse-pointer text-blue-400 mr-2 w-4 text-center"></i> Chuột trái: Xoay tự do góc nhìn</p>
+            <p><i class="fa-solid fa-arrows-to-eye text-blue-400 mr-2 w-4 text-center"></i> Chuột phải: Di chuyển khung hình</p>
+            <p><i class="fa-solid fa-arrow-up-down-left-right text-blue-400 mr-2 w-4 text-center"></i> Lăn chuột: Phóng to / Thu nhỏ</p>
+            <p><i class="fa-solid fa-hand-pointer text-blue-400 mr-2 w-4 text-center"></i> Click chuột: Chọn trực tiếp lớp Trái Đất</p>
+        </div>
+        
+        <!-- Dynamic Floating Layer Pointer Tag -->
+        <div id="hover-tooltip" class="absolute hidden pointer-events-none bg-slate-900/90 border border-slate-700 text-xs px-3 py-2 rounded-lg shadow-xl z-20 font-semibold flex items-center gap-2">
+            <span id="tooltip-color" class="w-3 h-3 rounded-full"></span>
+            <span id="tooltip-text">Lớp vỏ Trái Đất</span>
+        </div>
+    </div>
+
+    <!-- Right Interactive Control and Info Sidebar -->
+    <aside class="w-full lg:w-[460px] bg-slate-900/90 lg:border-l border-t lg:border-t-0 border-slate-800 flex flex-col shrink-0 z-10 overflow-y-auto max-h-[50vh] lg:max-h-none">
+        
+        <!-- Quick View Control Toggles -->
+        <div class="p-5 border-b border-slate-800 bg-slate-950/40">
+            <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3.5 flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-blue-400"></i> Điều khiển mô hình 3D
+            </h3>
+            
+            <div class="flex flex-col gap-4">
+                <!-- Split Earth Slide Slider -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-scissors text-rose-400"></i> Tách đôi bán cầu (Mặt cắt)
+                        </label>
+                        <span id="split-val" class="text-xs text-blue-400 font-bold">Bình thường</span>
+                    </div>
+                    <input id="split-slider" type="range" min="0" max="100" value="0" class="w-full cursor-pointer">
+                </div>
+
+                <!-- Exploded Core Layer Slider -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-up-down text-emerald-400"></i> Độ bung rộng các lớp vỏ
+                        </label>
+                        <span id="explode-val" class="text-xs text-blue-400 font-bold">Liên kết chặt</span>
+                    </div>
+                    <input id="explode-slider" type="range" min="0" max="100" value="0" class="w-full cursor-pointer">
+</div>
+
+                <!-- Visual Quick Toggles -->
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button onclick="toggleAutoRotate()" id="auto-rotate-btn" class="py-2.5 px-3 bg-blue-500/10 hover:bg-blue-500/20 active:scale-95 border border-blue-500/30 rounded-lg text-xs font-bold text-blue-400 transition-all flex items-center justify-center gap-2">
+                        <i id="rotate-icon" class="fa-solid fa-sync animate-spin" style="animation-duration: 4s;"></i> Xoay tự động: BẬT
+                    </button>
+                    <button onclick="resetViews()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 rounded-lg text-xs font-bold text-slate-300 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-left"></i> Đặt lại mặc định
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Textbook Content Area -->
+        <div class="flex-1 p-5 flex flex-col gap-5">
+            <!-- Select Layer Navigation Buttons -->
+            <div>
+                <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-blue-400"></i> Chọn nhanh phân lớp nghiên cứu
+                </h3>
+                <div class="grid grid-cols-2 gap-2" id="layer-selector-grid">
+                    <button onclick="selectLayer('crust')" id="btn-crust" class="layer-tab py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 border border-slate-700/60 rounded-xl text-left transition-all group flex items-center gap-2.5">
+                        <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50"></span>
+                        <span class="text-xs font-bold text-slate-300 group-hover:text-white">Vỏ Trái Đất</span>
+                    </button>
+                    <button onclick="selectLayer('mantle')" id="btn-mantle" class="layer-tab py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 border border-slate-700/60 rounded-xl text-left transition-all group flex items-center gap-2.5">
+                        <span class="w-3 h-3 rounded-full bg-orange-500 shadow-sm shadow-orange-500/50"></span>
+                        <span class="text-xs font-bold text-slate-300 group-hover:text-white">Bao Manti</span>
+                    </button>
+                    <button onclick="selectLayer('outer_core')" id="btn-outer_core" class="layer-tab py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 border border-slate-700/60 rounded-xl text-left transition-all group flex items-center gap-2.5">
+                        <span class="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></span>
+                        <span class="text-xs font-bold text-slate-300 group-hover:text-white">Nhân ngoài</span>
+</button>
+                    <button onclick="selectLayer('inner_core')" id="btn-inner_core" class="layer-tab py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 border border-slate-700/60 rounded-xl text-left transition-all group flex items-center gap-2.5">
+                        <span class="w-3 h-3 rounded-full bg-yellow-300 shadow-sm shadow-yellow-300/50"></span>
+                        <span class="text-xs font-bold text-slate-300 group-hover:text-white">Nhân trong</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Selected Layer Detailed Info Card -->
+            <div id="info-container" class="bg-gradient-to-br from-slate-950/60 to-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-inner transition-all duration-300 flex-1 flex flex-col justify-between min-h-[320px]">
+                <!-- Default State Information -->
+                <div id="info-placeholder" class="h-full flex flex-col justify-center items-center text-center py-8">
+                    <div class="relative w-16 h-16 mb-4 flex items-center justify-center bg-slate-800/50 rounded-full border border-slate-700/40 text-slate-500">
+                        <i class="fa-solid fa-bullseye text-2xl animate-ping absolute opacity-25"></i>
+                        <i class="fa-solid fa-arrow-pointer text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-300 text-sm mb-1">Hãy nhấp vào các lớp cấu tạo</h4>
+                    <p class="text-xs text-slate-400 max-w-[280px]">Nhấp trực tiếp trên mô hình Trái Đất hoặc phím chọn nhanh để hiển thị số liệu chi tiết và bài học SGK Địa lí.</p>
+                </div>
+
+                <!-- Dynamic Active Layer Card Content -->
+                <div id="info-content" class="hidden flex-col gap-4">
+                    <div class="flex items-center gap-3">
+                        <span id="info-badge" class="w-3.5 h-3.5 rounded-full inline-block"></span>
+                        <h2 id="info-title" class="font-bold text-lg text-white tracking-tight">Vỏ Trái Đất</h2>
+                    </div>
+
+                    <!-- Technical Parameter Grid (Textbook Core Specs) -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800/80">
+                            <span class="text-[10px] text-slate-500 block uppercase font-bold">Độ dày / Độ sâu</span>
+                            <span id="info-thickness" class="font-semibold text-slate-200 block mt-1">5 km - 70 km</span>
+                        </div>
+                        <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800/80">
+                            <span class="text-[10px] text-slate-500 block uppercase font-bold">Trạng thái vật lí</span>
+<span id="info-state" class="font-semibold text-rose-300 block mt-1">Rắn chắc</span>
+                        </div>
+                        <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800/80">
+                            <span class="text-[10px] text-slate-500 block uppercase font-bold">Nhiệt độ tối đa</span>
+                            <span id="info-temp" class="font-semibold text-amber-400 block mt-1">~ 1,000 °C</span>
+                        </div>
+                        <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800/80">
+                            <span class="text-[10px] text-slate-500 block uppercase font-bold">Thành phần cấu tạo</span>
+                            <span id="info-composition" class="font-semibold text-slate-200 block mt-1 truncate">Đá Silicate</span>
+                        </div>
+                    </div>
+
+                    <!-- Textbook Detailed Explanation -->
+                    <div class="bg-slate-900/30 p-4 rounded-xl border border-slate-800 text-xs leading-relaxed text-slate-300 space-y-2">
+                        <p id="info-description">Vỏ Trái Đất là lớp ngoài cùng của thạch quyển, tuy mỏng nhất nhưng lại đóng vai trò vô cùng quan trọng đối với đời sống của nhân loại...</p>
+                    </div>
+
+                    <!-- Educational "Did you know?" Trivia Box -->
+                    <div class="bg-blue-950/25 border border-blue-900/40 p-3.5 rounded-xl text-xs text-blue-300/90 leading-relaxed flex items-start gap-2.5">
+                        <i class="fa-solid fa-lightbulb text-amber-400 text-sm mt-0.5 shrink-0 animate-bounce"></i>
+                        <div>
+                            <span class="font-bold text-blue-200 block mb-0.5">Bạn có biết?</span>
+                            <span id="info-fact">Sâu thẳm dưới lớp vỏ Trái Đất là hố khoan Kola sâu 12km do con người thực hiện nhưng chưa thể qua nổi vỏ lục địa...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expandable SGK Interactive Quiz Card -->
+            <div class="bg-slate-950/40 border border-slate-800/80 rounded-2xl p-4">
+                <button onclick="toggleQuizAccordion()" class="w-full flex justify-between items-center text-left">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-graduation-cap text-indigo-400 text-sm"></i>
+                        <span class="text-xs font-bold text-slate-200 uppercase tracking-wide">Trắc nghiệm nhanh Địa lí</span>
+                    </div>
+                    <i id="quiz-arrow" class="fa-solid fa-chevron-down text-xs text-slate-500 transition-transform"></i>
+                </button>
+                
+                <div id="quiz-accordion-content" class="hidden mt-4 pt-3 border-t border-slate-800 flex flex-col gap-3">
+<div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/40 text-xs">
+                        <span id="quiz-progress" class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider block mb-1">CÂU 1 / 4</span>
+                        <p id="quiz-question" class="font-semibold text-slate-200 leading-relaxed">Bộ phận nào chiếm tỷ lệ thể tích lớn nhất trong cấu tạo Trái Đất?</p>
+                    </div>
+                    
+                    <div id="quiz-options-container" class="flex flex-col gap-2">
+                        <!-- Options injected dynamically by JS -->
+                    </div>
+                    
+                    <div id="quiz-feedback" class="hidden text-xs font-semibold p-2.5 rounded-lg flex items-center gap-2">
+                        <!-- Feedback text injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </aside>
+</main>
+
+<!-- Interactive Help Modal Dialogue -->
+<div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
+        <button onclick="closeHelpModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+            <i class="fa-solid fa-times text-lg"></i>
+        </button>
+        <div class="flex items-center gap-3 mb-4">
+            <i class="fa-solid fa-circle-question text-blue-400 text-2xl"></i>
+            <h3 class="font-bold text-lg text-white">Hướng dẫn Sử dụng Mô phỏng</h3>
+        </div>
+        <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
+            <p>Chào mừng bạn đến với mô hình không gian 3D cấu tạo bên trong Trái Đất. Để đạt hiệu quả học tập tốt nhất, hãy thử các thao tác sau:</p>
+            <ul class="space-y-2.5 pl-4 list-decimal text-slate-400">
+                <li><strong class="text-slate-200">Xoay 3D:</strong> Sử dụng chuột trái (hoặc vuốt ngón tay trên điện thoại) để xoay mọi góc độ của hành tinh.</li>
+                <li><strong class="text-slate-200">Quan sát Mặt Cắt:</strong> Kéo thanh trượt <span class="text-rose-400 font-semibold">Tách đôi bán cầu</span> để tách Trái Đất làm hai phần, lộ ra lõi sâu bên trong.</li>
+                <li><strong class="text-slate-200">Quan sát Cấu Trúc Khối:</strong> Kéo thanh trượt <span class="text-emerald-400 font-semibold">Độ bung rộng</span> để đẩy các phân tầng (vỏ, bao manti, lõi) rời xa nhau nhằm dễ phân tích độ dày tương đối.</li>
+                <li><strong class="text-slate-200">Khám Phá Chi Tiết:</strong> Click chuột trực tiếp vào bất cứ lớp đất đá nào để hiển thị dữ liệu khoa học SGK.</li>
+            </ul>
+            <div class="bg-blue-950/45 border border-blue-900/50 p-3 rounded-lg text-blue-300 mt-2">
+<i class="fa-solid fa-info-circle mr-1.5 text-blue-400"></i> Bạn có thể bật / tắt âm thanh thông báo bằng nút loa ở góc phải màn hình.
+            </div>
+        </div>
+        <button onclick="closeHelpModal()" class="w-full mt-5 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold text-xs text-white transition-colors">
+            Bắt đầu học ngay
+        </button>
+    </div>
+</div>
+
+<!-- Interactive QR Code Sharing Modal -->
+<div id="qr-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
+        <button onclick="closeQRModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+            <i class="fa-solid fa-times text-lg"></i>
+        </button>
+        <div class="flex items-center gap-3 mb-4">
+            <i class="fa-solid fa-qrcode text-emerald-400 text-2xl"></i>
+            <h3 class="font-bold text-lg text-white">Chia Sẻ Bài Học Bằng QR</h3>
+        </div>
+        <div class="flex flex-col items-center gap-4 text-center">
+            <p class="text-xs text-slate-300 leading-relaxed">
+                Quét mã QR dưới đây bằng điện thoại hoặc máy tính bảng để trải nghiệm xoay 3D bằng cảm ứng di động mượt mà và trực quan hơn!
+            </p>
+            
+            <!-- QR Code Image Container -->
+            <div class="bg-white p-3.5 rounded-2xl shadow-inner border border-slate-200">
+                <img id="qr-image" src="" alt="Mã QR học tập" class="w-48 h-48 block mx-auto" onerror="this.src='https://placehold.co/200x200/ffffff/000000?text=Loi+Tai+QR'">
+            </div>
+
+            <!-- Custom URL Input (for flexibility if they deploy it) -->
+            <div class="w-full text-left">
+                <label class="text-[10px] uppercase font-bold text-slate-500 block mb-1">Địa chỉ liên kết (URL)</label>
+                <div class="flex gap-2">
+                    <input type="text" id="qr-url-input" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-blue-500/50" placeholder="https://...">
+                    <button onclick="regenerateQR()" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold active:scale-95 transition-all shrink-0">
+                        Tạo lại
+                    </button>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1">Đường dẫn tự động lấy từ trình duyệt hoặc bạn có thể dán đường dẫn trang web sau khi đã xuất bản.</p>
+            </div>
+        </div>
+        <button onclick="closeQRModal()" class="w-full mt-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/60 rounded-xl font-bold text-xs text-slate-300 transition-colors">
+            Đóng cửa sổ
+        </button>
+</div>
+</div>
+
+<script>
+    /* -------------------------------------------------------------
+     * 1. GEOPHYSICS TEXTBOOK SGK DATABASE DEFINITIONS
+     * ------------------------------------------------------------- */
+    const layerData = {
+        crust: {
+            title: "Vỏ Trái Đất (Crust)",
+            thickness: "Từ 5 km (ở đại dương) đến 70 km (ở lục địa)",
+            state: "Rắn chắc (Thạch quyển cứng)",
+            temp: "Tối đa khoảng 1,000 °C (càng sâu nhiệt độ càng tăng)",
+            composition: "Đá Silicate (Granite ở lục địa, Bazan ở đại dương)",
+            mass: "Khối lượng: Chiếm khoảng 0.5% khối lượng Trái Đất",
+            volume: "Thể tích: Chiếm chưa đầy 1% thể tích toàn cầu",
+            description: "Là lớp ngoài cùng, mỏng nhất nhưng lại là nơi phát sinh và duy trì sự sống của nhân loại. Vỏ Trái Đất bị đứt gãy thành các mảng kiến tạo khổng lồ di chuyển chậm chạp trên quyển mềm. Gồm vỏ lục địa có cấu tạo chủ yếu là granite nhẹ và vỏ đại dương mỏng hơn nhưng đặc chắc hơn từ bazan trầm tích.",
+            facts: "Điểm sâu nhất do loài người tự khoan đạt 12.2 km (Hố khoan siêu sâu Kola, Nga) chỉ mới gãi nhẹ bề mặt lớp vỏ siêu mỏng này.",
+            color: "#10b981", // Emerald
+            cameraPos: { x: 5, y: 3, z: 8 }
+        },
+        mantle: {
+            title: "Bao Manti (Mantle)",
+            thickness: "Độ sâu từ khoảng 70 km đến 2,900 km",
+            state: "Quánh dẻo ở phần trên, Rắn chắn ở phần dưới",
+            temp: "Từ khoảng 1,500 °C đến 3,700 °C",
+            composition: "Hợp chất Silicate đặc chứa nhiều Sắt và Magie",
+            mass: "Khối lượng: Chiếm khoảng 68.5% tổng khối lượng Trái Đất",
+            volume: "Thể tích: Chiếm tới hơn 80% thể tích hành tinh (lớp lớn nhất)",
+            description: "Nằm sát bên dưới vỏ Trái Đất. Phần manti trên (70km - 700km) quánh dẻo do dòng nhiệt cực lớn, sinh ra dòng đối lưu magma chuyển dịch chậm chạp. Dòng đối lưu này chính là 'động cơ vĩnh cửu' kéo đẩy các mảng kiến tạo trên lớp vỏ bề mặt sinh ra các rặng núi lửa hầm hố và những cơn địa chấn động đất.",
+            facts: "Hầu hết kim cương quý hiếm tự nhiên đều được hình thành ở lớp bao manti này ở độ sâu từ 140km - 190km dưới áp suất khổng lồ trước khi được magma phun trào mang lên gần mặt đất.",
+            color: "#f97316", // Orange
+            cameraPos: { x: 6, y: 4, z: 7 }
+        },
+        outer_core: {
+            title: "Nhân Ngoài / Lõi Lỏng (Outer Core)",
+            thickness: "Độ sâu từ khoảng 2,900 km đến 5,100 km",
+            state: "Lỏng (Kim loại nóng chảy)",
+            temp: "Khoảng 4,400 °C đến 5,000 °C",
+            composition: "Hợp kim lỏng của Sắt (Fe) và Niken (Ni)",
+            mass: "Cực kỳ đậm đặc, chiếm thị phần trọng lượng lớn",
+            volume: "Thể tích: Chiếm khoảng 15% tổng thể tích Trái Đất",
+description: "Bắt đầu từ ranh giới lõi-manti sâu 2900km, nơi nhiệt độ cao đến mức vượt qua nhiệt độ nóng chảy của hợp kim sắt-niken. Chuyển động đối lưu của dòng kim loại lỏng dồi dào electron tự do này sinh ra dòng điện tự nhiên. Thông qua hiệu ứng Dynamo tự kích, từ đây sinh ra toàn bộ Từ Trường Trái Đất bao bọc khí quyển.",
+            facts: "Từ trường sinh ra bởi nhân ngoài lỏng tạo nên chiếc lá chắn kiên cố bảo vệ sự sống khỏi gió Mặt Trời và bão bức xạ vũ trụ hủy diệt.",
+            color: "#f59e0b", // Amber
+            cameraPos: { x: 5, y: -3, z: 6 }
+        },
+        inner_core: {
+            title: "Nhân Trong / Lõi Rắn (Inner Core)",
+            thickness: "Bán kính khoảng 1,270 km (độ sâu từ 5,100km đến tâm 6,370km)",
+            state: "Rắn hoàn toàn",
+            temp: "Khoảng 5,400 °C đến 6,000 °C (Nóng ngang bề mặt Mặt Trời)",
+            composition: "Hợp kim Sắt-Niken kết tinh cực đặc siêu khối lượng",
+            mass: "Rất lớn do sức nén khổng lồ",
+            volume: "Thể tích: Chiếm chưa đầy 1% thể tích Trái Đất",
+            description: "Lõi đặc tại tâm Trái Đất. Dù chịu nhiệt độ cao không tưởng tương đương bề mặt Mặt Trời thừa đủ hóa hơi bất kì vật chất nào ở áp suất chuẩn, nhưng áp suất tĩnh từ các lớp địa chất phía trên lớn gấp 3.6 triệu lần áp suất khí quyển đã nén chặt các nguyên tử sắt lại thành một khối tinh thể hợp kim siêu rắn chắc.",
+            facts: "Nhân trong thực chất đang tự quay độc lập nhanh hơn một chút so với tốc độ quay chung của bề mặt Trái Đất.",
+            color: "#eab308", // Yellow
+            cameraPos: { x: 4, y: 2, z: 5 }
+        }
+    };
+
+    /* -------------------------------------------------------------
+     * 2. GEOGRAPHY INTERACTIVE QUIZ BANK DEFINITION
+     * ------------------------------------------------------------- */
+    const quizBank = [
+        {
+            question: "Lớp nào chiếm thể tích lớn nhất (khoảng 80%) trong cấu tạo bên trong Trái Đất?",
+            options: ["Vỏ Trái Đất", "Bao Manti", "Nhân ngoài", "Nhân trong"],
+            answer: 1,
+            explanation: "Lớp Manti dày tới 2900 km, chiếm hơn 80% thể tích và 68.5% khối lượng của hành tinh."
+        },
+        {
+            question: "Từ trường bảo vệ sự sống Trái Đất phát sinh từ dòng đối lưu của lớp cấu tạo nào?",
+            options: ["Vỏ Trái Đất", "Bao Manti", "Nhân ngoài (lỏng)", "Nhân trong (rắn)"],
+            answer: 2,
+            explanation: "Dòng đối lưu kim loại lỏng dồi dào sắt niken ở lớp Nhân Ngoài hoạt động như một máy phát điện khổng lồ tạo ra từ trường."
+        },
+        {
+            question: "Mức nhiệt độ cao nhất tại Nhân trong (lõi rắn) Trái Đất được ghi nhận trong khoảng nào?",
+            options: ["1,000 °C - 1,500 °C", "2,000 °C - 3,500 °C", "4,000 °C - 4,500 °C", "5,400 °C - 6,000 °C"],
+            answer: 3,
+explanation: "Nhân trong cực kỳ nóng, nhiệt độ đạt tới khoảng 5400 - 6000 °C, tương đương nhiệt độ ngoài bề mặt Mặt Trời."
+        },
+        {
+            question: "Tại sao nhân trong Trái Đất có nhiệt độ cực cao nhưng vẫn giữ trạng thái rắn?",
+            options: ["Do có lớp vỏ bảo vệ", "Do áp suất đè cực lớn nén chặt liên kết", "Do kim loại ở đây có độ bền vô hạn", "Do không tiếp xúc oxy"],
+            answer: 1,
+            explanation: "Áp suất tĩnh khủng khiếp hơn 3 triệu lần áp suất khí quyển đã ép các hạt nguyên tử sắt liên kết chặt tinh thể không thể hóa lỏng."
+        }
+    ];
+
+    let currentQuizIndex = 0;
+    let isSoundEnabled = true;
+
+    /* -------------------------------------------------------------
+     * 3. SCI-FI INTERACTIVE SYNTHESIZED SOUND MODULE
+     * ------------------------------------------------------------- */
+    const WebAudioSynth = {
+        audioCtx: null,
+        init() {
+            if (!this.audioCtx) {
+                this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        },
+        playClick() {
+            if (!isSoundEnabled) return;
+            this.init();
+            if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+            
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(220, this.audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(880, this.audioCtx.currentTime + 0.1);
+            
+            gain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.1);
+            
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            osc.start();
+            osc.stop(this.audioCtx.currentTime + 0.1);
+        },
+        playSuccess() {
+            if (!isSoundEnabled) return;
+            this.init();
+            if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+            
+            const osc1 = this.audioCtx.createOscillator();
+            const osc2 = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            
+            osc1.type = 'triangle';
+            osc2.type = 'sine';
+            
+            osc1.frequency.setValueAtTime(523.25, this.audioCtx.currentTime); // C5
+            osc1.frequency.setValueAtTime(659.25, this.audioCtx.currentTime + 0.1); // E5
+            
+            osc2.frequency.setValueAtTime(783.99, this.audioCtx.currentTime + 0.2); // G5
+            
+            gain.gain.setValueAtTime(0.06, this.audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.45);
+            
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(this.audioCtx.destination);
+osc1.start();
+            osc2.start();
+            osc1.stop(this.audioCtx.currentTime + 0.5);
+            osc2.stop(this.audioCtx.currentTime + 0.5);
+        },
+        playWrong() {
+            if (!isSoundEnabled) return;
+            this.init();
+            if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+            
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, this.audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(80, this.audioCtx.currentTime + 0.25);
+            
+            gain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.3);
+            
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            
+            osc.start();
+            osc.stop(this.audioCtx.currentTime + 0.3);
+        }
+    };
+
+    function toggleSound() {
+        isSoundEnabled = !isSoundEnabled;
+        const btn = document.getElementById('sound-btn');
+        if (isSoundEnabled) {
+            btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+            btn.className = "p-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700/50 text-slate-300 transition-all";
+        } else {
+            btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+            btn.className = "p-2.5 bg-slate-800/40 hover:bg-slate-700/40 rounded-lg border border-slate-800 text-slate-500 transition-all";
+        }
+    }
+
+    /* -------------------------------------------------------------
+     * 4. THREE.JS 3D SCENE INITIALIZATION & SETUP
+     * ------------------------------------------------------------- */
+    let scene, camera, renderer, controls;
+    const container = document.getElementById('canvas-container');
+    
+    // Structural groups representing hemispheres
+    let topHemiGroup, bottomHemiGroup;
+    let starField;
+    
+    // Storage collections for quick raycasting and isolation
+    const layerMeshes = {
+        crust: [],
+        mantle: [],
+        outer_core: [],
+        inner_core: []
+    };
+    
+    let activeLayerId = null;
+    let isAutoRotating = true;
+
+    // Displacement parameters (slidervalues 0.0 - 1.0)
+    let splitVal = 0.0;
+    let explodeVal = 0.0;
+
+    // Sub-groups inside hemispheres for relative explosion offsets
+    const layerSubGroups = {
+        top: {},
+        bottom: {}
+    };
+
+    /* -------------------------------------------------------------
+     * 5. PROCEDURAL TEXTURE GENERATORS (CANVAS TEXTURING)
+     * ------------------------------------------------------------- */
+    function createProceduralTexture(type) {
+        const canvas = document.createElement('canvas');
+        canvas.width = type === 'earth' ? 1024 : 512;
+        canvas.height = type === 'earth' ? 512 : 256;
+const ctx = canvas.getContext('2d');
+
+        if (type === 'earth') {
+            // Deep blue ocean baseline with beautiful radial gradient depths
+            const oceanGradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 10, canvas.width/2, canvas.height/2, canvas.width);
+            oceanGradient.addColorStop(0, '#1d4ed8'); // Bright deep blue
+            oceanGradient.addColorStop(0.5, '#1e3a8a'); // Dark ocean blue
+            oceanGradient.addColorStop(1, '#0f172a'); // Abyssal black-blue
+            ctx.fillStyle = oceanGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add ocean currents/waves textures for realism
+            ctx.strokeStyle = 'rgba(30, 64, 175, 0.4)';
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < 30; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 150 + 50, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Real-world continental coordinate datasets (Mercator-like normalized mapping)
+            const geographicalFeatures = [
+                // Antarctica (Băng Nam Cực)
+                {
+                    name: "Antarctica",
+                    points: [[0, 460], [150, 455], [300, 450], [450, 458], [600, 452], [750, 450], [900, 455], [1024, 460], [1024, 512], [0, 512]],
+                    type: "ice"
+                },
+                // Greenland (Băng Đảo)
+                {
+                    name: "Greenland",
+                    points: [[360, 45], [405, 35], [415, 70], [385, 95], [360, 75]],
+                    type: "ice"
+                },
+                // North America (Bắc Mỹ)
+                {
+                    name: "North America",
+                    points: [[130, 110], [150, 80], [200, 55], [260, 50], [285, 45], [315, 65], [345, 55], [380, 85], [375, 110], [335, 125], [325, 145], [335, 175], [345, 205], [315, 235], [310, 255], [285, 245], [275, 275], [255, 285], [245, 275], [235, 235], [195, 215], [145, 175], [125, 135]],
+                    type: "land"
+                },
+                // South America (Nam Mỹ)
+                {
+                    name: "South America",
+                    points: [[255, 285], [280, 275], [305, 280], [330, 305], [355, 330], [375, 350], [345, 400], [315, 450], [295, 485], [285, 485], [285, 440], [265, 400], [250, 350], [245, 310]],
+                    type: "land"
+                },
+                // Africa (Châu Phi)
+                {
+                    name: "Africa",
+                    points: [[435, 230], [495, 220], [555, 235], [570, 250], [600, 290], [595, 330], [570, 410], [555, 440], [540, 410], [500, 340], [465, 320], [425, 290], [420, 255]],
+                    type: "land"
+                },
+                // Eurasia (Châu Âu & Châu Á)
+                {
+                    name: "Eurasia",
+                    points: [
+[405, 185], [425, 145], [450, 115], [495, 105], [510, 65], [540, 65], 
+                        [560, 100], [590, 80], [640, 60], [740, 60], [840, 60], [910, 80], 
+                        [930, 120], [890, 160], [850, 160], [830, 200], [840, 230], [800, 250], 
+                        [780, 275], [775, 310], [760, 295], [750, 285], [735, 275], [720, 315], 
+                        [690, 280], [660, 285], [660, 260], [600, 240], [580, 220], [545, 220], 
+                        [500, 215], [465, 230], [435, 220], [405, 210]
+                    ],
+                    type: "land"
+                },
+                // Detailed S-shape Vietnam (Việt Nam)
+                {
+                    name: "Vietnam",
+                    points: [
+                        [767, 275], [772, 277], [775, 282], [774, 286], [771, 289], 
+                        [773, 293], [775, 297], [774, 301], [771, 303], [767, 303], 
+                        [766, 299], [768, 295], [770, 291], [767, 284]
+                    ],
+                    type: "vietnam"
+                },
+                // Australia (Châu Úc)
+                {
+                    name: "Australia",
+                    points: [[765, 380], [805, 360], [845, 375], [865, 410], [845, 440], [785, 435], [765, 410]],
+                    type: "land"
+                },
+                // Madagascar
+                {
+                    name: "Madagascar",
+                    points: [[595, 380], [605, 375], [600, 410], [590, 405]],
+                    type: "land"
+                },
+                // Japan (Nhật Bản)
+                {
+                    name: "Japan",
+                    points: [[875, 160], [895, 180], [890, 205], [870, 180]],
+                    type: "land"
+                }
+            ];
+
+            // Helper to draw geographical polygons with styling layers
+            function drawGeoPolygon(points, type) {
+                // Layer 1: Continental Shelf / Turquoise Coastline Glow
+                if (type === 'land' || type === 'vietnam') {
+                    ctx.beginPath();
+                    ctx.moveTo(points[0][0], points[0][1]);
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(points[i][0], points[i][1]);
+                    }
+                    ctx.closePath();
+                    ctx.strokeStyle = 'rgba(20, 184, 166, 0.5)'; // Teal glow
+                    ctx.lineWidth = 10;
+                    ctx.lineJoin = 'round';
+                    ctx.stroke();
+                }
+
+                // Layer 2: Main Solid Fill
+                ctx.beginPath();
+                ctx.moveTo(points[0][0], points[0][1]);
+                for (let i = 1; i < points.length; i++) {
+                    ctx.lineTo(points[i][0], points[i][1]);
+                }
+                ctx.closePath();
+
+                if (type === 'ice') {
+                    // Icecap gradient (cool white to light blue)
+const iceGrad = ctx.createLinearGradient(0, points[0][1], 0, points[points.length-1][1]);
+                    iceGrad.addColorStop(0, '#f1f5f9');
+                    iceGrad.addColorStop(1, '#cbd5e1');
+                    ctx.fillStyle = iceGrad;
+                } else if (type === 'vietnam') {
+                    // Special golden-green highlight for Vietnam
+                    ctx.fillStyle = '#10b981'; // Vibrant Emerald
+                } else {
+                    // Geological green vegetation gradient
+                    ctx.fillStyle = '#15803d'; // Rich forest green
+                }
+                ctx.fill();
+
+                // Layer 3: Geological details (Deserts, Mountains, Shading)
+                if (type === 'land') {
+                    ctx.save();
+                    ctx.clip();
+                    // Add sandy gold deserts/plains procedurally
+                    ctx.fillStyle = '#b45309'; // Warm ochre
+                    for (let i = 0; i < 8; i++) {
+                        ctx.beginPath();
+                        ctx.arc(points[0][0] + (Math.random() - 0.5) * 150, points[0][1] + (Math.random() - 0.5) * 100, Math.random() * 50 + 20, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    // Add mountain ranges (dark brown textured lines)
+                    ctx.strokeStyle = '#451a03';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.moveTo(points[0][0], points[0][1]);
+                    for (let i = 1; i < points.length; i += 2) {
+                        ctx.lineTo(points[i][0], points[i][1]);
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+
+            // Draw all continents
+            geographicalFeatures.forEach(feature => {
+                drawGeoPolygon(feature.points, feature.type);
+            });
+
+            // Draw Vietnamese Archipelagos (Hoàng Sa & Trường Sa) to standard SGK guidelines
+            // Paracel Islands (Quần đảo Hoàng Sa)
+            ctx.fillStyle = '#f59e0b';
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(788, 274, 3, 0, Math.PI * 2);
+            ctx.arc(792, 276, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Spratly Islands (Quần đảo Trường Sa)
+            ctx.beginPath();
+            ctx.arc(794, 310, 2.5, 0, Math.PI * 2);
+            ctx.arc(799, 314, 2, 0, Math.PI * 2);
+            ctx.arc(802, 312, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Overlay Classroom Globe Grid Lines (Kinh tuyến & Vĩ tuyến)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 8]);
+
+            // Latitudes (Vĩ tuyến) every 30 degrees
+            for (let y = 0; y < canvas.height; y += canvas.height / 6) {
+ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Longitudes (Kinh tuyến) every 30 degrees
+            for (let x = 0; x < canvas.width; x += canvas.width / 12) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+
+            // Highlight Equator (Xích Đạo) in elegant cyan
+            ctx.strokeStyle = 'rgba(34, 211, 238, 0.25)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([]);
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+        } 
+        else if (type === 'mantle') {
+            // Intense orange/red convective magma
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#7c2d12'); // Dark molten rust
+            gradient.addColorStop(0.5, '#ea580c'); // Vibrant magma orange
+            gradient.addColorStop(1, '#9a3412');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Magma convective flows
+            for (let i = 0; i < 40; i++) {
+                ctx.fillStyle = Math.random() > 0.4 ? '#fb923c' : '#ea580c';
+                ctx.beginPath();
+                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 30 + 10, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        } 
+        else if (type === 'outer_core') {
+            // Superheated liquid metal glow texture
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 5, canvas.width/2, canvas.height/2, canvas.width/2);
+            gradient.addColorStop(0, '#fef08a'); // Super-hot gold
+            gradient.addColorStop(0.6, '#f59e0b'); // Amber
+            gradient.addColorStop(1, '#b45309'); // Liquid bronze
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Glowing electromagnetic current eddies
+            ctx.strokeStyle = 'rgba(254, 240, 138, 0.55)';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 12; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 50 + 25, 0, Math.PI);
+                ctx.stroke();
+            }
+        } 
+        else if (type === 'inner_core') {
+            // Crystalline white-gold heavy solid core
+            ctx.fillStyle = '#fef08a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2);
+            gradient.addColorStop(0, '#ffffff'); // Pure white-hot centre
+gradient.addColorStop(0.4, '#fef08a');
+            gradient.addColorStop(0.8, '#eab308'); // High-density nickel-iron gold
+            gradient.addColorStop(1, '#ca8a04');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Crystalline microstructures under immense 3.6M atm pressure
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 40; i++) {
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+        }
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.ClampToEdgeWrapping;
+        return texture;
+    }
+
+    /* -------------------------------------------------------------
+     * 6. SCENIC STARS BACKGROUND GENERATOR
+     * ------------------------------------------------------------- */
+    function createStarfield() {
+        const starCount = 800;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(starCount * 3);
+        const colors = new Float32Array(starCount * 3);
+
+        for (let i = 0; i < starCount; i++) {
+            // Distribute points spherically far away
+            const radius = Math.random() * 45 + 20;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+
+            positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+            positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+            positions[i * 3 + 2] = radius * Math.cos(phi);
+
+            // Slightly varied twinkling star spectrum (white, yellow, cyan)
+            const randomVal = Math.random();
+            if (randomVal > 0.85) {
+                colors[i * 3] = 0.7; colors[i * 3 + 1] = 0.85; colors[i * 3 + 2] = 1.0; // Cyan tint
+            } else if (randomVal > 0.7) {
+                colors[i * 3] = 1.0; colors[i * 3 + 1] = 0.95; colors[i * 3 + 2] = 0.7; // Warm yellow
+            } else {
+                colors[i * 3] = 1.0; colors[i * 3 + 1] = 1.0; colors[i * 3 + 2] = 1.0; // Bright white
+            }
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.16,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.95,
+            sizeAttenuation: true
+        });
+
+        starField = new THREE.Points(geometry, material);
+        scene.add(starField);
+    }
+
+    /* -------------------------------------------------------------
+     * 7. CONSTRUCT CONCENTRIC SEMI-SHELLS WITH CAP PLATES
+* ------------------------------------------------------------- */
+    function buildHemiLayer(layerId, innerR, outerR, color, texture, isTop) {
+        const hemiGroup = new THREE.Group();
+
+        // A. Outer spherical shell geometry
+        // SphereGeometry parameters: radius, widthSeg, heightSeg, phiStart, phiLength, thetaStart, thetaLength
+        // For top hemisphere, thetaStart = 0, length = PI / 2. For bottom, start = PI / 2, length = PI / 2.
+        const sphereGeom = new THREE.SphereGeometry(
+            outerR,
+            48,
+            24,
+            0,
+            Math.PI * 2,
+            isTop ? 0 : Math.PI / 2,
+            Math.PI / 2
+        );
+
+        const sphereMat = new THREE.MeshStandardMaterial({
+            color: color,
+            map: texture,
+            roughness: 0.7,
+            metalness: 0.15,
+            side: THREE.DoubleSide
+        });
+
+        // Fine-tune earth shell details
+        if (layerId === 'crust') {
+            sphereMat.bumpScale = 0.04;
+            sphereMat.roughness = 0.8;
+            sphereMat.metalness = 0.1;
+        }
+
+        const sphereMesh = new THREE.Mesh(sphereGeom, sphereMat);
+        sphereMesh.userData = { layerId: layerId };
+        hemiGroup.add(sphereMesh);
+        layerMeshes[layerId].push(sphereMesh);
+
+        // B. Flat cross-section cap (Ring covering equatorial gap)
+        // Helps to visually represent solid structures rather than empty shells
+        let capGeom;
+        if (innerR === 0) {
+            capGeom = new THREE.CircleGeometry(outerR, 48);
+        } else {
+            capGeom = new THREE.RingGeometry(innerR, outerR, 48);
+        }
+
+        const capMat = new THREE.MeshStandardMaterial({
+            color: color,
+            roughness: 0.35,
+            metalness: 0.25,
+            side: THREE.DoubleSide
+        });
+
+        // Add heat illumination factors for core components
+        if (layerId === 'inner_core') {
+            capMat.emissive = new THREE.Color('#facc15');
+            capMat.emissiveIntensity = 0.75;
+        } else if (layerId === 'outer_core') {
+            capMat.emissive = new THREE.Color('#f97316');
+            capMat.emissiveIntensity = 0.55;
+        } else if (layerId === 'mantle') {
+            capMat.emissive = new THREE.Color('#ea580c');
+            capMat.emissiveIntensity = 0.28;
+        }
+
+        const capMesh = new THREE.Mesh(capGeom, capMat);
+        
+        // Rotate flat disk horizontally on the XZ plane
+        capMesh.rotation.x = Math.PI / 2;
+        capMesh.position.y = 0;
+        capMesh.userData = { layerId: layerId };
+        
+        hemiGroup.add(capMesh);
+        layerMeshes[layerId].push(capMesh);
+
+        return hemiGroup;
+    }
+
+    /* -------------------------------------------------------------
+     * 8. ASSEMBLE MODEL GROUPS & INJECT SUB-GROUPS
+     * ------------------------------------------------------------- */
+    function buildEarth3DModel() {
+        topHemiGroup = new THREE.Group();
+bottomHemiGroup = new THREE.Group();
+        scene.add(topHemiGroup);
+        scene.add(bottomHemiGroup);
+
+        // Shared procedural textures
+        const texEarth = createProceduralTexture('earth');
+        const texMantle = createProceduralTexture('mantle');
+        const texOuterCore = createProceduralTexture('outer_core');
+        const texInnerCore = createProceduralTexture('inner_core');
+
+        // Concentric Radius thresholds:
+        // Core: 0.0 -> 0.85
+        // Outer core: 0.85 -> 1.65
+        // Mantle: 1.65 -> 2.65
+        // Crust: 2.65 -> 2.85 (Slightly larger boundary for clear definition)
+
+        // NORTHERN HEMISPHERE LAYERS (TOP)
+        layerSubGroups.top.crust = buildHemiLayer('crust', 2.65, 2.85, '#ffffff', texEarth, true);
+        layerSubGroups.top.mantle = buildHemiLayer('mantle', 1.65, 2.65, '#ea580c', texMantle, true);
+        layerSubGroups.top.outer_core = buildHemiLayer('outer_core', 0.85, 1.65, '#f59e0b', texOuterCore, true);
+        layerSubGroups.top.inner_core = buildHemiLayer('inner_core', 0, 0.85, '#eab308', texInnerCore, true);
+
+        Object.values(layerSubGroups.top).forEach(group => topHemiGroup.add(group));
+
+        // SOUTHERN HEMISPHERE LAYERS (BOTTOM)
+        layerSubGroups.bottom.crust = buildHemiLayer('crust', 2.65, 2.85, '#ffffff', texEarth, false);
+        layerSubGroups.bottom.mantle = buildHemiLayer('mantle', 1.65, 2.65, '#ea580c', texMantle, false);
+        layerSubGroups.bottom.outer_core = buildHemiLayer('outer_core', 0.85, 1.65, '#f59e0b', texOuterCore, false);
+        layerSubGroups.bottom.inner_core = buildHemiLayer('inner_core', 0, 0.85, '#eab308', texInnerCore, false);
+
+        Object.values(layerSubGroups.bottom).forEach(group => bottomHemiGroup.add(group));
+    }
+
+    /* -------------------------------------------------------------
+     * 9. DYNAMIC DEFORMATION CONTROL (SPLIT & EXPLODE SLIDERS)
+     * ------------------------------------------------------------- */
+    function updateDeformationMath() {
+        // A. Horizontal equatorial splitting (Separation on Y-axis)
+        // Moves northern hemisphere up, southern hemisphere down
+        const splitOffset = splitVal * 2.8;
+        topHemiGroup.position.y = splitOffset;
+        bottomHemiGroup.position.y = -splitOffset;
+
+        // B. Explode shell mechanism (Radial vertical stacking displacement)
+        // Helps to inspect structural dimensions like concentric nesting
+        const explodeOffset = explodeVal * 2.2;
+
+        // Shift layers progressively higher (Top Hemisphere)
+        layerSubGroups.top.crust.position.y = explodeOffset * 3.4;
+        layerSubGroups.top.mantle.position.y = explodeOffset * 1.9;
+        layerSubGroups.top.outer_core.position.y = explodeOffset * 0.8;
+        layerSubGroups.top.inner_core.position.y = 0; // Stays anchored
+
+        // Shift layers progressively lower (Bottom Hemisphere)
+        layerSubGroups.bottom.crust.position.y = -explodeOffset * 3.4;
+layerSubGroups.bottom.mantle.position.y = -explodeOffset * 1.9;
+        layerSubGroups.bottom.outer_core.position.y = -explodeOffset * 0.8;
+        layerSubGroups.bottom.inner_core.position.y = 0; // Stays anchored
+    }
+
+    /* -------------------------------------------------------------
+     * 10. INTERACTIVE COLLISION RAYCASTING (CLICK CHOOSE)
+     * ------------------------------------------------------------- */
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function setupInteractionListeners() {
+        // Pointer down action to trigger science textbook notes
+        container.addEventListener('pointerdown', (e) => {
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            // Accumulate all clickable meshes
+            const targetMeshes = [];
+            Object.values(layerMeshes).forEach(list => targetMeshes.push(...list));
+
+            const intersections = raycaster.intersectObjects(targetMeshes);
+            if (intersections.length > 0) {
+                // Find custom metadata payload
+                const layerId = intersections[0].object.userData.layerId;
+                if (layerId) {
+                    selectLayer(layerId);
+                    WebAudioSynth.playClick();
+                }
+            }
+        });
+
+        // Hover tooltip on desktop viewport mousemove
+        container.addEventListener('pointermove', (e) => {
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            const targetMeshes = [];
+            Object.values(layerMeshes).forEach(list => targetMeshes.push(...list));
+
+            const intersections = raycaster.intersectObjects(targetMeshes);
+            const tooltip = document.getElementById('hover-tooltip');
+
+            if (intersections.length > 0) {
+                const layerId = intersections[0].object.userData.layerId;
+                if (layerId && layerData[layerId]) {
+                    tooltip.classList.remove('hidden');
+                    tooltip.style.left = `${e.clientX - rect.left + 15}px`;
+                    tooltip.style.top = `${e.clientY - rect.top + 15}px`;
+                    
+                    document.getElementById('tooltip-text').innerText = layerData[layerId].title;
+                    document.getElementById('tooltip-color').style.backgroundColor = layerData[layerId].color;
+                    return;
+                }
+            }
+            tooltip.classList.add('hidden');
+        });
+    }
+
+    /* -------------------------------------------------------------
+* 11. ACTIVE SELECTION LAYER HIGHLIGHTING
+     * ------------------------------------------------------------- */
+    function highlightSelectedLayer3D(layerId) {
+        Object.keys(layerMeshes).forEach(id => {
+            const isTarget = (id === layerId);
+            layerMeshes[id].forEach(mesh => {
+                if (!mesh.material) return;
+
+                if (isTarget) {
+                    // Activate strong glowing blue outline effect via emissive channel override
+                    if (!mesh.userData.savedEmissive) {
+                        mesh.userData.savedEmissive = mesh.material.emissive ? mesh.material.emissive.clone() : new THREE.Color(0,0,0);
+                    }
+                    mesh.material.emissive.setHex(0x3b82f6); // Science neon blue
+                    mesh.material.emissiveIntensity = 0.65;
+                } else {
+                    // Restore original geological temperature glows
+                    if (mesh.userData.savedEmissive) {
+                        mesh.material.emissive.copy(mesh.userData.savedEmissive);
+                    } else {
+                        mesh.material.emissive.setHex(0x000000);
+                    }
+                    
+                    // Reset custom layer base illumination
+                    if (id === 'inner_core') mesh.material.emissiveIntensity = 0.75;
+                    else if (id === 'outer_core') mesh.material.emissiveIntensity = 0.55;
+                    else if (id === 'mantle') mesh.material.emissiveIntensity = 0.28;
+                    else mesh.material.emissiveIntensity = 0.0;
+                }
+            });
+        });
+    }
+
+    /* -------------------------------------------------------------
+     * 12. RUNTIME SIMULATION FRAME RENDER LOOP
+     * ------------------------------------------------------------- */
+    function animateSimulationFrame() {
+        requestAnimationFrame(animateSimulationFrame);
+
+        // Slow cinematic rotation of earth structure
+        if (isAutoRotating) {
+            topHemiGroup.rotation.y += 0.0035;
+            bottomHemiGroup.rotation.y += 0.0035;
+            if (starField) starField.rotation.y -= 0.0005;
+        }
+
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+    /* -------------------------------------------------------------
+     * 13. DYNAMIC TEXTBOOK INFORMATION CARDS INTEGRATION
+     * ------------------------------------------------------------- */
+    function selectLayer(layerId) {
+        if (!layerData[layerId]) return;
+        activeLayerId = layerId;
+
+        // Update selected layer highlighting
+        highlightSelectedLayer3D(layerId);
+
+        // Hide landing placeholder state
+        document.getElementById('info-placeholder').classList.add('hidden');
+        const content = document.getElementById('info-content');
+        content.classList.remove('hidden');
+        content.classList.add('flex');
+
+        // Apply selected science dataset to layout
+const data = layerData[layerId];
+        document.getElementById('info-title').innerText = data.title;
+        document.getElementById('info-badge').style.backgroundColor = data.color;
+        document.getElementById('info-thickness').innerText = data.thickness;
+        document.getElementById('info-state').innerText = data.state;
+        document.getElementById('info-temp').innerText = data.temp;
+        document.getElementById('info-composition').innerText = data.composition;
+        document.getElementById('info-description').innerText = data.description;
+        document.getElementById('info-fact').innerText = data.facts;
+
+        // Reset sidebar button active status classes
+        document.querySelectorAll('.layer-tab').forEach(btn => {
+            btn.classList.remove('border-blue-500', 'bg-blue-950/20', 'ring-1', 'ring-blue-500/30');
+            btn.classList.add('border-slate-700/60', 'bg-slate-800/80');
+        });
+
+        const activeBtn = document.getElementById(`btn-${layerId}`);
+        if (activeBtn) {
+            activeBtn.classList.remove('border-slate-700/60', 'bg-slate-800/80');
+            activeBtn.classList.add('border-blue-500', 'bg-blue-950/20', 'ring-1', 'ring-blue-500/30');
+        }
+
+        // Adjust camera angle beautifully to focus on selected layer
+        if (!isAutoRotating) {
+            const targetPos = data.cameraPos;
+            const step = 0.05;
+            // Smooth lerped transition
+            const interval = setInterval(() => {
+                camera.position.x += (targetPos.x - camera.position.x) * step;
+                camera.position.y += (targetPos.y - camera.position.y) * step;
+                camera.position.z += (targetPos.z - camera.position.z) * step;
+                controls.target.set(0, topHemiGroup.position.y * 0.5, 0);
+                if (Math.abs(camera.position.x - targetPos.x) < 0.1) clearInterval(interval);
+            }, 16);
+        }
+    }
+
+    // Slide controllers mapping
+    document.getElementById('split-slider').addEventListener('input', (e) => {
+        splitVal = e.target.value / 100;
+        const valSpan = document.getElementById('split-val');
+        if (splitVal === 0) valSpan.innerText = "Bình thường";
+        else valSpan.innerText = `Tách mặt cắt ${Math.round(splitVal * 100)}%`;
+        updateDeformationMath();
+    });
+
+    document.getElementById('explode-slider').addEventListener('input', (e) => {
+        explodeVal = e.target.value / 100;
+        const valSpan = document.getElementById('explode-val');
+        if (explodeVal === 0) valSpan.innerText = "Liên kết chặt";
+        else valSpan.innerText = `Bung rộng ${Math.round(explodeVal * 100)}%`;
+        updateDeformationMath();
+    });
+
+    function toggleAutoRotate() {
+        isAutoRotating = !isAutoRotating;
+        updateRotateBtnUI();
+        WebAudioSynth.playClick();
+    }
+
+    function updateRotateBtnUI() {
+        const btn = document.getElementById('auto-rotate-btn');
+const icon = document.getElementById('rotate-icon');
+        if (isAutoRotating) {
+            btn.innerHTML = '<i id="rotate-icon" class="fa-solid fa-sync animate-spin" style="animation-duration: 4s;"></i> Xoay tự động: BẬT';
+            btn.className = "py-2.5 px-3 bg-blue-500/10 hover:bg-blue-500/20 active:scale-95 border border-blue-500/30 rounded-lg text-xs font-bold text-blue-400 transition-all flex items-center justify-center gap-2";
+        } else {
+            btn.innerHTML = '<i id="rotate-icon" class="fa-solid fa-pause"></i> Xoay tự động: TẮT';
+            btn.className = "py-2.5 px-3 bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-700 rounded-lg text-xs font-bold text-slate-400 transition-all flex items-center justify-center gap-2";
+        }
+    }
+
+    function resetViews() {
+        splitVal = 0.0;
+        explodeVal = 0.0;
+        document.getElementById('split-slider').value = 0;
+        document.getElementById('explode-slider').value = 0;
+        document.getElementById('split-val').innerText = "Bình thường";
+        document.getElementById('explode-val').innerText = "Liên kết chặt";
+
+        camera.position.set(9, 7, 12);
+        controls.target.set(0, 0, 0);
+        isAutoRotating = true;
+        updateRotateBtnUI();
+
+        // Clear selection highlights
+        activeLayerId = null;
+        highlightSelectedLayer3D(null);
+        document.getElementById('info-content').classList.add('hidden');
+        document.getElementById('info-placeholder').classList.remove('hidden');
+
+        document.querySelectorAll('.layer-tab').forEach(btn => {
+            btn.classList.remove('border-blue-500', 'bg-blue-950/20', 'ring-1', 'ring-blue-500/30');
+            btn.classList.add('border-slate-700/60', 'bg-slate-800/80');
+        });
+
+        topHemiGroup.rotation.set(0, 0, 0);
+        bottomHemiGroup.rotation.set(0, 0, 0);
+
+        updateDeformationMath();
+        WebAudioSynth.playClick();
+    }
+
+    /* -------------------------------------------------------------
+     * 14. INTERACTIVE ACCORDION GEOGRAPHY QUIZ SYSTEM
+     * ------------------------------------------------------------- */
+    function toggleQuizAccordion() {
+        const content = document.getElementById('quiz-accordion-content');
+        const arrow = document.getElementById('quiz-arrow');
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            arrow.classList.add('rotate-180');
+        } else {
+            content.classList.add('hidden');
+            arrow.classList.remove('rotate-180');
+        }
+        WebAudioSynth.playClick();
+    }
+
+    function renderQuizQuestion() {
+        const progress = document.getElementById('quiz-progress');
+        const questionText = document.getElementById('quiz-question');
+        const optionsContainer = document.getElementById('quiz-options-container');
+        const feedback = document.getElementById('quiz-feedback');
+feedback.className = "hidden text-xs font-semibold p-2.5 rounded-lg flex items-center gap-2";
+        feedback.innerHTML = "";
+
+        if (currentQuizIndex >= quizBank.length) {
+            // Quiz Completed State Overview Card
+            progress.innerText = "HOÀN THÀNH BÀI TẬP";
+            questionText.innerText = "Chúc mừng bạn đã hoàn thành loạt câu hỏi trắc nghiệm địa chất học!";
+            optionsContainer.innerHTML = `
+                <button onclick="resetQuiz()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-bold text-xs text-white transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-redo"></i> Làm lại bài trắc nghiệm
+                </button>
+            `;
+            return;
+        }
+
+        const activeQuiz = quizBank[currentQuizIndex];
+        progress.innerText = `CÂU ${currentQuizIndex + 1} / ${quizBank.length}`;
+        questionText.innerText = activeQuiz.question;
+
+        optionsContainer.innerHTML = "";
+        activeQuiz.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = "quiz-opt-btn w-full text-left py-2 px-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-xs font-medium text-slate-300 transition-all flex items-center gap-3 active:scale-98";
+            btn.innerHTML = `
+                <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center font-bold text-[10px] text-slate-400 border border-slate-700 select-none">${String.fromCharCode(65 + idx)}</span>
+                <span>${opt}</span>
+            `;
+            btn.onclick = () => evaluateQuizAnswer(idx);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function evaluateQuizAnswer(selectedIdx) {
+        const activeQuiz = quizBank[currentQuizIndex];
+        const buttons = document.querySelectorAll('.quiz-opt-btn');
+        const feedback = document.getElementById('quiz-feedback');
+
+        // Block multi-click tampering
+        buttons.forEach((btn, idx) => {
+            btn.disabled = true;
+            btn.onclick = null;
+            btn.classList.remove('hover:bg-slate-800', 'active:scale-98');
+            
+            // Highlight actual correct answer in green
+            if (idx === activeQuiz.answer) {
+                btn.className = "w-full text-left py-2 px-3 bg-green-500/10 border border-green-500/30 rounded-xl text-xs font-semibold text-green-400 transition-all flex items-center gap-3";
+                btn.querySelector('span').className = "w-5 h-5 rounded-full bg-green-500 flex items-center justify-center font-bold text-[10px] text-white border-none";
+                btn.querySelector('span').innerHTML = '<i class="fa-solid fa-check text-[9px]"></i>';
+            }
+        });
+
+        if (selectedIdx === activeQuiz.answer) {
+            // Correct Answer Response
+feedback.className = "text-xs font-semibold p-3 rounded-xl bg-green-950/30 border border-green-900/40 text-green-300 flex items-start gap-2.5";
+            feedback.innerHTML = `
+                <i class="fa-solid fa-circle-check text-green-500 text-sm mt-0.5 shrink-0"></i>
+                <div>
+                    <span class="font-bold block mb-0.5">Chính xác!</span>
+                    <p class="text-[11px] leading-relaxed font-normal text-green-400/90">${activeQuiz.explanation}</p>
+                </div>
+            `;
+            WebAudioSynth.playSuccess();
+        } else {
+            // Incorrect Answer Response
+            const wrongBtn = buttons[selectedIdx];
+            wrongBtn.className = "w-full text-left py-2 px-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs font-semibold text-rose-400 transition-all flex items-center gap-3";
+            wrongBtn.querySelector('span').className = "w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center font-bold text-[10px] text-white border-none";
+            wrongBtn.querySelector('span').innerHTML = '<i class="fa-solid fa-xmark text-[9px]"></i>';
+
+            feedback.className = "text-xs font-semibold p-3 rounded-xl bg-rose-950/20 border border-rose-900/45 text-rose-300 flex items-start gap-2.5";
+            feedback.innerHTML = `
+                <i class="fa-solid fa-circle-xmark text-rose-500 text-sm mt-0.5 shrink-0"></i>
+                <div>
+                    <span class="font-bold block mb-0.5">Chưa chính xác!</span>
+                    <p class="text-[11px] leading-relaxed font-normal text-rose-400/90">${activeQuiz.explanation}</p>
+                </div>
+            `;
+            WebAudioSynth.playWrong();
+        }
+
+        // Generate dynamic "Next step" prompt button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = "w-full mt-2 py-2 px-3 bg-indigo-500 hover:bg-indigo-600 rounded-xl font-bold text-xs text-white transition-colors text-center";
+        nextBtn.innerText = currentQuizIndex === quizBank.length - 1 ? "Xem kết quả chung" : "Câu tiếp theo";
+        nextBtn.onclick = () => {
+            currentQuizIndex++;
+            renderQuizQuestion();
+            WebAudioSynth.playClick();
+        };
+        feedback.appendChild(nextBtn);
+    }
+
+    function resetQuiz() {
+        currentQuizIndex = 0;
+        renderQuizQuestion();
+    }
+
+    /* -------------------------------------------------------------
+     * 15. RESPONSIVE DESIGN ADJUSTMENT UTILITIES
+     * ------------------------------------------------------------- */
+    function onWindowResize() {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    /* -------------------------------------------------------------
+     * 17. MOBILE QR CODE INTERACTION FUNCTIONS
+* ------------------------------------------------------------- */
+    function openQRModal() {
+        const qrModal = document.getElementById('qr-modal');
+        const qrImage = document.getElementById('qr-image');
+        const qrInput = document.getElementById('qr-url-input');
+        
+        // Dynamic detection of current location context
+        let currentUrl = window.location.href;
+        if (currentUrl.startsWith('blob:') || currentUrl.startsWith('about:')) {
+            currentUrl = "https://earth-interior-3d.vercel.app"; // Default education mockup domain
+        }
+        
+        qrInput.value = currentUrl;
+        
+        // Generate QR code on the fly utilizing stable global standard API
+        qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUrl)}`;
+        
+        qrModal.classList.remove('hidden');
+        WebAudioSynth.playClick();
+    }
+
+    function closeQRModal() {
+        document.getElementById('qr-modal').classList.add('hidden');
+        WebAudioSynth.playClick();
+    }
+
+    function regenerateQR() {
+        const qrImage = document.getElementById('qr-image');
+        const qrInput = document.getElementById('qr-url-input');
+        const url = qrInput.value.trim() || window.location.href;
+        
+        qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+        WebAudioSynth.playClick();
+    }
+
+    function openHelpModal() {
+        document.getElementById('help-modal').classList.remove('hidden');
+        WebAudioSynth.playClick();
+    }
+
+    function closeHelpModal() {
+        document.getElementById('help-modal').classList.add('hidden');
+        WebAudioSynth.playClick();
+    }
+
+    /* -------------------------------------------------------------
+     * 16. APPLICATION BOOTSTRAPPING WINDOW ONLOAD
+     * ------------------------------------------------------------- */
+    window.onload = function() {
+        // Setup 3D Scene
+        init3D();
+        setupInteractionListeners();
+        
+        // Hide initial loader mask smoothly
+        setTimeout(() => {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.remove(), 500);
+        }, 1200);
+
+        // Bind resize watcher
+        window.addEventListener('resize', onWindowResize);
+
+        // Inject initial state info
+        renderQuizQuestion();
+    };
+
+    function init3D() {
+        scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x020617, 0.012);
+
+        camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(9, 7, 12);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxDistance = 22;
+        controls.minDistance = 3.8;
+        controls.addEventListener('start', () => {
+            isAutoRotating = false;
+            updateRotateBtnUI();
+        });
+
+        // Lights Architecture
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.48);
+        scene.add(ambientLight);
+
+        const mainSunLight = new THREE.DirectionalLight(0xfffbeb, 1.25);
+        mainSunLight.position.set(12, 14, 10);
+        scene.add(mainSunLight);
+
+        // Warm inner focus glow
+        const centralCoreLight = new THREE.PointLight(0xff7a00, 1.6, 12);
+        centralCoreLight.position.set(0, 0, 0);
+        scene.add(centralCoreLight);
+
+        // Execute background & structural generators
+        createStarfield();
+        buildEarth3DModel();
+        
+        // Start animation frame loop
+        animateSimulationFrame();
+    }
+</script>
+</body>
+</html>

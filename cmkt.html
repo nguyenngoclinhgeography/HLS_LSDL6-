@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô Phỏng Các Mảng Kiến Tạo Trái Đất</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .plate-btn {
+            transition: all 0.3s ease;
+        }
+        .plate-btn:hover {
+            transform: translateY(-2px);
+        }
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-800 py-4 px-6 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl shadow-md text-white">
+                    <i class="fa-solid fa-earth-americas text-2xl animate-spin" style="animation-duration: 20s;"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Mô Phỏng Các Mảng Kiến Tạo Trái Đất</h1>
+                    <p class="text-xs text-slate-400">Khám phá chuyển động xô vào nhau và tách xa nhau của vỏ Trái Đất</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 bg-slate-800 p-1.5 rounded-xl border border-slate-700">
+                <button onclick="switchTab('map')" id="btn-tab-map" class="px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow">
+                    <i class="fa-solid fa-map mr-1.5"></i> Bản Đồ Tổng Quan
+                </button>
+                <button onclick="switchTab('simulation')" id="btn-tab-simulation" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-cube mr-1.5"></i> Mô Phỏng 3D/Cơ Chế
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left / Top Column: Interactive Controls & Information -->
+        <div class="lg:col-span-1 flex flex-col gap-6">
+            
+            <!-- Tab 1: Map Control Panel -->
+            <div id="panel-map" class="bg-slate-800/90 backdrop-blur border border-slate-700/80 rounded-2xl p-5 shadow-xl flex flex-col gap-4">
+                <h2 class="text-lg font-semibold text-cyan-300 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group"></i> Các Địa Mảng Chính
+                </h2>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Bấm chọn các mảng kiến tạo dưới đây để xem thông tin chi tiết về vị trí, loại ranh giới và hướng di chuyển:
+                </p>
+                
+                <div class="grid grid-cols-1 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
+                    <button onclick="selectPlate('eurasia')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-purple-400"></span>
+                            <span class="text-sm font-medium text-slate-200">Mảng Âu - Á</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectPlate('north_america')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400"></span>
+                            <span class="text-sm font-medium text-slate-200">Mảng Bắc Mỹ</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectPlate('south_america')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-pink-400"></span>
+                            <span class="text-sm font-medium text-slate-200">Mảng Nam Mỹ</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectPlate('africa')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-amber-400"></span>
+                            <span class="text-sm font-medium text-slate-200">Mảng Phi</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectPlate('indo_australia')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-teal-400"></span>
+                            <span class="text-sm font-medium text-slate-200">Mảng Ấn Độ - Ô-xtrây-li-a</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectPlate('pacific')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-blue-400"></span>
+                            <span class="text-sm font-medium text-slate-200">Mảng Thái Bình Dương</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectPlate('antarctica')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-indigo-300"></span>
+                            <span class="text-sm font-medium text-slate-200">Mảng Nam Cực</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectPlate('small_plates')" class="plate-btn flex items-center justify-between p-3 rounded-xl bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left">
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-orange-400"></span>
+                            <span class="text-sm font-medium text-slate-200">Các Địa Mảng Nhỏ (1, 2, 3, 4, 5)</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 2: Simulation Control Panel (Hidden by default) -->
+            <div id="panel-simulation" class="bg-slate-800/90 backdrop-blur border border-slate-700/80 rounded-2xl p-5 shadow-xl flex flex-col gap-4 hidden">
+                <h2 class="text-lg font-semibold text-cyan-300 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders"></i> Điều Khiển Mô Phỏng
+                </h2>
+                <p class="text-xs text-slate-300">
+                    Chọn loại chuyển động kiến tạo để quan sát hiện tượng địa chất trực quan dưới lòng đất và trên bề mặt:
+                </p>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="setSimMode('convergent')" id="sim-btn-conv" class="p-3 rounded-xl bg-red-900/60 border border-red-500/80 text-white font-medium text-xs flex flex-col items-center gap-2 transition hover:bg-red-800/60 shadow">
+                        <i class="fa-solid fa-arrows-down-to-line text-lg text-red-400"></i>
+                        <span>Xô Vào Nhau (Tạo Núi/Rãnh)</span>
+                    </button>
+                    <button onclick="setSimMode('divergent')" id="sim-btn-div" class="p-3 rounded-xl bg-blue-900/60 border border-blue-500/80 text-white font-medium text-xs flex flex-col items-center gap-2 transition hover:bg-blue-800/60 shadow">
+                        <i class="fa-solid fa-arrows-split-up-and-left text-lg text-blue-400"></i>
+                        <span>Tách Xa Nhau (Sống Núi/Vực)</span>
+                    </button>
+                </div>
+
+                <div class="mt-2 flex flex-col gap-3">
+                    <div class="flex justify-between items-center text-xs text-slate-300">
+                        <span>Tốc độ di chuyển:</span>
+                        <span id="speed-val" class="font-bold text-cyan-400">1x</span>
+                    </div>
+                    <input type="range" min="0.5" max="3" step="0.5" value="1" oninput="changeSpeed(this.value)" class="w-full accent-cyan-500 bg-slate-700 rounded-lg h-2 cursor-pointer">
+                </div>
+
+                <button onclick="triggerEarthquake()" id="eq-btn" class="mt-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-medium text-sm flex items-center justify-center gap-2 shadow-md transition">
+                    <i class="fa-solid fa-house-crack"></i> Mô Phỏng Động Đất / Núi Lửa
+                </button>
+            </div>
+
+            <!-- Info Box / Legend -->
+            <div class="bg-slate-800/90 backdrop-blur border border-slate-700/80 rounded-2xl p-5 shadow-xl flex flex-col gap-3">
+                <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-cyan-400"></i> Chú Thích Ranh Giới
+                </h3>
+                <div class="flex flex-col gap-2.5 text-xs text-slate-300">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-1 bg-red-500 rounded-full"></div>
+                        <span><strong>Đường màu đỏ:</strong> Hai mảng xô vào nhau (Va chạm tạo dãy núi cao, rãnh sâu đại dương, động đất).</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-1 bg-blue-500 rounded-full"></div>
+                        <span><strong>Đường màu xanh/tím:</strong> Hai mảng tách xa nhau (Mác-ma trào lên tạo sống núi giữa đại dương, vực sâu).</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-3 flex items-center justify-center text-cyan-400 font-bold">→</div>
+                        <span><strong>Mũi tên xanh:</strong> Hướng di chuyển tương đối của các địa mảng trên bề mặt Trái Đất.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right / Bottom Column: Visual Display (Canvas / Interactive Map View) -->
+        <div class="lg:col-span-2 flex flex-col gap-4">
+            
+            <!-- Viewport Container -->
+            <div class="relative bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[520px] md:h-[580px]">
+                
+                <!-- Overlay Header Bar inside Canvas Box -->
+                <div class="absolute top-4 left-4 right-4 z-10 flex justify-between items-center pointer-events-none">
+                    <div id="view-title" class="bg-slate-900/80 backdrop-blur border border-slate-700/70 px-4 py-2 rounded-xl text-xs md:text-sm font-semibold text-cyan-300 shadow-md">
+                        Mô phỏng tổng quan các mảng kiến tạo vỏ Trái Đất
+                    </div>
+                    <div class="bg-slate-900/80 backdrop-blur border border-slate-700/70 px-3 py-1.5 rounded-xl text-xs text-slate-300 shadow-md flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span id="status-text">Đang hoạt động</span>
+                    </div>
+                </div>
+
+                <!-- Canvas for Rendering Map & Simulation -->
+                <canvas id="tectonicCanvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+
+                <!-- Interactive Tooltip Overlay -->
+                <div id="canvas-tooltip" class="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur border border-slate-700 p-4 rounded-xl shadow-xl text-xs md:text-sm text-slate-200 hidden transition-all">
+                    <div class="flex justify-between items-start mb-1">
+                        <h4 id="tooltip-title" class="font-bold text-cyan-400 text-base">Tên Mảng / Hiện Tượng</h4>
+                        <button onclick="closeTooltip()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <p id="tooltip-desc" class="text-slate-300 leading-relaxed">Chi tiết thông tin về mảng hoặc hiện tượng kiến tạo tại đây...</p>
+                </div>
+            </div>
+
+            <!-- Quick Tips Footer -->
+            <div class="bg-gradient-to-r from-indigo-950/60 to-slate-900/60 border border-indigo-500/30 rounded-xl p-4 flex items-center gap-3 text-xs text-slate-300">
+                <i class="fa-solid fa-lightbulb text-amber-400 text-lg shrink-0"></i>
+                <p><strong>Mẹo học tập:</strong> Bạn có thể nhấp trực tiếp vào các mảng trên bản đồ tổng quan hoặc chuyển sang chế độ <strong>Mô Phỏng 3D/Cơ Chế</strong> để quan sát quá trình đối lưu mác-ma dưới lòng đất tạo ra kiến tạo mảng.</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        Ứng dụng tương tác mô phỏng kiến tạo mảng vỏ Trái Đất &copy; 2026
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // State variables
+        let currentTab = 'map'; // 'map' or 'simulation'
+        let simMode = 'convergent'; // 'convergent' or 'divergent'
+        let animSpeed = 1.0;
+        let selectedPlateId = null;
+        let earthquakeActive = false;
+        let earthquakeTimer = 0;
+        let animFrameId = null;
+
+        // Canvas setup
+        const canvas = document.getElementById('tectonicCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Plate database for interactive clicking & info
+        const plateInfo = {
+            'eurasia': {
+                name: 'Mảng Âu - Á (Eurasian Plate)',
+                desc: 'Mảng kiến tạo lớn bao gồm phần lớn châu Âu và châu Á. Ranh giới phía nam va chạm với mảng Phi và Ấn Độ tạo ra hệ thống núi cao hiểm trở như dãy An-pơ và Hi-ma-lay-a.',
+                color: '#c084fc'
+            },
+            'north_america': {
+                name: 'Mảng Bắc Mỹ (North American Plate)',
+                desc: 'Bao gồm Bắc Mỹ, Greenland và phần phía tây bắc Đại Tây Dương. Phía tây giáp mảng Thái Bình Dương tạo ra đứt gãy trượt và hoạt động động đất mạnh mẽ.',
+                color: '#34d399'
+            },
+            'south_america': {
+                name: 'Mảng Nam Mỹ (South American Plate)',
+                desc: 'Bao gồm lục địa Nam Mỹ và phần đáy đại Tây Dương phía tây. Va chạm với mảng Nazca tạo nên dãy núi Andes hùng vĩ và rãnh sâu ngoài khơi.',
+                color: '#f472b6'
+            },
+            'africa': {
+                name: 'Mảng Phi (African Plate)',
+                desc: 'Bao gồm toàn bộ lục địa châu Phi và các vùng đáy đại dương xung quanh. Đang dịch chuyển về phía bắc chèn vào mảng Âu - Á và có đứt gãy Đông Phi tách giãn.',
+                color: '#fbbf24'
+            },
+            'indo_australia': {
+                name: 'Mảng Ấn Độ - Ô-xtrây-li-a (Indo-Australian Plate)',
+                desc: 'Gồm lục địa Úc, tiểu lục địa Ấn Độ và vùng biển lân cận. Ấn Độ xô mạnh vào mảng Âu - Á tạo nên cao nguyên Tây Tạng và đỉnh Everest.',
+                color: '#2dd4bf'
+            },
+            'pacific': {
+                name: 'Mảng Thái Bình Dương (Pacific Plate)',
+                desc: 'Mảng đại dương lớn nhất Trái Đất. Viền xung quanh mảng này là "Vành đai lửa Thái Bình Dương" với vô số núi lửa và hoạt động địa chấn dữ dội.',
+                color: '#60a5fa'
+            },
+            'antarctica': {
+                name: 'Mảng Nam Cực (Antarctic Plate)',
+                desc: 'Bao gồm lục địa Nam Cực và các vùng biển xung quanh, chủ yếu tiếp xúc với các ranh giới tách giãn ở các đại dương bao quanh.',
+                color: '#a5b4fc'
+            },
+            'small_plates': {
+                name: 'Các Địa Mảng Nhỏ (1, 2, 3, 4, 5)',
+                desc: 'Các mảng nhỏ quan trọng: (1) Mảng Cô-cô, (2) Mảng Ca-ri-bê, (3) Mảng A-rập, (4) Mảng Phi-líp-pin, (5) Mảng Na-xca. Chúng đóng vai trò đệm quan trọng trong việc hấp thụ lực va chạm giữa các đại mảng lớn.',
+                color: '#fb923c'
+            }
+        };
+
+        // Tab switching
+        function switchTab(tab) {
+            currentTab = tab;
+            const btnMap = document.getElementById('btn-tab-map');
+            const btnSim = document.getElementById('btn-tab-simulation');
+            const panelMap = document.getElementById('panel-map');
+            const panelSim = document.getElementById('panel-simulation');
+            const viewTitle = document.getElementById('view-title');
+
+            if (tab === 'map') {
+                btnMap.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow";
+                btnSim.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white";
+                panelMap.classList.remove('hidden');
+                panelSim.classList.add('hidden');
+                viewTitle.innerText = "Bản đồ tổng quan các mảng kiến tạo vỏ Trái Đất";
+            } else {
+                btnSim.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow";
+                btnMap.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white";
+                panelSim.classList.remove('hidden');
+                panelMap.classList.add('hidden');
+                viewTitle.innerText = "Mô phỏng cơ chế chuyển động mảng (Mác-ma & Đứt gãy)";
+                closeTooltip();
+            }
+        }
+
+        function selectPlate(id) {
+            selectedPlateId = id;
+            const data = plateInfo[id];
+            if (data) {
+                const tooltip = document.getElementById('canvas-tooltip');
+                const title = document.getElementById('tooltip-title');
+                const desc = document.getElementById('tooltip-desc');
+                title.innerText = data.name;
+                title.style.color = data.color;
+                desc.innerText = data.desc;
+                tooltip.classList.remove('hidden');
+            }
+        }
+
+        function closeTooltip() {
+            document.getElementById('canvas-tooltip').classList.add('hidden');
+            selectedPlateId = null;
+        }
+
+        function setSimMode(mode) {
+            simMode = mode;
+            const btnConv = document.getElementById('sim-btn-conv');
+            const btnDiv = document.getElementById('sim-btn-div');
+            if (mode === 'convergent') {
+                btnConv.className = "p-3 rounded-xl bg-red-900/80 border border-red-500 text-white font-medium text-xs flex flex-col items-center gap-2 shadow ring-2 ring-red-400";
+                btnDiv.className = "p-3 rounded-xl bg-blue-950/60 border border-slate-700 text-slate-300 font-medium text-xs flex flex-col items-center gap-2 shadow";
+            } else {
+                btnDiv.className = "p-3 rounded-xl bg-blue-900/80 border border-blue-500 text-white font-medium text-xs flex flex-col items-center gap-2 shadow ring-2 ring-blue-400";
+                btnConv.className = "p-3 rounded-xl bg-slate-950/60 border border-slate-700 text-slate-300 font-medium text-xs flex flex-col items-center gap-2 shadow";
+            }
+        }
+
+        function changeSpeed(val) {
+            animSpeed = parseFloat(val);
+            document.getElementById('speed-val').innerText = val + 'x';
+        }
+
+        function triggerEarthquake() {
+            earthquakeActive = true;
+            earthquakeTimer = 40; // frames
+            const btn = document.getElementById('eq-btn');
+            btn.classList.add('animate-bounce');
+            setTimeout(() => {
+                btn.classList.remove('animate-bounce');
+            }, 1000);
+        }
+
+        // Main Animation & Render Loop
+        let animTime = 0;
+
+        function drawMapOverview() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background grid / ocean style
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw subtle ocean wave pattern or grid lines
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for (let j = 0; j < canvas.height; j += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, j);
+                ctx.lineTo(canvas.width, j);
+                ctx.stroke();
+            }
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const scale = Math.min(canvas.width, canvas.height) / 600;
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(scale, scale);
+
+            // Draw stylized World tectonic plate map layout using valid object coordinates {x, y}
+            // Eurasia Plate
+            drawPlatePolygon([
+                {x: -220, y: -160}, {x: -80, y: -170}, {x: 80, y: -150}, {x: 180, y: -130}, {x: 220, y: -50}, {x: 120, y: -40}, {x: 50, y: -80}, {x: -50, y: -90}
+            ], '#c084fc', 'MẢNG ÂU - Á', 'eurasia');
+
+            // North America Plate
+            drawPlatePolygon([
+                {x: -260, y: -150}, {x: -120, y: -160}, {x: -50, y: -90}, {x: -100, y: -20}, {x: -220, y: -40}
+            ], '#34d399', 'MẢNG BẮC MỸ', 'north_america');
+
+            // South America Plate
+            drawPlatePolygon([
+                {x: -180, y: 10}, {x: -90, y: 10}, {x: -70, y: 160}, {x: -170, y: 180}, {x: -200, y: 80}
+            ], '#f472b6', 'MẢNG NAM MỸ', 'south_america');
+
+            // Africa Plate
+            drawPlatePolygon([
+                {x: -40, y: -60}, {x: 70, y: -70}, {x: 90, y: 60}, {x: -20, y: 100}, {x: -50, y: 20}
+            ], '#fbbf24', 'MẢNG PHI', 'africa');
+
+            // Indo-Australian Plate
+            drawPlatePolygon([
+                {x: 110, y: -30}, {x: 240, y: -40}, {x: 260, y: 160}, {x: 120, y: 150}, {x: 80, y: 50}
+            ], '#2dd4bf', 'MẢNG ẤN ĐỘ - Ô-XTRÂY-LI-A', 'indo_australia');
+
+            // Pacific Plate (Left & Right side representation)
+            drawPlatePolygon([
+                {x: -280, y: -100}, {x: -230, y: -50}, {x: -250, y: 120}, {x: -280, y: 150}
+            ], '#60a5fa', 'THÁI BÌNH DƯƠNG', 'pacific');
+            drawPlatePolygon([
+                {x: 250, y: -100}, {x: 290, y: -50}, {x: 290, y: 120}, {x: 250, y: 150}
+            ], '#60a5fa', 'THÁI BÌNH DƯƠNG', 'pacific');
+
+            // Antarctic Plate
+            drawPlatePolygon([
+                {x: -220, y: 200}, {x: 220, y: 200}, {x: 250, y: 250}, {x: -250, y: 250}
+            ], '#a5b4fc', 'MẢNG NAM CỰC', 'antarctica');
+
+            // Small plates (1, 2, 3, 4, 5)
+            drawPlatePolygon([
+                {x: -230, y: 20}, {x: -190, y: 20}, {x: -200, y: 60}, {x: -240, y: 50}
+            ], '#fb923c', '1, 2, 3, 4, 5 (Địa mảng nhỏ)', 'small_plates');
+
+            // Draw boundary lines (Red: Convergent, Blue: Divergent) with animated pulses
+            drawBoundaryLine(-120, -90, -50, -60, 'convergent', 'Va chạm Himalaya');
+            drawBoundaryLine(-50, -60, 20, 20, 'divergent', 'Tách giãn Đại Tây Dương');
+            drawBoundaryLine(80, -40, 110, -30, 'convergent', 'Rãnh Sunda');
+            drawBoundaryLine(-220, -40, -180, 10, 'convergent', 'Dãy Andes (Xô nhau)');
+            drawBoundaryLine(120, -130, 220, -50, 'divergent', 'Sống núi Thái Bình Dương');
+
+            ctx.restore();
+        }
+
+        function drawPlatePolygon(points, baseColor, label, id) {
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.closePath();
+
+            // Highlight if selected
+            if (selectedPlateId === id) {
+                ctx.fillStyle = baseColor;
+                ctx.globalAlpha = 0.5;
+                ctx.fill();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
+            } else {
+                ctx.fillStyle = baseColor;
+                ctx.globalAlpha = 0.25;
+                ctx.fill();
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = baseColor;
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1.0;
+
+            // Compute center for label
+            let cx = 0, cy = 0;
+            points.forEach(p => { cx += p.x; cy += p.y; });
+            cx /= points.length;
+            cy /= points.length;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 11px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, cx, cy);
+        }
+
+        function drawBoundaryLine(x1, y1, x2, y2, type, name) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineWidth = 3;
+            if (type === 'convergent') {
+                ctx.strokeStyle = '#ef4444'; // Red
+            } else {
+                ctx.strokeStyle = '#3b82f6'; // Blue
+            }
+            ctx.setLineDash([4, 4]);
+            ctx.stroke();
+            ctx.setLineDash([]); // reset
+
+            // Draw direction arrows along boundary
+            let midX = (x1 + x2) / 2;
+            let midY = (y1 + y2) / 2;
+            ctx.fillStyle = type === 'convergent' ? '#f87171' : '#60a5fa';
+            ctx.font = '10px Inter';
+            ctx.fillText(type === 'convergent' ? '▼ ▲ Xô vào' : '◄ ► Tách xa', midX, midY - 6);
+        }
+
+        function drawSimulationCrossSection() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Sky / Atmosphere background
+            ctx.fillStyle = '#020617';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            animTime += 0.03 * animSpeed;
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const groundY = h * 0.4;
+
+            // Sky gradient
+            let skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
+            skyGrad.addColorStop(0, '#0f172a');
+            skyGrad.addColorStop(1, '#1e293b');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, w, groundY);
+
+            // Mantle (Molten magma layer underneath)
+            let mantleGrad = ctx.createLinearGradient(0, groundY, 0, h);
+            mantleGrad.addColorStop(0, '#7f1d1d');
+            mantleGrad.addColorStop(0.4, '#b91c1c');
+            mantleGrad.addColorStop(1, '#450a0a');
+            ctx.fillStyle = mantleGrad;
+            ctx.fillRect(0, groundY, w, h - groundY);
+
+            // Magma convection currents animation
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            let waveOffset = Math.sin(animTime) * 20;
+            ctx.moveTo(w * 0.3, groundY + 80);
+            ctx.bezierCurveTo(w * 0.4, groundY + 30 + waveOffset, w * 0.6, groundY + 30 - waveOffset, w * 0.7, groundY + 80);
+            ctx.stroke();
+
+            if (simMode === 'convergent') {
+                // CONVERGENT SIMULATION: Two plates crashing into each other
+                let offset = Math.sin(animTime * 0.8) * 15;
+
+                // Left Plate (Moving Right)
+                ctx.fillStyle = '#334155';
+                ctx.beginPath();
+                let leftPlateX = w * 0.45 + offset;
+                ctx.moveTo(0, groundY - 30);
+                ctx.lineTo(leftPlateX, groundY - 30);
+                ctx.lineTo(leftPlateX, groundY + 60);
+                ctx.lineTo(0, groundY + 60);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#64748b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Right Plate (Subducting / Crashing)
+                ctx.fillStyle = '#475569';
+                ctx.beginPath();
+                let rightPlateX = w * 0.55 + offset;
+                ctx.moveTo(w, groundY - 30);
+                ctx.lineTo(rightPlateX, groundY - 30);
+                // Subduction zone dipping down into mantle
+                ctx.lineTo(rightPlateX - 80, groundY + 120);
+                ctx.lineTo(w, groundY + 120);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Collision Mountain Range (Orogeny)
+                ctx.fillStyle = '#cbd5e1';
+                ctx.beginPath();
+                let peakX = (leftPlateX + rightPlateX) / 2;
+                let peakY = groundY - 90 - Math.abs(offset);
+                ctx.moveTo(leftPlateX - 20, groundY - 30);
+                ctx.lineTo(peakX, peakY);
+                ctx.lineTo(rightPlateX + 20, groundY - 30);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#f8fafc';
+                ctx.stroke();
+
+                // Labels & Indicators
+                ctx.fillStyle = '#f87171';
+                ctx.font = 'bold 13px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('VÙNG VA CHẠM & TẠO DÃY NÚI CAO', peakX, peakY - 15);
+
+                // Subduction trench & earthquake sparks
+                if (earthquakeActive) {
+                    earthquakeTimer--;
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(peakX + (Math.random() * 20 - 10), groundY + (Math.random() * 20 - 10), 12 + Math.random() * 15, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 14px Inter';
+                    ctx.fillText('💥 ĐỘNG ĐẤT / NÚI LỬA HOẠT ĐỘNG!', peakX, peakY - 40);
+
+                    if (earthquakeTimer <= 0) earthquakeActive = false;
+                }
+
+                // Subduction description text
+                ctx.fillStyle = '#cbd5e1';
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText('◄ Mảng di chuyển (Ép nén)', 30, groundY - 45);
+                ctx.textAlign = 'right';
+                ctx.fillText('Mảng chìm xuống (Hút chìm) ►', w - 30, groundY - 45);
+
+            } else {
+                // DIVERGENT SIMULATION: Two plates pulling apart, magma rising
+                let pullOffset = Math.sin(animTime * 0.8) * 20;
+
+                // Left Plate (Moving Left)
+                ctx.fillStyle = '#334155';
+                ctx.fillRect(w * 0.05, groundY - 30, (w * 0.42) - pullOffset, 90);
+
+                // Right Plate (Moving Right)
+                ctx.fillStyle = '#475569';
+                ctx.fillRect((w * 0.53) + pullOffset, groundY - 30, (w * 0.42), 90);
+
+                // Rift Valley / Mid-ocean ridge gap with glowing magma rising
+                let gapCenter = w * 0.5;
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.moveTo(gapCenter - 15 - pullOffset, groundY - 30);
+                ctx.lineTo(gapCenter + 15 + pullOffset, groundY - 30);
+                ctx.lineTo(gapCenter + 35, groundY + 100);
+                ctx.lineTo(gapCenter - 35, groundY + 100);
+                ctx.closePath();
+                ctx.fill();
+
+                // Glowing magma particles / upward arrows
+                ctx.strokeStyle = '#fbbf24';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(gapCenter, groundY + 80);
+                ctx.lineTo(gapCenter, groundY - 10 + Math.sin(animTime * 3) * 10);
+                ctx.stroke();
+
+                // Ocean water on top if oceanic divergence
+                ctx.fillStyle = 'rgba(14, 165, 233, 0.3)';
+                ctx.fillRect(0, groundY - 70, w, 40);
+
+                // Labels
+                ctx.fillStyle = '#60a5fa';
+                ctx.font = 'bold 13px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('SỐNG NÚI GIỮA ĐẠI DƯƠNG & MÁC-MA TRÀO LÊN', gapCenter, groundY - 85);
+
+                ctx.fillStyle = '#cbd5e1';
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText('◄ Tách xa', w * 0.1, groundY - 45);
+                ctx.textAlign = 'right';
+                ctx.fillText('Tách xa ►', w * 0.9, groundY - 45);
+            }
+
+            // Mantle convection label
+            ctx.fillStyle = '#fca5a5';
+            ctx.font = '11px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Lớp Manti & Dòng đối lưu mác-ma nóng chảy', w / 2, groundY + 140);
+        }
+
+        // Loop dispatcher
+        function mainLoop() {
+            if (currentTab === 'map') {
+                drawMapOverview();
+            } else {
+                drawSimulationCrossSection();
+            }
+            animFrameId = requestAnimationFrame(mainLoop);
+        }
+
+        // Start animation on load
+        window.onload = function() {
+            mainLoop();
+        };
+    </script>
+</body>
+</html>

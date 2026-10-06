@@ -1,0 +1,3678 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 13 - Các dạng địa hình chính trên Trái Đất. Khoáng sản</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+
+    color:#e8f7ff;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(18,108,181,.35),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 85%,
+            rgba(0,176,205,.20),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #03172f,
+            #061e3c 50%,
+            #031225
+        );
+
+    min-height:100vh;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.topbar{
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 34px;
+
+    background:
+        rgba(3,20,40,.92);
+
+    backdrop-filter:blur(16px);
+
+    border-bottom:
+        1px solid rgba(85,205,255,.20);
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.25);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    cursor:pointer;
+}
+
+.logo-icon{
+
+    width:43px;
+    height:43px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0ea5e9,
+            #06b6d4
+        );
+
+    box-shadow:
+        0 8px 22px rgba(14,165,233,.25);
+
+    font-size:22px;
+}
+
+.logo-title{
+    font-weight:900;
+    letter-spacing:.5px;
+    font-size:15px;
+}
+
+.logo-sub{
+    color:#83b7cf;
+    font-size:11px;
+    margin-top:2px;
+}
+
+.home-btn{
+
+    border:1px solid rgba(100,210,255,.22);
+
+    background:
+        rgba(11,52,82,.8);
+
+    color:#dff7ff;
+
+    border-radius:11px;
+
+    padding:9px 15px;
+
+    font-weight:700;
+
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#0d5b82;
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    max-width:1250px;
+
+    margin:28px auto 20px;
+
+    width:calc(100% - 40px);
+
+    position:relative;
+    overflow:hidden;
+
+    border-radius:26px;
+
+    padding:42px 45px;
+
+    background:
+        radial-gradient(
+            circle at 82% 35%,
+            rgba(0,211,255,.18),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(5,50,88,.97),
+            rgba(5,28,56,.97)
+        );
+
+    border:
+        1px solid rgba(76,208,255,.28);
+
+    box-shadow:
+        0 18px 55px rgba(0,0,0,.28);
+}
+
+.hero::after{
+
+    content:"⛰️";
+
+    position:absolute;
+
+    right:55px;
+    bottom:-35px;
+
+    font-size:190px;
+
+    opacity:.075;
+
+    transform:rotate(-5deg);
+
+    pointer-events:none;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+
+    max-width:820px;
+}
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:7px 12px;
+
+    border-radius:999px;
+
+    background:
+        rgba(44,189,235,.10);
+
+    border:
+        1px solid rgba(71,208,255,.25);
+
+    color:#6ce3ff;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    letter-spacing:.4px;
+
+    margin-bottom:15px;
+}
+
+.hero h1{
+
+    margin:0 0 12px;
+
+    font-size:
+        clamp(29px,4vw,48px);
+
+    line-height:1.12;
+
+    color:#f0fbff;
+}
+
+.hero p{
+
+    margin:0;
+
+    color:#afd8e9;
+
+    line-height:1.7;
+
+    font-size:15px;
+
+    max-width:780px;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.container{
+
+    max-width:1250px;
+
+    width:calc(100% - 40px);
+
+    margin:auto;
+
+    padding-bottom:55px;
+}
+
+.section{
+
+    margin-top:20px;
+
+    background:
+        rgba(4,25,47,.88);
+
+    border:
+        1px solid rgba(74,201,244,.18);
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.20);
+}
+
+.section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:8px;
+
+    font-size:23px;
+
+    font-weight:900;
+
+    color:#67ddff;
+}
+
+.section-subtitle{
+
+    color:#91bed1;
+
+    line-height:1.65;
+
+    margin:0 0 22px;
+}
+
+
+/* =========================================================
+   OBJECTIVES
+========================================================= */
+
+.objectives{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:13px;
+}
+
+.objective{
+
+    padding:18px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12,65,99,.75),
+            rgba(5,39,66,.75)
+        );
+
+    border:
+        1px solid rgba(69,198,240,.15);
+
+    transition:.25s;
+}
+
+.objective:hover{
+
+    transform:translateY(-3px);
+
+    border-color:
+        rgba(73,214,255,.38);
+}
+
+.objective-icon{
+
+    font-size:27px;
+
+    margin-bottom:9px;
+}
+
+.objective strong{
+
+    display:block;
+
+    color:#d9f7ff;
+
+    margin-bottom:6px;
+}
+
+.objective span{
+
+    color:#9dc7d9;
+
+    font-size:13px;
+
+    line-height:1.55;
+}
+
+
+/* =========================================================
+   INTRODUCTION
+========================================================= */
+
+.intro-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1.1fr .9fr;
+
+    gap:20px;
+
+    align-items:stretch;
+}
+
+.intro-text{
+
+    padding:22px;
+
+    border-radius:17px;
+
+    background:
+        rgba(8,43,72,.65);
+
+    border:
+        1px solid rgba(77,203,245,.13);
+
+    line-height:1.75;
+
+    color:#c1e0ec;
+}
+
+.intro-text strong{
+    color:#68ddff;
+}
+
+.elevation-card{
+
+    min-height:270px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            to top,
+            #183b32 0 27%,
+            #294d35 27% 42%,
+            #30586c 42% 55%,
+            #0b2847 55% 100%
+        );
+
+    border:
+        1px solid rgba(83,213,255,.18);
+}
+
+
+/* đường địa hình */
+
+.elevation-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:-5%;
+
+    right:-5%;
+
+    bottom:23%;
+
+    height:43%;
+
+    background:
+        linear-gradient(
+            145deg,
+            transparent 0 22%,
+            #355b43 22% 33%,
+            #172f3e 33% 34%,
+            #456c50 34% 43%,
+            transparent 43%
+        );
+
+    clip-path:
+        polygon(
+            0 80%,
+            12% 62%,
+            23% 68%,
+            38% 40%,
+            49% 53%,
+            62% 16%,
+            72% 49%,
+            85% 31%,
+            100% 58%,
+            100% 100%,
+            0 100%
+        );
+
+    opacity:.9;
+}
+
+.elevation-label{
+
+    position:absolute;
+
+    padding:7px 10px;
+
+    border-radius:9px;
+
+    background:
+        rgba(2,20,35,.76);
+
+    border:
+        1px solid rgba(93,220,255,.22);
+
+    color:#dff8ff;
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+.label-mountain{
+    left:52%;
+    top:28%;
+}
+
+.label-hill{
+    left:72%;
+    top:48%;
+}
+
+.label-plain{
+    left:15%;
+    bottom:19%;
+}
+
+.label-plateau{
+    left:33%;
+    top:45%;
+}
+
+
+/* =========================================================
+   LANDFORM CARDS
+========================================================= */
+
+.landform-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:14px;
+}
+
+.landform{
+
+    min-height:300px;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(8,50,79,.95),
+            rgba(4,28,50,.95)
+        );
+
+    border:
+        1px solid rgba(82,207,249,.18);
+
+    transition:
+        transform .25s,
+        border-color .25s,
+        box-shadow .25s;
+}
+
+.landform:hover{
+
+    transform:translateY(-5px);
+
+    border-color:
+        rgba(83,220,255,.45);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.25);
+}
+
+.landform.active{
+
+    border-color:#42d7ff;
+
+    box-shadow:
+        0 0 0 2px rgba(66,215,255,.10),
+        0 16px 38px rgba(0,0,0,.25);
+}
+
+.landform-visual{
+
+    height:145px;
+
+    position:relative;
+
+    margin:-3px -3px 14px;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #0b2d50 0 48%,
+            #234f47 48% 100%
+        );
+}
+
+
+/* núi */
+
+.mountain-shape{
+
+    position:absolute;
+
+    left:8%;
+    bottom:0;
+
+    width:84%;
+    height:100%;
+
+    clip-path:
+        polygon(
+            0 100%,
+            26% 50%,
+            38% 65%,
+            52% 13%,
+            67% 59%,
+            76% 44%,
+            100% 100%
+        );
+
+    background:
+        linear-gradient(
+            135deg,
+            #486b63,
+            #274c45
+        );
+}
+
+.mountain-shape::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:43%;
+    top:12%;
+
+    width:18%;
+    height:25%;
+
+    background:#dceef1;
+
+    clip-path:
+        polygon(
+            50% 0,
+            100% 100%,
+            0 100%
+        );
+
+    opacity:.9;
+}
+
+
+/* đồi */
+
+.hill-shape{
+
+    position:absolute;
+
+    bottom:0;
+
+    left:5%;
+
+    width:90%;
+
+    height:65%;
+
+    background:
+        linear-gradient(
+            160deg,
+            #4d7b56,
+            #2e5c43
+        );
+
+    border-radius:
+        60% 60% 0 0;
+}
+
+
+/* đồng bằng */
+
+.plain-shape{
+
+    position:absolute;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:43%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #4c8454,
+            #315c3f
+        );
+}
+
+.plain-shape::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:120%;
+
+    height:35px;
+
+    left:-10%;
+
+    top:22px;
+
+    background:
+        rgba(101,177,216,.55);
+
+    transform:rotate(-4deg);
+}
+
+
+/* cao nguyên */
+
+.plateau-shape{
+
+    position:absolute;
+
+    left:10%;
+
+    bottom:0;
+
+    width:80%;
+
+    height:65%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #607c55,
+            #3d6046
+        );
+
+    clip-path:
+        polygon(
+            0 100%,
+            10% 30%,
+            25% 19%,
+            76% 19%,
+            90% 30%,
+            100% 100%
+        );
+}
+
+.plateau-shape::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:15%;
+    right:15%;
+    top:17%;
+
+    height:8px;
+
+    background:#88a76d;
+
+    border-radius:20px;
+}
+
+
+.landform h3{
+
+    margin:0 0 6px;
+
+    color:#e9fbff;
+
+    font-size:19px;
+}
+
+.landform p{
+
+    margin:0;
+
+    color:#9dc8d9;
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+.landform-more{
+
+    margin-top:11px;
+
+    color:#61ddff;
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   DETAIL PANEL
+========================================================= */
+
+.detail-panel{
+
+    margin-top:18px;
+
+    padding:22px;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,59,91,.78),
+            rgba(5,34,59,.78)
+        );
+
+    border:
+        1px solid rgba(70,213,255,.25);
+
+    display:none;
+
+    animation:fadeUp .3s ease;
+}
+
+.detail-panel.show{
+    display:block;
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.detail-title{
+
+    color:#6de2ff;
+
+    font-size:20px;
+
+    font-weight:900;
+
+    margin-bottom:8px;
+}
+
+.detail-content{
+
+    color:#b9d9e7;
+
+    line-height:1.7;
+
+    font-size:14px;
+}
+
+
+/* =========================================================
+   COMPARISON TABLE
+========================================================= */
+
+.table-wrap{
+
+    overflow-x:auto;
+
+    border-radius:16px;
+
+    border:
+        1px solid rgba(71,201,244,.16);
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:750px;
+
+    background:
+        rgba(4,30,52,.7);
+}
+
+th{
+
+    text-align:left;
+
+    padding:14px;
+
+    background:
+        rgba(11,73,108,.75);
+
+    color:#bcefff;
+
+    font-size:13px;
+}
+
+td{
+
+    padding:14px;
+
+    border-top:
+        1px solid rgba(85,193,225,.10);
+
+    color:#acd0df;
+
+    font-size:13px;
+
+    line-height:1.55;
+}
+
+td:first-child{
+
+    color:#e3f9ff;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   MINERAL SECTION
+========================================================= */
+
+.mineral-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+.mineral-card{
+
+    padding:21px;
+
+    border-radius:18px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:220px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9,52,78,.95),
+            rgba(5,28,49,.95)
+        );
+
+    border:
+        1px solid rgba(79,204,242,.18);
+
+    transition:.25s;
+}
+
+.mineral-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:
+        rgba(91,221,255,.4);
+}
+
+.mineral-icon{
+
+    width:58px;
+    height:58px;
+
+    border-radius:17px;
+
+    display:grid;
+
+    place-items:center;
+
+    font-size:30px;
+
+    margin-bottom:13px;
+
+    background:
+        rgba(55,201,241,.11);
+
+    border:
+        1px solid rgba(79,211,249,.20);
+}
+
+.mineral-card h3{
+
+    margin:0 0 8px;
+
+    color:#e6faff;
+}
+
+.mineral-card p{
+
+    color:#a8cddd;
+
+    line-height:1.6;
+
+    font-size:13px;
+
+    margin:0;
+}
+
+.mineral-tag{
+
+    display:inline-block;
+
+    margin-top:12px;
+
+    padding:5px 9px;
+
+    border-radius:999px;
+
+    background:
+        rgba(41,188,226,.10);
+
+    color:#65ddff;
+
+    font-size:11px;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   MINERAL CLASSIFICATION
+========================================================= */
+
+.mineral-types{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+
+    margin-top:18px;
+}
+
+.type{
+
+    padding:18px;
+
+    border-radius:16px;
+
+    border:
+        1px solid rgba(83,204,239,.15);
+
+    background:
+        rgba(8,45,70,.65);
+}
+
+.type-head{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:10px;
+
+    color:#dff8ff;
+
+    font-weight:900;
+}
+
+.type-head span{
+
+    width:35px;
+    height:35px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:10px;
+
+    background:
+        rgba(65,205,240,.10);
+}
+
+.type p{
+
+    margin:0;
+
+    color:#a4c9d9;
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   KNOWLEDGE MAP
+========================================================= */
+
+.flow{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr auto 1fr auto 1fr;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:18px;
+}
+
+.flow-item{
+
+    min-height:125px;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10,69,101,.7),
+            rgba(5,37,61,.7)
+        );
+
+    border:
+        1px solid rgba(69,205,244,.16);
+}
+
+.flow-icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.flow-item strong{
+    color:#e1f8ff;
+}
+
+.flow-item small{
+    color:#91bfce;
+    line-height:1.45;
+    margin-top:4px;
+}
+
+.flow-arrow{
+
+    color:#5edfff;
+
+    font-size:27px;
+
+    font-weight:900;
+}
+
+
+/* =========================================================
+   MEMORY BOX
+========================================================= */
+
+.memory{
+
+    margin-top:18px;
+
+    padding:20px;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(6,79,104,.45),
+            rgba(7,46,75,.55)
+        );
+
+    border:
+        1px solid rgba(81,213,246,.24);
+}
+
+.memory-title{
+
+    color:#6ce2ff;
+
+    font-size:17px;
+
+    font-weight:900;
+
+    margin-bottom:9px;
+}
+
+.memory p{
+
+    color:#b5d7e5;
+
+    line-height:1.7;
+
+    margin:0;
+
+    font-size:14px;
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz-section{
+
+    margin-top:20px;
+
+    padding:30px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,37,69,.96),
+            rgba(5,24,48,.96)
+        );
+
+    border:
+        1px solid rgba(71,204,248,.24);
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.25);
+}
+
+.quiz-intro{
+
+    text-align:center;
+
+    padding:20px 10px 25px;
+}
+
+.quiz-intro-icon{
+
+    font-size:52px;
+
+    margin-bottom:8px;
+}
+
+.quiz-intro h2{
+
+    margin:0 0 8px;
+
+    color:#eafaff;
+
+    font-size:27px;
+}
+
+.quiz-intro p{
+
+    margin:0 auto 20px;
+
+    max-width:680px;
+
+    color:#9fc9da;
+
+    line-height:1.6;
+}
+
+.start-quiz{
+
+    border:none;
+
+    padding:13px 25px;
+
+    border-radius:13px;
+
+    color:white;
+
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #079bd0,
+            #087bb7
+        );
+
+    box-shadow:
+        0 8px 22px rgba(7,155,208,.23);
+}
+
+.start-quiz:hover{
+    transform:translateY(-2px);
+}
+
+
+/* quiz content */
+
+.quiz-content{
+    display:none;
+}
+
+.quiz-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:17px;
+}
+
+.question-number{
+
+    color:#69ddff;
+
+    font-weight:900;
+
+    font-size:14px;
+}
+
+.timer{
+
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    display:grid;
+
+    place-items:center;
+
+    background:
+        rgba(27,82,110,.65);
+
+    border:
+        2px solid #3ac8ef;
+
+    color:#e4faff;
+
+    font-weight:900;
+
+    font-size:18px;
+}
+
+.timer.warning{
+
+    border-color:#ffb347;
+
+    color:#ffd08a;
+}
+
+.timer.danger{
+
+    border-color:#ff6262;
+
+    color:#ff9292;
+
+    animation:pulse .6s infinite alternate;
+}
+
+@keyframes pulse{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.08);
+    }
+}
+
+.question-progress{
+
+    height:7px;
+
+    background:
+        rgba(55,105,130,.35);
+
+    border-radius:99px;
+
+    overflow:hidden;
+
+    margin-bottom:22px;
+}
+
+.question-progress-bar{
+
+    height:100%;
+
+    width:0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0ea5e9,
+            #22d3ee
+        );
+
+    transition:width .3s;
+}
+
+.question-box{
+
+    padding:23px;
+
+    border-radius:17px;
+
+    background:
+        rgba(9,50,77,.72);
+
+    border:
+        1px solid rgba(74,207,244,.15);
+
+    margin-bottom:16px;
+}
+
+.question-text{
+
+    color:#effbff;
+
+    font-size:19px;
+
+    line-height:1.55;
+
+    font-weight:800;
+}
+
+.options{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:11px;
+}
+
+.option{
+
+    text-align:left;
+
+    padding:15px 17px;
+
+    border-radius:13px;
+
+    background:
+        rgba(8,43,68,.85);
+
+    border:
+        1px solid rgba(77,192,227,.18);
+
+    color:#c8e4ef;
+
+    font-weight:700;
+
+    transition:.2s;
+}
+
+.option:hover:not(:disabled){
+
+    border-color:#43d8ff;
+
+    background:
+        rgba(12,70,100,.95);
+
+    transform:translateY(-2px);
+}
+
+.option.correct{
+
+    border-color:#35d48b;
+
+    background:
+        rgba(19,117,78,.38);
+
+    color:#9dffd2;
+}
+
+.option.wrong{
+
+    border-color:#ff6666;
+
+    background:
+        rgba(130,35,45,.38);
+
+    color:#ffb2b2;
+}
+
+.option:disabled{
+    cursor:default;
+}
+
+.feedback{
+
+    display:none;
+
+    margin-top:15px;
+
+    padding:15px 17px;
+
+    border-radius:13px;
+
+    line-height:1.6;
+
+    font-size:13px;
+}
+
+.feedback.correct{
+
+    display:block;
+
+    background:
+        rgba(19,111,75,.25);
+
+    border:
+        1px solid rgba(53,212,139,.28);
+
+    color:#a9ffd5;
+}
+
+.feedback.wrong{
+
+    display:block;
+
+    background:
+        rgba(128,40,48,.25);
+
+    border:
+        1px solid rgba(255,102,102,.28);
+
+    color:#ffc1c1;
+}
+
+.next-question{
+
+    display:none;
+
+    margin-top:15px;
+
+    width:100%;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    color:white;
+
+    background:#0b83b9;
+
+    font-weight:900;
+}
+
+
+/* quiz result */
+
+.quiz-result{
+
+    display:none;
+
+    text-align:center;
+
+    padding:35px 10px 15px;
+}
+
+.result-icon{
+
+    font-size:65px;
+
+    margin-bottom:8px;
+}
+
+.result-title{
+
+    color:#eaffff;
+
+    font-size:28px;
+
+    font-weight:900;
+
+    margin-bottom:7px;
+}
+
+.result-score{
+
+    color:#65ddff;
+
+    font-size:42px;
+
+    font-weight:900;
+
+    margin:10px 0;
+}
+
+.result-message{
+
+    color:#a9ccda;
+
+    line-height:1.6;
+
+    margin-bottom:22px;
+}
+
+.result-actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+}
+
+.result-actions button{
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:12px 20px;
+
+    font-weight:900;
+}
+
+.retry-btn{
+
+    background:
+        rgba(21,82,112,.9);
+
+    color:#dff8ff;
+
+    border:
+        1px solid rgba(85,208,244,.25) !important;
+}
+
+.finish-btn{
+
+    background:
+        linear-gradient(
+            135deg,
+            #08a977,
+            #087f64
+        );
+
+    color:white;
+}
+
+
+/* =========================================================
+   COMPLETED
+========================================================= */
+
+.completed{
+
+    display:none;
+
+    margin-top:18px;
+
+    text-align:center;
+
+    padding:16px;
+
+    border-radius:13px;
+
+    background:
+        rgba(11,114,81,.20);
+
+    border:
+        1px solid rgba(51,213,142,.25);
+
+    color:#a8ffd6;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    text-align:center;
+
+    padding:30px 20px 45px;
+
+    color:#628ea4;
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1050px){
+
+    .landform-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .objectives{
+        grid-template-columns:
+            1fr;
+    }
+
+    .mineral-grid{
+        grid-template-columns:
+            1fr;
+    }
+
+    .mineral-types{
+        grid-template-columns:
+            1fr;
+    }
+}
+
+@media(max-width:800px){
+
+    .intro-grid{
+        grid-template-columns:1fr;
+    }
+
+    .flow{
+        grid-template-columns:1fr;
+    }
+
+    .flow-arrow{
+        transform:rotate(90deg);
+        justify-self:center;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:30px 25px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .logo-sub{
+        display:none;
+    }
+}
+
+@media(max-width:600px){
+
+    .container,
+    .hero{
+        width:calc(100% - 24px);
+    }
+
+    .section,
+    .quiz-section{
+        padding:20px;
+    }
+
+    .landform-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero h1{
+        font-size:29px;
+    }
+
+    .hero::after{
+        opacity:.04;
+    }
+
+    .question-text{
+        font-size:17px;
+    }
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="topbar">
+
+    <div class="logo" onclick="goHome()">
+
+        <div class="logo-icon">
+            🌎
+        </div>
+
+        <div>
+
+            <div class="logo-title">
+                HỌC LIỆU SỐ ĐỊA LÍ 6
+            </div>
+
+            <div class="logo-sub">
+                Lịch sử & Địa lí lớp 6
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="home-btn"
+        onclick="goHome()">
+
+        🏠 Trang chủ
+
+    </button>
+
+</header>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            🌎 ĐỊA LÍ 6 · BÀI 13
+        </div>
+
+        <h1>
+            Các dạng địa hình chính<br>
+            trên Trái Đất. Khoáng sản
+        </h1>
+
+        <p>
+            Khám phá những dạng địa hình phổ biến trên bề mặt Trái Đất,
+            nhận biết đặc điểm của núi, đồi, đồng bằng và cao nguyên;
+            đồng thời tìm hiểu khoáng sản, các loại khoáng sản
+            và ý nghĩa của tài nguyên khoáng sản đối với con người.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<div class="container">
+
+
+<!-- =========================================================
+     MỤC TIÊU
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+        🎯 Mục tiêu bài học
+    </div>
+
+    <p class="section-subtitle">
+        Sau bài học, em có thể nhận biết các dạng địa hình chính
+        và hiểu được vai trò của khoáng sản trong đời sống và sản xuất.
+    </p>
+
+
+    <div class="objectives">
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                ⛰️
+            </div>
+
+            <strong>
+                Nhận biết địa hình
+            </strong>
+
+            <span>
+                Phân biệt được núi, đồi, đồng bằng và cao nguyên
+                dựa vào đặc điểm hình thái và độ cao.
+            </span>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                💎
+            </div>
+
+            <strong>
+                Tìm hiểu khoáng sản
+            </strong>
+
+            <span>
+                Hiểu khoáng sản là gì và nhận biết một số nhóm
+                khoáng sản phổ biến.
+            </span>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                🌱
+            </div>
+
+            <strong>
+                Sử dụng hợp lí
+            </strong>
+
+            <span>
+                Có ý thức sử dụng tiết kiệm tài nguyên và
+                bảo vệ môi trường trong quá trình khai thác.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     KHỞI ĐỘNG
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+        🌍 Bề mặt Trái Đất có gì đặc biệt?
+    </div>
+
+    <p class="section-subtitle">
+        Bề mặt Trái Đất không bằng phẳng mà có nhiều dạng địa hình
+        khác nhau. Hãy quan sát sơ đồ dưới đây.
+    </p>
+
+
+    <div class="intro-grid">
+
+        <div class="intro-text">
+
+            <p>
+                <strong>Địa hình</strong> là những dạng lồi, lõm,
+                cao, thấp khác nhau của bề mặt Trái Đất.
+            </p>
+
+            <p>
+                Trong tự nhiên có nhiều dạng địa hình,
+                trong đó những dạng địa hình chính thường được
+                tìm hiểu gồm <strong>núi, đồi, đồng bằng và cao nguyên</strong>.
+            </p>
+
+            <p>
+                Mỗi dạng địa hình có đặc điểm riêng về độ cao,
+                độ dốc, bề mặt và hình thái.
+            </p>
+
+            <p style="margin-bottom:0">
+                👉 Hãy bấm vào từng thẻ bên dưới để khám phá!
+            </p>
+
+        </div>
+
+
+        <div class="elevation-card">
+
+            <div class="elevation-label label-mountain">
+                ⛰️ Núi
+            </div>
+
+            <div class="elevation-label label-hill">
+                🌄 Đồi
+            </div>
+
+            <div class="elevation-label label-plain">
+                🌾 Đồng bằng
+            </div>
+
+            <div class="elevation-label label-plateau">
+                🏞️ Cao nguyên
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CÁC DẠNG ĐỊA HÌNH
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+        ⛰️ Bốn dạng địa hình chính
+    </div>
+
+    <p class="section-subtitle">
+        Bấm vào từng thẻ để xem đặc điểm và hình dung rõ hơn về
+        từng dạng địa hình.
+    </p>
+
+
+    <div class="landform-grid">
+
+
+        <!-- NÚI -->
+
+        <article
+            class="landform"
+            onclick="showLandform('mountain',this)">
+
+            <div class="landform-visual">
+
+                <div class="mountain-shape"></div>
+
+            </div>
+
+            <h3>
+                ⛰️ Núi
+            </h3>
+
+            <p>
+                Dạng địa hình nhô cao rõ rệt trên bề mặt
+                xung quanh, thường có sườn dốc.
+            </p>
+
+            <div class="landform-more">
+                Bấm để tìm hiểu →
+            </div>
+
+        </article>
+
+
+
+        <!-- ĐỒI -->
+
+        <article
+            class="landform"
+            onclick="showLandform('hill',this)">
+
+            <div class="landform-visual">
+
+                <div class="hill-shape"></div>
+
+            </div>
+
+            <h3>
+                🌄 Đồi
+            </h3>
+
+            <p>
+                Dạng địa hình nhô cao nhưng thường thấp hơn núi,
+                đỉnh tương đối tròn và sườn thoải hơn.
+            </p>
+
+            <div class="landform-more">
+                Bấm để tìm hiểu →
+            </div>
+
+        </article>
+
+
+
+        <!-- ĐỒNG BẰNG -->
+
+        <article
+            class="landform"
+            onclick="showLandform('plain',this)">
+
+            <div class="landform-visual">
+
+                <div class="plain-shape"></div>
+
+            </div>
+
+            <h3>
+                🌾 Đồng bằng
+            </h3>
+
+            <p>
+                Khu vực địa hình tương đối bằng phẳng,
+                có độ cao thấp hoặc rất thấp so với xung quanh.
+            </p>
+
+            <div class="landform-more">
+                Bấm để tìm hiểu →
+            </div>
+
+        </article>
+
+
+
+        <!-- CAO NGUYÊN -->
+
+        <article
+            class="landform"
+            onclick="showLandform('plateau',this)">
+
+            <div class="landform-visual">
+
+                <div class="plateau-shape"></div>
+
+            </div>
+
+            <h3>
+                🏞️ Cao nguyên
+            </h3>
+
+            <p>
+                Khu vực tương đối bằng phẳng nhưng nằm ở
+                độ cao khá lớn so với mực nước biển.
+            </p>
+
+            <div class="landform-more">
+                Bấm để tìm hiểu →
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <div
+        id="landformDetail"
+        class="detail-panel">
+
+        <div
+            id="detailTitle"
+            class="detail-title">
+        </div>
+
+        <div
+            id="detailContent"
+            class="detail-content">
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SO SÁNH
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+        📊 So sánh các dạng địa hình
+    </div>
+
+    <p class="section-subtitle">
+        Cùng hệ thống lại những đặc điểm nổi bật để dễ ghi nhớ.
+    </p>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Dạng địa hình
+                    </th>
+
+                    <th>
+                        Đặc điểm nổi bật
+                    </th>
+
+                    <th>
+                        Hình thái bề mặt
+                    </th>
+
+                    <th>
+                        Gợi nhớ
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        ⛰️ Núi
+                    </td>
+
+                    <td>
+                        Nhô cao rõ rệt so với khu vực xung quanh,
+                        thường có sườn dốc.
+                    </td>
+
+                    <td>
+                        Đỉnh, sườn và chân núi khá rõ.
+                    </td>
+
+                    <td>
+                        Cao và dốc
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        🌄 Đồi
+                    </td>
+
+                    <td>
+                        Nhô cao nhưng thường thấp hơn núi,
+                        sườn thoải.
+                    </td>
+
+                    <td>
+                        Đỉnh thường tròn hoặc thoải.
+                    </td>
+
+                    <td>
+                        Thấp và thoải
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        🌾 Đồng bằng
+                    </td>
+
+                    <td>
+                        Tương đối bằng phẳng,
+                        thường có độ cao thấp.
+                    </td>
+
+                    <td>
+                        Bề mặt khá bằng phẳng.
+                    </td>
+
+                    <td>
+                        Thấp và phẳng
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        🏞️ Cao nguyên
+                    </td>
+
+                    <td>
+                        Tương đối bằng phẳng nhưng có
+                        độ cao lớn hơn đồng bằng.
+                    </td>
+
+                    <td>
+                        Mặt tương đối phẳng,
+                        rìa có thể dốc.
+                    </td>
+
+                    <td>
+                        Cao và tương đối phẳng
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     KHOÁNG SẢN
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+        💎 Khoáng sản
+    </div>
+
+    <p class="section-subtitle">
+        Không chỉ có địa hình, trong lòng đất còn chứa nhiều loại
+        tài nguyên có giá trị đối với đời sống và sản xuất.
+    </p>
+
+
+    <div class="mineral-grid">
+
+
+        <article class="mineral-card">
+
+            <div class="mineral-icon">
+                🪨
+            </div>
+
+            <h3>
+                Khoáng sản là gì?
+            </h3>
+
+            <p>
+                Khoáng sản là những khoáng vật và đá có ích,
+                được con người khai thác và sử dụng.
+            </p>
+
+            <span class="mineral-tag">
+                Tài nguyên thiên nhiên
+            </span>
+
+        </article>
+
+
+
+        <article class="mineral-card">
+
+            <div class="mineral-icon">
+                ⛏️
+            </div>
+
+            <h3>
+                Nơi tập trung
+            </h3>
+
+            <p>
+                Khoáng sản tập trung trong các mỏ.
+                Mỗi loại khoáng sản có đặc điểm phân bố
+                và giá trị sử dụng khác nhau.
+            </p>
+
+            <span class="mineral-tag">
+                Mỏ khoáng sản
+            </span>
+
+        </article>
+
+
+
+        <article class="mineral-card">
+
+            <div class="mineral-icon">
+                🏭
+            </div>
+
+            <h3>
+                Vai trò
+            </h3>
+
+            <p>
+                Khoáng sản là nguồn nguyên liệu và nhiên liệu
+                quan trọng cho nhiều ngành kinh tế.
+            </p>
+
+            <span class="mineral-tag">
+                Sản xuất & đời sống
+            </span>
+
+        </article>
+
+    </div>
+
+
+    <div class="mineral-types">
+
+
+        <div class="type">
+
+            <div class="type-head">
+
+                <span>
+                    🔥
+                </span>
+
+                Nhiên liệu
+
+            </div>
+
+            <p>
+                Ví dụ: than, dầu mỏ, khí tự nhiên.
+                Được sử dụng làm nhiên liệu và nguyên liệu
+                cho nhiều hoạt động sản xuất.
+            </p>
+
+        </div>
+
+
+
+        <div class="type">
+
+            <div class="type-head">
+
+                <span>
+                    ⚙️
+                </span>
+
+                Kim loại
+
+            </div>
+
+            <p>
+                Ví dụ: sắt, đồng, bô-xit...
+                Có vai trò quan trọng trong công nghiệp
+                và sản xuất vật liệu.
+            </p>
+
+        </div>
+
+
+
+        <div class="type">
+
+            <div class="type-head">
+
+                <span>
+                    💎
+                </span>
+
+                Phi kim loại
+
+            </div>
+
+            <p>
+                Gồm nhiều loại khoáng sản được sử dụng
+                trong xây dựng, sản xuất vật liệu và các ngành
+                kinh tế khác.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="memory">
+
+        <div class="memory-title">
+            🧠 Em cần nhớ
+        </div>
+
+        <p>
+            Khoáng sản là tài nguyên có hạn. Vì vậy, cần khai thác
+            hợp lí, sử dụng tiết kiệm và gắn khai thác với bảo vệ
+            môi trường để hướng tới phát triển bền vững.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SƠ ĐỒ GHI NHỚ
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+        🔗 Sơ đồ ghi nhớ bài học
+    </div>
+
+    <p class="section-subtitle">
+        Hãy nhớ bài theo chuỗi từ địa hình đến tài nguyên khoáng sản.
+    </p>
+
+
+    <div class="flow">
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+                🌍
+            </div>
+
+            <strong>
+                Bề mặt Trái Đất
+            </strong>
+
+            <small>
+                Không bằng phẳng
+            </small>
+
+        </div>
+
+
+        <div class="flow-arrow">
+            →
+        </div>
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+                ⛰️
+            </div>
+
+            <strong>
+                Địa hình
+            </strong>
+
+            <small>
+                Núi · Đồi · Đồng bằng · Cao nguyên
+            </small>
+
+        </div>
+
+
+        <div class="flow-arrow">
+            →
+        </div>
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+                💎
+            </div>
+
+            <strong>
+                Khoáng sản
+            </strong>
+
+            <small>
+                Nhiên liệu · Kim loại · Phi kim loại
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     QUIZ
+========================================================= -->
+
+<section class="quiz-section">
+
+
+    <div
+        id="quizIntro"
+        class="quiz-intro">
+
+        <div class="quiz-intro-icon">
+            🧠
+        </div>
+
+        <h2>
+            Thử thách kiến thức
+        </h2>
+
+        <p>
+            Hãy kiểm tra xem em đã nắm được những kiến thức
+            quan trọng của Bài 13 chưa nhé!
+            Có <strong>10 câu hỏi</strong>, mỗi câu có
+            <strong>10 giây</strong> để trả lời.
+        </p>
+
+        <button
+            class="start-quiz"
+            onclick="startQuiz()">
+
+            🚀 Bắt đầu thử thách
+
+        </button>
+
+    </div>
+
+
+
+    <!-- QUIZ -->
+
+    <div
+        id="quizContent"
+        class="quiz-content">
+
+        <div class="quiz-top">
+
+            <div
+                id="questionNumber"
+                class="question-number">
+                Câu 1/10
+            </div>
+
+            <div
+                id="timer"
+                class="timer">
+                10
+            </div>
+
+        </div>
+
+
+        <div class="question-progress">
+
+            <div
+                id="questionProgressBar"
+                class="question-progress-bar">
+            </div>
+
+        </div>
+
+
+        <div class="question-box">
+
+            <div
+                id="questionText"
+                class="question-text">
+            </div>
+
+        </div>
+
+
+        <div
+            id="options"
+            class="options">
+        </div>
+
+
+        <div
+            id="feedback"
+            class="feedback">
+        </div>
+
+
+        <button
+            id="nextQuestion"
+            class="next-question"
+            onclick="nextQuestion()">
+
+            Câu tiếp theo →
+
+        </button>
+
+    </div>
+
+
+
+    <!-- RESULT -->
+
+    <div
+        id="quizResult"
+        class="quiz-result">
+
+        <div class="result-icon">
+            🏆
+        </div>
+
+        <div class="result-title">
+            Hoàn thành thử thách!
+        </div>
+
+        <div
+            id="resultScore"
+            class="result-score">
+            0/10
+        </div>
+
+        <div
+            id="resultMessage"
+            class="result-message">
+        </div>
+
+
+        <div class="result-actions">
+
+            <button
+                class="retry-btn"
+                onclick="startQuiz()">
+
+                🔄 Làm lại
+
+            </button>
+
+            <button
+                class="finish-btn"
+                onclick="finishLesson()">
+
+                ✅ Hoàn thành bài học
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="completed"
+        class="completed">
+
+        🎉 Em đã hoàn thành Bài 13!
+        Tiến trình học tập đã được lưu lại.
+
+    </div>
+
+</section>
+
+
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<div class="footer">
+
+    🌎 Học liệu số Địa lí 6 · Bài 13
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   CẤU HÌNH
+========================================================= */
+
+const PROGRESS_KEY =
+    'hoclieu6_progress_v1';
+
+
+/* =========================================================
+   VỀ TRANG CHỦ
+========================================================= */
+
+function goHome(){
+
+    window.location.href =
+        'index.html';
+
+}
+
+
+/* =========================================================
+   HIỂN THỊ CHI TIẾT ĐỊA HÌNH
+========================================================= */
+
+const landformData = {
+
+    mountain:{
+
+        title:'⛰️ Núi',
+
+        content:
+        '<strong>Đặc điểm:</strong> Núi là dạng địa hình nhô cao rõ rệt so với khu vực xung quanh, thường có sườn dốc. Núi có thể có nhiều dạng và độ cao khác nhau.<br><br>' +
+
+        '<strong>Ghi nhớ:</strong> Khi quan sát một khu vực địa hình, có thể dựa vào độ cao và độ dốc để nhận biết địa hình núi.'
+
+    },
+
+
+    hill:{
+
+        title:'🌄 Đồi',
+
+        content:
+        '<strong>Đặc điểm:</strong> Đồi là dạng địa hình nhô cao nhưng thường thấp hơn núi. Đỉnh đồi thường tròn hoặc thoải, sườn tương đối thoải.<br><br>' +
+
+        '<strong>Ghi nhớ:</strong> Đồi thường có hình thái mềm mại hơn núi và độ dốc nhỏ hơn.'
+
+    },
+
+
+    plain:{
+
+        title:'🌾 Đồng bằng',
+
+        content:
+        '<strong>Đặc điểm:</strong> Đồng bằng là khu vực địa hình tương đối bằng phẳng, thường có độ cao thấp so với các dạng địa hình xung quanh.<br><br>' +
+
+        '<strong>Ghi nhớ:</strong> Địa hình tương đối bằng phẳng tạo điều kiện thuận lợi cho nhiều hoạt động của con người.'
+
+    },
+
+
+    plateau:{
+
+        title:'🏞️ Cao nguyên',
+
+        content:
+        '<strong>Đặc điểm:</strong> Cao nguyên là khu vực tương đối bằng phẳng nhưng nằm ở độ cao khá lớn so với mực nước biển. Rìa cao nguyên thường có sườn dốc.<br><br>' +
+
+        '<strong>Ghi nhớ:</strong> Cao nguyên có thể hiểu đơn giản là địa hình <strong>cao nhưng tương đối bằng phẳng</strong>.'
+
+    }
+
+};
+
+
+function showLandform(type,element){
+
+    document
+        .querySelectorAll('.landform')
+        .forEach(card=>{
+            card.classList.remove('active');
+        });
+
+    element.classList.add('active');
+
+
+    const panel =
+        document.getElementById(
+            'landformDetail'
+        );
+
+    document.getElementById(
+        'detailTitle'
+    ).innerHTML =
+        landformData[type].title;
+
+    document.getElementById(
+        'detailContent'
+    ).innerHTML =
+        landformData[type].content;
+
+    panel.classList.add('show');
+
+
+    panel.scrollIntoView({
+        behavior:'smooth',
+        block:'nearest'
+    });
+
+}
+
+
+/* =========================================================
+   NGÂN HÀNG CÂU HỎI
+========================================================= */
+
+const quizData = [
+
+    {
+        question:
+            'Dạng địa hình nào thường nhô cao rõ rệt so với khu vực xung quanh và có sườn dốc?',
+
+        options:[
+            'Đồng bằng',
+            'Núi',
+            'Cao nguyên',
+            'Đồi'
+        ],
+
+        answer:1,
+
+        explanation:
+            'Núi là dạng địa hình nhô cao rõ rệt so với khu vực xung quanh và thường có sườn dốc.'
+    },
+
+
+    {
+        question:
+            'Đặc điểm nào sau đây phù hợp nhất với địa hình đồi?',
+
+        options:[
+            'Luôn có độ cao trên 2 000 m',
+            'Bề mặt hoàn toàn bằng phẳng',
+            'Nhô cao nhưng thường thấp hơn núi, sườn tương đối thoải',
+            'Có độ cao thấp và luôn nằm ven biển'
+        ],
+
+        answer:2,
+
+        explanation:
+            'Đồi thường nhô cao nhưng thấp hơn núi, đỉnh tương đối tròn và sườn thoải hơn.'
+    },
+
+
+    {
+        question:
+            'Đặc điểm nổi bật của đồng bằng là gì?',
+
+        options:[
+            'Địa hình tương đối bằng phẳng và thường có độ cao thấp',
+            'Đỉnh nhọn và sườn rất dốc',
+            'Mặt địa hình cao và luôn có vách đứng',
+            'Luôn nằm ở độ cao trên 500 m'
+        ],
+
+        answer:0,
+
+        explanation:
+            'Đồng bằng là khu vực địa hình tương đối bằng phẳng, thường có độ cao thấp so với khu vực xung quanh.'
+    },
+
+
+    {
+        question:
+            'Điểm nổi bật giúp phân biệt cao nguyên với đồng bằng là gì?',
+
+        options:[
+            'Cao nguyên luôn có nhiều núi lửa',
+            'Cao nguyên nằm ở độ cao khá lớn nhưng bề mặt tương đối bằng phẳng',
+            'Cao nguyên luôn thấp hơn đồng bằng',
+            'Cao nguyên luôn nằm sát biển'
+        ],
+
+        answer:1,
+
+        explanation:
+            'Cao nguyên có bề mặt tương đối bằng phẳng nhưng nằm ở độ cao khá lớn so với mực nước biển.'
+    },
+
+
+    {
+        question:
+            'Trong các dạng sau, đâu là bốn dạng địa hình chính được tìm hiểu trong bài?',
+
+        options:[
+            'Núi, đồi, đồng bằng, cao nguyên',
+            'Núi lửa, động đất, đồi, biển',
+            'Sông, hồ, biển, cao nguyên',
+            'Thung lũng, hang động, biển, đảo'
+        ],
+
+        answer:0,
+
+        explanation:
+            'Bốn dạng địa hình chính trong bài gồm núi, đồi, đồng bằng và cao nguyên.'
+    },
+
+
+    {
+        question:
+            'Khoáng sản được hiểu là gì?',
+
+        options:[
+            'Mọi loại đất có trong tự nhiên',
+            'Những khoáng vật và đá có ích được con người khai thác, sử dụng',
+            'Chỉ những loại đá có màu sắc đẹp',
+            'Chỉ các loại kim loại quý'
+        ],
+
+        answer:1,
+
+        explanation:
+            'Khoáng sản là những khoáng vật và đá có ích, được con người khai thác và sử dụng.'
+    },
+
+
+    {
+        question:
+            'Khoáng sản thường được tập trung và khai thác ở đâu?',
+
+        options:[
+            'Trong các mỏ',
+            'Chỉ trên đỉnh núi',
+            'Chỉ ở đồng bằng',
+            'Chỉ dưới đáy đại dương'
+        ],
+
+        answer:0,
+
+        explanation:
+            'Khoáng sản được tập trung trong các mỏ. Mỗi loại khoáng sản có đặc điểm phân bố khác nhau.'
+    },
+
+
+    {
+        question:
+            'Nhóm nào sau đây thuộc nhóm khoáng sản nhiên liệu?',
+
+        options:[
+            'Sắt, đồng, bô-xit',
+            'Đá vôi, cát, sét',
+            'Than, dầu mỏ, khí tự nhiên',
+            'Vàng, bạc, kim cương'
+        ],
+
+        answer:2,
+
+        explanation:
+            'Than, dầu mỏ và khí tự nhiên là những khoáng sản nhiên liệu.'
+    },
+
+
+    {
+        question:
+            'Vì sao cần khai thác và sử dụng khoáng sản hợp lí?',
+
+        options:[
+            'Vì khoáng sản là tài nguyên vô hạn',
+            'Vì khoáng sản không có giá trị kinh tế',
+            'Vì khoáng sản là tài nguyên có hạn và hoạt động khai thác có thể tác động đến môi trường',
+            'Vì khoáng sản chỉ dùng trong nông nghiệp'
+        ],
+
+        answer:2,
+
+        explanation:
+            'Khoáng sản là tài nguyên có hạn. Khai thác thiếu hợp lí có thể gây tác động đến môi trường, vì vậy cần sử dụng tiết kiệm và hợp lí.'
+    },
+
+
+    {
+        question:
+            'Cách làm nào sau đây thể hiện ý thức bảo vệ tài nguyên khoáng sản?',
+
+        options:[
+            'Khai thác càng nhiều càng tốt',
+            'Sử dụng tiết kiệm và khai thác gắn với bảo vệ môi trường',
+            'Khai thác không cần quan tâm đến môi trường',
+            'Chỉ sử dụng khoáng sản cho mục đích cá nhân'
+        ],
+
+        answer:1,
+
+        explanation:
+            'Cần khai thác hợp lí, sử dụng tiết kiệm và gắn hoạt động khai thác với bảo vệ môi trường.'
+    }
+
+];
+
+
+/* =========================================================
+   BIẾN QUIZ
+========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timer = 10;
+
+let timerInterval = null;
+
+let answered = false;
+
+
+/* =========================================================
+   BẮT ĐẦU QUIZ
+========================================================= */
+
+function startQuiz(){
+
+    clearInterval(timerInterval);
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    timer = 10;
+
+    answered = false;
+
+
+    document.getElementById(
+        'quizIntro'
+    ).style.display='none';
+
+
+    document.getElementById(
+        'quizResult'
+    ).style.display='none';
+
+
+    document.getElementById(
+        'completed'
+    ).style.display='none';
+
+
+    document.getElementById(
+        'quizContent'
+    ).style.display='block';
+
+
+    loadQuestion();
+
+}
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion(){
+
+    clearInterval(timerInterval);
+
+    answered=false;
+
+    const q =
+        quizData[currentQuestion];
+
+
+    document.getElementById(
+        'questionNumber'
+    ).textContent =
+        `Câu ${currentQuestion+1}/${quizData.length}`;
+
+
+    document.getElementById(
+        'questionProgressBar'
+    ).style.width =
+        `${((currentQuestion)/quizData.length)*100}%`;
+
+
+    document.getElementById(
+        'questionText'
+    ).textContent =
+        q.question;
+
+
+    const options =
+        document.getElementById(
+            'options'
+        );
+
+    options.innerHTML='';
+
+
+    q.options.forEach(
+        (option,index)=>{
+
+            const button =
+                document.createElement(
+                    'button'
+                );
+
+            button.className='option';
+
+            button.textContent =
+                String.fromCharCode(65+index)
+                + '. '
+                + option;
+
+            button.onclick=()=>{
+                chooseAnswer(index,button);
+            };
+
+            options.appendChild(button);
+
+        }
+    );
+
+
+    const feedback =
+        document.getElementById(
+            'feedback'
+        );
+
+    feedback.className='feedback';
+
+    feedback.style.display='none';
+
+    feedback.innerHTML='';
+
+
+    document.getElementById(
+        'nextQuestion'
+    ).style.display='none';
+
+
+    startTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    timer=10;
+
+    updateTimer();
+
+    timerInterval =
+        setInterval(()=>{
+
+            timer--;
+
+            updateTimer();
+
+            if(timer<=0){
+
+                clearInterval(
+                    timerInterval
+                );
+
+                if(!answered){
+
+                    timeOut();
+
+                }
+
+            }
+
+        },1000);
+
+}
+
+
+function updateTimer(){
+
+    const el =
+        document.getElementById(
+            'timer'
+        );
+
+    el.textContent=timer;
+
+    el.className='timer';
+
+
+    if(timer<=5){
+
+        el.classList.add(
+            'warning'
+        );
+
+    }
+
+    if(timer<=3){
+
+        el.classList.remove(
+            'warning'
+        );
+
+        el.classList.add(
+            'danger'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CHỌN ĐÁP ÁN
+========================================================= */
+
+function chooseAnswer(index,button){
+
+    if(answered){
+        return;
+    }
+
+    answered=true;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const q =
+        quizData[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(
+            '.option'
+        );
+
+
+    buttons.forEach(
+        (btn,i)=>{
+
+            btn.disabled=true;
+
+            if(i===q.answer){
+
+                btn.classList.add(
+                    'correct'
+                );
+
+            }
+
+        }
+    );
+
+
+    const feedback =
+        document.getElementById(
+            'feedback'
+        );
+
+
+    if(index===q.answer){
+
+        score++;
+
+        feedback.className=
+            'feedback correct';
+
+        feedback.innerHTML=
+            '✅ <strong>Chính xác!</strong><br>'
+            + q.explanation;
+
+    }else{
+
+        button.classList.add(
+            'wrong'
+        );
+
+        feedback.className=
+            'feedback wrong';
+
+        feedback.innerHTML=
+            '❌ <strong>Chưa chính xác.</strong><br>'
+            + q.explanation;
+
+    }
+
+
+    feedback.style.display='block';
+
+
+    showNextButton();
+
+}
+
+
+/* =========================================================
+   HẾT GIỜ
+========================================================= */
+
+function timeOut(){
+
+    answered=true;
+
+
+    const q =
+        quizData[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(
+            '.option'
+        );
+
+
+    buttons.forEach(
+        (btn,i)=>{
+
+            btn.disabled=true;
+
+            if(i===q.answer){
+
+                btn.classList.add(
+                    'correct'
+                );
+
+            }
+
+        }
+    );
+
+
+    const feedback =
+        document.getElementById(
+            'feedback'
+        );
+
+
+    feedback.className=
+        'feedback wrong';
+
+    feedback.innerHTML=
+        '⏰ <strong>Hết thời gian!</strong><br>'
+        + q.explanation;
+
+    feedback.style.display='block';
+
+
+    showNextButton();
+
+}
+
+
+/* =========================================================
+   NEXT BUTTON
+========================================================= */
+
+function showNextButton(){
+
+    const btn =
+        document.getElementById(
+            'nextQuestion'
+        );
+
+    btn.style.display='block';
+
+
+    if(
+        currentQuestion ===
+        quizData.length-1
+    ){
+
+        btn.textContent=
+            '🏆 Xem kết quả';
+
+    }else{
+
+        btn.textContent=
+            'Câu tiếp theo →';
+
+    }
+
+}
+
+
+function nextQuestion(){
+
+    if(
+        currentQuestion <
+        quizData.length-1
+    ){
+
+        currentQuestion++;
+
+        loadQuestion();
+
+    }else{
+
+        showResult();
+
+    }
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function showResult(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document.getElementById(
+        'quizContent'
+    ).style.display='none';
+
+
+    document.getElementById(
+        'quizResult'
+    ).style.display='block';
+
+
+    document.getElementById(
+        'resultScore'
+    ).textContent =
+        `${score}/${quizData.length}`;
+
+
+    let message='';
+
+
+    if(score>=9){
+
+        message=
+            '🌟 Xuất sắc! Em đã nắm rất chắc kiến thức về địa hình và khoáng sản.';
+
+    }else if(score>=7){
+
+        message=
+            '👏 Rất tốt! Em đã hiểu phần lớn nội dung của bài.';
+
+    }else if(score>=5){
+
+        message=
+            '💪 Khá tốt! Em hãy xem lại một số nội dung rồi thử lại nhé.';
+
+    }else{
+
+        message=
+            '📚 Em hãy xem lại phần kiến thức và thử sức thêm một lần nữa nhé!';
+
+    }
+
+
+    document.getElementById(
+        'resultMessage'
+    ).textContent =
+        message;
+
+}
+
+
+/* =========================================================
+   HOÀN THÀNH BÀI HỌC
+========================================================= */
+
+function finishLesson(){
+
+    try{
+
+        const progress =
+            JSON.parse(
+                localStorage.getItem(
+                    PROGRESS_KEY
+                ) || '{}'
+            );
+
+
+        progress.g13=true;
+
+
+        localStorage.setItem(
+            PROGRESS_KEY,
+            JSON.stringify(progress)
+        );
+
+
+        document.getElementById(
+            'completed'
+        ).style.display='block';
+
+
+        /*
+           Cuộn nhẹ xuống để HS nhìn thấy
+           thông báo hoàn thành.
+        */
+
+        document.getElementById(
+            'completed'
+        ).scrollIntoView({
+            behavior:'smooth',
+            block:'center'
+        });
+
+
+    }catch(error){
+
+        alert(
+            'Không thể lưu tiến trình. Bạn hãy thử lại nhé!'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   KHỞI TẠO
+========================================================= */
+
+(function(){
+
+    try{
+
+        const progress =
+            JSON.parse(
+                localStorage.getItem(
+                    PROGRESS_KEY
+                ) || '{}'
+            );
+
+
+        if(progress.g13){
+
+            /*
+               Không tự hiện quiz.
+               Chỉ đánh dấu trạng thái hoàn thành
+               ở giao diện khi người học đã hoàn thành.
+            */
+
+        }
+
+    }catch(error){
+
+        console.log(
+            'Không đọc được tiến trình.'
+        );
+
+    }
+
+})();
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g13");</script>
+</body>
+</html>

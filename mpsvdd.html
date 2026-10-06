@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô phỏng sinh vật dưới đại dương</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    width:100%;
+    min-height:100%;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#020b18;
+    color:#eaf7ff;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(2,12,29,.94);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(79,209,255,.18);
+    padding:13px 20px;
+}
+
+.header-inner{
+    max-width:1450px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-icon{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    background:linear-gradient(135deg,#063d68,#087fa8);
+    box-shadow:0 0 22px rgba(23,191,255,.2);
+}
+
+.logo-text h1{
+    font-size:17px;
+    line-height:1.2;
+}
+
+.logo-text p{
+    color:#82b8cf;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:#dff8ff;
+    border:1px solid rgba(91,211,255,.3);
+    background:rgba(8,38,62,.7);
+    padding:10px 15px;
+    border-radius:12px;
+    font-size:14px;
+    transition:.25s;
+}
+
+.home-btn:hover{
+    background:#0b5a7a;
+    transform:translateY(-1px);
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+    width:min(1450px,94%);
+    margin:auto;
+    padding:25px 0 45px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(79,209,255,.18);
+    border-radius:26px;
+    padding:35px;
+    background:
+        radial-gradient(circle at 80% 20%,rgba(0,183,255,.18),transparent 35%),
+        radial-gradient(circle at 10% 80%,rgba(18,74,155,.25),transparent 40%),
+        linear-gradient(145deg,#041b34,#031020 70%);
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    margin-bottom:22px;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    right:-100px;
+    top:-130px;
+    background:rgba(31,189,255,.07);
+}
+
+.hero-tag{
+    display:inline-flex;
+    padding:7px 12px;
+    border-radius:20px;
+    background:rgba(20,156,204,.14);
+    color:#72dfff;
+    border:1px solid rgba(93,219,255,.2);
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.hero h2{
+    font-size:clamp(27px,4vw,48px);
+    line-height:1.12;
+    margin-bottom:12px;
+}
+
+.hero h2 span{
+    color:#42d5ff;
+}
+
+.hero p{
+    color:#a8cbdc;
+    max-width:900px;
+    line-height:1.7;
+    font-size:15px;
+}
+
+/* =========================
+   CONTROL PANEL
+========================= */
+
+.control-panel{
+    margin-top:25px;
+    background:rgba(3,18,36,.9);
+    border:1px solid rgba(75,197,238,.17);
+    border-radius:18px;
+    padding:18px;
+}
+
+.control-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+}
+
+.control-btn{
+    border:1px solid rgba(89,213,255,.28);
+    background:#08283e;
+    color:#e6faff;
+    padding:10px 15px;
+    min-height:42px;
+    border-radius:11px;
+    cursor:pointer;
+    font-size:14px;
+    transition:.2s;
+}
+
+.control-btn:hover{
+    background:#0d5470;
+    transform:translateY(-1px);
+}
+
+.control-btn.primary{
+    background:linear-gradient(135deg,#087ca3,#075a7d);
+}
+
+.depth-box{
+    flex:1 1 320px;
+    min-width:280px;
+}
+
+.depth-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:8px;
+    color:#9fc8da;
+    font-size:13px;
+}
+
+.depth-title strong{
+    color:#63ddff;
+    font-size:16px;
+}
+
+input[type="range"]{
+    width:100%;
+    accent-color:#26c7f2;
+    cursor:pointer;
+}
+
+/* =========================
+   SIMULATION
+========================= */
+
+.sim-wrapper{
+    margin-top:22px;
+    border-radius:25px;
+    overflow:hidden;
+    border:1px solid rgba(87,211,255,.22);
+    background:#001427;
+    box-shadow:0 20px 70px rgba(0,0,0,.4);
+}
+
+.sim-topbar{
+    padding:14px 18px;
+    background:rgba(2,19,37,.96);
+    border-bottom:1px solid rgba(74,205,255,.15);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.sim-topbar-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-weight:700;
+}
+
+.live-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#35e2a4;
+    box-shadow:0 0 12px #35e2a4;
+}
+
+.sim-status{
+    color:#83b6ca;
+    font-size:13px;
+}
+
+.ocean-stage{
+    position:relative;
+    width:100%;
+    height:min(72vh,760px);
+    min-height:540px;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            to bottom,
+            #058ec0 0%,
+            #04739f 16%,
+            #035779 32%,
+            #03435f 50%,
+            #022e48 68%,
+            #011f35 84%,
+            #010f20 100%
+        );
+}
+
+#oceanCanvas{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+/* depth overlay */
+
+.depth-scale{
+    position:absolute;
+    left:18px;
+    top:0;
+    bottom:0;
+    width:100px;
+    pointer-events:none;
+    z-index:5;
+}
+
+.depth-line{
+    position:absolute;
+    left:0;
+    right:-1000px;
+    border-top:1px dashed rgba(221,247,255,.3);
+}
+
+.depth-line span{
+    position:absolute;
+    left:0;
+    top:-12px;
+    padding:3px 8px;
+    border-radius:6px;
+    background:rgba(1,16,30,.62);
+    color:#d4edf6;
+    font-size:11px;
+}
+
+.depth-200{top:28%;}
+.depth-1000{top:43%;}
+.depth-4000{top:70%;}
+.depth-6000{top:86%;}
+
+/* zone labels */
+
+.zone-labels{
+    position:absolute;
+    right:20px;
+    top:0;
+    bottom:0;
+    width:250px;
+    pointer-events:none;
+    z-index:5;
+}
+
+.zone{
+    position:absolute;
+    right:0;
+    transform:translateY(-50%);
+    text-align:right;
+}
+
+.zone strong{
+    display:block;
+    color:#e9fbff;
+    font-size:14px;
+    text-shadow:0 2px 8px rgba(0,0,0,.7);
+}
+
+.zone small{
+    color:#9dd5e5;
+    font-size:11px;
+}
+
+.zone1{top:14%;}
+.zone2{top:35%;}
+.zone3{top:55%;}
+.zone4{top:78%;}
+.zone5{top:94%;}
+
+/* current indicator */
+
+.current-label{
+    position:absolute;
+    left:50%;
+    top:16px;
+    transform:translateX(-50%);
+    padding:7px 13px;
+    background:rgba(0,22,39,.52);
+    border:1px solid rgba(180,240,255,.14);
+    border-radius:20px;
+    color:#c6eff9;
+    font-size:12px;
+    z-index:7;
+    pointer-events:none;
+}
+
+/* info panel */
+
+.info-panel{
+    position:absolute;
+    z-index:20;
+    left:22px;
+    bottom:22px;
+    width:min(350px,calc(100% - 44px));
+    padding:18px;
+    border-radius:18px;
+    background:rgba(1,15,29,.9);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(93,214,255,.25);
+    box-shadow:0 15px 40px rgba(0,0,0,.38);
+    opacity:0;
+    transform:translateY(12px);
+    pointer-events:none;
+    transition:.25s;
+}
+
+.info-panel.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.info-icon{
+    width:52px;
+    height:52px;
+    border-radius:15px;
+    background:rgba(29,161,204,.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.info-panel h3{
+    font-size:20px;
+    margin-bottom:6px;
+}
+
+.info-panel .latin{
+    color:#63d8f6;
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+.info-panel p{
+    color:#b5d2df;
+    line-height:1.55;
+    font-size:13px;
+}
+
+.info-depth{
+    margin-top:12px;
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:7px;
+    background:rgba(50,176,216,.12);
+    color:#79dcf6;
+    font-size:11px;
+}
+
+/* selected hint */
+
+.click-hint{
+    position:absolute;
+    right:22px;
+    bottom:22px;
+    z-index:10;
+    padding:10px 13px;
+    border-radius:12px;
+    background:rgba(0,14,27,.58);
+    border:1px solid rgba(151,229,249,.13);
+    color:#a7cbd8;
+    font-size:12px;
+}
+
+/* =========================
+   LEGEND
+========================= */
+
+.legend{
+    padding:18px;
+    background:#03172a;
+    border-top:1px solid rgba(80,201,239,.13);
+}
+
+.legend-title{
+    font-weight:700;
+    margin-bottom:12px;
+    color:#d8f5ff;
+}
+
+.legend-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:9px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 10px;
+    border-radius:9px;
+    background:rgba(255,255,255,.025);
+    color:#a9c7d3;
+    font-size:11px;
+}
+
+.legend-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#55d8f7;
+    box-shadow:0 0 7px rgba(85,216,247,.5);
+}
+
+/* =========================
+   EXPLANATION
+========================= */
+
+.explanation{
+    margin-top:22px;
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:18px;
+}
+
+.ex-card{
+    background:linear-gradient(145deg,#061e34,#031221);
+    border:1px solid rgba(85,205,241,.14);
+    border-radius:19px;
+    padding:22px;
+}
+
+.ex-card h3{
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+.ex-card p{
+    color:#aac8d7;
+    line-height:1.65;
+    font-size:14px;
+}
+
+.ex-card ul{
+    margin:12px 0 0 20px;
+    color:#aac8d7;
+    line-height:1.8;
+    font-size:14px;
+}
+
+.highlight{
+    color:#59d9fa;
+    font-weight:600;
+}
+
+/* =========================
+   BACK
+========================= */
+
+.back-section{
+    margin-top:22px;
+    text-align:center;
+}
+
+.back-btn{
+    display:inline-flex;
+    text-decoration:none;
+    color:#dff9ff;
+    background:linear-gradient(135deg,#075779,#06405b);
+    border:1px solid rgba(96,220,255,.25);
+    padding:12px 20px;
+    border-radius:12px;
+    font-size:14px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .ocean-stage{
+        height:650px;
+        min-height:500px;
+    }
+
+    .zone-labels{
+        width:180px;
+    }
+
+    .zone strong{
+        font-size:11px;
+    }
+
+    .legend-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .explanation{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:620px){
+
+    .page{
+        width:96%;
+    }
+
+    .hero{
+        padding:24px 18px;
+        border-radius:20px;
+    }
+
+    .header{
+        padding:10px 12px;
+    }
+
+    .logo-text h1{
+        font-size:14px;
+    }
+
+    .logo-text p{
+        display:none;
+    }
+
+    .home-btn{
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    .ocean-stage{
+        height:620px;
+    }
+
+    .depth-scale{
+        left:8px;
+    }
+
+    .zone-labels{
+        right:10px;
+        width:145px;
+    }
+
+    .zone strong{
+        font-size:10px;
+    }
+
+    .zone small{
+        display:none;
+    }
+
+    .click-hint{
+        display:none;
+    }
+
+    .info-panel{
+        left:10px;
+        bottom:10px;
+        width:calc(100% - 20px);
+    }
+
+    .legend-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-inner">
+
+        <div class="logo">
+            <div class="logo-icon">🌊</div>
+
+            <div class="logo-text">
+                <h1>HỌC LIỆU SỐ LỊCH SỬ & ĐỊA LÍ 6</h1>
+                <p>Mô phỏng tương tác • Bài 23</p>
+            </div>
+        </div>
+
+        <a href="g23.html" class="home-btn">
+            ← Quay lại Bài 23
+        </a>
+
+    </div>
+</header>
+
+
+<main class="page">
+
+    <section class="hero">
+
+        <div class="hero-tag">
+            🌊 ĐỊA LÍ 6 • BÀI 23
+        </div>
+
+        <h2>
+            Sự đa dạng của sinh vật
+            <span>dưới đại dương</span>
+        </h2>
+
+        <p>
+            Khám phá sự phân bố của các loài sinh vật theo độ sâu của đại dương.
+            Hãy kéo thanh độ sâu, quan sát chuyển động của dòng nước và
+            <strong>nhấp vào từng sinh vật</strong> để tìm hiểu thêm.
+        </p>
+
+        <div class="control-panel">
+
+            <div class="control-row">
+
+                <button class="control-btn primary" id="autoBtn">
+                    ▶ Tự động khám phá
+                </button>
+
+                <button class="control-btn" id="pauseBtn">
+                    ⏸ Tạm dừng
+                </button>
+
+                <button class="control-btn" id="resetBtn">
+                    ↺ Đặt lại
+                </button>
+
+                <div class="depth-box">
+
+                    <div class="depth-title">
+                        <span>Khám phá độ sâu</span>
+                        <strong id="depthValue">0 m</strong>
+                    </div>
+
+                    <input
+                        type="range"
+                        id="depthSlider"
+                        min="0"
+                        max="6000"
+                        value="0"
+                        step="10"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SIMULATION
+    ========================== -->
+
+    <section class="sim-wrapper">
+
+        <div class="sim-topbar">
+
+            <div class="sim-topbar-title">
+                <span class="live-dot"></span>
+                MÔ PHỎNG HỆ SINH THÁI ĐẠI DƯƠNG
+            </div>
+
+            <div class="sim-status" id="statusText">
+                Hãy bấm vào một sinh vật để khám phá
+            </div>
+
+        </div>
+
+
+        <div class="ocean-stage">
+
+            <canvas id="oceanCanvas"></canvas>
+
+
+            <div class="current-label">
+                🌊 Dòng nước đang chuyển động →
+            </div>
+
+
+            <!-- ĐƯỜNG ĐỘ SÂU -->
+
+            <div class="depth-scale">
+
+                <div class="depth-line depth-200">
+                    <span>200 m</span>
+                </div>
+
+                <div class="depth-line depth-1000">
+                    <span>1 000 m</span>
+                </div>
+
+                <div class="depth-line depth-4000">
+                    <span>4 000 m</span>
+                </div>
+
+                <div class="depth-line depth-6000">
+                    <span>6 000 m</span>
+                </div>
+
+            </div>
+
+
+            <!-- TÊN VÙNG BIỂN -->
+
+            <div class="zone-labels">
+
+                <div class="zone zone1">
+                    <strong>VÙNG BIỂN KHƠI MẶT</strong>
+                    <small>Ánh sáng nhiều</small>
+                </div>
+
+                <div class="zone zone2">
+                    <strong>VÙNG BIỂN KHƠI TRUNG</strong>
+                    <small>Ánh sáng giảm</small>
+                </div>
+
+                <div class="zone zone3">
+                    <strong>VÙNG BIỂN KHƠI SÂU</strong>
+                    <small>Rất ít ánh sáng</small>
+                </div>
+
+                <div class="zone zone4">
+                    <strong>VÙNG BIỂN KHƠI SÂU THẲM</strong>
+                    <small>Tối và lạnh</small>
+                </div>
+
+                <div class="zone zone5">
+                    <strong>VÙNG ĐÁY VỰC THẲM</strong>
+                    <small>Áp suất rất lớn</small>
+                </div>
+
+            </div>
+
+
+            <!-- INFO -->
+
+            <div class="info-panel" id="infoPanel">
+
+                <div class="info-icon" id="infoIcon">🐟</div>
+
+                <h3 id="infoName">Cá ngừ</h3>
+
+                <div class="latin" id="infoLatin">
+                    Sinh vật vùng biển khơi mặt
+                </div>
+
+                <p id="infoDescription">
+                    Bấm vào sinh vật để xem thông tin.
+                </p>
+
+                <span class="info-depth" id="infoDepth">
+                    Độ sâu: 0–200 m
+                </span>
+
+            </div>
+
+
+            <div class="click-hint">
+                🖱️ Bấm vào sinh vật để xem thông tin
+            </div>
+
+        </div>
+
+
+        <!-- LEGEND -->
+
+        <div class="legend">
+
+            <div class="legend-title">
+                📚 Các nhóm sinh vật trong mô phỏng
+            </div>
+
+            <div class="legend-grid">
+
+                <div class="legend-item">
+                    <span class="legend-dot"></span>
+                    Sinh vật vùng mặt
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot"></span>
+                    Sinh vật tầng trung
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot"></span>
+                    Sinh vật tầng sâu
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot"></span>
+                    Sinh vật vực thẳm
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot"></span>
+                    Sinh vật đáy biển
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         GIẢI THÍCH
+    ========================== -->
+
+    <section class="explanation">
+
+        <div class="ex-card">
+
+            <h3>🔎 Vì sao sinh vật thay đổi theo độ sâu?</h3>
+
+            <p>
+                Ở các vĩ độ và độ sâu khác nhau, sinh vật chịu ảnh hưởng
+                của nhiều điều kiện môi trường khác nhau như
+                <span class="highlight">nhiệt độ, độ muối, áp suất,
+                ánh sáng và nồng độ ô-xi</span>.
+                Vì vậy, các loài sinh vật phân bố rất đa dạng trong đại dương.
+            </p>
+
+        </div>
+
+
+        <div class="ex-card">
+
+            <h3>🧠 Em hãy quan sát</h3>
+
+            <ul>
+                <li>Ở tầng nước nào có nhiều ánh sáng?</li>
+                <li>Càng xuống sâu, ánh sáng thay đổi như thế nào?</li>
+                <li>Sinh vật ở vùng biển sâu có đặc điểm gì đáng chú ý?</li>
+                <li>Vì sao mỗi tầng đại dương lại có các loài sinh vật khác nhau?</li>
+            </ul>
+
+        </div>
+
+    </section>
+
+
+    <div class="back-section">
+
+        <a href="g23.html" class="back-btn">
+            ← Quay lại nội dung Bài 23
+        </a>
+
+    </div>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+const canvas = document.getElementById("oceanCanvas");
+const ctx = canvas.getContext("2d");
+
+let W = 1000;
+let H = 650;
+
+function resizeCanvas(){
+
+    const rect = canvas.getBoundingClientRect();
+
+    W = Math.max(600, rect.width);
+    H = Math.max(500, rect.height);
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+window.addEventListener("resize",resizeCanvas);
+resizeCanvas();
+
+
+/* =========================================================
+   DATA SINH VẬT
+========================================================= */
+
+const creatures = [
+
+    {
+        id:"coral",
+        name:"San hô",
+        icon:"🪸",
+        x:.10,
+        depth:80,
+        size:34,
+        speed:0,
+        zone:"Vùng biển khơi mặt",
+        depthText:"Gần bề mặt",
+        description:
+        "San hô sống chủ yếu ở vùng biển nông, nơi có ánh sáng. Các rạn san hô tạo thành môi trường sống cho rất nhiều loài sinh vật biển."
+    },
+
+    {
+        id:"shrimp",
+        name:"Tôm",
+        icon:"🦐",
+        x:.27,
+        depth:110,
+        size:30,
+        speed:.7,
+        zone:"Vùng biển khơi mặt",
+        depthText:"Khoảng 0–200 m",
+        description:
+        "Tôm là nhóm động vật giáp xác phân bố rộng trong môi trường biển. Chúng có thể sống ở nhiều tầng nước khác nhau."
+    },
+
+    {
+        id:"tuna",
+        name:"Cá ngừ",
+        icon:"🐟",
+        x:.47,
+        depth:100,
+        size:42,
+        speed:1.2,
+        zone:"Vùng biển khơi mặt",
+        depthText:"Khoảng 0–200 m",
+        description:
+        "Cá ngừ là loài cá biển có khả năng bơi nhanh. Trong mô phỏng, cá ngừ đại diện cho sinh vật sống ở vùng biển khơi mặt."
+    },
+
+    {
+        id:"jellyfish",
+        name:"Sứa",
+        icon:"🪼",
+        x:.61,
+        depth:130,
+        size:35,
+        speed:.35,
+        zone:"Vùng biển khơi mặt",
+        depthText:"Khoảng 0–200 m",
+        description:
+        "Sứa có cơ thể mềm và thường trôi theo dòng nước. Chúng có thể xuất hiện ở các tầng nước gần bề mặt."
+    },
+
+    {
+        id:"turtle",
+        name:"Rùa biển",
+        icon:"🐢",
+        x:.79,
+        depth:90,
+        size:42,
+        speed:.55,
+        zone:"Vùng biển khơi mặt",
+        depthText:"Khoảng 0–200 m",
+        description:
+        "Rùa biển là động vật bò sát thích nghi với môi trường biển. Chúng thường di chuyển trong các vùng nước có điều kiện thuận lợi."
+    },
+
+    {
+        id:"crab",
+        name:"Cua",
+        icon:"🦀",
+        x:.18,
+        depth:560,
+        size:32,
+        speed:.25,
+        zone:"Vùng biển khơi trung",
+        depthText:"Khoảng 200–1 000 m",
+        description:
+        "Cua là động vật giáp xác. Một số loài có thể sống ở vùng nước sâu và thích nghi với điều kiện ánh sáng yếu."
+    },
+
+    {
+        id:"shark",
+        name:"Cá mập",
+        icon:"🦈",
+        x:.43,
+        depth:650,
+        size:55,
+        speed:1.0,
+        zone:"Vùng biển khơi trung",
+        depthText:"Khoảng 200–1 000 m",
+        description:
+        "Cá mập là nhóm cá biển có cơ thể thích nghi với việc bơi lội. Nhiều loài có thể di chuyển qua các tầng nước khác nhau."
+    },
+
+    {
+        id:"squid",
+        name:"Mực",
+        icon:"🦑",
+        x:.72,
+        depth:650,
+        size:38,
+        speed:.75,
+        zone:"Vùng biển khơi trung",
+        depthText:"Khoảng 200–1 000 m",
+        description:
+        "Mực là động vật thân mềm. Chúng có xúc tu và khả năng di chuyển bằng cách phụt nước."
+    },
+
+    {
+        id:"starfish",
+        name:"Sao biển",
+        icon:"⭐",
+        x:.30,
+        depth:2100,
+        size:38,
+        speed:.05,
+        zone:"Vùng biển khơi sâu",
+        depthText:"Khoảng 1 000–4 000 m",
+        description:
+        "Sao biển là động vật da gai. Trong hình minh họa của SGK, sao biển được đặt ở vùng biển khơi sâu."
+    },
+
+    {
+        id:"octopus",
+        name:"Bạch tuộc",
+        icon:"🐙",
+        x:.52,
+        depth:2200,
+        size:48,
+        speed:.18,
+        zone:"Vùng biển khơi sâu",
+        depthText:"Khoảng 1 000–4 000 m",
+        description:
+        "Bạch tuộc là động vật thân mềm có tám xúc tu. Cơ thể mềm giúp chúng thích nghi với môi trường sống dưới nước."
+    },
+
+    {
+        id:"angler",
+        name:"Cá cần câu",
+        icon:"🐟",
+        x:.34,
+        depth:4700,
+        size:43,
+        speed:.18,
+        zone:"Vùng biển khơi sâu thẳm",
+        depthText:"Khoảng 4 000–6 000 m",
+        description:
+        "Cá cần câu là nhóm cá biển sâu nổi bật với bộ phận phát sáng ở phía trước đầu, giúp thu hút con mồi trong môi trường tối."
+    },
+
+    {
+        id:"ghostsquid",
+        name:"Mực ma",
+        icon:"🦑",
+        x:.62,
+        depth:4800,
+        size:42,
+        speed:.14,
+        zone:"Vùng biển khơi sâu thẳm",
+        depthText:"Khoảng 4 000–6 000 m",
+        description:
+        "Mực ma được minh họa trong vùng biển sâu thẳm. Các sinh vật ở tầng nước này phải thích nghi với điều kiện ánh sáng rất yếu và áp suất lớn."
+    },
+
+    {
+        id:"anemone",
+        name:"Hải quỳ",
+        icon:"🌸",
+        x:.22,
+        depth:5900,
+        size:45,
+        speed:.04,
+        zone:"Vùng đáy vực thẳm",
+        depthText:"Dưới khoảng 6 000 m",
+        description:
+        "Hải quỳ là động vật thuộc ngành ruột khoang. Trong hình SGK, hải quỳ được minh họa ở vùng đáy vực thẳm."
+    },
+
+    {
+        id:"seagrass",
+        name:"Cỏ biển",
+        icon:"🌿",
+        x:.06,
+        depth:150,
+        size:42,
+        speed:.02,
+        zone:"Vùng biển khơi mặt",
+        depthText:"Vùng biển nông",
+        description:
+        "Cỏ biển là nhóm thực vật sống dưới nước, thường phát triển ở vùng biển nông, nơi ánh sáng có thể xuyên xuống."
+    }
+
+];
+
+
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+const waterParticles = [];
+const bubbles = [];
+const plankton = [];
+
+for(let i=0;i<80;i++){
+
+    waterParticles.push({
+        x:Math.random(),
+        y:Math.random(),
+        speed:.00015 + Math.random()*.00035,
+        len:8+Math.random()*20,
+        alpha:.04+Math.random()*.08
+    });
+
+}
+
+for(let i=0;i<45;i++){
+
+    bubbles.push({
+        x:Math.random(),
+        y:.45+Math.random()*.55,
+        size:1+Math.random()*5,
+        speed:.0003+Math.random()*.0007,
+        alpha:.1+Math.random()*.25
+    });
+
+}
+
+for(let i=0;i<55;i++){
+
+    plankton.push({
+        x:Math.random(),
+        y:Math.random(),
+        size:1+Math.random()*2,
+        speed:.0001+Math.random()*.0003
+    });
+
+}
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let time = 0;
+let paused = false;
+let autoMode = false;
+let selectedCreature = null;
+let focusDepth = 0;
+
+const depthSlider = document.getElementById("depthSlider");
+const depthValue = document.getElementById("depthValue");
+const autoBtn = document.getElementById("autoBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resetBtn = document.getElementById("resetBtn");
+const statusText = document.getElementById("statusText");
+
+const infoPanel = document.getElementById("infoPanel");
+const infoIcon = document.getElementById("infoIcon");
+const infoName = document.getElementById("infoName");
+const infoLatin = document.getElementById("infoLatin");
+const infoDescription = document.getElementById("infoDescription");
+const infoDepth = document.getElementById("infoDepth");
+
+
+/* =========================================================
+   DEPTH
+========================================================= */
+
+function depthToY(depth){
+
+    /*
+       0m       -> 8%
+       6000m    -> 97%
+    */
+
+    const minY = H*.07;
+    const maxY = H*.95;
+
+    return minY + (depth/6000)*(maxY-minY);
+}
+
+
+function getZone(depth){
+
+    if(depth <= 200)
+        return "Vùng biển khơi mặt";
+
+    if(depth <= 1000)
+        return "Vùng biển khơi trung";
+
+    if(depth <= 4000)
+        return "Vùng biển khơi sâu";
+
+    if(depth <= 6000)
+        return "Vùng biển khơi sâu thẳm";
+
+    return "Vùng đáy vực thẳm";
+}
+
+
+/* =========================================================
+   DRAW BACKGROUND
+========================================================= */
+
+function drawBackground(){
+
+    /*
+       Ánh sáng giảm dần theo độ sâu
+    */
+
+    const gradient = ctx.createLinearGradient(0,0,0,H);
+
+    gradient.addColorStop(0,"rgba(15,197,244,.08)");
+    gradient.addColorStop(.22,"rgba(3,128,175,.02)");
+    gradient.addColorStop(.5,"rgba(0,30,58,.05)");
+    gradient.addColorStop(1,"rgba(0,0,0,.42)");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0,0,W,H);
+
+
+    /* tia sáng ở mặt biển */
+
+    if(focusDepth < 1200){
+
+        ctx.save();
+
+        ctx.globalAlpha=.09;
+
+        for(let i=0;i<9;i++){
+
+            const x=i*W/8;
+
+            ctx.beginPath();
+            ctx.moveTo(x,0);
+            ctx.lineTo(x+W*.12,H*.38);
+            ctx.lineTo(x+W*.18,H*.38);
+            ctx.lineTo(x+W*.04,0);
+            ctx.closePath();
+
+            ctx.fillStyle="#d5faff";
+            ctx.fill();
+
+        }
+
+        ctx.restore();
+    }
+
+
+    /* đáy */
+
+    ctx.save();
+
+    const bottomY=H*.88;
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,bottomY);
+
+    for(let x=0;x<=W;x+=30){
+
+        const y=
+            bottomY+
+            Math.sin(x*.018)*13+
+            Math.sin(x*.045)*8+
+            Math.random()*0;
+
+        ctx.lineTo(x,y);
+    }
+
+    ctx.lineTo(W,H);
+    ctx.lineTo(0,H);
+    ctx.closePath();
+
+    const floorGrad=ctx.createLinearGradient(0,bottomY,0,H);
+
+    floorGrad.addColorStop(0,"#071a2c");
+    floorGrad.addColorStop(1,"#010812");
+
+    ctx.fillStyle=floorGrad;
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   WATER CURRENT
+========================================================= */
+
+function drawCurrent(){
+
+    ctx.save();
+
+    for(let i=0;i<waterParticles.length;i++){
+
+        const p=waterParticles[i];
+
+        if(!paused){
+
+            p.x += p.speed;
+
+            if(p.x>1.1)
+                p.x=-.1;
+        }
+
+        const x=p.x*W;
+        const y=p.y*H;
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,y);
+
+        ctx.lineTo(
+            x+p.len,
+            y+Math.sin(time*.001+i)*1.5
+        );
+
+        ctx.strokeStyle=
+            `rgba(172,235,250,${p.alpha})`;
+
+        ctx.lineWidth=1;
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   BUBBLES
+========================================================= */
+
+function drawBubbles(){
+
+    ctx.save();
+
+    bubbles.forEach((b,i)=>{
+
+        if(!paused){
+
+            b.y -= b.speed;
+
+            if(b.y<.05){
+
+                b.y=.98;
+                b.x=Math.random();
+            }
+        }
+
+        const x=b.x*W;
+        const y=b.y*H;
+
+        ctx.beginPath();
+        ctx.arc(x,y,b.size,0,Math.PI*2);
+
+        ctx.strokeStyle=
+            `rgba(177,238,250,${b.alpha})`;
+
+        ctx.lineWidth=1;
+
+        ctx.stroke();
+
+    });
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   PLANKTON
+========================================================= */
+
+function drawPlankton(){
+
+    ctx.save();
+
+    plankton.forEach(p=>{
+
+        if(!paused){
+
+            p.x += p.speed;
+
+            if(p.x>1)
+                p.x=0;
+        }
+
+        const x=p.x*W;
+        const y=p.y*H;
+
+        ctx.beginPath();
+
+        ctx.arc(x,y,p.size,0,Math.PI*2);
+
+        ctx.fillStyle="rgba(137,232,245,.3)";
+        ctx.fill();
+
+    });
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   CREATURE POSITION
+========================================================= */
+
+function getCreaturePosition(c,index){
+
+    let baseX=c.x*W;
+
+    /*
+       Sinh vật chuyển động ngang nhẹ
+    */
+
+    let movement=
+        Math.sin(time*.001*c.speed + index)*18;
+
+    if(c.speed===0)
+        movement=0;
+
+    let y=depthToY(c.depth);
+
+    /*
+       tránh để các sinh vật nằm sát nhau
+    */
+
+    if(c.id==="seagrass"){
+        y=depthToY(170);
+    }
+
+    return {
+        x:baseX+movement,
+        y:y
+    };
+}
+
+
+/* =========================================================
+   DRAW CREATURE
+========================================================= */
+
+function drawCreature(c,index){
+
+    const pos=getCreaturePosition(c,index);
+
+    const x=pos.x;
+    const y=pos.y;
+
+    let size=c.size;
+
+    /*
+       Khi kéo thanh độ sâu tới gần sinh vật
+       sinh vật được làm nổi bật
+    */
+
+    const difference=Math.abs(focusDepth-c.depth);
+
+    const focused=difference<450;
+
+    if(focused)
+        size*=1.13;
+
+    ctx.save();
+
+    /*
+       vùng click
+    */
+
+    c.renderX=x;
+    c.renderY=y;
+    c.renderSize=size;
+
+
+    /*
+       hiệu ứng phát sáng khi được chọn
+    */
+
+    if(selectedCreature===c){
+
+        ctx.beginPath();
+
+        ctx.arc(x,y,size*1.35,0,Math.PI*2);
+
+        ctx.fillStyle="rgba(78,225,255,.12)";
+        ctx.fill();
+
+        ctx.strokeStyle="rgba(109,237,255,.8)";
+        ctx.lineWidth=2;
+
+        ctx.stroke();
+
+    }
+
+
+    /*
+       Bóng nhẹ
+    */
+
+    ctx.shadowColor=
+        focused || selectedCreature===c
+        ? "rgba(70,225,255,.55)"
+        : "rgba(0,0,0,.3)";
+
+    ctx.shadowBlur=
+        focused || selectedCreature===c
+        ? 15
+        : 5;
+
+
+    /*
+       Emoji
+    */
+
+    ctx.font=`${size}px "Segoe UI Emoji","Apple Color Emoji",sans-serif`;
+
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+
+    /*
+       một số loài chuyển động lên xuống
+    */
+
+    let bob=0;
+
+    if(c.speed>0){
+
+        bob=
+            Math.sin(time*.002*c.speed+index)*5;
+
+    }
+
+    ctx.fillText(c.icon,x,y+bob);
+
+    ctx.restore();
+
+
+    /*
+       tên khi được focus
+    */
+
+    if(focused || selectedCreature===c){
+
+        ctx.save();
+
+        const label=
+            c.name;
+
+        ctx.font="600 12px Segoe UI";
+
+        const textWidth=
+            ctx.measureText(label).width;
+
+        const lx=x;
+        const ly=y-size*.7-15;
+
+        ctx.fillStyle="rgba(0,13,25,.78)";
+
+        ctx.beginPath();
+
+        const pad=7;
+
+        const left=lx-textWidth/2-pad;
+        const top=ly-11;
+
+        ctx.roundRect(
+            left,
+            top,
+            textWidth+pad*2,
+            21,
+            7
+        );
+
+        ctx.fill();
+
+        ctx.fillStyle="#e7faff";
+
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";
+
+        ctx.fillText(label,lx,ly);
+
+        ctx.restore();
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW ZONE HIGHLIGHT
+========================================================= */
+
+function drawDepthHighlight(){
+
+    const y=depthToY(focusDepth);
+
+    ctx.save();
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,y);
+    ctx.lineTo(W,y);
+
+    ctx.strokeStyle="rgba(116,236,255,.55)";
+    ctx.lineWidth=2;
+
+    ctx.setLineDash([8,8]);
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DRAW SEABED LIFE
+========================================================= */
+
+function drawSeaFloorDetails(){
+
+    const base=H*.9;
+
+    ctx.save();
+
+    for(let i=0;i<20;i++){
+
+        const x=
+            (i/20)*W+
+            Math.sin(i*4)*8;
+
+        const h=
+            5+
+            (i%5)*4;
+
+        ctx.strokeStyle="rgba(65,99,114,.35)";
+        ctx.lineWidth=2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,base);
+
+        ctx.lineTo(
+            x+Math.sin(i)*7,
+            base-h
+        );
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   MAIN DRAW
+========================================================= */
+
+function draw(){
+
+    ctx.clearRect(0,0,W,H);
+
+    drawBackground();
+
+    drawCurrent();
+
+    drawBubbles();
+
+    drawPlankton();
+
+    drawSeaFloorDetails();
+
+    drawDepthHighlight();
+
+    creatures.forEach((c,i)=>{
+        drawCreature(c,i);
+    });
+
+    /*
+       animation time
+    */
+
+    if(!paused){
+
+        time+=16;
+
+        if(autoMode){
+
+            let value=
+                Number(depthSlider.value);
+
+            value+=5;
+
+            if(value>6000){
+
+                value=0;
+            }
+
+            depthSlider.value=value;
+
+            updateDepth(value);
+        }
+
+    }
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+
+/* =========================================================
+   UPDATE DEPTH
+========================================================= */
+
+function updateDepth(value){
+
+    focusDepth=Number(value);
+
+    if(focusDepth<1000){
+
+        depthValue.textContent=
+            `${Math.round(focusDepth)} m`;
+
+    }else{
+
+        depthValue.textContent=
+            `${Math.round(focusDepth).toLocaleString("vi-VN")} m`;
+
+    }
+
+    statusText.textContent=
+        getZone(focusDepth);
+
+}
+
+depthSlider.addEventListener("input",()=>{
+
+    updateDepth(depthSlider.value);
+
+});
+
+
+/* =========================================================
+   CLICK CREATURE
+========================================================= */
+
+canvas.addEventListener("click",(event)=>{
+
+    const rect=
+        canvas.getBoundingClientRect();
+
+    const scaleX=W/rect.width;
+    const scaleY=H/rect.height;
+
+    const mouseX=
+        (event.clientX-rect.left)*scaleX;
+
+    const mouseY=
+        (event.clientY-rect.top)*scaleY;
+
+
+    let found=null;
+
+    /*
+       tìm sinh vật gần vị trí click nhất
+    */
+
+    for(let i=creatures.length-1;i>=0;i--){
+
+        const c=creatures[i];
+
+        if(c.renderX===undefined)
+            continue;
+
+        const dx=
+            mouseX-c.renderX;
+
+        const dy=
+            mouseY-c.renderY;
+
+        const distance=
+            Math.sqrt(dx*dx+dy*dy);
+
+        const hit=
+            Math.max(25,c.renderSize*.8);
+
+        if(distance<hit){
+
+            found=c;
+            break;
+        }
+    }
+
+
+    if(found){
+
+        selectedCreature=found;
+
+        showCreatureInfo(found);
+
+    }
+
+});
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+function showCreatureInfo(c){
+
+    infoPanel.classList.add("show");
+
+    infoIcon.textContent=c.icon;
+
+    infoName.textContent=c.name;
+
+    infoLatin.textContent=
+        c.zone;
+
+    infoDescription.textContent=
+        c.description;
+
+    infoDepth.textContent=
+        "📍 " + c.depthText;
+
+    statusText.textContent=
+        "Đang khám phá: " + c.name;
+
+}
+
+
+/* =========================================================
+   AUTO MODE
+========================================================= */
+
+autoBtn.addEventListener("click",()=>{
+
+    autoMode=!autoMode;
+
+    if(autoMode){
+
+        autoBtn.textContent=
+            "⏹ Dừng tự động";
+
+        autoBtn.classList.add("primary");
+
+        paused=false;
+
+        pauseBtn.textContent=
+            "⏸ Tạm dừng";
+
+        statusText.textContent=
+            "Đang tự động khám phá các tầng đại dương";
+
+    }else{
+
+        autoBtn.textContent=
+            "▶ Tự động khám phá";
+
+        statusText.textContent=
+            getZone(focusDepth);
+
+    }
+
+});
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+pauseBtn.addEventListener("click",()=>{
+
+    paused=!paused;
+
+    if(paused){
+
+        pauseBtn.textContent=
+            "▶ Tiếp tục";
+
+        statusText.textContent=
+            "Mô phỏng đang tạm dừng";
+
+    }else{
+
+        pauseBtn.textContent=
+            "⏸ Tạm dừng";
+
+        statusText.textContent=
+            getZone(focusDepth);
+
+    }
+
+});
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+resetBtn.addEventListener("click",()=>{
+
+    paused=false;
+    autoMode=false;
+    selectedCreature=null;
+
+    depthSlider.value=0;
+
+    updateDepth(0);
+
+    autoBtn.textContent=
+        "▶ Tự động khám phá";
+
+    pauseBtn.textContent=
+        "⏸ Tạm dừng";
+
+    infoPanel.classList.remove("show");
+
+    statusText.textContent=
+        "Hãy bấm vào một sinh vật để khám phá";
+
+});
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key===" "){
+
+        e.preventDefault();
+
+        paused=!paused;
+
+        pauseBtn.textContent=
+            paused
+            ? "▶ Tiếp tục"
+            : "⏸ Tạm dừng";
+
+    }
+
+    if(e.key==="Escape"){
+
+        selectedCreature=null;
+
+        infoPanel.classList.remove("show");
+
+    }
+
+});
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateDepth(0);
+
+</script>
+
+</body>
+</html>

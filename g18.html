@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 18 - Thực hành: Phân tích biểu đồ nhiệt độ, lượng mưa</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#071525;
+    --bg2:#0b1d32;
+    --card:#10263e;
+    --card2:#132d48;
+    --line:#24435f;
+    --text:#eaf4ff;
+    --muted:#9db4ca;
+    --blue:#42a5ff;
+    --cyan:#38d9ff;
+    --green:#38d39f;
+    --yellow:#ffd166;
+    --red:#ff7188;
+    --purple:#a98cff;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(56,217,255,.08), transparent 30%),
+        radial-gradient(circle at 90% 15%, rgba(66,165,255,.07), transparent 28%),
+        linear-gradient(145deg,#061321,#091b2d 50%,#071525);
+    color:var(--text);
+    line-height:1.65;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.container{
+    width:min(1180px,92%);
+    margin:auto;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter:blur(15px);
+    background:rgba(5,17,30,.9);
+    border-bottom:1px solid rgba(100,170,220,.16);
+}
+
+.nav{
+    min-height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:800;
+    font-size:18px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#1675c8,#1ebbd7);
+    box-shadow:0 8px 25px rgba(24,156,220,.2);
+}
+
+.home-btn{
+    border:1px solid #2d5372;
+    background:#10263c;
+    padding:10px 17px;
+    border-radius:12px;
+    color:#dff3ff;
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#173653;
+    transform:translateY(-1px);
+}
+
+.hero{
+    padding:55px 0 35px;
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:25px;
+    align-items:stretch;
+}
+
+.hero-main{
+    padding:34px;
+    border:1px solid #1f425f;
+    border-radius:25px;
+    background:
+        linear-gradient(145deg,rgba(22,65,98,.55),rgba(9,29,49,.85));
+    box-shadow:0 20px 55px rgba(0,0,0,.25);
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 12px;
+    border-radius:999px;
+    background:rgba(56,217,255,.1);
+    border:1px solid rgba(56,217,255,.25);
+    color:#8ceaff;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:17px;
+}
+
+h1{
+    font-size:clamp(28px,4vw,48px);
+    line-height:1.15;
+    margin-bottom:15px;
+}
+
+.hero-main p{
+    color:var(--muted);
+    max-width:780px;
+}
+
+.hero-side{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px;
+}
+
+.stat{
+    padding:22px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:rgba(13,35,57,.85);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.stat-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.stat strong{
+    font-size:25px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+section{
+    padding:25px 0;
+}
+
+.section-title{
+    margin-bottom:18px;
+}
+
+.section-title h2{
+    font-size:27px;
+    margin-bottom:5px;
+}
+
+.section-title p{
+    color:var(--muted);
+}
+
+.objectives{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.objective{
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:var(--card);
+}
+
+.objective .num{
+    display:inline-grid;
+    place-items:center;
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:#153c5c;
+    color:#79ddff;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.objective p{
+    color:#c8d9e8;
+}
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.step{
+    position:relative;
+    padding:20px 15px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:linear-gradient(160deg,#102943,#0d2136);
+    text-align:center;
+}
+
+.step-icon{
+    font-size:32px;
+    margin-bottom:9px;
+}
+
+.step strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.step span{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.legend-box{
+    margin-top:18px;
+    padding:21px;
+    border:1px solid #285275;
+    border-radius:20px;
+    background:rgba(12,36,59,.8);
+}
+
+.legend-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#c9dbea;
+    font-size:14px;
+}
+
+.dot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    flex:none;
+}
+
+.temp-dot{
+    background:#ff6680;
+}
+
+.rain-dot{
+    background:#4daaff;
+}
+
+.axis-dot{
+    background:#8fcbff;
+}
+
+.month-dot{
+    background:#ffd166;
+}
+
+.avg-dot{
+    background:#5de1ad;
+}
+
+.practice-panel{
+    border:1px solid #1f425f;
+    border-radius:25px;
+    overflow:hidden;
+    background:#0c2136;
+    box-shadow:0 20px 55px rgba(0,0,0,.18);
+}
+
+.location-tabs{
+    display:flex;
+    gap:8px;
+    padding:15px;
+    background:#0a1a2c;
+    border-bottom:1px solid #203f59;
+    flex-wrap:wrap;
+}
+
+.location-tab{
+    border:1px solid #294a66;
+    color:#b8cede;
+    background:#102940;
+    padding:11px 17px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.2s;
+}
+
+.location-tab:hover{
+    background:#153753;
+}
+
+.location-tab.active{
+    background:#15598a;
+    border-color:#3bb8ee;
+    color:white;
+}
+
+.practice-content{
+    padding:25px;
+}
+
+.location-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.location-title{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.location-icon{
+    width:50px;
+    height:50px;
+    border-radius:15px;
+    display:grid;
+    place-items:center;
+    font-size:25px;
+    background:#153d5d;
+}
+
+.location-title h3{
+    font-size:24px;
+}
+
+.location-title p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.climate-tag{
+    padding:8px 13px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:800;
+}
+
+.cold{
+    background:rgba(74,168,255,.13);
+    color:#82cbff;
+    border:1px solid rgba(74,168,255,.3);
+}
+
+.temperate{
+    background:rgba(169,140,255,.12);
+    color:#c3b1ff;
+    border:1px solid rgba(169,140,255,.3);
+}
+
+.hot{
+    background:rgba(255,170,75,.12);
+    color:#ffc77b;
+    border:1px solid rgba(255,170,75,.3);
+}
+
+.data-layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.metric-card{
+    padding:20px;
+    border:1px solid #24465f;
+    border-radius:18px;
+    background:#102940;
+}
+
+.metric-card h4{
+    margin-bottom:15px;
+    font-size:17px;
+}
+
+.metric-list{
+    display:grid;
+    gap:10px;
+}
+
+.metric{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:11px 13px;
+    border-radius:11px;
+    background:#0c2135;
+}
+
+.metric span{
+    color:#a9bfd1;
+}
+
+.metric strong{
+    color:#eef8ff;
+}
+
+.graph-card{
+    grid-column:1/-1;
+    padding:20px;
+    border:1px solid #24465f;
+    border-radius:18px;
+    background:#0b1e31;
+}
+
+.graph-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+}
+
+.graph-title span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.mini-chart{
+    width:100%;
+    height:250px;
+    overflow:hidden;
+    border-radius:15px;
+    background:
+        linear-gradient(rgba(77,170,255,.055) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(77,170,255,.035) 1px,transparent 1px),
+        #091a2b;
+    background-size:25px 25px;
+    border:1px solid #193a54;
+}
+
+.chart-svg{
+    width:100%;
+    height:100%;
+}
+
+.chart-note{
+    margin-top:12px;
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    color:#9eb6c9;
+    font-size:13px;
+}
+
+.chart-key{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.line-key{
+    width:28px;
+    height:3px;
+    background:#ff7188;
+}
+
+.bar-key{
+    width:13px;
+    height:13px;
+    background:#3d9bea;
+    border-radius:3px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+    border:1px solid #24445d;
+    border-radius:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:780px;
+}
+
+th,td{
+    padding:13px 14px;
+    border-bottom:1px solid #203b52;
+    text-align:center;
+}
+
+th{
+    background:#102d47;
+    color:#dff3ff;
+}
+
+td{
+    background:#0c2135;
+    color:#c8d8e6;
+}
+
+tr:last-child td{
+    border-bottom:none;
+}
+
+.highlight{
+    color:#76ddff;
+    font-weight:800;
+}
+
+.compare-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.compare-card{
+    padding:21px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:linear-gradient(145deg,#102a44,#0d2135);
+}
+
+.compare-icon{
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.compare-card h3{
+    margin-bottom:8px;
+}
+
+.compare-card p{
+    color:#a9bfd1;
+    font-size:14px;
+}
+
+.calculator{
+    display:grid;
+    grid-template-columns:1fr 1fr auto;
+    gap:12px;
+    align-items:end;
+    padding:22px;
+    border:1px solid #28506d;
+    border-radius:20px;
+    background:#0d243a;
+}
+
+.field label{
+    display:block;
+    font-size:13px;
+    color:#9fb8cc;
+    margin-bottom:6px;
+}
+
+.field input{
+    width:100%;
+    padding:12px 13px;
+    border:1px solid #31536e;
+    border-radius:11px;
+    outline:none;
+    background:#091b2d;
+    color:white;
+    font-size:16px;
+}
+
+.field input:focus{
+    border-color:#40b9ee;
+    box-shadow:0 0 0 3px rgba(64,185,238,.1);
+}
+
+.calc-btn,
+.finish-btn,
+.retry-btn{
+    border:none;
+    cursor:pointer;
+    padding:12px 18px;
+    border-radius:11px;
+    font-weight:800;
+    font-size:14px;
+}
+
+.calc-btn{
+    background:#176da5;
+    color:white;
+}
+
+.calc-result{
+    grid-column:1/-1;
+    padding:13px 15px;
+    background:#0a1d30;
+    border-radius:11px;
+    color:#cfe8f8;
+    min-height:46px;
+}
+
+.quiz{
+    border:1px solid #23455f;
+    border-radius:23px;
+    overflow:hidden;
+    background:#0c2136;
+}
+
+.quiz-top{
+    padding:20px;
+    background:#102b44;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.quiz-progress{
+    flex:1;
+    min-width:220px;
+}
+
+.progress-text{
+    display:flex;
+    justify-content:space-between;
+    color:#aac0d1;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.progress-bar{
+    height:8px;
+    border-radius:999px;
+    overflow:hidden;
+    background:#091a2b;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#39b6ed,#48e0c2);
+    transition:.3s;
+}
+
+.timer{
+    min-width:72px;
+    text-align:center;
+    padding:10px 13px;
+    border-radius:12px;
+    background:#0a1c2e;
+    border:1px solid #31526d;
+    font-weight:800;
+    color:#7de2ff;
+}
+
+.quiz-body{
+    padding:28px;
+}
+
+.quiz-start{
+    text-align:center;
+    padding:25px 10px;
+}
+
+.quiz-start-icon{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.quiz-start p{
+    color:var(--muted);
+    max-width:650px;
+    margin:8px auto 20px;
+}
+
+.start-btn{
+    border:none;
+    cursor:pointer;
+    background:linear-gradient(135deg,#1682c6,#1bb5b8);
+    color:white;
+    font-weight:800;
+    padding:13px 23px;
+    border-radius:13px;
+    font-size:15px;
+}
+
+.question-box{
+    display:none;
+}
+
+.question{
+    font-size:21px;
+    line-height:1.45;
+    margin-bottom:20px;
+}
+
+.answers{
+    display:grid;
+    gap:10px;
+}
+
+.answer{
+    width:100%;
+    text-align:left;
+    padding:14px 16px;
+    border-radius:13px;
+    border:1px solid #2a4d67;
+    background:#102a42;
+    color:#d8e7f2;
+    cursor:pointer;
+    font-size:15px;
+    transition:.18s;
+}
+
+.answer:hover{
+    background:#153651;
+    border-color:#4d8db6;
+}
+
+.answer.correct{
+    background:rgba(56,211,159,.12);
+    border-color:#38d39f;
+    color:#82e6c5;
+}
+
+.answer.wrong{
+    background:rgba(255,113,136,.12);
+    border-color:#ff7188;
+    color:#ff9aab;
+}
+
+.answer.disabled{
+    pointer-events:none;
+}
+
+.feedback{
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:12px;
+    display:none;
+    background:#091b2c;
+    border:1px solid #294861;
+}
+
+.next-btn{
+    margin-top:15px;
+    display:none;
+    border:none;
+    background:#176fa9;
+    color:white;
+    padding:11px 18px;
+    border-radius:11px;
+    cursor:pointer;
+    font-weight:800;
+}
+
+.result{
+    display:none;
+    text-align:center;
+    padding:25px 10px;
+}
+
+.result-score{
+    font-size:52px;
+    font-weight:900;
+    color:#74dcff;
+    margin:5px 0;
+}
+
+.result p{
+    color:var(--muted);
+}
+
+.result-actions{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.retry-btn{
+    background:#1b618e;
+    color:white;
+}
+
+.finish-btn{
+    background:#198e76;
+    color:white;
+}
+
+.memory{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.memory-card{
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:17px;
+    background:#0e253c;
+    text-align:center;
+}
+
+.memory-card div{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.memory-card strong{
+    display:block;
+    margin-bottom:4px;
+}
+
+.memory-card span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+footer{
+    margin-top:35px;
+    padding:30px 0 50px;
+    border-top:1px solid #19364d;
+    text-align:center;
+    color:#718da5;
+    font-size:13px;
+}
+
+@media(max-width:900px){
+    .hero-grid,
+    .data-layout{
+        grid-template-columns:1fr;
+    }
+
+    .steps{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .legend-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .compare-grid{
+        grid-template-columns:1fr;
+    }
+
+    .memory{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:620px){
+    .hero{
+        padding-top:30px;
+    }
+
+    .hero-main{
+        padding:24px;
+    }
+
+    .hero-side{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .objectives{
+        grid-template-columns:1fr;
+    }
+
+    .steps{
+        grid-template-columns:1fr;
+    }
+
+    .legend-grid{
+        grid-template-columns:1fr;
+    }
+
+    .practice-content{
+        padding:17px;
+    }
+
+    .calculator{
+        grid-template-columns:1fr;
+    }
+
+    .memory{
+        grid-template-columns:1fr;
+    }
+
+    .quiz-body{
+        padding:20px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+        <div class="logo">
+            <div class="logo-icon">🌦️</div>
+            <span>HỌC LIỆU SỐ ĐỊA LÍ 6</span>
+        </div>
+
+        <a href="index.html" class="home-btn">⌂ Trang chủ</a>
+    </div>
+</header>
+
+<main>
+
+<section class="hero">
+    <div class="container hero-grid">
+
+        <div class="hero-main">
+            <div class="badge">🌎 ĐỊA LÍ 6 • CHƯƠNG 4</div>
+
+            <h1>
+                Bài 18<br>
+                <span style="color:#72dcff">
+                    Thực hành: Phân tích biểu đồ nhiệt độ, lượng mưa
+                </span>
+            </h1>
+
+            <p>
+                Học cách đọc biểu đồ khí hậu, nhận biết nhiệt độ – lượng mưa,
+                tính biên độ nhiệt và rút ra đặc điểm khí hậu của từng địa điểm.
+            </p>
+        </div>
+
+        <div class="hero-side">
+            <div class="stat">
+                <div class="stat-icon">🌡️</div>
+                <strong>°C</strong>
+                <span>Nhiệt độ</span>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">🌧️</div>
+                <strong>mm</strong>
+                <span>Lượng mưa</span>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">📈</div>
+                <strong>12</strong>
+                <span>Tháng trong năm</span>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">🧭</div>
+                <strong>3</strong>
+                <span>Địa điểm thực hành</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>🎯 Mục tiêu bài thực hành</h2>
+        <p>Biết đọc biểu đồ và sử dụng số liệu để nhận xét khí hậu.</p>
+    </div>
+
+    <div class="objectives">
+
+        <div class="objective">
+            <div class="num">01</div>
+            <p>
+                <strong>Phân tích biểu đồ</strong><br>
+                Nhận biết nhiệt độ trung bình tháng và lượng mưa trung bình tháng
+                trên biểu đồ khí hậu.
+            </p>
+        </div>
+
+        <div class="objective">
+            <div class="num">02</div>
+            <p>
+                <strong>Đọc và xử lí số liệu</strong><br>
+                Xác định nhiệt độ cao nhất, thấp nhất, lượng mưa cao nhất,
+                thấp nhất và nhiệt độ trung bình năm.
+            </p>
+        </div>
+
+        <div class="objective">
+            <div class="num">03</div>
+            <p>
+                <strong>Tính biên độ nhiệt</strong><br>
+                Vận dụng công thức: Biên độ nhiệt năm =
+                nhiệt độ cao nhất − nhiệt độ thấp nhất.
+            </p>
+        </div>
+
+        <div class="objective">
+            <div class="num">04</div>
+            <p>
+                <strong>Nhận xét khí hậu</strong><br>
+                Dựa vào nhiệt độ và lượng mưa để xác định đặc điểm khí hậu
+                của từng địa điểm.
+            </p>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>🔎 5 bước đọc biểu đồ khí hậu</h2>
+        <p>Hãy ghi nhớ trình tự này trước khi bắt đầu thực hành.</p>
+    </div>
+
+    <div class="steps">
+
+        <div class="step">
+            <div class="step-icon">1️⃣</div>
+            <strong>Đọc trục</strong>
+            <span>Xác định đơn vị của nhiệt độ và lượng mưa.</span>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">2️⃣</div>
+            <strong>Đọc kí hiệu</strong>
+            <span>Cột và đường biểu diễn thể hiện yếu tố nào?</span>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">3️⃣</div>
+            <strong>Đọc từng tháng</strong>
+            <span>Xác định nhiệt độ và lượng mưa theo 12 tháng.</span>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">4️⃣</div>
+            <strong>Tính toán</strong>
+            <span>Tìm biên độ nhiệt và xác định các giá trị cực đại.</span>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">5️⃣</div>
+            <strong>Nhận xét</strong>
+            <span>Rút ra đặc điểm nhiệt độ và lượng mưa.</span>
+        </div>
+
+    </div>
+
+    <div class="legend-box">
+        <div class="legend-grid">
+
+            <div class="legend-item">
+                <span class="dot temp-dot"></span>
+                Đường đỏ → nhiệt độ
+            </div>
+
+            <div class="legend-item">
+                <span class="dot rain-dot"></span>
+                Cột xanh → lượng mưa
+            </div>
+
+            <div class="legend-item">
+                <span class="dot axis-dot"></span>
+                Trục °C → nhiệt độ
+            </div>
+
+            <div class="legend-item">
+                <span class="dot month-dot"></span>
+                Trục ngang → 12 tháng
+            </div>
+
+            <div class="legend-item">
+                <span class="dot avg-dot"></span>
+                Số liệu năm → tổng hợp
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>📊 Thực hành với 3 địa điểm</h2>
+        <p>
+            Chọn từng địa điểm để xem số liệu và phân tích đặc điểm khí hậu.
+        </p>
+    </div>
+
+    <div class="practice-panel">
+
+        <div class="location-tabs">
+
+            <button class="location-tab active" data-location="tiksi">
+                ❄️ Tích-xi
+            </button>
+
+            <button class="location-tab" data-location="seoul">
+                🌸 Xơ-un
+            </button>
+
+            <button class="location-tab" data-location="manila">
+                🌴 Ma-ni-la
+            </button>
+
+        </div>
+
+        <div class="practice-content">
+
+            <div class="location-head">
+
+                <div class="location-title">
+
+                    <div class="location-icon" id="locationIcon">
+                        ❄️
+                    </div>
+
+                    <div>
+                        <h3 id="locationName">Tích-xi</h3>
+                        <p id="locationDescription">
+                            Địa điểm thuộc đới lạnh.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div id="climateTag" class="climate-tag cold">
+                    ĐỚI LẠNH
+                </div>
+
+            </div>
+
+            <div class="data-layout">
+
+                <div class="metric-card">
+
+                    <h4>🌡️ Nhiệt độ</h4>
+
+                    <div class="metric-list">
+
+                        <div class="metric">
+                            <span>Tháng cao nhất</span>
+                            <strong id="tempMax">8,1°C</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>Tháng thấp nhất</span>
+                            <strong id="tempMin">−30°C</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>Biên độ nhiệt năm</span>
+                            <strong id="tempRange">38,1°C</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>Trung bình năm</span>
+                            <strong id="tempAvg">−12,8°C</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="metric-card">
+
+                    <h4>🌧️ Lượng mưa</h4>
+
+                    <div class="metric-list">
+
+                        <div class="metric">
+                            <span>Tháng cao nhất</span>
+                            <strong id="rainMax">50 mm</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>Tháng thấp nhất</span>
+                            <strong id="rainMin">10 mm</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>Trung bình năm</span>
+                            <strong id="rainAvg">321 mm</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>Đặc điểm</span>
+                            <strong id="rainFeature">Ít mưa</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="graph-card">
+
+                    <div class="graph-title">
+                        <strong>📈 Biểu đồ khí hậu – khung luyện đọc</strong>
+                        <span>
+                            Cột xanh: mưa • Đường đỏ: nhiệt độ
+                        </span>
+                    </div>
+
+                    <div class="mini-chart">
+                        <svg class="chart-svg"
+                             viewBox="0 0 900 250"
+                             preserveAspectRatio="none">
+
+                            <!-- grid -->
+                            <line x1="60" y1="30" x2="60" y2="205"
+                                  stroke="#31536c" stroke-width="1"/>
+                            <line x1="60" y1="205" x2="870" y2="205"
+                                  stroke="#31536c" stroke-width="1"/>
+
+                            <line x1="60" y1="70" x2="870" y2="70"
+                                  stroke="#1d3a51" stroke-width="1"/>
+                            <line x1="60" y1="110" x2="870" y2="110"
+                                  stroke="#1d3a51" stroke-width="1"/>
+                            <line x1="60" y1="150" x2="870" y2="150"
+                                  stroke="#1d3a51" stroke-width="1"/>
+
+                            <!-- left axis labels -->
+                            <text x="12" y="36" fill="#7e9bb2" font-size="11">30°C</text>
+                            <text x="18" y="76" fill="#7e9bb2" font-size="11">20</text>
+                            <text x="18" y="116" fill="#7e9bb2" font-size="11">10</text>
+                            <text x="23" y="156" fill="#7e9bb2" font-size="11">0</text>
+                            <text x="13" y="202" fill="#7e9bb2" font-size="11">−20</text>
+
+                            <!-- right axis -->
+                            <text x="872" y="36" fill="#7e9bb2" font-size="11">450</text>
+                            <text x="872" y="116" fill="#7e9bb2" font-size="11">225</text>
+                            <text x="872" y="202" fill="#7e9bb2" font-size="11">0</text>
+
+                            <!-- bars -->
+                            <g id="chartBars"></g>
+
+                            <!-- temperature line -->
+                            <polyline
+                                id="chartLine"
+                                fill="none"
+                                stroke="#ff7188"
+                                stroke-width="4"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                points="">
+                            </polyline>
+
+                            <g id="chartPoints"></g>
+
+                            <!-- months -->
+                            <g id="chartMonths"></g>
+
+                        </svg>
+                    </div>
+
+                    <div class="chart-note">
+
+                        <div class="chart-key">
+                            <span class="line-key"></span>
+                            Nhiệt độ
+                        </div>
+
+                        <div class="chart-key">
+                            <span class="bar-key"></span>
+                            Lượng mưa
+                        </div>
+
+                        <div>
+                            ⚠️ Biểu đồ trong học liệu là <strong>khung luyện đọc</strong>;
+                            số liệu tổng hợp chính thức được trình bày bên dưới.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>📋 Bảng số liệu tổng hợp</h2>
+        <p>
+            Dùng bảng này để luyện cách đọc, tính toán và so sánh.
+        </p>
+    </div>
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Nội dung</th>
+                    <th>❄️ Tích-xi</th>
+                    <th>🌸 Xơ-un</th>
+                    <th>🌴 Ma-ni-la</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Nhiệt độ cao nhất</td>
+                    <td class="highlight">8,1°C</td>
+                    <td class="highlight">26,2°C</td>
+                    <td class="highlight">29,3°C</td>
+                </tr>
+
+                <tr>
+                    <td>Nhiệt độ thấp nhất</td>
+                    <td>−30°C</td>
+                    <td>−1°C</td>
+                    <td>25,8°C</td>
+                </tr>
+
+                <tr>
+                    <td>Biên độ nhiệt năm</td>
+                    <td class="highlight">38,1°C</td>
+                    <td class="highlight">27,2°C</td>
+                    <td class="highlight">3,5°C</td>
+                </tr>
+
+                <tr>
+                    <td>Nhiệt độ trung bình năm</td>
+                    <td>−12,8°C</td>
+                    <td>13,3°C</td>
+                    <td>25,4°C</td>
+                </tr>
+
+                <tr>
+                    <td>Lượng mưa cao nhất</td>
+                    <td>50 mm</td>
+                    <td>385 mm</td>
+                    <td>440 mm</td>
+                </tr>
+
+                <tr>
+                    <td>Lượng mưa thấp nhất</td>
+                    <td>10 mm</td>
+                    <td>21 mm</td>
+                    <td>8 mm</td>
+                </tr>
+
+                <tr>
+                    <td>Lượng mưa trung bình năm</td>
+                    <td>321 mm</td>
+                    <td>1.373 mm</td>
+                    <td>2.047 mm</td>
+                </tr>
+
+                <tr>
+                    <td>Đới khí hậu</td>
+                    <td>Đới lạnh</td>
+                    <td>Đới ôn hòa</td>
+                    <td>Đới nóng</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>🧠 Em có nhận xét được không?</h2>
+        <p>So sánh ba địa điểm dựa trên số liệu vừa phân tích.</p>
+    </div>
+
+    <div class="compare-grid">
+
+        <div class="compare-card">
+            <div class="compare-icon">❄️</div>
+            <h3>Tích-xi</h3>
+            <p>
+                Nền nhiệt rất thấp, nhiệt độ trung bình năm dưới 0°C,
+                biên độ nhiệt năm lớn. Lượng mưa trung bình năm thấp,
+                tháng mưa nhiều nhất chưa đến 100 mm.
+            </p>
+        </div>
+
+        <div class="compare-card">
+            <div class="compare-icon">🌸</div>
+            <h3>Xơ-un</h3>
+            <p>
+                Nền nhiệt tương đối thấp, có tháng nhiệt độ xuống dưới 0°C,
+                biên độ nhiệt năm khá lớn. Lượng mưa tương đối cao và có
+                sự tương phản giữa các mùa.
+            </p>
+        </div>
+
+        <div class="compare-card">
+            <div class="compare-icon">🌴</div>
+            <h3>Ma-ni-la</h3>
+            <p>
+                Nền nhiệt cao, biên độ nhiệt năm nhỏ và lượng mưa trung bình
+                năm lớn, lượng mưa tập trung rõ vào một số thời kì trong năm.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>🧮 Thử tính biên độ nhiệt</h2>
+        <p>
+            Công thức: <strong>Biên độ nhiệt năm = Nhiệt độ cao nhất − Nhiệt độ thấp nhất</strong>
+        </p>
+    </div>
+
+    <div class="calculator">
+
+        <div class="field">
+            <label for="maxTemp">Nhiệt độ cao nhất (°C)</label>
+            <input id="maxTemp" type="number" step="0.1" placeholder="Ví dụ: 29.3">
+        </div>
+
+        <div class="field">
+            <label for="minTemp">Nhiệt độ thấp nhất (°C)</label>
+            <input id="minTemp" type="number" step="0.1" placeholder="Ví dụ: 25.8">
+        </div>
+
+        <button class="calc-btn" id="calcBtn">
+            Tính ngay
+        </button>
+
+        <div class="calc-result" id="calcResult">
+            💡 Nhập hai giá trị để bắt đầu tính.
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>🎯 Luyện tập nhanh</h2>
+        <p>
+            10 câu hỏi • mỗi câu có 10 giây • hoàn thành bài để ghi nhận tiến độ.
+        </p>
+    </div>
+
+    <div class="quiz">
+
+        <div class="quiz-top">
+
+            <div class="quiz-progress">
+
+                <div class="progress-text">
+                    <span id="quizProgressText">Chưa bắt đầu</span>
+                    <span id="quizScoreTop">0 điểm</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+            </div>
+
+            <div class="timer" id="timer">
+                ⏱ 10s
+            </div>
+
+        </div>
+
+        <div class="quiz-body">
+
+            <div class="quiz-start" id="quizStart">
+
+                <div class="quiz-start-icon">📊</div>
+
+                <h3>Sẵn sàng thực hành?</h3>
+
+                <p>
+                    Hãy vận dụng cách đọc biểu đồ và bảng số liệu của Bài 18
+                    để hoàn thành 10 câu hỏi.
+                </p>
+
+                <button class="start-btn" id="startQuiz">
+                    ▶ Bắt đầu
+                </button>
+
+            </div>
+
+            <div class="question-box" id="questionBox">
+
+                <div class="question" id="questionText"></div>
+
+                <div class="answers" id="answers"></div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <button class="next-btn" id="nextQuestion">
+                    Câu tiếp theo →
+                </button>
+
+            </div>
+
+            <div class="result" id="quizResult">
+
+                <div>🏆</div>
+
+                <div class="result-score" id="resultScore">
+                    0/10
+                </div>
+
+                <h3 id="resultTitle">
+                    Hoàn thành bài luyện tập!
+                </h3>
+
+                <p id="resultMessage">
+                    Hãy xem lại các câu sai và thử lại để củng cố kiến thức.
+                </p>
+
+                <div class="result-actions">
+
+                    <button class="retry-btn" id="retryQuiz">
+                        ↻ Làm lại
+                    </button>
+
+                    <button class="finish-btn" id="finishLesson">
+                        ✓ Hoàn thành bài
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+<section>
+<div class="container">
+
+    <div class="section-title">
+        <h2>🧠 Ghi nhớ nhanh</h2>
+        <p>4 điều quan trọng nhất của bài thực hành.</p>
+    </div>
+
+    <div class="memory">
+
+        <div class="memory-card">
+            <div>🌡️</div>
+            <strong>Nhiệt độ</strong>
+            <span>Đường biểu diễn trên biểu đồ.</span>
+        </div>
+
+        <div class="memory-card">
+            <div>🌧️</div>
+            <strong>Lượng mưa</strong>
+            <span>Cột biểu diễn theo từng tháng.</span>
+        </div>
+
+        <div class="memory-card">
+            <div>➖</div>
+            <strong>Biên độ nhiệt</strong>
+            <span>Cao nhất − thấp nhất.</span>
+        </div>
+
+        <div class="memory-card">
+            <div>🧭</div>
+            <strong>Nhận xét</strong>
+            <span>Dựa vào cả nhiệt độ và lượng mưa.</span>
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+</main>
+
+<footer>
+    <div class="container">
+        HỌC LIỆU SỐ ĐỊA LÍ 6 • Bài 18 – Thực hành: Phân tích biểu đồ nhiệt độ, lượng mưa
+    </div>
+</footer>
+
+<script>
+const PROGRESS_KEY = 'hoclieu6_progress_v1';
+
+/* =========================
+   DỮ LIỆU ĐỊA ĐIỂM
+========================= */
+
+const locations = {
+
+    tiksi:{
+        name:'Tích-xi',
+        icon:'❄️',
+        description:'Địa điểm thuộc đới lạnh.',
+        climate:'ĐỚI LẠNH',
+        climateClass:'cold',
+
+        tempMax:'8,1°C',
+        tempMin:'−30°C',
+        tempRange:'38,1°C',
+        tempAvg:'−12,8°C',
+
+        rainMax:'50 mm',
+        rainMin:'10 mm',
+        rainAvg:'321 mm',
+        rainFeature:'Ít mưa',
+
+        /*
+         * Đây là dữ liệu minh họa hình dạng biểu đồ,
+         * không dùng để thay thế số liệu chính thức trong bảng.
+         */
+        temps:[-29,-27,-20,-10,0,5,8,6,1,-9,-20,-28],
+        rains:[20,18,20,10,15,20,25,35,40,45,50,23]
+    },
+
+    seoul:{
+        name:'Xơ-un',
+        icon:'🌸',
+        description:'Địa điểm thuộc đới ôn hòa.',
+        climate:'ĐỚI ÔN HÒA',
+        climateClass:'temperate',
+
+        tempMax:'26,2°C',
+        tempMin:'−1°C',
+        tempRange:'27,2°C',
+        tempAvg:'13,3°C',
+
+        rainMax:'385 mm',
+        rainMin:'21 mm',
+        rainAvg:'1.373 mm',
+        rainFeature:'Mưa khá nhiều',
+
+        temps:[
+            -1,1,6,12,18,23,
+            26,26,21,14,7,1
+        ],
+
+        rains:[
+            21,25,47,64,95,133,
+            385,263,141,52,50,27
+        ]
+    },
+
+    manila:{
+        name:'Ma-ni-la',
+        icon:'🌴',
+        description:'Địa điểm thuộc đới nóng.',
+        climate:'ĐỚI NÓNG',
+        climateClass:'hot',
+
+        tempMax:'29,3°C',
+        tempMin:'25,8°C',
+        tempRange:'3,5°C',
+        tempAvg:'25,4°C',
+
+        rainMax:'440 mm',
+        rainMin:'8 mm',
+        rainAvg:'2.047 mm',
+        rainFeature:'Mưa nhiều',
+
+        temps:[
+            25.8,26,27,28,29,29,
+            29.3,29,28,27,27,26
+        ],
+
+        rains:[
+            15,8,10,20,50,180,
+            310,440,350,250,220,194
+        ]
+    }
+
+};
+
+
+/* =========================
+   CHUYỂN ĐỊA ĐIỂM
+========================= */
+
+const tabs = document.querySelectorAll('.location-tab');
+
+tabs.forEach(tab=>{
+
+    tab.addEventListener('click',()=>{
+
+        tabs.forEach(t=>t.classList.remove('active'));
+
+        tab.classList.add('active');
+
+        const key = tab.dataset.location;
+
+        showLocation(key);
+
+    });
+
+});
+
+
+function showLocation(key){
+
+    const data = locations[key];
+
+    document.getElementById('locationIcon').textContent =
+        data.icon;
+
+    document.getElementById('locationName').textContent =
+        data.name;
+
+    document.getElementById('locationDescription').textContent =
+        data.description;
+
+    const tag =
+        document.getElementById('climateTag');
+
+    tag.textContent = data.climate;
+
+    tag.className =
+        'climate-tag ' + data.climateClass;
+
+    document.getElementById('tempMax').textContent =
+        data.tempMax;
+
+    document.getElementById('tempMin').textContent =
+        data.tempMin;
+
+    document.getElementById('tempRange').textContent =
+        data.tempRange;
+
+    document.getElementById('tempAvg').textContent =
+        data.tempAvg;
+
+    document.getElementById('rainMax').textContent =
+        data.rainMax;
+
+    document.getElementById('rainMin').textContent =
+        data.rainMin;
+
+    document.getElementById('rainAvg').textContent =
+        data.rainAvg;
+
+    document.getElementById('rainFeature').textContent =
+        data.rainFeature;
+
+    drawChart(data);
+
+}
+
+
+/* =========================
+   BIỂU ĐỒ
+========================= */
+
+function drawChart(data){
+
+    const bars =
+        document.getElementById('chartBars');
+
+    const points =
+        document.getElementById('chartPoints');
+
+    const line =
+        document.getElementById('chartLine');
+
+    const months =
+        document.getElementById('chartMonths');
+
+    bars.innerHTML='';
+    points.innerHTML='';
+    months.innerHTML='';
+
+    const chartLeft=60;
+    const chartRight=850;
+    const chartTop=30;
+    const chartBottom=205;
+
+    const step=(chartRight-chartLeft)/11;
+
+    /*
+     * Quy đổi nhiệt độ vào vùng biểu đồ.
+     * Dùng thang minh họa để học sinh tập đọc xu hướng.
+     */
+
+    function tempY(temp){
+
+        const min=-30;
+        const max=30;
+
+        return chartBottom -
+            ((temp-min)/(max-min)) *
+            (chartBottom-chartTop);
+
+    }
+
+    function rainY(rain){
+
+        const max=450;
+
+        return chartBottom -
+            (rain/max) *
+            (chartBottom-chartTop);
+
+    }
+
+    const linePoints=[];
+
+    data.rains.forEach((rain,i)=>{
+
+        const x=chartLeft + i*step;
+
+        const y=rainY(rain);
+
+        const barWidth=30;
+
+        const height=chartBottom-y;
+
+        const rect =
+            document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'rect'
+            );
+
+        rect.setAttribute('x',x-barWidth/2);
+
+        rect.setAttribute('y',y);
+
+        rect.setAttribute('width',barWidth);
+
+        rect.setAttribute('height',height);
+
+        rect.setAttribute('rx','4');
+
+        rect.setAttribute(
+            'fill',
+            'rgba(61,155,234,.62)'
+        );
+
+        rect.setAttribute(
+            'stroke',
+            '#4daaff'
+        );
+
+        rect.setAttribute(
+            'stroke-width',
+            '1'
+        );
+
+        bars.appendChild(rect);
+
+    });
+
+
+    data.temps.forEach((temp,i)=>{
+
+        const x=chartLeft+i*step;
+
+        const y=tempY(temp);
+
+        linePoints.push(`${x},${y}`);
+
+        const circle =
+            document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'circle'
+            );
+
+        circle.setAttribute('cx',x);
+
+        circle.setAttribute('cy',y);
+
+        circle.setAttribute('r','4');
+
+        circle.setAttribute(
+            'fill',
+            '#ff7188'
+        );
+
+        points.appendChild(circle);
+
+        const label =
+            document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'text'
+            );
+
+        label.setAttribute('x',x);
+
+        label.setAttribute('y','225');
+
+        label.setAttribute(
+            'text-anchor',
+            'middle'
+        );
+
+        label.setAttribute(
+            'fill',
+            '#7895ad'
+        );
+
+        label.setAttribute(
+            'font-size',
+            '10'
+        );
+
+        label.textContent=i+1;
+
+        months.appendChild(label);
+
+    });
+
+    line.setAttribute(
+        'points',
+        linePoints.join(' ')
+    );
+
+}
+
+
+/* =========================
+   MÁY TÍNH BIÊN ĐỘ
+========================= */
+
+document
+.getElementById('calcBtn')
+.addEventListener('click',()=>{
+
+    const max =
+        Number(
+            document.getElementById('maxTemp').value
+        );
+
+    const min =
+        Number(
+            document.getElementById('minTemp').value
+        );
+
+    const result =
+        document.getElementById('calcResult');
+
+    if(!Number.isFinite(max) ||
+       !Number.isFinite(min)){
+
+        result.innerHTML =
+            '⚠️ Hãy nhập đầy đủ nhiệt độ cao nhất và thấp nhất.';
+
+        return;
+    }
+
+    if(max < min){
+
+        result.innerHTML =
+            '⚠️ Nhiệt độ cao nhất phải lớn hơn hoặc bằng nhiệt độ thấp nhất.';
+
+        return;
+    }
+
+    const range =
+        max-min;
+
+    result.innerHTML =
+        `✅ Biên độ nhiệt năm = ${max} − (${min}) = <strong>${range.toFixed(1)}°C</strong>`;
+
+});
+
+
+/* =========================
+   QUIZ
+========================= */
+
+const questions = [
+
+    {
+        q:'Trục bên trái của biểu đồ khí hậu thể hiện yếu tố nào?',
+        a:[
+            'Lượng mưa',
+            'Nhiệt độ',
+            'Độ ẩm',
+            'Số giờ nắng'
+        ],
+        correct:1,
+        explain:'Trục bên trái thể hiện nhiệt độ, đơn vị đo là °C.'
+    },
+
+    {
+        q:'Đơn vị thường dùng để biểu thị lượng mưa là gì?',
+        a:[
+            '°C',
+            'km',
+            'mm',
+            'm/s'
+        ],
+        correct:2,
+        explain:'Lượng mưa được biểu thị bằng mi-li-mét (mm).'
+    },
+
+    {
+        q:'Trong biểu đồ khí hậu của bài học, cột màu xanh thể hiện yếu tố nào?',
+        a:[
+            'Nhiệt độ',
+            'Lượng mưa',
+            'Độ ẩm',
+            'Gió'
+        ],
+        correct:1,
+        explain:'Cột biểu diễn lượng mưa trung bình tháng.'
+    },
+
+    {
+        q:'Đường biểu diễn màu đỏ thể hiện yếu tố nào?',
+        a:[
+            'Lượng mưa',
+            'Nhiệt độ',
+            'Độ ẩm',
+            'Áp suất'
+        ],
+        correct:1,
+        explain:'Đường màu đỏ biểu diễn nhiệt độ trung bình tháng.'
+    },
+
+    {
+        q:'Biên độ nhiệt năm được tính bằng cách nào?',
+        a:[
+            'Nhiệt độ thấp nhất − nhiệt độ cao nhất',
+            'Nhiệt độ cao nhất + nhiệt độ thấp nhất',
+            'Nhiệt độ cao nhất − nhiệt độ thấp nhất',
+            'Nhiệt độ trung bình × 12'
+        ],
+        correct:2,
+        explain:'Công thức: Biên độ nhiệt năm = nhiệt độ cao nhất − nhiệt độ thấp nhất.'
+    },
+
+    {
+        q:'Địa điểm nào có biên độ nhiệt năm nhỏ nhất?',
+        a:[
+            'Tích-xi',
+            'Xơ-un',
+            'Ma-ni-la',
+            'Cả ba bằng nhau'
+        ],
+        correct:2,
+        explain:'Ma-ni-la có biên độ nhiệt chỉ khoảng 3,5°C.'
+    },
+
+    {
+        q:'Địa điểm nào thuộc đới lạnh?',
+        a:[
+            'Ma-ni-la',
+            'Xơ-un',
+            'Tích-xi',
+            'Cả ba'
+        ],
+        correct:2,
+        explain:'Tích-xi thuộc đới lạnh.'
+    },
+
+    {
+        q:'Địa điểm nào có lượng mưa trung bình năm lớn nhất?',
+        a:[
+            'Tích-xi',
+            'Xơ-un',
+            'Ma-ni-la',
+            'Hai địa điểm bằng nhau'
+        ],
+        correct:2,
+        explain:'Ma-ni-la có lượng mưa trung bình năm khoảng 2.047 mm.'
+    },
+
+    {
+        q:'Tích-xi có đặc điểm nổi bật nào?',
+        a:[
+            'Nền nhiệt rất cao, biên độ nhiệt nhỏ',
+            'Nền nhiệt thấp, biên độ nhiệt lớn và ít mưa',
+            'Nền nhiệt cao và mưa rất lớn',
+            'Nhiệt độ quanh năm gần như không đổi'
+        ],
+        correct:1,
+        explain:'Tích-xi có nền nhiệt rất thấp, biên độ nhiệt năm lớn và lượng mưa thấp.'
+    },
+
+    {
+        q:'Khi nhận xét một biểu đồ khí hậu, cách làm phù hợp nhất là gì?',
+        a:[
+            'Chỉ nhìn nhiệt độ',
+            'Chỉ nhìn lượng mưa',
+            'Chỉ xác định tháng nóng nhất',
+            'Kết hợp nhiệt độ, lượng mưa và sự phân bố theo thời gian'
+        ],
+        correct:3,
+        explain:'Cần kết hợp cả nhiệt độ, lượng mưa và sự thay đổi của chúng trong năm.'
+    }
+
+];
+
+let currentQuestion=0;
+let score=0;
+let timerId=null;
+let timeLeft=10;
+let answered=false;
+
+const quizStart =
+    document.getElementById('quizStart');
+
+const questionBox =
+    document.getElementById('questionBox');
+
+const resultBox =
+    document.getElementById('quizResult');
+
+const questionText =
+    document.getElementById('questionText');
+
+const answersBox =
+    document.getElementById('answers');
+
+const feedback =
+    document.getElementById('feedback');
+
+const nextBtn =
+    document.getElementById('nextQuestion');
+
+const timer =
+    document.getElementById('timer');
+
+const progressFill =
+    document.getElementById('progressFill');
+
+const progressText =
+    document.getElementById('quizProgressText');
+
+const scoreTop =
+    document.getElementById('quizScoreTop');
+
+
+document
+.getElementById('startQuiz')
+.addEventListener('click',startQuiz);
+
+document
+.getElementById('retryQuiz')
+.addEventListener('click',startQuiz);
+
+nextBtn.addEventListener('click',nextQuestion);
+
+
+function startQuiz(){
+
+    clearInterval(timerId);
+
+    currentQuestion=0;
+
+    score=0;
+
+    quizStart.style.display='none';
+
+    resultBox.style.display='none';
+
+    questionBox.style.display='block';
+
+    scoreTop.textContent='0 điểm';
+
+    showQuestion();
+
+}
+
+
+function showQuestion(){
+
+    answered=false;
+
+    feedback.style.display='none';
+
+    feedback.innerHTML='';
+
+    nextBtn.style.display='none';
+
+    const q=questions[currentQuestion];
+
+    questionText.textContent =
+        `${currentQuestion+1}. ${q.q}`;
+
+    answersBox.innerHTML='';
+
+    q.a.forEach((answer,index)=>{
+
+        const button =
+            document.createElement('button');
+
+        button.className='answer';
+
+        button.textContent =
+            `${String.fromCharCode(65+index)}. ${answer}`;
+
+        button.addEventListener(
+            'click',
+            ()=>selectAnswer(index,button)
+        );
+
+        answersBox.appendChild(button);
+
+    });
+
+    const percent =
+        (currentQuestion/questions.length)*100;
+
+    progressFill.style.width =
+        percent+'%';
+
+    progressText.textContent =
+        `Câu ${currentQuestion+1}/${questions.length}`;
+
+    startTimer();
+
+}
+
+
+function startTimer(){
+
+    clearInterval(timerId);
+
+    timeLeft=10;
+
+    timer.textContent=`⏱ ${timeLeft}s`;
+
+    timerId=setInterval(()=>{
+
+        timeLeft--;
+
+        timer.textContent=`⏱ ${timeLeft}s`;
+
+        if(timeLeft<=0){
+
+            clearInterval(timerId);
+
+            if(!answered){
+
+                selectAnswer(
+                    -1,
+                    null,
+                    true
+                );
+
+            }
+
+        }
+
+    },1000);
+
+}
+
+
+function selectAnswer(index,button,timedOut=false){
+
+    if(answered) return;
+
+    answered=true;
+
+    clearInterval(timerId);
+
+    const q=questions[currentQuestion];
+
+    const allAnswers =
+        document.querySelectorAll('.answer');
+
+    allAnswers.forEach(
+        btn=>btn.classList.add('disabled')
+    );
+
+    if(index===q.correct){
+
+        score++;
+
+        if(button){
+            button.classList.add('correct');
+        }
+
+        feedback.innerHTML =
+            `✅ <strong>Chính xác!</strong><br>${q.explain}`;
+
+    }else{
+
+        if(button){
+            button.classList.add('wrong');
+        }
+
+        if(allAnswers[q.correct]){
+            allAnswers[q.correct]
+                .classList.add('correct');
+        }
+
+        feedback.innerHTML =
+            timedOut
+            ? `⏰ <strong>Hết thời gian!</strong><br>${q.explain}`
+            : `❌ <strong>Chưa chính xác.</strong><br>${q.explain}`;
+
+    }
+
+    feedback.style.display='block';
+
+    scoreTop.textContent =
+        `${score} điểm`;
+
+    nextBtn.style.display='inline-block';
+
+}
+
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion>=questions.length){
+
+        endQuiz();
+
+    }else{
+
+        showQuestion();
+
+    }
+
+}
+
+
+function endQuiz(){
+
+    clearInterval(timerId);
+
+    questionBox.style.display='none';
+
+    resultBox.style.display='block';
+
+    progressFill.style.width='100%';
+
+    progressText.textContent =
+        'Đã hoàn thành';
+
+    timer.textContent='✓';
+
+    document.getElementById('resultScore')
+        .textContent =
+        `${score}/${questions.length}`;
+
+    let title='';
+
+    let message='';
+
+    if(score>=9){
+
+        title='🌟 Xuất sắc!';
+
+        message=
+            'Bạn đã nắm rất chắc cách đọc và phân tích biểu đồ khí hậu.';
+
+    }else if(score>=7){
+
+        title='👏 Rất tốt!';
+
+        message=
+            'Bạn đã hiểu khá tốt. Hãy xem lại một vài câu còn nhầm.';
+
+    }else if(score>=5){
+
+        title='💪 Khá ổn!';
+
+        message=
+            'Bạn đã có nền tảng. Ôn lại cách đọc trục và tính biên độ nhiệt nhé.';
+
+    }else{
+
+        title='📚 Cần luyện thêm';
+
+        message=
+            'Hãy xem lại 5 bước đọc biểu đồ rồi thử lại một lần nữa.';
+
+    }
+
+    document.getElementById('resultTitle')
+        .textContent=title;
+
+    document.getElementById('resultMessage')
+        .textContent=message;
+
+}
+
+
+/* =========================
+   HOÀN THÀNH BÀI
+========================= */
+
+document
+.getElementById('finishLesson')
+.addEventListener('click',finishLesson);
+
+
+function finishLesson(){
+
+    const p =
+        JSON.parse(
+            localStorage.getItem(PROGRESS_KEY) || '{}'
+        );
+
+    p.g18=true;
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(p)
+    );
+
+    const button =
+        document.getElementById('finishLesson');
+
+    button.textContent='✓ Đã hoàn thành';
+
+    button.disabled=true;
+
+    button.style.opacity='.65';
+
+    alert(
+        '🎉 Đã ghi nhận hoàn thành Bài 18!'
+    );
+
+}
+
+
+/* =========================
+   KHỞI TẠO
+========================= */
+
+showLocation('tiksi');
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g18");</script>
+</body>
+</html>

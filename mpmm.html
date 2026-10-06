@@ -1,0 +1,3607 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô phỏng 3D - Quá trình hình thành mây và mưa</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:#061522;
+    color:#eaf7ff;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+    min-height:76px;
+
+    padding:14px 24px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #071c30,
+            #0b2d48
+        );
+
+    border-bottom:
+        1px solid
+        rgba(92,190,240,.18);
+
+    box-shadow:
+        0 8px 30px
+        rgba(0,0,0,.28);
+}
+
+.title-wrap{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+}
+
+.title-icon{
+
+    width:47px;
+    height:47px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    font-size:26px;
+
+    background:#123b59;
+
+    border:
+        1px solid
+        rgba(103,204,255,.25);
+}
+
+.title{
+
+    margin:0;
+
+    font-size:20px;
+
+    font-weight:800;
+}
+
+.subtitle{
+
+    margin-top:4px;
+
+    color:#9fc4da;
+
+    font-size:13px;
+}
+
+.back-btn{
+
+    border:
+        1px solid
+        rgba(112,202,255,.25);
+
+    background:#0c2d47;
+
+    color:#e2f5ff;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.back-btn:hover{
+
+    background:#124564;
+
+    transform:translateY(-1px);
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+
+    width:min(1450px,96%);
+
+    margin:
+        20px auto
+        35px;
+}
+
+.layout{
+
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        350px;
+
+    gap:18px;
+}
+
+
+/* =====================================================
+   SIMULATION
+===================================================== */
+
+.sim-card{
+
+    position:relative;
+
+    min-height:700px;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    border:
+        1px solid
+        rgba(85,183,232,.2);
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #071d32 0%,
+            #0a2943 52%,
+            #123c52 100%
+        );
+
+    box-shadow:
+
+        0 25px 70px
+        rgba(0,0,0,.35),
+
+        inset 0 0 70px
+        rgba(48,158,210,.06);
+}
+
+#simulationCanvas{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    display:block;
+}
+
+
+/* =====================================================
+   CANVAS LABEL
+===================================================== */
+
+.scene-label{
+
+    position:absolute;
+
+    z-index:5;
+
+    pointer-events:none;
+
+    padding:8px 11px;
+
+    border-radius:9px;
+
+    background:
+        rgba(4,16,28,.72);
+
+    border:
+        1px solid
+        rgba(116,202,242,.2);
+
+    backdrop-filter:blur(7px);
+
+    font-size:12px;
+
+    color:#dff4ff;
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.2);
+}
+
+.sun-label{
+
+    top:18px;
+    right:20px;
+}
+
+.drag-label{
+
+    left:20px;
+    bottom:18px;
+
+    color:#acd2e6;
+}
+
+
+/* =====================================================
+   SIDE PANEL
+===================================================== */
+
+.panel{
+
+    border:
+        1px solid
+        rgba(82,177,230,.2);
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0a2136,
+            #071a2b
+        );
+
+    box-shadow:
+        0 18px 45px
+        rgba(0,0,0,.25);
+
+    padding:18px;
+}
+
+.panel-title{
+
+    font-size:17px;
+
+    font-weight:800;
+
+    margin-bottom:5px;
+}
+
+.panel-subtitle{
+
+    color:#91b6ca;
+
+    font-size:12px;
+
+    line-height:1.5;
+
+    margin-bottom:17px;
+}
+
+
+/* =====================================================
+   PHASE CARD
+===================================================== */
+
+.phase-card{
+
+    padding:16px;
+
+    border-radius:15px;
+
+    background:#0b2a42;
+
+    border:
+        1px solid
+        rgba(94,190,244,.18);
+}
+
+.phase-number{
+
+    color:#77c9ed;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+
+    letter-spacing:.7px;
+}
+
+.phase-title{
+
+    margin-top:4px;
+
+    font-size:20px;
+
+    font-weight:850;
+}
+
+.phase-description{
+
+    margin-top:8px;
+
+    color:#a9c8d9;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+
+/* =====================================================
+   KNOWLEDGE
+===================================================== */
+
+.knowledge{
+
+    margin-top:14px;
+
+    padding:14px;
+
+    border-radius:13px;
+
+    background:#071a2a;
+
+    border:
+        1px solid
+        rgba(93,183,229,.15);
+}
+
+.knowledge-title{
+
+    color:#c3ebff;
+
+    font-weight:800;
+
+    margin-bottom:7px;
+}
+
+.knowledge-text{
+
+    color:#a5c5d6;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress-box{
+
+    margin-top:17px;
+}
+
+.progress-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:7px;
+
+    font-size:12px;
+
+    color:#a4c4d6;
+}
+
+.progress-value{
+
+    color:#6bc5ee;
+
+    font-weight:800;
+}
+
+.progress-track{
+
+    height:9px;
+
+    border-radius:20px;
+
+    background:#092033;
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(255,255,255,.05);
+}
+
+.progress-fill{
+
+    height:100%;
+
+    width:0%;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #278fca,
+            #66c8ed
+        );
+
+    transition:
+        width .18s ease;
+}
+
+
+/* =====================================================
+   SLIDER
+===================================================== */
+
+.control-box{
+
+    margin-top:18px;
+
+    padding-top:16px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.07);
+}
+
+.control-title{
+
+    font-size:13px;
+
+    font-weight:800;
+
+    margin-bottom:8px;
+}
+
+.range{
+
+    width:100%;
+
+    accent-color:#56bde8;
+
+    cursor:pointer;
+}
+
+.range-scale{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#718fa2;
+
+    font-size:10px;
+
+    margin-top:4px;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.button-row{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:8px;
+
+    margin-top:12px;
+}
+
+.control-btn{
+
+    border:
+        1px solid
+        rgba(91,188,235,.2);
+
+    background:#0b2b44;
+
+    color:#e0f5ff;
+
+    border-radius:10px;
+
+    padding:10px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.control-btn:hover{
+
+    background:#12425f;
+}
+
+.control-btn.primary{
+
+    background:#11506c;
+}
+
+
+/* =====================================================
+   TOGGLES
+===================================================== */
+
+.options{
+
+    margin-top:13px;
+
+    display:grid;
+
+    gap:8px;
+}
+
+.option{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    color:#9fbfd0;
+
+    font-size:12px;
+
+    cursor:pointer;
+}
+
+.option input{
+
+    accent-color:#58bce8;
+}
+
+
+/* =====================================================
+   STEP LIST
+===================================================== */
+
+.step-list{
+
+    margin-top:16px;
+
+    display:grid;
+
+    gap:7px;
+}
+
+.step{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:9px;
+
+    padding:9px 10px;
+
+    border-radius:10px;
+
+    background:#081d2f;
+
+    border:
+        1px solid
+        rgba(91,180,225,.09);
+
+    color:#8facbd;
+
+    font-size:11px;
+
+    line-height:1.45;
+
+    transition:.2s;
+}
+
+.step-dot{
+
+    flex:0 0 19px;
+
+    width:19px;
+    height:19px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#102f46;
+
+    color:#7fa5ba;
+
+    font-size:10px;
+
+    font-weight:800;
+}
+
+.step.active{
+
+    background:#0d3048;
+
+    border-color:
+        rgba(92,193,237,.35);
+
+    color:#d9f3ff;
+}
+
+.step.active .step-dot{
+
+    background:#267da6;
+
+    color:white;
+}
+
+
+/* =====================================================
+   NOTE
+===================================================== */
+
+.note{
+
+    margin-top:18px;
+
+    padding:15px 17px;
+
+    border-radius:14px;
+
+    background:#081b2c;
+
+    border:
+        1px solid
+        rgba(83,179,232,.13);
+
+    color:#9dbccc;
+
+    font-size:12px;
+
+    line-height:1.65;
+}
+
+.note strong{
+
+    color:#d8f1ff;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1050px){
+
+    .layout{
+
+        grid-template-columns:1fr;
+    }
+
+    .sim-card{
+
+        min-height:620px;
+    }
+}
+
+@media(max-width:650px){
+
+    .header{
+
+        padding:12px 15px;
+    }
+
+    .title{
+
+        font-size:16px;
+    }
+
+    .subtitle{
+
+        font-size:11px;
+    }
+
+    .back-btn{
+
+        padding:8px 10px;
+
+        font-size:12px;
+    }
+
+    .main{
+
+        width:94%;
+    }
+
+    .sim-card{
+
+        min-height:520px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="title-wrap">
+
+        <div class="title-icon">
+            ☁️
+        </div>
+
+        <div>
+
+            <h1 class="title">
+                Mô phỏng quá trình hình thành mây và mưa
+            </h1>
+
+            <div class="subtitle">
+                Quan sát sự bốc hơi – ngưng tụ – hình thành mây – mưa
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="back-btn"
+        id="backButton"
+    >
+        ← Quay lại bài học
+    </button>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+<div class="layout">
+
+
+<!-- =====================================================
+     CANVAS
+===================================================== -->
+
+<section class="sim-card">
+
+    <canvas id="simulationCanvas"></canvas>
+
+
+    <div class="scene-label sun-label">
+        ☀️ Năng lượng Mặt Trời
+    </div>
+
+
+    <div class="scene-label drag-label">
+        🌧️ Kéo thanh tiến trình để quan sát từng giai đoạn
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PANEL
+===================================================== -->
+
+<aside class="panel">
+
+
+    <div class="panel-title">
+        🌦️ Quá trình đang diễn ra
+    </div>
+
+
+    <div class="panel-subtitle">
+        Kéo thanh tiến trình hoặc bật tự động
+        để quan sát sự hình thành mây và mưa.
+    </div>
+
+
+    <!-- PHASE -->
+
+    <div class="phase-card">
+
+        <div
+            class="phase-number"
+            id="phaseNumber"
+        >
+            Giai đoạn 1
+        </div>
+
+
+        <div
+            class="phase-title"
+            id="phaseTitle"
+        >
+            Nước nhận nhiệt
+        </div>
+
+
+        <div
+            class="phase-description"
+            id="phaseDescription"
+        >
+            Dưới tác động của năng lượng Mặt Trời,
+            nước ở sông, hồ, biển và đại dương
+            nóng lên và bốc hơi.
+        </div>
+
+    </div>
+
+
+    <!-- KNOWLEDGE -->
+
+    <div class="knowledge">
+
+        <div class="knowledge-title">
+            💡 Em cần nhớ
+        </div>
+
+
+        <div
+            class="knowledge-text"
+            id="knowledgeText"
+        >
+            Mặt Trời cung cấp năng lượng làm
+            nước bốc hơi và cung cấp hơi nước
+            cho khí quyển.
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-box">
+
+        <div class="progress-title">
+
+            <span>
+                Tiến trình mô phỏng
+            </span>
+
+            <span
+                class="progress-value"
+                id="progressValue"
+            >
+                0%
+            </span>
+
+        </div>
+
+
+        <div class="progress-track">
+
+            <div
+                class="progress-fill"
+                id="progressFill"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTROL -->
+
+    <div class="control-box">
+
+        <div class="control-title">
+            🎚️ Điều khiển quá trình
+        </div>
+
+
+        <input
+            id="stageSlider"
+            class="range"
+            type="range"
+            min="0"
+            max="100"
+            value="0"
+            step="1"
+        >
+
+
+        <div class="range-scale">
+
+            <span>
+                Bắt đầu
+            </span>
+
+            <span>
+                Bốc hơi
+            </span>
+
+            <span>
+                Ngưng tụ
+            </span>
+
+            <span>
+                Mưa
+            </span>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <button
+                class="control-btn primary"
+                id="autoButton"
+            >
+                ▶ Tự động chạy
+            </button>
+
+
+            <button
+                class="control-btn"
+                id="resetButton"
+            >
+                ↺ Đặt lại
+            </button>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <button
+                class="control-btn"
+                id="previousButton"
+            >
+                ← Bước trước
+            </button>
+
+
+            <button
+                class="control-btn"
+                id="nextButton"
+            >
+                Bước tiếp →
+            </button>
+
+        </div>
+
+
+        <div class="options">
+
+            <label class="option">
+
+                <input
+                    type="checkbox"
+                    id="motionToggle"
+                    checked
+                >
+
+                Hiển thị chuyển động của hơi nước và mưa
+
+            </label>
+
+
+            <label class="option">
+
+                <input
+                    type="checkbox"
+                    id="labelToggle"
+                    checked
+                >
+
+                Hiển thị nhãn giải thích
+
+            </label>
+
+        </div>
+
+    </div>
+
+
+    <!-- STEP LIST -->
+
+    <div class="step-list">
+
+        <div
+            class="step active"
+            data-step="1"
+        >
+
+            <div class="step-dot">
+                1
+            </div>
+
+            <div>
+                Nước từ sông, hồ, biển... bốc hơi.
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="2"
+        >
+
+            <div class="step-dot">
+                2
+            </div>
+
+            <div>
+                Hơi nước bốc lên cao.
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="3"
+        >
+
+            <div class="step-dot">
+                3
+            </div>
+
+            <div>
+                Hơi nước gặp lạnh và ngưng tụ.
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="4"
+        >
+
+            <div class="step-dot">
+                4
+            </div>
+
+            <div>
+                Các hạt nước trong mây lớn dần.
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="5"
+        >
+
+            <div class="step-dot">
+                5
+            </div>
+
+            <div>
+                Hạt nước đủ lớn rơi xuống thành mưa.
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+</div>
+
+
+<!-- =====================================================
+     NOTE
+===================================================== -->
+
+<div class="note">
+
+    <strong>📚 Kết luận:</strong>
+
+    Dưới tác động của năng lượng Mặt Trời,
+    nước từ sông, hồ, biển và đại dương
+    bốc hơi, cung cấp hơi nước cho khí quyển.
+    Hơi nước bốc lên cao, gặp lạnh và ngưng tụ
+    thành các hạt nước nhỏ tạo thành mây.
+    Khi các hạt nước trong mây lớn dần và đủ nặng,
+    chúng rơi xuống mặt đất tạo thành mưa.
+
+    <br><br>
+
+    <strong>🔎 Liên hệ với hình trong SGK:</strong>
+
+    Mô phỏng thể hiện các thành phần chính
+    trong hình: Mặt Trời, nguồn nước,
+    hơi nước bốc lên, quá trình ngưng tụ,
+    mây, các hạt nước lớn dần và mưa.
+
+</div>
+
+</main>
+
+
+
+<script>
+
+/* =====================================================
+   CẤU HÌNH
+===================================================== */
+
+const BACK_TO_LESSON =
+    "g16.html";
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById(
+        "simulationCanvas"
+    );
+
+const ctx =
+    canvas.getContext(
+        "2d"
+    );
+
+
+let width = 0;
+let height = 0;
+
+let progress = 0;
+
+let animationRunning = false;
+
+let animationFrame = null;
+
+let lastTime = 0;
+
+let showMotion = true;
+
+let showLabels = true;
+
+
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+const vaporParticles = [];
+
+const rainParticles = [];
+
+const cloudParticles = [];
+
+const splashParticles = [];
+
+
+/* =====================================================
+   RANDOM
+===================================================== */
+
+function random(min,max){
+
+    return (
+        Math.random() *
+        (max-min)
+    ) + min;
+
+}
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+function resizeCanvas(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+
+    width =
+        Math.max(
+            320,
+            rect.width
+        );
+
+
+    height =
+        Math.max(
+            400,
+            rect.height
+        );
+
+
+    canvas.width =
+        width*dpr;
+
+
+    canvas.height =
+        height*dpr;
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+/* =====================================================
+   VỊ TRÍ CẢNH
+===================================================== */
+
+function getScene(){
+
+    const waterY =
+        height*.70;
+
+    const landY =
+        height*.65;
+
+    const cloudY =
+        height*.26;
+
+    return {
+
+        waterY,
+        landY,
+        cloudY,
+
+        sunX:
+            width*.82,
+
+        sunY:
+            height*.16,
+
+        mountainX:
+            width*.27,
+
+        mountainBaseY:
+            height*.67,
+
+        shoreX:
+            width*.61
+
+    };
+
+}
+
+
+/* =====================================================
+   VẼ BẦU TRỜI
+===================================================== */
+
+function drawSky(){
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            height*.72
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "#102f4b"
+    );
+
+
+    gradient.addColorStop(
+        .55,
+        "#7bb8d2"
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "#c4e3e7"
+    );
+
+
+    ctx.fillStyle =
+        gradient;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* ánh sáng */
+
+    const glow =
+        ctx.createRadialGradient(
+            width*.80,
+            height*.17,
+            10,
+            width*.80,
+            height*.17,
+            180
+        );
+
+
+    glow.addColorStop(
+        0,
+        "rgba(255,239,143,.8)"
+    );
+
+
+    glow.addColorStop(
+        .4,
+        "rgba(255,224,95,.25)"
+    );
+
+
+    glow.addColorStop(
+        1,
+        "rgba(255,220,80,0)"
+    );
+
+
+    ctx.fillStyle =
+        glow;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height*.45
+    );
+
+}
+
+
+/* =====================================================
+   MẶT TRỜI
+===================================================== */
+
+function drawSun(){
+
+    const s =
+        getScene();
+
+
+    const x =
+        s.sunX;
+
+    const y =
+        s.sunY;
+
+
+    /* tia sáng */
+
+    ctx.save();
+
+    ctx.globalAlpha =
+        .28;
+
+
+    ctx.strokeStyle =
+        "#ffe47a";
+
+    ctx.lineWidth =
+        3;
+
+
+    for(
+        let i=0;
+        i<14;
+        i++
+    ){
+
+        const angle =
+            i *
+            Math.PI*2 /
+            14;
+
+
+        const x1 =
+            x +
+            Math.cos(angle)*48;
+
+
+        const y1 =
+            y +
+            Math.sin(angle)*48;
+
+
+        const x2 =
+            x +
+            Math.cos(angle)*76;
+
+
+        const y2 =
+            y +
+            Math.sin(angle)*76;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x1,
+            y1
+        );
+
+        ctx.lineTo(
+            x2,
+            y2
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.restore();
+
+
+    /* mặt trời */
+
+    const sun =
+        ctx.createRadialGradient(
+            x-7,
+            y-7,
+            3,
+            x,
+            y,
+            37
+        );
+
+
+    sun.addColorStop(
+        0,
+        "#fffbd1"
+    );
+
+
+    sun.addColorStop(
+        .45,
+        "#ffe85b"
+    );
+
+
+    sun.addColorStop(
+        1,
+        "#f6b92d"
+    );
+
+
+    ctx.fillStyle =
+        sun;
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        32,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    if(showLabels){
+
+        labelBox(
+            "Mặt Trời",
+            x-37,
+            y+55,
+            "#fff0a2"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ĐỊA HÌNH
+===================================================== */
+
+function drawTerrain(){
+
+    const s =
+        getScene();
+
+
+    const waterY =
+        s.waterY;
+
+
+    const shoreX =
+        s.shoreX;
+
+
+    /* đất */
+
+    const land =
+        ctx.createLinearGradient(
+            0,
+            height*.55,
+            0,
+            height
+        );
+
+
+    land.addColorStop(
+        0,
+        "#67b96d"
+    );
+
+
+    land.addColorStop(
+        1,
+        "#315c39"
+    );
+
+
+    ctx.fillStyle =
+        land;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        height*.64
+    );
+
+
+    ctx.lineTo(
+        width*.13,
+        height*.59
+    );
+
+
+    ctx.lineTo(
+        width*.24,
+        height*.55
+    );
+
+
+    ctx.lineTo(
+        width*.38,
+        height*.59
+    );
+
+
+    ctx.lineTo(
+        width*.50,
+        height*.56
+    );
+
+
+    ctx.lineTo(
+        shoreX,
+        height*.59
+    );
+
+
+    ctx.lineTo(
+        shoreX,
+        height
+    );
+
+
+    ctx.lineTo(
+        0,
+        height
+    );
+
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* núi */
+
+    const mx =
+        s.mountainX;
+
+    const base =
+        s.mountainBaseY;
+
+
+    ctx.fillStyle =
+        "#6e7475";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        mx-105,
+        base
+    );
+
+
+    ctx.lineTo(
+        mx-10,
+        base-180
+    );
+
+
+    ctx.lineTo(
+        mx+75,
+        base
+    );
+
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* núi phía trước */
+
+    ctx.fillStyle =
+        "#888f8e";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        mx-30,
+        base
+    );
+
+
+    ctx.lineTo(
+        mx+38,
+        base-115
+    );
+
+
+    ctx.lineTo(
+        mx+130,
+        base
+    );
+
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* tuyết */
+
+    ctx.fillStyle =
+        "rgba(240,247,244,.82)";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        mx-10,
+        base-180
+    );
+
+
+    ctx.lineTo(
+        mx-34,
+        base-130
+    );
+
+
+    ctx.lineTo(
+        mx-3,
+        base-143
+    );
+
+
+    ctx.lineTo(
+        mx+15,
+        base-112
+    );
+
+
+    ctx.lineTo(
+        mx+28,
+        base-140
+    );
+
+
+    ctx.lineTo(
+        mx+44,
+        base-116
+    );
+
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* biển */
+
+    const water =
+        ctx.createLinearGradient(
+            0,
+            waterY,
+            0,
+            height
+        );
+
+
+    water.addColorStop(
+        0,
+        "#438fc1"
+    );
+
+
+    water.addColorStop(
+        1,
+        "#154d79"
+    );
+
+
+    ctx.fillStyle =
+        water;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        shoreX,
+        height*.57
+    );
+
+
+    ctx.lineTo(
+        width,
+        height*.57
+    );
+
+
+    ctx.lineTo(
+        width,
+        height
+    );
+
+
+    ctx.lineTo(
+        shoreX,
+        height
+    );
+
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* bờ biển */
+
+    ctx.fillStyle =
+        "#e6c780";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        shoreX-14,
+        height*.59
+    );
+
+
+    ctx.lineTo(
+        shoreX+4,
+        height*.57
+    );
+
+
+    ctx.lineTo(
+        shoreX+16,
+        height
+    );
+
+
+    ctx.lineTo(
+        shoreX-5,
+        height
+    );
+
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* sóng */
+
+    ctx.strokeStyle =
+        "rgba(196,238,250,.35)";
+
+    ctx.lineWidth =
+        2;
+
+
+    for(
+        let y=waterY+25;
+        y<height;
+        y+=32
+    ){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            shoreX+25,
+            y
+        );
+
+        ctx.quadraticCurveTo(
+            shoreX+80,
+            y-7,
+            shoreX+135,
+            y
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    /* cây */
+
+    drawTree(
+        width*.13,
+        height*.59
+    );
+
+    drawTree(
+        width*.18,
+        height*.57
+    );
+
+    drawTree(
+        width*.34,
+        height*.57
+    );
+
+    drawTree(
+        width*.42,
+        height*.59
+    );
+
+
+    /* nhãn */
+
+    if(showLabels){
+
+        labelBox(
+            "Sông, hồ",
+            width*.16,
+            height*.77,
+            "#bde9ff"
+        );
+
+
+        labelBox(
+            "Biển / đại dương",
+            width*.77,
+            height*.87,
+            "#bde9ff"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CÂY
+===================================================== */
+
+function drawTree(x,y){
+
+    ctx.fillStyle =
+        "#60422d";
+
+
+    ctx.fillRect(
+        x-4,
+        y-35,
+        8,
+        35
+    );
+
+
+    ctx.fillStyle =
+        "#268447";
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y-43,
+        18,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x-12,
+        y-35,
+        13,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+12,
+        y-35,
+        13,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+}
+
+
+/* =====================================================
+   CLOUD
+===================================================== */
+
+function drawCloud(x,y,scale,alpha=1){
+
+    ctx.save();
+
+    ctx.globalAlpha =
+        alpha;
+
+
+    ctx.fillStyle =
+        "#eef7fc";
+
+
+    ctx.shadowColor =
+        "rgba(35,85,110,.35)";
+
+
+    ctx.shadowBlur =
+        15;
+
+
+    const parts = [
+
+        [-55,10,35],
+
+        [-25,-13,48],
+
+        [12,-22,52],
+
+        [47,2,40],
+
+        [73,15,30],
+
+        [0,18,58]
+
+    ];
+
+
+    parts.forEach(
+        p=>{
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x+p[0]*scale,
+                y+p[1]*scale,
+                p[2]*scale,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.shadowBlur =
+        0;
+
+
+    /* đáy mây */
+
+    ctx.fillRect(
+        x-62*scale,
+        y,
+        135*scale,
+        31*scale
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   TẠO HƠI NƯỚC
+===================================================== */
+
+function createVapor(){
+
+    vaporParticles.length = 0;
+
+
+    for(
+        let i=0;
+        i<70;
+        i++
+    ){
+
+        vaporParticles.push({
+
+            x:
+                random(
+                    width*.47,
+                    width*.74
+                ),
+
+            y:
+                random(
+                    height*.54,
+                    height*.68
+                ),
+
+            speed:
+                random(
+                    .15,
+                    .42
+                ),
+
+            drift:
+                random(
+                    -.25,
+                    .25
+                ),
+
+            size:
+                random(
+                    2,
+                    5
+                ),
+
+            phase:
+                random(
+                    0,
+                    Math.PI*2
+                )
+
+        });
+
+    }
+
+}
+
+
+/* =====================================================
+   VẼ HƠI NƯỚC
+===================================================== */
+
+function drawVapor(){
+
+    const amount =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                progress/48
+            )
+        );
+
+
+    if(amount<=0){
+
+        return;
+
+    }
+
+
+    const visible =
+        Math.floor(
+            vaporParticles.length *
+            amount
+        );
+
+
+    ctx.save();
+
+
+    vaporParticles
+        .slice(
+            0,
+            visible
+        )
+        .forEach(
+            p=>{
+
+                const wave =
+                    Math.sin(
+                        performance.now()*.002 +
+                        p.phase
+                    )*.7;
+
+
+                const alpha =
+                    .25 +
+                    amount*.5;
+
+
+                ctx.fillStyle =
+                    `rgba(224,247,255,${alpha})`;
+
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    p.x+wave,
+                    p.y,
+                    p.size,
+                    0,
+                    Math.PI*2
+                );
+
+                ctx.fill();
+
+            }
+        );
+
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   MŨI TÊN BỐC HƠI
+===================================================== */
+
+function drawEvaporationArrows(){
+
+    if(progress<8){
+
+        return;
+
+    }
+
+
+    const amount =
+        Math.min(
+            1,
+            (progress-8)/35
+        );
+
+
+    ctx.save();
+
+    ctx.globalAlpha =
+        amount*.85;
+
+
+    ctx.strokeStyle =
+        "#ff6969";
+
+    ctx.fillStyle =
+        "#ff6969";
+
+    ctx.lineWidth =
+        2.5;
+
+
+    const positions = [
+
+        width*.52,
+
+        width*.58,
+
+        width*.64,
+
+        width*.70
+
+    ];
+
+
+    positions.forEach(
+        (x,i)=>{
+
+            const bottom =
+                height*.57;
+
+
+            const top =
+                height*.38 -
+                Math.sin(
+                    performance.now()*.002+i
+                )*6;
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                bottom
+            );
+
+
+            ctx.bezierCurveTo(
+
+                x-8,
+                bottom-40,
+
+                x+10,
+                top+25,
+
+                x,
+                top
+
+            );
+
+
+            ctx.stroke();
+
+
+            /* mũi tên */
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                top
+            );
+
+
+            ctx.lineTo(
+                x-6,
+                top+10
+            );
+
+
+            ctx.lineTo(
+                x+6,
+                top+10
+            );
+
+
+            ctx.closePath();
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.restore();
+
+
+    if(showLabels){
+
+        labelBox(
+            "Hơi nước bốc lên",
+            width*.56,
+            height*.44,
+            "#ffd1a5"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   MÂY NGƯNG TỤ
+===================================================== */
+
+function drawCloudFormation(){
+
+    if(progress<35){
+
+        return;
+
+    }
+
+
+    const amount =
+        Math.min(
+            1,
+            (progress-35)/25
+        );
+
+
+    const s =
+        getScene();
+
+
+    /* mây chính */
+
+    drawCloud(
+        width*.47,
+        s.cloudY,
+        .85 + amount*.28,
+        .3 + amount*.7
+    );
+
+
+    /* mây phía xa */
+
+    drawCloud(
+        width*.66,
+        s.cloudY+18,
+        .72 + amount*.18,
+        .18 + amount*.45
+    );
+
+
+    if(showLabels){
+
+        labelBox(
+            "Hơi nước ngưng tụ thành mây",
+            width*.43,
+            height*.11,
+            "#d8f2ff"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   HẠT NƯỚC TRONG MÂY
+===================================================== */
+
+function drawCloudDroplets(){
+
+    if(progress<52){
+
+        return;
+
+    }
+
+
+    const amount =
+        Math.min(
+            1,
+            (progress-52)/25
+        );
+
+
+    const count =
+        Math.floor(
+            18*amount
+        );
+
+
+    ctx.save();
+
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const x =
+            width*.40 +
+            (i%7)*25 +
+            Math.sin(i*2.4)*10;
+
+
+        const y =
+            height*.24 +
+            Math.floor(i/7)*18;
+
+
+        const size =
+            3 +
+            amount*3;
+
+
+        ctx.fillStyle =
+            "rgba(91,164,213,.65)";
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            size,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    ctx.restore();
+
+
+    if(showLabels){
+
+        labelBox(
+            "Các hạt nước lớn dần",
+            width*.22,
+            height*.22,
+            "#c8edff"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   HẠT MƯA
+===================================================== */
+
+function drawRain(){
+
+    if(progress<70){
+
+        return;
+
+    }
+
+
+    const amount =
+        Math.min(
+            1,
+            (progress-70)/30
+        );
+
+
+    const s =
+        getScene();
+
+
+    const rainCount =
+        Math.floor(
+            35*amount
+        );
+
+
+    ctx.save();
+
+
+    for(
+        let i=0;
+        i<rainCount;
+        i++
+    ){
+
+        let x =
+            width*.34 +
+            (i*37)%180;
+
+
+        let baseY =
+            s.cloudY+35;
+
+
+        let y;
+
+
+        if(showMotion){
+
+            const speed =
+                120 +
+                (i%5)*22;
+
+
+            y =
+                baseY +
+                (
+                    performance.now()*.12*speed +
+                    i*70
+                ) %
+                (
+                    height*.46
+                );
+
+        }else{
+
+            y =
+                baseY +
+                (i%10)*25;
+
+        }
+
+
+        const length =
+            10 +
+            (i%4)*3;
+
+
+        ctx.strokeStyle =
+            "rgba(70,157,221,.78)";
+
+        ctx.lineWidth =
+            2.3;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            y
+        );
+
+        ctx.lineTo(
+            x-3,
+            y+length
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.restore();
+
+
+    if(showLabels){
+
+        labelBox(
+            "Mưa",
+            width*.39,
+            height*.47,
+            "#bce8ff"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   NƯỚC QUAY LẠI
+===================================================== */
+
+function drawWaterCycleReturn(){
+
+    if(progress<82){
+
+        return;
+
+    }
+
+
+    const amount =
+        Math.min(
+            1,
+            (progress-82)/18
+        );
+
+
+    ctx.save();
+
+    ctx.globalAlpha =
+        amount;
+
+
+    ctx.strokeStyle =
+        "#62bce9";
+
+    ctx.fillStyle =
+        "#62bce9";
+
+    ctx.lineWidth =
+        3;
+
+
+    /* mũi tên từ đất về biển */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        width*.42,
+        height*.76
+    );
+
+
+    ctx.quadraticCurveTo(
+        width*.53,
+        height*.84,
+        width*.64,
+        height*.82
+    );
+
+
+    ctx.stroke();
+
+
+    const x =
+        width*.64;
+
+    const y =
+        height*.82;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x,
+        y
+    );
+
+    ctx.lineTo(
+        x-10,
+        y-5
+    );
+
+    ctx.lineTo(
+        x-8,
+        y+8
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+
+    if(showLabels){
+
+        labelBox(
+            "Nước tiếp tục quay lại nguồn nước",
+            width*.34,
+            height*.87,
+            "#bdeaff"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LABEL BOX
+===================================================== */
+
+function labelBox(
+    text,
+    x,
+    y,
+    color
+){
+
+    ctx.save();
+
+
+    ctx.font =
+        "600 13px Arial";
+
+
+    const paddingX =
+        10;
+
+    const paddingY =
+        7;
+
+
+    const metrics =
+        ctx.measureText(
+            text
+        );
+
+
+    const boxWidth =
+        metrics.width +
+        paddingX*2;
+
+
+    const boxHeight =
+        30;
+
+
+    const maxX =
+        width-boxWidth-10;
+
+
+    const safeX =
+        Math.max(
+            10,
+            Math.min(
+                x,
+                maxX
+            )
+        );
+
+
+    const safeY =
+        Math.max(
+            10,
+            Math.min(
+                y,
+                height-boxHeight-10
+            )
+        );
+
+
+    ctx.fillStyle =
+        "rgba(4,19,32,.75)";
+
+
+    ctx.strokeStyle =
+        "rgba(136,211,241,.25)";
+
+
+    ctx.lineWidth =
+        1;
+
+
+    roundedRect(
+        safeX,
+        safeY,
+        boxWidth,
+        boxHeight,
+        8
+    );
+
+
+    ctx.fill();
+
+    ctx.stroke();
+
+
+    ctx.fillStyle =
+        color || "#dff5ff";
+
+
+    ctx.fillText(
+        text,
+        safeX+paddingX,
+        safeY+20
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   ROUNDED RECT
+===================================================== */
+
+function roundedRect(
+    x,
+    y,
+    w,
+    h,
+    r
+){
+
+    r =
+        Math.min(
+            r,
+            w/2,
+            h/2
+        );
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x+r,
+        y
+    );
+
+    ctx.arcTo(
+        x+w,
+        y,
+        x+w,
+        y+h,
+        r
+    );
+
+    ctx.arcTo(
+        x+w,
+        y+h,
+        x,
+        y+h,
+        r
+    );
+
+    ctx.arcTo(
+        x,
+        y+h,
+        x,
+        y,
+        r
+    );
+
+    ctx.arcTo(
+        x,
+        y,
+        x+w,
+        y,
+        r
+    );
+
+    ctx.closePath();
+
+}
+
+
+/* =====================================================
+   MƯA VÀ SPLASH
+===================================================== */
+
+function drawGroundEffects(){
+
+    if(progress<72){
+
+        return;
+
+    }
+
+
+    const amount =
+        Math.min(
+            1,
+            (progress-72)/28
+        );
+
+
+    ctx.save();
+
+
+    ctx.globalAlpha =
+        amount*.7;
+
+
+    ctx.strokeStyle =
+        "#d0effb";
+
+    ctx.lineWidth =
+        1.5;
+
+
+    for(
+        let i=0;
+        i<15;
+        i++
+    ){
+
+        const x =
+            width*.20 +
+            i*30;
+
+
+        const y =
+            height*.67 +
+            (i%3)*8;
+
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            x,
+            y,
+            6,
+            2,
+            0,
+            0,
+            Math.PI*2
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.restore();
+
+}
+
+
+/* =====================================================
+   VẼ TOÀN BỘ
+===================================================== */
+
+function drawScene(){
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    drawSky();
+
+    drawSun();
+
+    drawTerrain();
+
+    drawEvaporationArrows();
+
+    drawVapor();
+
+    drawCloudFormation();
+
+    drawCloudDroplets();
+
+    drawRain();
+
+    drawGroundEffects();
+
+    drawWaterCycleReturn();
+
+}
+
+
+/* =====================================================
+   GIAI ĐOẠN
+===================================================== */
+
+const phases = [
+
+    {
+
+        min:0,
+        max:12,
+
+        title:
+            "Nước nhận nhiệt",
+
+        description:
+            "Dưới tác động của năng lượng Mặt Trời, nước ở sông, hồ, biển và đại dương nóng lên và bắt đầu bốc hơi.",
+
+        knowledge:
+            "Mặt Trời cung cấp năng lượng làm nước bốc hơi và cung cấp hơi nước cho khí quyển."
+
+    },
+
+    {
+
+        min:12,
+        max:35,
+
+        title:
+            "Hơi nước bốc lên",
+
+        description:
+            "Hơi nước từ mặt nước và từ cơ thể sinh vật thoát lên không khí. Hơi nước tiếp tục được đưa lên cao.",
+
+        knowledge:
+            "Nguồn hơi nước của khí quyển đến từ sự bốc hơi của nước và sự thoát hơi nước của sinh vật."
+
+    },
+
+    {
+
+        min:35,
+        max:52,
+
+        title:
+            "Hơi nước ngưng tụ",
+
+        description:
+            "Khi bốc lên cao, không khí lạnh hơn. Hơi nước gặp lạnh và ngưng tụ thành những hạt nước nhỏ.",
+
+        knowledge:
+            "Hơi nước ngưng tụ thành những hạt nước nhỏ tạo nên các đám mây."
+
+    },
+
+    {
+
+        min:52,
+        max:70,
+
+        title:
+            "Mây hình thành",
+
+        description:
+            "Các hạt nước nhỏ tập trung trong không khí tạo thành mây. Các hạt nước tiếp tục va chạm, kết hợp và lớn dần.",
+
+        knowledge:
+            "Trong mây, các hạt nước lớn dần khi quá trình ngưng tụ tiếp tục diễn ra."
+
+    },
+
+    {
+
+        min:70,
+        max:101,
+
+        title:
+            "Mưa rơi xuống",
+
+        description:
+            "Khi các hạt nước trong mây lớn dần và đủ nặng, chúng rơi xuống mặt đất tạo thành mưa.",
+
+        knowledge:
+            "Mưa đưa nước trở lại mặt đất và các nguồn nước, tiếp tục chu trình nước trong tự nhiên."
+
+    }
+
+];
+
+
+/* =====================================================
+   XÁC ĐỊNH PHASE
+===================================================== */
+
+function getPhase(){
+
+    for(
+        let i=0;
+        i<phases.length;
+        i++
+    ){
+
+        if(
+            progress>=phases[i].min &&
+            progress<phases[i].max
+        ){
+
+            return i;
+
+        }
+
+    }
+
+
+    return phases.length-1;
+
+}
+
+
+/* =====================================================
+   CẬP NHẬT GIAI ĐOẠN
+===================================================== */
+
+function updatePhase(){
+
+    const index =
+        getPhase();
+
+    const phase =
+        phases[index];
+
+
+    document
+        .getElementById(
+            "phaseNumber"
+        )
+        .textContent =
+        "Giai đoạn "
+        +
+        (index+1)
+        +
+        " / 5";
+
+
+    document
+        .getElementById(
+            "phaseTitle"
+        )
+        .textContent =
+        phase.title;
+
+
+    document
+        .getElementById(
+            "phaseDescription"
+        )
+        .textContent =
+        phase.description;
+
+
+    document
+        .getElementById(
+            "knowledgeText"
+        )
+        .textContent =
+        phase.knowledge;
+
+
+    document
+        .getElementById(
+            "progressValue"
+        )
+        .textContent =
+        Math.round(progress)
+        +
+        "%";
+
+
+    document
+        .getElementById(
+            "progressFill"
+        )
+        .style.width =
+        progress
+        +
+        "%";
+
+
+    document
+        .getElementById(
+            "stageSlider"
+        )
+        .value =
+        progress;
+
+
+    /* step list */
+
+    const steps =
+        document.querySelectorAll(
+            ".step"
+        );
+
+
+    steps.forEach(
+        (step,i)=>{
+
+            step.classList.toggle(
+                "active",
+                i<=index
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SET PROGRESS
+===================================================== */
+
+function setProgress(value){
+
+    progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(value) || 0
+            )
+        );
+
+
+    updatePhase();
+
+}
+
+
+/* =====================================================
+   AUTO RUN
+===================================================== */
+
+function toggleAuto(){
+
+    animationRunning =
+        !animationRunning;
+
+
+    const button =
+        document.getElementById(
+            "autoButton"
+        );
+
+
+    if(animationRunning){
+
+        button.textContent =
+            "⏸ Tạm dừng";
+
+        lastTime =
+            performance.now();
+
+    }else{
+
+        button.textContent =
+            "▶ Tự động chạy";
+
+    }
+
+}
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+function animate(time){
+
+    if(!lastTime){
+
+        lastTime =
+            time;
+
+    }
+
+
+    const delta =
+        Math.min(
+            50,
+            time-lastTime
+        );
+
+
+    lastTime =
+        time;
+
+
+    if(animationRunning){
+
+        progress +=
+            delta*.006;
+
+
+        if(progress>=100){
+
+            progress=100;
+
+            animationRunning=false;
+
+            document
+                .getElementById(
+                    "autoButton"
+                )
+                .textContent =
+                "▶ Chạy lại";
+
+        }
+
+
+        updatePhase();
+
+    }
+
+
+    drawScene();
+
+
+    animationFrame =
+        requestAnimationFrame(
+            animate
+        );
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetSimulation(){
+
+    animationRunning =
+        false;
+
+
+    progress =
+        0;
+
+
+    document
+        .getElementById(
+            "autoButton"
+        )
+        .textContent =
+        "▶ Tự động chạy";
+
+
+    setProgress(
+        0
+    );
+
+}
+
+
+/* =====================================================
+   NEXT
+===================================================== */
+
+function nextStep(){
+
+    const current =
+        getPhase();
+
+
+    const targets = [
+
+        0,
+        20,
+        42,
+        60,
+        85
+
+    ];
+
+
+    const next =
+        Math.min(
+            current+1,
+            targets.length-1
+        );
+
+
+    setProgress(
+        targets[next]
+    );
+
+}
+
+
+/* =====================================================
+   PREVIOUS
+===================================================== */
+
+function previousStep(){
+
+    const current =
+        getPhase();
+
+
+    const targets = [
+
+        0,
+        20,
+        42,
+        60,
+        85
+
+    ];
+
+
+    const previous =
+        Math.max(
+            current-1,
+            0
+        );
+
+
+    setProgress(
+        targets[previous]
+    );
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+document
+    .getElementById(
+        "stageSlider"
+    )
+    .addEventListener(
+        "input",
+        event=>{
+
+            animationRunning =
+                false;
+
+
+            document
+                .getElementById(
+                    "autoButton"
+                )
+                .textContent =
+                "▶ Tự động chạy";
+
+
+            setProgress(
+                event.target.value
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "autoButton"
+    )
+    .addEventListener(
+        "click",
+        toggleAuto
+    );
+
+
+document
+    .getElementById(
+        "resetButton"
+    )
+    .addEventListener(
+        "click",
+        resetSimulation
+    );
+
+
+document
+    .getElementById(
+        "nextButton"
+    )
+    .addEventListener(
+        "click",
+        nextStep
+    );
+
+
+document
+    .getElementById(
+        "previousButton"
+    )
+    .addEventListener(
+        "click",
+        previousStep
+    );
+
+
+document
+    .getElementById(
+        "motionToggle"
+    )
+    .addEventListener(
+        "change",
+        event=>{
+
+            showMotion =
+                event.target.checked;
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "labelToggle"
+    )
+    .addEventListener(
+        "change",
+        event=>{
+
+            showLabels =
+                event.target.checked;
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            window.location.href =
+                BACK_TO_LESSON;
+
+        }
+    );
+
+
+/* =====================================================
+   KHỞI TẠO
+===================================================== */
+
+resizeCanvas();
+
+createVapor();
+
+setProgress(0);
+
+requestAnimationFrame(
+    animate
+);
+
+</script>
+
+</body>
+</html>

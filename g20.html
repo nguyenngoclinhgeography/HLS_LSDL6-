@@ -1,0 +1,2915 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 20 - Sông và hồ. Nước ngầm và băng hà</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#061321;
+    --panel:#0b1e31;
+    --panel2:#102a42;
+    --border:#244761;
+    --text:#edf8ff;
+    --muted:#9bb4c7;
+    --cyan:#55dcff;
+    --blue:#3d9de8;
+    --green:#55b978;
+    --yellow:#ffd45c;
+    --orange:#f0a85c;
+    --ice:#bfeeff;
+    --danger:#ff6874;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #123a59 0%,
+            #071726 42%,
+            #030a12 100%
+        );
+
+    line-height:1.6;
+}
+
+.page{
+    width:min(1250px,100%);
+    margin:auto;
+    padding:20px;
+}
+
+/* =========================
+HEADER
+========================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:16px;
+
+    padding:13px 16px;
+    margin-bottom:20px;
+
+    background:
+        rgba(6,19,33,.92);
+
+    border:
+        1px solid rgba(69,111,139,.45);
+
+    border-radius:15px;
+
+    backdrop-filter:blur(12px);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-weight:800;
+    font-size:15px;
+}
+
+.logo-icon{
+    width:38px;
+    height:38px;
+
+    border-radius:11px;
+
+    display:grid;
+    place-items:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0e607e,
+            #12395b
+        );
+
+    border:1px solid #3b7892;
+}
+
+.home{
+    color:#dff8ff;
+    text-decoration:none;
+
+    padding:9px 14px;
+
+    border-radius:10px;
+
+    background:#0d263d;
+    border:1px solid #31546d;
+
+    font-weight:700;
+}
+
+.home:hover{
+    background:#153b58;
+}
+
+/* =========================
+HERO
+========================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+
+    padding:34px 30px;
+
+    border-radius:22px;
+
+    border:1px solid #254b65;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(14,54,79,.95),
+            rgba(7,27,44,.98)
+        );
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.28);
+}
+
+.hero::after{
+    content:"💧";
+
+    position:absolute;
+
+    right:35px;
+    bottom:-28px;
+
+    font-size:170px;
+
+    opacity:.07;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    padding:6px 11px;
+
+    border-radius:30px;
+
+    background:#0e3047;
+
+    border:1px solid #2d617d;
+
+    color:#83e6ff;
+
+    font-size:12px;
+    font-weight:800;
+
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.hero h1{
+    position:relative;
+    z-index:2;
+
+    margin:13px 0 8px;
+
+    font-size:
+        clamp(
+            28px,
+            4vw,
+            45px
+        );
+
+    line-height:1.15;
+}
+
+.hero p{
+    position:relative;
+    z-index:2;
+
+    max-width:780px;
+
+    color:#b9cede;
+
+    margin:0;
+
+    font-size:15px;
+}
+
+/* =========================
+OBJECTIVES
+========================= */
+
+.section{
+    margin-top:22px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:12px;
+}
+
+.section-title .icon{
+    width:38px;
+    height:38px;
+
+    border-radius:10px;
+
+    display:grid;
+    place-items:center;
+
+    background:#10334d;
+
+    border:1px solid #2c5870;
+}
+
+.section-title h2{
+    margin:0;
+
+    font-size:22px;
+}
+
+.objectives{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0,1fr)
+        );
+
+    gap:12px;
+}
+
+.objective{
+    padding:17px;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0e2941,
+            #091b2c
+        );
+
+    border:1px solid #23455e;
+}
+
+.objective-icon{
+    font-size:26px;
+    margin-bottom:7px;
+}
+
+.objective b{
+    display:block;
+    margin-bottom:5px;
+}
+
+.objective span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* =========================
+CONTENT CARD
+========================= */
+
+.content-card{
+    padding:22px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14,39,61,.97),
+            rgba(7,23,37,.98)
+        );
+
+    border:1px solid var(--border);
+
+    box-shadow:
+        0 14px 40px rgba(0,0,0,.2);
+}
+
+.content-card h3{
+    margin:
+        0 0 10px;
+
+    color:#82e5ff;
+
+    font-size:19px;
+}
+
+.content-card p{
+    margin:
+        8px 0;
+
+    color:#d0e0eb;
+
+    font-size:14px;
+}
+
+.highlight{
+    padding:13px 15px;
+
+    margin:
+        13px 0;
+
+    border-left:
+        4px solid var(--cyan);
+
+    border-radius:
+        0 10px 10px 0;
+
+    background:
+        rgba(39,139,171,.11);
+
+    color:#cfe9f5;
+
+    font-size:14px;
+}
+
+/* =========================
+RIVER PARTS
+========================= */
+
+.parts{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0,1fr)
+        );
+
+    gap:11px;
+
+    margin-top:15px;
+}
+
+.part{
+    padding:15px;
+
+    border-radius:13px;
+
+    background:#0a2135;
+
+    border:1px solid #244961;
+}
+
+.part-icon{
+    font-size:25px;
+    margin-bottom:6px;
+}
+
+.part b{
+    display:block;
+
+    color:#eaf8ff;
+
+    margin-bottom:4px;
+}
+
+.part span{
+    color:#9fb6c7;
+
+    font-size:12px;
+}
+
+/* =========================
+SIMULATION CARDS
+========================= */
+
+.sim-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
+
+    gap:16px;
+}
+
+.sim-card{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:23px;
+
+    min-height:275px;
+
+    border-radius:19px;
+
+    border:1px solid #28536d;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0e2d46,
+            #071a2b
+        );
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.23);
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease;
+}
+
+.sim-card:hover{
+    transform:translateY(-3px);
+
+    border-color:#51d8f7;
+}
+
+.sim-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:160px;
+    height:160px;
+
+    right:-55px;
+    bottom:-70px;
+
+    border-radius:50%;
+
+    background:
+        rgba(72,211,244,.07);
+}
+
+.sim-number{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:38px;
+    height:38px;
+
+    border-radius:11px;
+
+    background:#0d4e69;
+
+    border:1px solid #3bc3e7;
+
+    color:#9cecff;
+
+    font-weight:900;
+}
+
+.sim-card h3{
+    margin:
+        14px 0 6px;
+
+    color:#ecfbff;
+
+    font-size:21px;
+}
+
+.sim-card p{
+    color:#a9c1d0;
+
+    font-size:13px;
+
+    min-height:62px;
+}
+
+.sim-preview{
+    height:80px;
+
+    margin:
+        12px 0 15px;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            #79c8e6 0 45%,
+            #3c9dcc 45% 100%
+        );
+
+    border:
+        1px solid #32647d;
+}
+
+/* river preview */
+
+.river-line{
+    position:absolute;
+
+    left:5%;
+    right:5%;
+    top:52%;
+
+    height:8px;
+
+    background:#a8e8fb;
+
+    border-radius:50%;
+
+    transform:
+        rotate(-4deg);
+}
+
+.tributary{
+    position:absolute;
+
+    width:35%;
+
+    height:5px;
+
+    background:#8bd9f2;
+
+    border-radius:50%;
+
+    transform-origin:left center;
+}
+
+.t1{
+    left:17%;
+    top:34%;
+    transform:rotate(30deg);
+}
+
+.t2{
+    left:37%;
+    top:42%;
+    transform:rotate(20deg);
+}
+
+.branch{
+    position:absolute;
+
+    width:25%;
+
+    height:5px;
+
+    background:#8bd9f2;
+
+    border-radius:50%;
+
+    right:13%;
+    top:57%;
+
+    transform:rotate(25deg);
+}
+
+/* groundwater preview */
+
+.ground-preview{
+    background:
+        linear-gradient(
+            #8fd0ea 0 34%,
+            #63a44f 34% 45%,
+            #bd804d 45% 64%,
+            #dcb46c 64% 80%,
+            #23384a 80% 100%
+        );
+}
+
+.gw{
+    position:absolute;
+
+    left:10%;
+    right:10%;
+
+    bottom:17%;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:#3e9ed0;
+}
+
+.rain-drop{
+    position:absolute;
+
+    width:3px;
+    height:15px;
+
+    background:#e8faff;
+
+    border-radius:4px;
+
+    top:5%;
+
+    animation:
+        rainDrop
+        1.2s
+        linear
+        infinite;
+}
+
+.rain-drop:nth-child(1){
+    left:30%;
+}
+
+.rain-drop:nth-child(2){
+    left:45%;
+    animation-delay:.3s;
+}
+
+.rain-drop:nth-child(3){
+    left:60%;
+    animation-delay:.6s;
+}
+
+@keyframes rainDrop{
+
+    0%{
+        transform:translateY(0);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translateY(45px);
+        opacity:0;
+    }
+
+}
+
+.sim-button{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    width:100%;
+
+    padding:12px 15px;
+
+    border-radius:11px;
+
+    color:#e9fbff;
+
+    text-decoration:none;
+
+    font-weight:800;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d607c,
+            #0d4662
+        );
+
+    border:1px solid #43c8e9;
+
+    transition:.18s ease;
+}
+
+.sim-button:hover{
+    background:
+        linear-gradient(
+            135deg,
+            #117493,
+            #105774
+        );
+
+    transform:translateY(-1px);
+}
+
+/* =========================
+LAKE USE
+========================= */
+
+.use-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0,1fr)
+        );
+
+    gap:12px;
+
+    margin-top:14px;
+}
+
+.use{
+    padding:17px;
+
+    border-radius:14px;
+
+    background:#0a2135;
+
+    border:1px solid #23465d;
+}
+
+.use-icon{
+    font-size:28px;
+}
+
+.use b{
+    display:block;
+    margin-top:7px;
+}
+
+.use span{
+    display:block;
+
+    color:#9eb5c5;
+
+    font-size:12px;
+
+    margin-top:4px;
+}
+
+/* =========================
+GROUNDWATER
+========================= */
+
+.groundwater-flow{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0,1fr)
+        );
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.flow-item{
+    padding:15px;
+
+    text-align:center;
+
+    border-radius:13px;
+
+    background:#0a2135;
+
+    border:1px solid #23475f;
+}
+
+.flow-item .big{
+    font-size:28px;
+}
+
+.flow-item b{
+    display:block;
+    margin-top:5px;
+}
+
+.flow-item span{
+    display:block;
+
+    color:#9db5c5;
+
+    font-size:12px;
+}
+
+/* =========================
+ICE
+========================= */
+
+.ice-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0,1fr)
+        );
+
+    gap:12px;
+}
+
+.ice-card{
+    padding:18px;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #112e46,
+            #0a1e30
+        );
+
+    border:1px solid #31556b;
+}
+
+.ice-icon{
+    font-size:32px;
+}
+
+.ice-card b{
+    display:block;
+    margin:7px 0 4px;
+}
+
+.ice-card span{
+    color:#9fb5c4;
+    font-size:12px;
+}
+
+/* =========================
+MEMORY
+========================= */
+
+.memory{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            minmax(0,1fr)
+        );
+
+    gap:8px;
+
+    align-items:center;
+}
+
+.memory-item{
+    position:relative;
+
+    padding:14px 9px;
+
+    text-align:center;
+
+    border-radius:12px;
+
+    background:#0a2236;
+
+    border:1px solid #244961;
+
+    font-size:12px;
+}
+
+.memory-item:not(:last-child)::after{
+    content:"→";
+
+    position:absolute;
+
+    right:-13px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#58d9f8;
+
+    font-size:18px;
+
+    z-index:3;
+}
+
+/* =========================
+QUIZ
+========================= */
+
+.quiz{
+    padding:22px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #102c45,
+            #081c2e
+        );
+
+    border:1px solid #29516a;
+}
+
+.quiz-head{
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:12px;
+}
+
+.quiz-title{
+    font-size:20px;
+    font-weight:800;
+}
+
+.quiz-progress{
+    color:#7de4ff;
+    font-size:13px;
+    font-weight:800;
+}
+
+.timer{
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    color:#ffd970;
+
+    font-weight:800;
+}
+
+.question{
+    padding:17px;
+
+    border-radius:14px;
+
+    background:#071827;
+
+    border:1px solid #22465d;
+
+    margin-bottom:12px;
+}
+
+.question h3{
+    margin:
+        0 0 14px;
+
+    font-size:16px;
+
+    line-height:1.5;
+}
+
+.answers{
+    display:grid;
+    gap:8px;
+}
+
+.answer{
+    width:100%;
+
+    text-align:left;
+
+    padding:12px 14px;
+
+    border-radius:10px;
+
+    background:#102b43;
+
+    border:1px solid #2b4f66;
+
+    color:#dcecf5;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    min-height:45px;
+}
+
+.answer:hover{
+    background:#163b58;
+}
+
+.answer.correct{
+    background:#123f35;
+    border-color:#48bf8c;
+}
+
+.answer.wrong{
+    background:#45242e;
+    border-color:#e05f71;
+}
+
+.feedback{
+    margin-top:10px;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    background:#0b2235;
+
+    color:#a9c1d1;
+
+    font-size:12px;
+
+    display:none;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.quiz-actions{
+    display:flex;
+    justify-content:space-between;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+}
+
+.quiz-result{
+    display:none;
+
+    text-align:center;
+
+    padding:25px;
+}
+
+.score{
+    font-size:42px;
+    font-weight:900;
+
+    color:#77e4ff;
+}
+
+.finish{
+    margin-top:14px;
+
+    padding:11px 17px;
+
+    border-radius:11px;
+
+    border:1px solid #42cbe9;
+
+    background:#0d607c;
+
+    color:white;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:950px){
+
+    .objectives{
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+    }
+
+    .parts{
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+    }
+
+    .sim-grid{
+        grid-template-columns:1fr;
+    }
+
+    .memory{
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+    }
+
+    .memory-item:not(:last-child)::after{
+        display:none;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .page{
+        padding:10px;
+    }
+
+    .hero{
+        padding:25px 20px;
+    }
+
+    .objectives,
+    .parts,
+    .use-grid,
+    .ice-grid,
+    .groundwater-flow{
+        grid-template-columns:1fr;
+    }
+
+    .memory{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        position:relative;
+    }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+<!-- =====================================================
+HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🌊
+        </div>
+
+        <span>
+            HỌC LIỆU SỐ ĐỊA LÍ 6
+        </span>
+
+    </div>
+
+    <a
+        href="index.html"
+        class="home"
+    >
+        🏠 Trang chủ
+    </a>
+
+</header>
+
+
+<!-- =====================================================
+HERO
+===================================================== -->
+
+<section class="hero">
+
+    <span class="badge">
+        🌎 ĐỊA LÍ 6 • CHƯƠNG 5
+    </span>
+
+    <h1>
+        Bài 20: Sông và hồ.<br>
+        Nước ngầm và băng hà
+    </h1>
+
+    <p>
+        Tìm hiểu các bộ phận của một hệ thống sông,
+        vai trò của sông hồ, sự hình thành và ý nghĩa
+        của nước ngầm, băng hà đối với tự nhiên
+        và đời sống con người.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+OBJECTIVES
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            🎯
+        </div>
+
+        <h2>
+            Mục tiêu bài học
+        </h2>
+
+    </div>
+
+
+    <div class="objectives">
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                🌊
+            </div>
+
+            <b>
+                Hệ thống sông
+            </b>
+
+            <span>
+                Mô tả được các bộ phận của một dòng sông lớn
+                và mối quan hệ giữa mùa lũ với nguồn cấp nước.
+            </span>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                🏞️
+            </div>
+
+            <b>
+                Sông và hồ
+            </b>
+
+            <span>
+                Nêu được tầm quan trọng của việc sử dụng
+                tổng hợp nước sông, hồ.
+            </span>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                💧
+            </div>
+
+            <b>
+                Nước ngầm
+            </b>
+
+            <span>
+                Nêu được tầm quan trọng của nước ngầm
+                và hiểu sơ đồ hình thành nước ngầm.
+            </span>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                ❄️
+            </div>
+
+            <b>
+                Băng hà
+            </b>
+
+            <span>
+                Nêu được tầm quan trọng của băng hà
+                và có ý thức bảo vệ tài nguyên nước.
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+1. SONG HO
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            🌊
+        </div>
+
+        <h2>
+            1. Sông, hồ
+        </h2>
+
+    </div>
+
+
+    <div class="content-card">
+
+        <h3>
+            a) Sông
+        </h3>
+
+        <p>
+            Sông là dòng chảy thường xuyên tương đối lớn
+            trên bề mặt lục địa và đảo, được các nguồn nước
+            mưa, nước ngầm, nước băng tuyết tan nuôi dưỡng.
+        </p>
+
+        <div class="highlight">
+
+            💡
+            <b>Lưu vực sông</b>
+            là vùng đất cung cấp nước thường xuyên
+            cho một con sông.
+
+        </div>
+
+
+        <h3>
+            Các bộ phận của một hệ thống sông
+        </h3>
+
+        <div class="parts">
+
+
+            <div class="part">
+
+                <div class="part-icon">
+                    🌊
+                </div>
+
+                <b>
+                    Dòng chính
+                </b>
+
+                <span>
+                    Dòng sông lớn nhất trong hệ thống,
+                    nhận nước từ các phụ lưu.
+                </span>
+
+            </div>
+
+
+            <div class="part">
+
+                <div class="part-icon">
+                    ↘️
+                </div>
+
+                <b>
+                    Phụ lưu
+                </b>
+
+                <span>
+                    Sông đổ nước vào sông chính.
+                </span>
+
+            </div>
+
+
+            <div class="part">
+
+                <div class="part-icon">
+                    ↗️
+                </div>
+
+                <b>
+                    Chi lưu
+                </b>
+
+                <span>
+                    Sông thoát nước cho sông chính.
+                </span>
+
+            </div>
+
+
+            <div class="part">
+
+                <div class="part-icon">
+                    ⛰️
+                </div>
+
+                <b>
+                    Lưu vực sông
+                </b>
+
+                <span>
+                    Vùng đất cung cấp nước thường xuyên
+                    cho hệ thống sông.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="highlight">
+
+            🌧️
+            Nguồn cấp nước khác nhau có thể làm thời gian
+            xuất hiện mùa lũ của sông khác nhau:
+            sông được cung cấp chủ yếu bởi nước mưa thường
+            có mùa lũ gắn với mùa mưa; sông được cung cấp
+            bởi tuyết hoặc băng tan có mùa lũ tương ứng
+            với thời kì tan chảy.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+SIMULATIONS
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            🎮
+        </div>
+
+        <h2>
+            Mô phỏng tương tác
+        </h2>
+
+    </div>
+
+
+    <div class="sim-grid">
+
+
+        <!-- SIMULATION 1 -->
+
+        <article class="sim-card">
+
+            <span class="sim-number">
+                01
+            </span>
+
+            <h3>
+                🌊 Mô hình hệ thống sông
+            </h3>
+
+            <p>
+                Quan sát trực quan dòng chính,
+                phụ lưu, chi lưu và ranh giới lưu vực.
+                Có thể tương tác với từng bộ phận
+                để xem vai trò của chúng.
+            </p>
+
+
+            <div class="sim-preview">
+
+                <div class="tributary t1"></div>
+
+                <div class="tributary t2"></div>
+
+                <div class="river-line"></div>
+
+                <div class="branch"></div>
+
+            </div>
+
+
+            <a
+                href="mphts.html"
+                class="sim-button"
+            >
+                🌊 MỞ MÔ PHỎNG HỆ THỐNG SÔNG
+            </a>
+
+        </article>
+
+
+        <!-- SIMULATION 2 -->
+
+        <article class="sim-card">
+
+            <span class="sim-number">
+                02
+            </span>
+
+            <h3>
+                💧 Sơ đồ hình thành nước ngầm
+            </h3>
+
+            <p>
+                Theo dõi nước mưa thấm qua tầng thấm nước,
+                tích tụ trong tầng chứa nước và di chuyển
+                trong lòng đất.
+            </p>
+
+
+            <div class="sim-preview ground-preview">
+
+                <span class="rain-drop"></span>
+
+                <span class="rain-drop"></span>
+
+                <span class="rain-drop"></span>
+
+                <div class="gw"></div>
+
+            </div>
+
+
+            <a
+                href="mpsdhtng.html"
+                class="sim-button"
+            >
+                💧 MỞ MÔ PHỎNG NƯỚC NGẦM
+            </a>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+SỬ DỤNG TỔNG HỢP NƯỚC
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            🏞️
+        </div>
+
+        <h2>
+            b) Sử dụng tổng hợp nước sông, hồ
+        </h2>
+
+    </div>
+
+
+    <div class="content-card">
+
+        <p>
+            Nước sông, hồ được con người sử dụng vào
+            nhiều mục đích khác nhau. Việc sử dụng tổng hợp
+            giúp khai thác hiệu quả nguồn nước, hạn chế
+            lãng phí và góp phần bảo vệ tài nguyên nước.
+        </p>
+
+
+        <div class="use-grid">
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    🚢
+                </div>
+
+                <b>
+                    Giao thông
+                </b>
+
+                <span>
+                    Phục vụ vận tải và đi lại trên sông.
+                </span>
+
+            </div>
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    💧
+                </div>
+
+                <b>
+                    Sinh hoạt
+                </b>
+
+                <span>
+                    Cung cấp nước phục vụ đời sống.
+                </span>
+
+            </div>
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    🌾
+                </div>
+
+                <b>
+                    Tưới tiêu
+                </b>
+
+                <span>
+                    Cung cấp nước cho sản xuất nông nghiệp.
+                </span>
+
+            </div>
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    ⚡
+                </div>
+
+                <b>
+                    Thủy điện
+                </b>
+
+                <span>
+                    Khai thác năng lượng của dòng nước.
+                </span>
+
+            </div>
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    🐟
+                </div>
+
+                <b>
+                    Thủy sản
+                </b>
+
+                <span>
+                    Đánh bắt và nuôi trồng thủy sản.
+                </span>
+
+            </div>
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    🏕️
+                </div>
+
+                <b>
+                    Du lịch
+                </b>
+
+                <span>
+                    Khai thác cảnh quan sông, hồ
+                    phục vụ du lịch.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="highlight">
+
+            ⭐
+            Sử dụng tổng hợp nước sông, hồ giúp
+            nâng cao hiệu quả kinh tế, hạn chế lãng phí
+            và góp phần bảo vệ tài nguyên nước.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+2. NUOC NGAM
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            💧
+        </div>
+
+        <h2>
+            2. Nước ngầm
+        </h2>
+
+    </div>
+
+
+    <div class="content-card">
+
+        <h3>
+            Nước ngầm là gì?
+        </h3>
+
+        <p>
+            Nước ngầm là nước nằm trong tầng chứa nước
+            thường xuyên dưới bề mặt đất.
+        </p>
+
+        <p>
+            Nước ngầm được tạo nên chủ yếu bởi nước mưa,
+            nước sông, hồ,... thấm xuống đất.
+        </p>
+
+
+        <div class="highlight">
+
+            💧
+            Lượng nước ngầm nhiều hay ít, mực nước ngầm
+            nông hay sâu phụ thuộc vào địa hình, nguồn
+            cung cấp nước và lượng bốc hơi.
+
+        </div>
+
+
+        <h3>
+            Quá trình hình thành nước ngầm
+        </h3>
+
+
+        <div class="groundwater-flow">
+
+
+            <div class="flow-item">
+
+                <div class="big">
+                    🌧️
+                </div>
+
+                <b>
+                    Nước mưa
+                </b>
+
+                <span>
+                    Nước cung cấp cho mặt đất.
+                </span>
+
+            </div>
+
+
+            <div class="flow-item">
+
+                <div class="big">
+                    ⬇️
+                </div>
+
+                <b>
+                    Thấm xuống
+                </b>
+
+                <span>
+                    Nước đi qua tầng thấm nước.
+                </span>
+
+            </div>
+
+
+            <div class="flow-item">
+
+                <div class="big">
+                    💧
+                </div>
+
+                <b>
+                    Tầng nước ngầm
+                </b>
+
+                <span>
+                    Nước tích tụ trong tầng chứa nước.
+                </span>
+
+            </div>
+
+
+            <div class="flow-item">
+
+                <div class="big">
+                    🌊
+                </div>
+
+                <b>
+                    Dòng chảy ngầm
+                </b>
+
+                <span>
+                    Nước có thể di chuyển và bổ sung
+                    cho sông, biển.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <h3 style="margin-top:22px;">
+            Vai trò của nước ngầm
+        </h3>
+
+
+        <div class="use-grid">
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    🚰
+                </div>
+
+                <b>
+                    Nước sinh hoạt
+                </b>
+
+                <span>
+                    Là nguồn cung cấp nước quan trọng
+                    cho đời sống con người.
+                </span>
+
+            </div>
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    🌾
+                </div>
+
+                <b>
+                    Nước tưới
+                </b>
+
+                <span>
+                    Cung cấp nước cho sản xuất,
+                    đặc biệt ở những nơi thiếu nước mặt.
+                </span>
+
+            </div>
+
+
+            <div class="use">
+
+                <div class="use-icon">
+                    🏞️
+                </div>
+
+                <b>
+                    Ổn định dòng chảy
+                </b>
+
+                <span>
+                    Góp phần ổn định dòng chảy của
+                    sông ngòi.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="highlight">
+
+            ⚠️
+            Cần sử dụng hợp lí và bảo vệ nước ngầm,
+            tránh khai thác quá mức và gây ô nhiễm
+            nguồn nước.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+3. BANG HA
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            ❄️
+        </div>
+
+        <h2>
+            3. Băng hà
+        </h2>
+
+    </div>
+
+
+    <div class="content-card">
+
+        <h3>
+            Băng hà (sông băng)
+        </h3>
+
+        <p>
+            Băng hà là khối băng lớn hình thành trên lục địa,
+            tồn tại lâu dài và có sự dịch chuyển chậm dưới
+            tác động của trọng lực.
+        </p>
+
+
+        <div class="ice-grid">
+
+
+            <div class="ice-card">
+
+                <div class="ice-icon">
+                    ❄️
+                </div>
+
+                <b>
+                    Kho nước ngọt
+                </b>
+
+                <span>
+                    Băng hà chứa một lượng lớn nước ngọt
+                    của Trái Đất.
+                </span>
+
+            </div>
+
+
+            <div class="ice-card">
+
+                <div class="ice-icon">
+                    🏔️
+                </div>
+
+                <b>
+                    Cung cấp nước
+                </b>
+
+                <span>
+                    Nước từ băng tuyết tan góp phần
+                    cung cấp nước cho các dòng sông.
+                </span>
+
+            </div>
+
+
+            <div class="ice-card">
+
+                <div class="ice-icon">
+                    🌡️
+                </div>
+
+                <b>
+                    Điều hòa tự nhiên
+                </b>
+
+                <span>
+                    Băng hà có vai trò quan trọng đối với
+                    hệ thống tự nhiên của Trái Đất.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="highlight">
+
+            🧊
+            Băng hà là nguồn dự trữ nước ngọt quan trọng
+            và cần được bảo vệ trước những tác động làm
+            thay đổi môi trường và khí hậu.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+MEMORY
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            🧠
+        </div>
+
+        <h2>
+            Sơ đồ ghi nhớ
+        </h2>
+
+    </div>
+
+
+    <div class="content-card">
+
+        <div class="memory">
+
+            <div class="memory-item">
+                🌊<br>
+                <b>Sông</b>
+                <br>
+                <small>
+                    Dòng chính
+                </small>
+            </div>
+
+
+            <div class="memory-item">
+                ↘️<br>
+                <b>Phụ lưu</b>
+                <br>
+                <small>
+                    Đổ vào sông chính
+                </small>
+            </div>
+
+
+            <div class="memory-item">
+                ↗️<br>
+                <b>Chi lưu</b>
+                <br>
+                <small>
+                    Thoát nước
+                </small>
+            </div>
+
+
+            <div class="memory-item">
+                💧<br>
+                <b>Nước ngầm</b>
+                <br>
+                <small>
+                    Thấm xuống đất
+                </small>
+            </div>
+
+
+            <div class="memory-item">
+                ❄️<br>
+                <b>Băng hà</b>
+                <br>
+                <small>
+                    Nguồn nước ngọt
+                </small>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+QUIZ
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="icon">
+            🎯
+        </div>
+
+        <h2>
+            Kiểm tra nhanh
+        </h2>
+
+    </div>
+
+
+    <div class="quiz">
+
+        <div
+            id="quizBox"
+        >
+
+            <div class="quiz-head">
+
+                <div class="quiz-title">
+                    📝 Thử thách Bài 20
+                </div>
+
+                <div class="quiz-progress">
+                    Câu
+                    <span id="qNumber">
+                        1
+                    </span>
+                    /
+                    <span id="qTotal">
+                        10
+                    </span>
+                </div>
+
+                <div class="timer">
+                    ⏱
+                    <span id="timer">
+                        10
+                    </span>
+                    giây
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <h3 id="questionText">
+                </h3>
+
+                <div
+                    class="answers"
+                    id="answers"
+                >
+                </div>
+
+                <div
+                    class="feedback"
+                    id="feedback"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="quiz-actions">
+
+                <button
+                    id="startQuiz"
+                    class="primary"
+                >
+                    ▶ Bắt đầu
+                </button>
+
+                <button
+                    id="nextQuestion"
+                    style="display:none;"
+                >
+                    Câu tiếp theo →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="quizResult"
+            class="quiz-result"
+        >
+
+            <div>
+                🎉
+            </div>
+
+            <div class="score">
+                <span id="score">
+                    0
+                </span>
+                /10
+            </div>
+
+            <p id="resultText">
+            </p>
+
+            <button
+                id="retry"
+                class="finish"
+            >
+                🔄 Làm lại
+            </button>
+
+            <button
+                id="complete"
+                class="finish"
+            >
+                ✅ Hoàn thành bài
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+PROGRESS
+===================================================== */
+
+const PROGRESS_KEY =
+    "hoclieu6_progress_v1";
+
+
+function finishLesson(){
+
+    const progress =
+        JSON.parse(
+            localStorage.getItem(
+                PROGRESS_KEY
+            ) || "{}"
+        );
+
+    progress.g20=true;
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(progress)
+    );
+
+    alert(
+        "🎉 Bạn đã hoàn thành Bài 20!"
+    );
+
+}
+
+
+/* =====================================================
+QUIZ DATA
+===================================================== */
+
+const questions=[
+
+{
+    q:"Một hệ thống sông gồm những bộ phận nào?",
+    a:[
+        "Dòng chính, phụ lưu và chi lưu",
+        "Chỉ gồm sông chính",
+        "Chỉ gồm phụ lưu và hồ",
+        "Sông chính và biển"
+    ],
+    correct:0,
+    explain:
+        "Hệ thống sông gồm sông chính, phụ lưu và chi lưu."
+},
+
+{
+    q:"Phụ lưu là gì?",
+    a:[
+        "Sông thoát nước cho sông chính",
+        "Sông đổ nước vào sông chính",
+        "Vùng đất cung cấp nước cho sông",
+        "Phần cuối của con sông"
+    ],
+    correct:1,
+    explain:
+        "Phụ lưu là sông đổ nước vào sông chính."
+},
+
+{
+    q:"Chi lưu có đặc điểm nào sau đây?",
+    a:[
+        "Đổ nước vào sông chính",
+        "Là vùng đất quanh sông",
+        "Thoát nước cho sông chính",
+        "Là nguồn nước ngầm"
+    ],
+    correct:2,
+    explain:
+        "Chi lưu là các sông thoát nước cho sông chính."
+},
+
+{
+    q:"Lưu vực sông là gì?",
+    a:[
+        "Toàn bộ vùng biển nơi sông đổ ra",
+        "Vùng đất cung cấp nước thường xuyên cho sông",
+        "Chỉ là lòng sông chính",
+        "Nơi bắt đầu của con sông"
+    ],
+    correct:1,
+    explain:
+        "Lưu vực sông là vùng đất cung cấp nước thường xuyên cho sông."
+},
+
+{
+    q:"Nước sông, hồ có thể được sử dụng cho mục đích nào?",
+    a:[
+        "Chỉ để uống",
+        "Chỉ để tưới tiêu",
+        "Giao thông, sinh hoạt, tưới tiêu, thủy điện, thủy sản và du lịch",
+        "Chỉ để phát điện"
+    ],
+    correct:2,
+    explain:
+        "Nước sông, hồ được sử dụng tổng hợp cho nhiều mục đích khác nhau."
+},
+
+{
+    q:"Nước ngầm được tạo nên chủ yếu từ đâu?",
+    a:[
+        "Nước mưa, nước sông, hồ thấm xuống đất",
+        "Chỉ từ nước biển",
+        "Chỉ từ băng hà",
+        "Chỉ từ hơi nước trong khí quyển"
+    ],
+    correct:0,
+    explain:
+        "Nước mưa, nước sông, hồ thấm xuống đất là nguồn hình thành chủ yếu của nước ngầm."
+},
+
+{
+    q:"Nước ngầm nằm chủ yếu ở đâu?",
+    a:[
+        "Trên tầng mây",
+        "Trong tầng chứa nước dưới bề mặt đất",
+        "Trên mặt biển",
+        "Trong tầng khí quyển"
+    ],
+    correct:1,
+    explain:
+        "Nước ngầm là nước nằm trong tầng chứa nước thường xuyên dưới bề mặt đất."
+},
+
+{
+    q:"Một vai trò quan trọng của nước ngầm là gì?",
+    a:[
+        "Làm tăng nhiệt độ Trái Đất",
+        "Cung cấp nước sinh hoạt và tưới tiêu",
+        "Tạo ra gió",
+        "Làm tăng độ mặn của biển"
+    ],
+    correct:1,
+    explain:
+        "Nước ngầm là nguồn cung cấp nước sinh hoạt và nước tưới quan trọng."
+},
+
+{
+    q:"Băng hà có vai trò nào sau đây?",
+    a:[
+        "Là nguồn dự trữ nước ngọt",
+        "Làm tăng độ mặn của đại dương",
+        "Không liên quan đến nguồn nước",
+        "Chỉ có giá trị du lịch"
+    ],
+    correct:0,
+    explain:
+        "Băng hà chứa lượng nước ngọt lớn và góp phần cung cấp nước cho các dòng sông."
+},
+
+{
+    q:"Việc sử dụng tổng hợp nước sông, hồ có ý nghĩa gì?",
+    a:[
+        "Tăng lãng phí nước",
+        "Chỉ phục vụ giao thông",
+        "Nâng cao hiệu quả sử dụng và góp phần bảo vệ tài nguyên nước",
+        "Làm giảm lượng nước ngọt"
+    ],
+    correct:2,
+    explain:
+        "Sử dụng tổng hợp giúp nâng cao hiệu quả kinh tế, hạn chế lãng phí và góp phần bảo vệ tài nguyên nước."
+}
+
+];
+
+
+/* =====================================================
+QUIZ VARIABLES
+===================================================== */
+
+let currentQuestion=0;
+
+let score=0;
+
+let timerValue=10;
+
+let timerInterval=null;
+
+let answered=false;
+
+
+/* =====================================================
+ELEMENTS
+===================================================== */
+
+const questionText=
+    document.getElementById(
+        "questionText"
+    );
+
+const answers=
+    document.getElementById(
+        "answers"
+    );
+
+const feedback=
+    document.getElementById(
+        "feedback"
+    );
+
+const timer=
+    document.getElementById(
+        "timer"
+    );
+
+const qNumber=
+    document.getElementById(
+        "qNumber"
+    );
+
+const qTotal=
+    document.getElementById(
+        "qTotal"
+    );
+
+const startQuiz=
+    document.getElementById(
+        "startQuiz"
+    );
+
+const nextQuestion=
+    document.getElementById(
+        "nextQuestion"
+    );
+
+const quizBox=
+    document.getElementById(
+        "quizBox"
+    );
+
+const quizResult=
+    document.getElementById(
+        "quizResult"
+    );
+
+const scoreEl=
+    document.getElementById(
+        "score"
+    );
+
+const resultText=
+    document.getElementById(
+        "resultText"
+    );
+
+const retry=
+    document.getElementById(
+        "retry"
+    );
+
+const complete=
+    document.getElementById(
+        "complete"
+    );
+
+
+qTotal.textContent=
+    questions.length;
+
+
+/* =====================================================
+LOAD QUESTION
+===================================================== */
+
+function loadQuestion(){
+
+    answered=false;
+
+    clearInterval(
+        timerInterval
+    );
+
+    timerValue=10;
+
+    timer.textContent=
+        timerValue;
+
+
+    const item=
+        questions[currentQuestion];
+
+
+    qNumber.textContent=
+        currentQuestion+1;
+
+
+    questionText.textContent=
+        item.q;
+
+
+    answers.innerHTML="";
+
+
+    feedback.classList.remove(
+        "show"
+    );
+
+
+    nextQuestion.style.display=
+        "none";
+
+
+    item.a.forEach(
+        (answer,index)=>{
+
+            const button=
+                document.createElement(
+                    "button"
+                );
+
+            button.className=
+                "answer";
+
+            button.textContent=
+                answer;
+
+            button.addEventListener(
+                "click",
+                ()=>selectAnswer(
+                    index,
+                    button
+                )
+            );
+
+            answers.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    startTimer();
+
+}
+
+
+/* =====================================================
+TIMER
+===================================================== */
+
+function startTimer(){
+
+    timerInterval=
+        setInterval(
+            ()=>{
+
+                timerValue--;
+
+                timer.textContent=
+                    timerValue;
+
+
+                if(
+                    timerValue<=0
+                ){
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    if(!answered){
+
+                        timeOut();
+
+                    }
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =====================================================
+SELECT ANSWER
+===================================================== */
+
+function selectAnswer(
+    index,
+    selectedButton
+){
+
+    if(answered)
+        return;
+
+
+    answered=true;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const item=
+        questions[currentQuestion];
+
+
+    const allAnswers=
+        document.querySelectorAll(
+            ".answer"
+        );
+
+
+    allAnswers.forEach(
+        (button,i)=>{
+
+            button.disabled=true;
+
+            if(
+                i===item.correct
+            ){
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    if(
+        index===item.correct
+    ){
+
+        score++;
+
+        selectedButton.classList.add(
+            "correct"
+        );
+
+
+        feedback.innerHTML=
+            "✅ <b>Chính xác!</b> "+
+            item.explain;
+
+    }else{
+
+        selectedButton.classList.add(
+            "wrong"
+        );
+
+
+        feedback.innerHTML=
+            "❌ <b>Chưa đúng.</b> "+
+            item.explain;
+
+    }
+
+
+    feedback.classList.add(
+        "show"
+    );
+
+
+    nextQuestion.style.display=
+        "block";
+
+}
+
+
+/* =====================================================
+TIMEOUT
+===================================================== */
+
+function timeOut(){
+
+    answered=true;
+
+
+    const item=
+        questions[currentQuestion];
+
+
+    const allAnswers=
+        document.querySelectorAll(
+            ".answer"
+        );
+
+
+    allAnswers.forEach(
+        (button,i)=>{
+
+            button.disabled=true;
+
+            if(
+                i===item.correct
+            ){
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    feedback.innerHTML=
+        "⏰ <b>Hết giờ!</b> "+
+        item.explain;
+
+
+    feedback.classList.add(
+        "show"
+    );
+
+
+    nextQuestion.style.display=
+        "block";
+
+}
+
+
+/* =====================================================
+NEXT
+===================================================== */
+
+nextQuestion.addEventListener(
+    "click",
+    ()=>{
+
+        currentQuestion++;
+
+
+        if(
+            currentQuestion>=
+            questions.length
+        ){
+
+            showResult();
+
+        }else{
+
+            loadQuestion();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+START QUIZ
+===================================================== */
+
+startQuiz.addEventListener(
+    "click",
+    ()=>{
+
+        currentQuestion=0;
+
+        score=0;
+
+        quizBox.style.display=
+            "block";
+
+        quizResult.style.display=
+            "none";
+
+        startQuiz.style.display=
+            "none";
+
+        loadQuestion();
+
+    }
+);
+
+
+/* =====================================================
+RESULT
+===================================================== */
+
+function showResult(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    quizBox.style.display=
+        "none";
+
+
+    quizResult.style.display=
+        "block";
+
+
+    scoreEl.textContent=
+        score;
+
+
+    if(score>=9){
+
+        resultText.textContent=
+            "🌟 Xuất sắc! Bạn đã nắm rất chắc kiến thức Bài 20.";
+
+    }else if(score>=7){
+
+        resultText.textContent=
+            "👏 Rất tốt! Bạn đã hiểu phần lớn nội dung bài học.";
+
+    }else if(score>=5){
+
+        resultText.textContent=
+            "👍 Đạt yêu cầu. Bạn nên xem lại phần hệ thống sông và nước ngầm.";
+
+    }else{
+
+        resultText.textContent=
+            "💪 Hãy xem lại bài học và thử lại một lần nữa nhé!";
+
+    }
+
+}
+
+
+/* =====================================================
+RETRY
+===================================================== */
+
+retry.addEventListener(
+    "click",
+    ()=>{
+
+        currentQuestion=0;
+
+        score=0;
+
+        quizResult.style.display=
+            "none";
+
+        quizBox.style.display=
+            "block";
+
+        startQuiz.style.display=
+            "none";
+
+        loadQuestion();
+
+    }
+);
+
+
+/* =====================================================
+COMPLETE
+===================================================== */
+
+complete.addEventListener(
+    "click",
+    finishLesson
+);
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g20");</script>
+</body>
+</html>

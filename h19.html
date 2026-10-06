@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bài 19 - Vương quốc Chăm-pa từ thế kỉ II đến thế kỉ X</title>
+<style>
+:root{--bg:#07131f;--panel:#0d2030;--panel2:#102b3e;--line:#28516a;--cyan:#62e7ff;--gold:#e7b65d;--text:#eef8ff;--muted:#a4bdcd;--green:#69dda6;--red:#ff8080}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#173952,transparent 34%),radial-gradient(circle at 90% 15%,#163248,transparent 30%),var(--bg);color:var(--text);font:16px/1.65 Inter,Segoe UI,Arial,sans-serif}
+.top{position:sticky;top:0;z-index:20;padding:13px 5%;display:flex;justify-content:space-between;align-items:center;background:#06101bd9;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{font-weight:900;color:var(--cyan);letter-spacing:1px}.home{padding:8px 14px;border:1px solid var(--line);border-radius:12px;color:#d8f5ff}
+.wrap{width:min(1180px,92%);margin:auto}.hero{padding:58px 0 35px;display:grid;grid-template-columns:1.35fr .65fr;gap:22px}.kicker,.num{color:var(--gold);font-weight:900;letter-spacing:2px;font-size:13px}
+h1{font-size:clamp(34px,5vw,60px);line-height:1.05;margin:12px 0}.lead{font-size:18px;color:#c8dce8}.badges{display:flex;gap:9px;flex-wrap:wrap}.badge{padding:7px 12px;border:1px solid var(--line);border-radius:99px;background:#0a1d2c;color:#c8f4ff}
+.heroCard,.card,.panel,.quiz{background:linear-gradient(145deg,var(--panel),#091827);border:1px solid var(--line);border-radius:20px}.heroCard{padding:28px;display:flex;flex-direction:column;justify-content:center}.big{font-size:70px}.heroCard strong{font-size:24px;color:#ffe0a0}
+section{margin:30px 0 45px}.head{display:flex;align-items:end;gap:14px;margin-bottom:18px}h2{margin:0;font-size:28px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{padding:21px;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#3d7898}.icon{font-size:32px}.card h3{margin:5px 0 8px}.muted{color:var(--muted)}
+.timeline{position:relative;padding:5px 0}.timeline:before{content:"";position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(var(--gold),var(--cyan))}
+.event{position:relative;padding-left:62px;margin-bottom:18px}.dot{position:absolute;left:13px;top:5px;width:19px;height:19px;border-radius:50%;background:var(--gold);border:4px solid var(--bg)}.eventbox{padding:17px 19px;background:var(--panel);border:1px solid var(--line);border-radius:16px}.year{font-size:20px;color:#ffe0a0;font-weight:900}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.flowitem{min-height:105px;padding:15px;text-align:center;background:#0a1c2b;border:1px solid var(--line);border-radius:15px;display:flex;align-items:center;justify-content:center;font-weight:800}.arrow{display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:25px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.tab,.btn{font:inherit;cursor:pointer;padding:10px 14px;border-radius:12px;border:1px solid #35637d;background:#0c2234;color:#d9f5ff}.tab.active{border-color:var(--cyan);background:#153b52}.panel{display:none;padding:23px}.panel.active{display:block}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:15px}.box{padding:19px;border-radius:16px;border:1px solid var(--line);background:#0a1b2a}.box.good{background:#0b2928;border-color:#27665b}.box h3{margin-top:0}
+.iconGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.culture{padding:18px;text-align:center;background:#0b1c2b;border:1px solid var(--line);border-radius:16px}.culture .bigIcon{font-size:42px}
+.society{max-width:760px;margin:auto;text-align:center}.society .level{padding:15px;margin:8px auto;border:1px solid var(--line);border-radius:14px;background:#0b1c2c}.society .king{background:#27351e;border-color:#6c6d37;color:#ffe5a5}
+.quiz{padding:26px}.start{text-align:center;padding:22px}.start h3{font-size:28px}.progress{height:8px;background:#162b3b;border-radius:99px;overflow:hidden;margin:14px 0 22px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold))}
+.q{font-size:21px;font-weight:800;margin:15px 0}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer{text-align:left;cursor:pointer;padding:14px;border-radius:13px;border:1px solid var(--line);background:#0a1c2b;color:#edf8ff;font:inherit}.answer.correct{border-color:var(--green);background:#103126}.answer.wrong{border-color:var(--red);background:#351d25}.feedback{display:none;margin-top:14px;padding:14px;background:#091827;border-radius:13px;color:#c9deea}.bottom{display:flex;justify-content:space-between;margin-top:16px}.result{text-align:center;display:none}.score{font-size:54px;font-weight:900;color:#ffe0a0}
+footer{text-align:center;padding:30px;color:#7894a7;border-top:1px solid var(--line)}
+@media(max-width:850px){.hero,.compare{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.iconGrid{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.answers{grid-template-columns:1fr}}@media(max-width:560px){.grid,.iconGrid{grid-template-columns:1fr}h1{font-size:38px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+<header class="top"><div class="brand">HỌC LIỆU SỐ 6 · LỊCH SỬ</div><a class="home" href="index.html">⌂ Trang chủ</a></header>
+<main class="wrap">
+
+<section class="hero">
+<div><div class="kicker">CHƯƠNG 5 · VIỆT NAM TỪ KHOẢNG TK VII TCN ĐẾN ĐẦU TK X</div>
+<h1>Vương quốc Chăm-pa<br>từ thế kỉ II đến thế kỉ X</h1>
+<p class="lead">Khám phá quá trình hình thành, phát triển, kinh tế, tổ chức xã hội và những thành tựu văn hóa đặc sắc của cư dân Chăm-pa.</p>
+<div class="badges"><span class="badge">🏺 Lâm Ấp · 192</span><span class="badge">🌾 Nông nghiệp</span><span class="badge">⚓ Thương mại biển</span><span class="badge">🛕 Văn hóa Chăm</span></div></div>
+<div class="heroCard"><div class="big">🏺🌴🛕</div><strong>Chăm-pa · 8 thế kỉ đầu</strong><p class="muted">Một vương quốc gắn với miền Trung, biển và những thành tựu văn hóa đặc sắc.</p></div>
+</section>
+
+<section>
+<div class="head"><div class="num">01</div><h2>Khởi động · Một vương quốc ven biển</h2></div>
+<div class="card"><p>Đài thờ Trà Kiệu là một kiệt tác điêu khắc Chăm-pa thế kỉ IX. Quan sát các đường nét điêu khắc, em có thể hình dung về trình độ kĩ thuật và đời sống văn hóa tinh thần phong phú của cư dân Chăm-pa.</p>
+<div class="flow"><div class="flowitem">🌾 Cư dân<br>nông nghiệp</div><div class="arrow">→</div><div class="flowitem">⚓ Giỏi nghề<br>đi biển</div><div class="arrow">→</div><div class="flowitem">🛕 Văn hóa<br>đặc sắc</div></div></div>
+</section>
+
+<section>
+<div class="head"><div class="num">02</div><h2>Hình thành và phát triển</h2></div>
+<div class="timeline">
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">192</div><b>Lâm Ấp ra đời</b><br>Khu Liên lãnh đạo người dân Tượng Lâm nổi dậy, lật đổ ách cai trị của nhà Hán và lập nước Lâm Ấp – tên gọi ban đầu của Vương quốc Chăm-pa.</div></div>
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">Trước thế kỉ VIII</div><b>Sin-ha-pu-ra</b><br>Người Chăm xây dựng một vương quốc khá hùng mạnh ở ven sông Thu Bồn; kinh đô ở Trà Kiệu, Duy Xuyên, Quảng Nam ngày nay.</div></div>
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">Thế kỉ VIII</div><b>Vi-ra-pu-ra</b><br>Kinh đô dịch chuyển về phía nam, ở vùng Phan Rang, Ninh Thuận ngày nay.</div></div>
+<div class="event"><div class="dot"></div><div class="eventbox"><div class="year">Thế kỉ IX</div><b>In-đra-pu-ra</b><br>Kinh đô chuyển về Đồng Dương, Thăng Bình, Quảng Nam ngày nay.</div></div>
+</div>
+<p class="muted">Theo SGK, Tượng Lâm nằm ở phía nam quận Nhật Nam, tương ứng khu vực Quảng Nam, Quảng Ngãi và Bình Định ngày nay. citeturn1view0</p>
+</section>
+
+<section>
+<div class="head"><div class="num">03</div><h2>Kinh tế · Từ ruộng đồng đến thương mại biển</h2></div>
+<div class="grid">
+<div class="card"><div class="icon">🌾</div><h3>Nông nghiệp</h3><p>Trồng lúa nước trên các cánh đồng dọc lưu vực sông; chăn nuôi gia súc, gia cầm.</p></div>
+<div class="card"><div class="icon">🏺</div><h3>Thủ công & khai thác</h3><p>Làm đồ gốm, trang sức, dụng cụ sản xuất; khai thác trầm hương, kì nam, cá, tôm, ngọc trai và các nguồn lợi tự nhiên khác.</p></div>
+<div class="card"><div class="icon">⚓</div><h3>Buôn bán quốc tế</h3><p>Người Chăm giỏi nghề đi biển; Chăm-pa là một trung tâm buôn bán quốc tế, kết nối với Trung Hoa, Ấn Độ và các nước Ả Rập.</p></div>
+</div>
+<div class="compare" style="margin-top:15px">
+<div class="box good"><h3>📤 Sản phẩm trao đổi</h3><p>Trầm hương, kì nam, ngọc trai, ngà voi…</p></div>
+<div class="box"><h3>📥 Hàng hóa nhận về</h3><p>Thủy tinh từ Ấn Độ, mã não từ Thái Lan, gương đồng từ Trung Quốc, gốm men lam cô-ban từ các nước Ả Rập…</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><div class="num">04</div><h2>Tổ chức xã hội · Một xã hội có nhiều tầng lớp</h2></div>
+<div class="society">
+<div class="level king">👑 <b>Vua</b> · thường được đồng nhất với một vị thần, có quyền lực tối cao</div>
+<div class="level">🏛️ <b>Tề tướng + hai quan đại thần</b> · một văn, một võ</div>
+<div class="level">📜 <b>Quan đứng đầu ba cấp</b> · châu → huyện → làng</div>
+<div class="level">🧑‍🤝‍🧑 <b>Các tầng lớp xã hội</b> · tăng lữ · quý tộc · dân tự do · một bộ phận nô lệ</div>
+</div>
+</section>
+
+<section>
+<div class="head"><div class="num">05</div><h2>Văn hóa Chăm-pa · Những dấu ấn còn lại</h2></div>
+<div class="tabs">
+<button class="tab active" onclick="tab('writing',this)">🔤 Chữ viết</button>
+<button class="tab" onclick="tab('belief',this)">☀️ Tín ngưỡng & tôn giáo</button>
+<button class="tab" onclick="tab('architecture',this)">🛕 Kiến trúc & điêu khắc</button>
+<button class="tab" onclick="tab('festival',this)">🎊 Lễ hội</button>
+</div>
+<div id="writing" class="panel active"><h3>🔤 Chữ viết</h3><p>Ban đầu người Chăm dùng chữ Phạn để ghi chép. Từ thế kỉ IV, người Chăm cải biên chữ viết của người Ấn Độ để tạo thành hệ thống chữ Chăm cổ – một thành tựu văn hóa nổi bật.</p></div>
+<div id="belief" class="panel"><h3>☀️ Tín ngưỡng và tôn giáo</h3><p>Người Chăm xưa có nhiều tín ngưỡng như thờ thần Mặt Trời, thần Núi, thần Nước, thần Lúa… Đồng thời, Phật giáo và Ấn Độ giáo được du nhập từ bên ngoài.</p></div>
+<div id="architecture" class="panel"><h3>🛕 Kiến trúc và điêu khắc</h3><p>Sự đa dạng về tín ngưỡng và tôn giáo góp phần tạo nên những thành tựu đặc sắc. Tiêu biểu có Thánh địa Mỹ Sơn, Phật viện Đồng Dương và nhiều đền tháp Chăm ở ven biển miền Trung.</p></div>
+<div id="festival" class="panel"><h3>🎊 Lễ hội Ka-tê</h3><p>Ka-tê là lễ hội dân gian đặc sắc của người Chăm, gắn với việc dâng lễ vật tri ân các vị thần và tưởng nhớ tổ tiên. Nhiều lễ hội khác cũng thể hiện mong ước mùa màng bội thu, cuộc sống yên bình và hưng thịnh.</p></div>
+<div class="iconGrid" style="margin-top:15px">
+<div class="culture"><div class="bigIcon">🔤</div><b>Chữ Chăm cổ</b><p class="muted">Từ thế kỉ IV</p></div>
+<div class="culture"><div class="bigIcon">☀️</div><b>Tín ngưỡng</b><p class="muted">Mặt Trời · Núi · Nước · Lúa</p></div>
+<div class="culture"><div class="bigIcon">🛕</div><b>Mỹ Sơn</b><p class="muted">Di sản văn hóa nổi bật</p></div>
+<div class="culture"><div class="bigIcon">🎊</div><b>Ka-tê</b><p class="muted">Lễ hội dân gian</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><div class="num">06</div><h2>Thử thách tư duy · Ghép đúng “Dấu ấn Chăm-pa”</h2></div>
+<div class="grid">
+<div class="card"><div class="icon">🏺</div><h3>Lâm Ấp</h3><p class="muted">Tên gọi ban đầu của vương quốc; ra đời năm 192.</p></div>
+<div class="card"><div class="icon">⚓</div><h3>Biển & thương mại</h3><p class="muted">Giỏi nghề đi biển, kết nối Trung Hoa – Ấn Độ – Ả Rập.</p></div>
+<div class="card"><div class="icon">🔤</div><h3>Chữ Chăm cổ</h3><p class="muted">Được hình thành trên cơ sở cải biên chữ viết của người Ấn Độ.</p></div>
+<div class="card"><div class="icon">🛕</div><h3>Mỹ Sơn</h3><p class="muted">Một trong những di sản kiến trúc Chăm-pa tiêu biểu còn tồn tại.</p></div>
+<div class="card"><div class="icon">🌾</div><h3>Lúa nước</h3><p class="muted">Một hoạt động kinh tế quan trọng của cư dân Chăm-pa.</p></div>
+<div class="card"><div class="icon">🎊</div><h3>Ka-tê</h3><p class="muted">Lễ hội dân gian đặc sắc, gắn với thần linh và tổ tiên.</p></div>
+</div>
+</section>
+
+<section id="quizSection">
+<div class="head"><div class="num">07</div><h2>Thử thách · 10 giây mỗi câu</h2></div>
+<div class="quiz">
+<div class="start" id="start"><div class="icon">🧠</div><h3>Đấu trường Chăm-pa</h3><p class="muted">10 câu · 10 giây/câu · phản hồi ngay sau mỗi lựa chọn.</p><button class="btn" onclick="startQuiz()">BẮT ĐẦU</button></div>
+<div id="game" style="display:none"><b id="count">Câu 1/10</b><span style="float:right">⏱️ <b id="timer">10</b>s</span><div class="progress"><span id="bar"></span></div><div class="q" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><div class="bottom"><span id="live">Điểm: 0</span><button class="btn" id="next" style="display:none" onclick="nextQ()">Câu tiếp →</button></div></div>
+<div class="result" id="result"><div class="icon">🏆</div><h3>Hoàn thành!</h3><div class="score" id="score">0/10</div><p id="resultText"></p><button class="btn" onclick="restart()">LÀM LẠI</button> <button class="btn" onclick="finishLesson()">✓ HOÀN THÀNH BÀI 19</button></div>
+</div>
+</section>
+</main>
+<footer>HỌC LIỆU SỐ 6 · LỊCH SỬ VÀ ĐỊA LÍ · BÀI 19</footer>
+
+<script>
+function tab(id,b){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');b.classList.add('active')}
+const qs=[
+{q:'Vương quốc Chăm-pa hình thành vào năm nào?',a:['100','192','248','938'],c:1,e:'Năm 192, Khu Liên lãnh đạo người dân Tượng Lâm nổi dậy và lập nước Lâm Ấp.'},
+{q:'Tên gọi ban đầu của Vương quốc Chăm-pa là gì?',a:['Lâm Ấp','Nhật Nam','Văn Lang','Âu Lạc'],c:0,e:'Lâm Ấp là tên gọi ban đầu của Vương quốc Chăm-pa.'},
+{q:'Ai lãnh đạo cuộc nổi dậy năm 192?',a:['Ngô Quyền','Khúc Thừa Dụ','Khu Liên','Dương Đình Nghệ'],c:2,e:'Khu Liên lãnh đạo người dân Tượng Lâm nổi dậy chống ách cai trị của nhà Hán.'},
+{q:'Trước thế kỉ VIII, kinh đô Chăm-pa ở đâu?',a:['Đồng Dương','Trà Kiệu','Phan Rang','Cổ Loa'],c:1,e:'Kinh đô Sin-ha-pu-ra ở Trà Kiệu, Duy Xuyên, Quảng Nam ngày nay.'},
+{q:'Thế kỉ VIII, kinh đô Chăm-pa dịch chuyển về khu vực nào?',a:['Phan Rang, Ninh Thuận','Cổ Loa','Thanh Hóa','Bình Định'],c:0,e:'Thế kỉ VIII, kinh đô dịch chuyển về phía nam, ở vùng Phan Rang, Ninh Thuận ngày nay.'},
+{q:'Hoạt động kinh tế nào sau đây nổi bật ở Chăm-pa?',a:['Chỉ săn bắt hái lượm','Nông nghiệp, thủ công, khai thác tự nhiên và buôn bán','Chỉ trồng lúa','Chỉ khai thác vàng'],c:1,e:'Kinh tế Chăm-pa đa dạng: trồng lúa nước, chăn nuôi, thủ công, khai thác và thương mại biển.'},
+{q:'Chăm-pa kết nối buôn bán với những khu vực nào?',a:['Chỉ Trung Quốc','Trung Hoa, Ấn Độ và các nước Ả Rập','Chỉ Nhật Bản','Chỉ châu Âu'],c:1,e:'SGK nhấn mạnh vai trò trung tâm buôn bán quốc tế, kết nối Trung Hoa, Ấn Độ và các nước Ả Rập.'},
+{q:'Từ thế kỉ IV, người Chăm đã tạo ra thành tựu nào?',a:['Chữ Chăm cổ','Chữ Quốc ngữ','La tinh hóa hoàn toàn','Kim tự tháp'],c:0,e:'Người Chăm cải biên chữ viết của người Ấn Độ để tạo thành hệ thống chữ Chăm cổ.'},
+{q:'Công trình nào là một di sản văn hóa tiêu biểu của Chăm-pa?',a:['Hoàng thành Thăng Long','Thánh địa Mỹ Sơn','Cố đô Hoa Lư','Thành Cổ Loa'],c:1,e:'Thánh địa Mỹ Sơn là một di sản kiến trúc Chăm-pa tiêu biểu.'},
+{q:'Lễ hội dân gian đặc sắc của người Chăm được nêu trong bài là gì?',a:['Ka-tê','Đông chí','Đền Hùng','Gióng'],c:0,e:'Ka-tê là lễ hội dân gian đặc sắc của dân tộc Chăm, gắn với tri ân thần linh và tưởng nhớ tổ tiên.'}
+];
+let i=0,scoreN=0,timer=null,left=10,answered=false;
+function startQuiz(){document.getElementById('start').style.display='none';document.getElementById('result').style.display='none';document.getElementById('game').style.display='block';i=0;scoreN=0;render()}
+function render(){answered=false;left=10;document.getElementById('timer').textContent=10;document.getElementById('count').textContent='Câu '+(i+1)+'/10';document.getElementById('bar').style.width=(i*10)+'%';document.getElementById('live').textContent='Điểm: '+scoreN;document.getElementById('feedback').style.display='none';document.getElementById('next').style.display='none';let q=qs[i];document.getElementById('question').textContent=q.q;let box=document.getElementById('answers');box.innerHTML='';q.a.forEach((x,j)=>{let b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+j)+'. '+x;b.onclick=()=>answer(j,b);box.appendChild(b)});clearInterval(timer);timer=setInterval(()=>{left--;document.getElementById('timer').textContent=left;if(left<=0){clearInterval(timer);answer(-1,null)}},1000)}
+function answer(j,b){if(answered)return;answered=true;clearInterval(timer);let q=qs[i];document.querySelectorAll('.answer').forEach((x,k)=>{x.disabled=true;if(k===q.c)x.classList.add('correct')});let f=document.getElementById('feedback');if(j===q.c){scoreN++;if(b)b.classList.add('correct');f.innerHTML='<b>✓ Chính xác!</b> '+q.e}else{if(b)b.classList.add('wrong');f.innerHTML='<b>Chưa đúng.</b> '+q.e}f.style.display='block';document.getElementById('live').textContent='Điểm: '+scoreN;document.getElementById('next').style.display='inline-block';document.getElementById('next').textContent=i===9?'Xem kết quả →':'Câu tiếp →'}
+function nextQ(){if(!answered)return;i++;if(i>=10){showResult();return}render()}
+function showResult(){document.getElementById('game').style.display='none';document.getElementById('result').style.display='block';document.getElementById('score').textContent=scoreN+'/10';document.getElementById('resultText').textContent=scoreN>=8?'Xuất sắc! Bạn đã nắm chắc những nét chính về Chăm-pa.':scoreN>=5?'Khá tốt! Hãy xem lại timeline và phần văn hóa.':'Hãy ôn lại nội dung bài rồi thử lại nhé.'}
+function restart(){document.getElementById('result').style.display='none';startQuiz()}
+function finishLesson(){let p=JSON.parse(localStorage.getItem('hoclieu6_progress_v1')||'{}');p.h19=true;localStorage.setItem('hoclieu6_progress_v1',JSON.stringify(p));alert('Đã ghi nhận hoàn thành Bài 19!')}
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("h19");</script>
+</body>
+</html>'''

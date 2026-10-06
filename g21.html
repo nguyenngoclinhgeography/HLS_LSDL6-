@@ -1,0 +1,3871 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 21 - Biển và đại dương</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#050f1c;
+    --bg2:#081a2d;
+    --panel:#0b2035;
+    --panel2:#102b44;
+    --border:#23445e;
+    --cyan:#45ddff;
+    --blue:#238cff;
+    --blue2:#1266d4;
+    --green:#4be3b0;
+    --yellow:#ffd75c;
+    --orange:#ffad62;
+    --red:#ff6d75;
+    --text:#eaf7ff;
+    --muted:#9bb5c9;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:var(--text);
+
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% -15%,
+            #143b5c 0%,
+            #081727 38%,
+            #030a12 100%
+        );
+}
+
+button,
+a{
+    font-family:inherit;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    background:
+        rgba(4,14,27,.94);
+
+    border-bottom:
+        1px solid #1c3a53;
+
+    backdrop-filter:blur(14px);
+}
+
+.header-inner{
+    max-width:1400px;
+    margin:auto;
+
+    padding:13px 22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+
+    border-radius:13px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #11cfff,
+            #1267e8
+        );
+
+    box-shadow:
+        0 0 25px
+        rgba(35,196,255,.25);
+}
+
+.brand h1{
+    font-size:19px;
+}
+
+.brand p{
+    margin-top:3px;
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+.home-btn{
+    text-decoration:none;
+
+    color:#e7faff;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    background:#0c2238;
+
+    border:1px solid #2a5270;
+
+    transition:.2s;
+}
+
+.home-btn:hover{
+    background:#123650;
+    border-color:#43dfff;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+main{
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:
+        25px 22px 60px;
+}
+
+.hero{
+    position:relative;
+
+    overflow:hidden;
+
+    text-align:center;
+
+    padding:
+        38px 20px
+        42px;
+
+    margin-bottom:20px;
+
+    border:
+        1px solid #1d405b;
+
+    border-radius:22px;
+
+    background:
+        radial-gradient(
+            circle at 50% 110%,
+            rgba(21,151,213,.20),
+            transparent 58%
+        ),
+        linear-gradient(
+            135deg,
+            #0b2137,
+            #071727
+        );
+
+    box-shadow:
+        0 20px 55px
+        rgba(0,0,0,.25);
+}
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:420px;
+    height:420px;
+
+    right:-170px;
+    top:-210px;
+
+    border-radius:50%;
+
+    background:
+        rgba(43,201,255,.06);
+
+    pointer-events:none;
+}
+
+.tag{
+    display:inline-block;
+
+    padding:7px 14px;
+
+    border-radius:999px;
+
+    color:#72eaff;
+
+    background:
+        rgba(40,207,255,.08);
+
+    border:
+        1px solid #21536c;
+
+    font-size:12px;
+
+    margin-bottom:14px;
+}
+
+.hero h2{
+    font-size:
+        clamp(30px,4.5vw,48px);
+
+    margin-bottom:10px;
+}
+
+.hero p{
+    max-width:850px;
+
+    margin:auto;
+
+    color:var(--muted);
+
+    line-height:1.7;
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section{
+    margin-top:20px;
+}
+
+.section-title{
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:13px;
+}
+
+.section-number{
+    width:34px;
+    height:34px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #116eaa,
+            #174eb0
+        );
+
+    color:white;
+
+    font-weight:bold;
+}
+
+.section-title h3{
+    font-size:22px;
+}
+
+.section-title p{
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-top:2px;
+}
+
+
+/* =====================================================
+   MỤC TIÊU
+===================================================== */
+
+.objectives{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:13px;
+}
+
+.objective{
+    padding:18px;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d2942,
+            #091b2d
+        );
+
+    border:
+        1px solid var(--border);
+
+    transition:.2s;
+}
+
+.objective:hover{
+    transform:translateY(-3px);
+
+    border-color:#2c779a;
+}
+
+.objective .icon{
+    font-size:29px;
+
+    margin-bottom:9px;
+}
+
+.objective h4{
+    margin-bottom:6px;
+}
+
+.objective p{
+    color:#9eb7c9;
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+
+/* =====================================================
+   OCEAN
+===================================================== */
+
+.ocean-intro{
+    display:grid;
+
+    grid-template-columns:
+        1.1fr .9fr;
+
+    gap:15px;
+}
+
+.ocean-main,
+.stat-panel{
+    border-radius:17px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b2740,
+            #071a2b
+        );
+
+    padding:20px;
+}
+
+.ocean-main h4{
+    font-size:20px;
+
+    margin-bottom:9px;
+}
+
+.ocean-main p{
+    color:#a7bdcd;
+
+    line-height:1.7;
+
+    font-size:14px;
+}
+
+.ocean-stat{
+    margin-top:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    background:#071827;
+
+    border:1px solid #1c3a52;
+}
+
+.ocean-stat strong{
+    color:#55e5ff;
+
+    font-size:25px;
+}
+
+.ocean-stat span{
+    color:#9db5c7;
+
+    font-size:12px;
+}
+
+.stat-panel{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:11px;
+}
+
+.big-stat{
+    min-height:125px;
+
+    padding:17px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    border-radius:13px;
+
+    background:
+        rgba(5,21,36,.8);
+
+    border:
+        1px solid #1e405b;
+}
+
+.big-stat .number{
+    font-size:34px;
+
+    font-weight:bold;
+
+    color:#58e4ff;
+}
+
+.big-stat:nth-child(2) .number{
+    color:#70a8ff;
+}
+
+.big-stat:nth-child(3) .number{
+    color:#65e4b7;
+}
+
+.big-stat:nth-child(4) .number{
+    color:#ffd56a;
+}
+
+.big-stat span{
+    color:#91adbf;
+
+    font-size:12px;
+
+    margin-top:5px;
+}
+
+
+/* =====================================================
+   4 ĐẠI DƯƠNG
+===================================================== */
+
+.oceans-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:13px;
+}
+
+.ocean-card{
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:175px;
+
+    padding:19px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            150deg,
+            #0b2c47,
+            #081b2d
+        );
+
+    border:
+        1px solid #214863;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s,
+        border-color .2s,
+        background .2s;
+}
+
+.ocean-card::before{
+    content:"";
+
+    position:absolute;
+
+    left:-20px;
+    right:-20px;
+    bottom:-65px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    background:
+        rgba(35,161,220,.10);
+}
+
+.ocean-card:hover{
+    transform:translateY(-4px);
+
+    border-color:#35c8ed;
+
+    background:
+        linear-gradient(
+            150deg,
+            #103a5b,
+            #091d31
+        );
+}
+
+.ocean-icon{
+    font-size:34px;
+
+    margin-bottom:10px;
+}
+
+.ocean-card h4{
+    font-size:17px;
+
+    margin-bottom:6px;
+}
+
+.ocean-card p{
+    color:#9eb6c8;
+
+    font-size:12px;
+
+    line-height:1.55;
+}
+
+.ocean-card .mini{
+    position:absolute;
+
+    right:14px;
+    top:14px;
+
+    font-size:11px;
+
+    color:#61e6ff;
+}
+
+
+/* =====================================================
+   MODAL ĐẠI DƯƠNG
+===================================================== */
+
+.modal{
+    position:fixed;
+
+    inset:0;
+
+    z-index:300;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(0,5,12,.78);
+
+    backdrop-filter:blur(7px);
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(650px,100%);
+
+    padding:23px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #102d48,
+            #071827
+        );
+
+    border:
+        1px solid #2b5c78;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.5);
+}
+
+.modal-head{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:13px;
+}
+
+.modal-head h3{
+    font-size:22px;
+}
+
+.close-btn{
+    width:38px;
+    height:38px;
+
+    border-radius:10px;
+
+    padding:0;
+
+    font-size:18px;
+}
+
+.modal-box p{
+    color:#b0c5d4;
+
+    line-height:1.7;
+
+    font-size:14px;
+}
+
+.modal-list{
+    margin-top:14px;
+
+    display:grid;
+
+    gap:8px;
+}
+
+.modal-list div{
+    padding:10px 12px;
+
+    border-radius:9px;
+
+    background:#071a2b;
+
+    border:1px solid #1b3b54;
+
+    color:#bdd1dd;
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   ĐỘ MUỐI - NHIỆT ĐỘ
+===================================================== */
+
+.compare-grid{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:15px;
+}
+
+.compare-card{
+    padding:20px;
+
+    border-radius:17px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        linear-gradient(
+            145deg,
+            #0c2942,
+            #071a2c
+        );
+}
+
+.compare-card h4{
+    font-size:19px;
+
+    margin-bottom:14px;
+}
+
+.compare-card.tropical h4{
+    color:#ffcf61;
+}
+
+.compare-card.temperate h4{
+    color:#75caff;
+}
+
+.metric{
+    margin-bottom:13px;
+}
+
+.metric-head{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:7px;
+
+    font-size:12px;
+
+    color:#a8bfce;
+}
+
+.metric-head strong{
+    color:#e7f7ff;
+
+    font-size:14px;
+}
+
+.bar{
+    height:10px;
+
+    overflow:hidden;
+
+    border-radius:99px;
+
+    background:#061422;
+}
+
+.bar span{
+    display:block;
+
+    height:100%;
+
+    border-radius:99px;
+}
+
+.tropical .salt span{
+    width:90%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #e8a844,
+            #ffd55b
+        );
+}
+
+.temperate .salt span{
+    width:82%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4aa9ff,
+            #75d7ff
+        );
+}
+
+.tropical .temp span{
+    width:94%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff7d55,
+            #ffd35b
+        );
+}
+
+.temperate .temp span{
+    width:64%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #418bff,
+            #78d8ff
+        );
+}
+
+.note{
+    margin-top:13px;
+
+    padding:11px;
+
+    border-radius:10px;
+
+    background:#071827;
+
+    border:1px solid #1c3a53;
+
+    color:#9eb7c9;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+.table-wrap{
+    margin-top:15px;
+
+    overflow-x:auto;
+
+    border-radius:14px;
+
+    border:1px solid #20445e;
+}
+
+table{
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:650px;
+}
+
+th,
+td{
+    padding:12px;
+
+    text-align:left;
+
+    border-bottom:1px solid #1a394f;
+
+    font-size:13px;
+}
+
+th{
+    background:#0d2c46;
+
+    color:#6fe5ff;
+}
+
+td{
+    color:#b0c5d4;
+
+    background:#081b2c;
+}
+
+tr:last-child td{
+    border-bottom:0;
+}
+
+
+/* =====================================================
+   VẬN ĐỘNG
+===================================================== */
+
+.motion-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+.motion-card{
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:280px;
+
+    padding:20px;
+
+    border-radius:17px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        linear-gradient(
+            145deg,
+            #0c2841,
+            #071a2b
+        );
+}
+
+.motion-card.wave{
+    border-top:
+        3px solid #48d9ff;
+}
+
+.motion-card.tide{
+    border-top:
+        3px solid #8a9cff;
+}
+
+.motion-card.current{
+    border-top:
+        3px solid #4be4ae;
+}
+
+.motion-icon{
+    font-size:38px;
+
+    margin-bottom:10px;
+}
+
+.motion-card h4{
+    font-size:20px;
+
+    margin-bottom:7px;
+}
+
+.motion-card>p{
+    color:#9eb6c8;
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    min-height:64px;
+}
+
+
+/* animation wave */
+
+.wave-visual{
+    height:90px;
+
+    margin-top:15px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            #0a304a,
+            #075986
+        );
+}
+
+.wave-line{
+    position:absolute;
+
+    left:-10%;
+
+    width:120%;
+
+    height:50px;
+
+    top:30px;
+
+    border-top:
+        4px solid #72eaff;
+
+    border-radius:50%;
+
+    animation:
+        waveMove 2s
+        linear
+        infinite;
+}
+
+.wave-line::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:15px;
+
+    width:100%;
+    height:35px;
+
+    border-top:
+        3px solid
+        rgba(125,232,255,.55);
+
+    border-radius:50%;
+}
+
+@keyframes waveMove{
+
+    0%{
+        transform:
+            translateX(-40px);
+    }
+
+    100%{
+        transform:
+            translateX(40px);
+    }
+
+}
+
+
+/* tide */
+
+.tide-visual{
+    height:90px;
+
+    margin-top:15px;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:center;
+
+    gap:20px;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            #071c30,
+            #0a5c83
+        );
+
+    overflow:hidden;
+}
+
+.tide-bar{
+    width:55px;
+
+    background:
+        linear-gradient(
+            #58dfff,
+            #1267c6
+        );
+
+    border-radius:
+        8px 8px 0 0;
+
+    animation:
+        tideMove 2.4s
+        ease-in-out
+        infinite alternate;
+}
+
+.tide-bar:nth-child(1){
+    height:45px;
+}
+
+.tide-bar:nth-child(2){
+    height:75px;
+
+    animation-delay:.3s;
+}
+
+.tide-bar:nth-child(3){
+    height:55px;
+
+    animation-delay:.6s;
+}
+
+@keyframes tideMove{
+
+    from{
+        transform:
+            scaleY(.75);
+    }
+
+    to{
+        transform:
+            scaleY(1.05);
+    }
+
+}
+
+
+/* current */
+
+.current-visual{
+    height:90px;
+
+    margin-top:15px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #073e56,
+            #087e75,
+            #07526b
+        );
+}
+
+.current-arrow{
+    position:absolute;
+
+    top:39px;
+
+    left:-100px;
+
+    color:#8affd3;
+
+    font-size:25px;
+
+    letter-spacing:5px;
+
+    animation:
+        currentMove 2.5s
+        linear
+        infinite;
+}
+
+@keyframes currentMove{
+
+    from{
+        transform:
+            translateX(0);
+    }
+
+    to{
+        transform:
+            translateX(500px);
+    }
+
+}
+
+
+/* =====================================================
+   SÓNG THẦN
+===================================================== */
+
+.tsunami{
+    margin-top:15px;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #271d24,
+            #102236
+        );
+
+    border:
+        1px solid #654b56;
+
+    display:grid;
+
+    grid-template-columns:
+        auto 1fr;
+
+    gap:14px;
+
+    align-items:center;
+}
+
+.tsunami-icon{
+    width:55px;
+    height:55px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:15px;
+
+    background:#3b2630;
+
+    font-size:28px;
+}
+
+.tsunami h4{
+    color:#ffbd75;
+
+    margin-bottom:5px;
+}
+
+.tsunami p{
+    color:#aebdc8;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+
+/* =====================================================
+   FLOW SUMMARY
+===================================================== */
+
+.flow{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+
+    margin-top:16px;
+}
+
+.flow-item{
+    min-width:150px;
+
+    text-align:center;
+
+    padding:14px 12px;
+
+    border-radius:12px;
+
+    background:#091c2e;
+
+    border:1px solid #1d3d55;
+}
+
+.flow-item .icon{
+    font-size:27px;
+
+    margin-bottom:5px;
+}
+
+.flow-item strong{
+    font-size:13px;
+}
+
+.flow-arrow{
+    color:#4ddfff;
+
+    font-size:22px;
+}
+
+
+/* =====================================================
+   MEMORY
+===================================================== */
+
+.memory{
+    margin-top:20px;
+
+    padding:20px;
+
+    border-radius:17px;
+
+    border:
+        1px solid #224963;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b263e,
+            #071a2c
+        );
+}
+
+.memory h3{
+    margin-bottom:13px;
+
+    color:#70eaff;
+}
+
+.memory-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
+}
+
+.memory-item{
+    padding:13px;
+
+    border-radius:11px;
+
+    background:#071827;
+
+    border:1px solid #1b3a53;
+}
+
+.memory-item strong{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#dff8ff;
+
+    font-size:13px;
+}
+
+.memory-item span{
+    color:#8faabd;
+
+    font-size:11px;
+
+    line-height:1.5;
+}
+
+
+/* =====================================================
+   QUIZ
+===================================================== */
+
+.quiz{
+    margin-top:20px;
+
+    border-radius:19px;
+
+    overflow:hidden;
+
+    border:
+        1px solid #28506a;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b253d,
+            #061827
+        );
+
+    box-shadow:
+        0 18px 45px
+        rgba(0,0,0,.22);
+}
+
+.quiz-head{
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    border-bottom:1px solid #1e4058;
+}
+
+.quiz-head h3{
+    font-size:20px;
+}
+
+.quiz-head p{
+    color:#92adbf;
+
+    font-size:12px;
+
+    margin-top:4px;
+}
+
+.timer{
+    min-width:65px;
+
+    padding:10px 12px;
+
+    text-align:center;
+
+    border-radius:10px;
+
+    color:#72eaff;
+
+    background:#08283b;
+
+    border:1px solid #205873;
+
+    font-weight:bold;
+}
+
+.quiz-body{
+    padding:20px;
+}
+
+.quiz-start{
+    text-align:center;
+
+    padding:22px 5px;
+}
+
+.quiz-start .big-icon{
+    font-size:50px;
+
+    margin-bottom:10px;
+}
+
+.quiz-start p{
+    color:#9fb7c8;
+
+    max-width:620px;
+
+    margin:
+        0 auto 17px;
+
+    line-height:1.7;
+
+    font-size:13px;
+}
+
+.start-btn{
+    padding:
+        12px 24px;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b8bb5,
+            #155fd0
+        );
+
+    border:
+        1px solid #39d9ff;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.quiz-question{
+    display:none;
+}
+
+.progress-row{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:13px;
+
+    color:#9db6c8;
+
+    font-size:12px;
+}
+
+.progress-bar{
+    height:7px;
+
+    flex:1;
+
+    background:#061523;
+
+    border-radius:99px;
+
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+
+    width:0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #28cfff,
+            #2474ff
+        );
+
+    transition:.25s;
+}
+
+.question-text{
+    font-size:19px;
+
+    line-height:1.5;
+
+    margin-bottom:15px;
+}
+
+.answers{
+    display:grid;
+
+    gap:9px;
+}
+
+.answer{
+    width:100%;
+
+    text-align:left;
+
+    padding:13px 14px;
+
+    border-radius:11px;
+
+    border:1px solid #24465e;
+
+    background:#091d2e;
+
+    color:#cfe3ed;
+
+    cursor:pointer;
+
+    transition:.18s;
+
+    font-size:13px;
+}
+
+.answer:hover:not(:disabled){
+    background:#0d2c44;
+
+    border-color:#3aa8cf;
+}
+
+.answer.correct{
+    background:#0b3b36;
+
+    border-color:#43dcb5;
+
+    color:#b8ffea;
+}
+
+.answer.wrong{
+    background:#3d2028;
+
+    border-color:#ed6876;
+
+    color:#ffd0d5;
+}
+
+.answer:disabled{
+    cursor:default;
+}
+
+.feedback{
+    min-height:42px;
+
+    margin-top:13px;
+
+    padding:10px 12px;
+
+    border-radius:10px;
+
+    background:#071827;
+
+    border:1px solid #1b394f;
+
+    color:#9eb7c9;
+
+    font-size:12px;
+
+    line-height:1.55;
+}
+
+.next-btn{
+    margin-top:13px;
+
+    padding:10px 16px;
+
+    border-radius:9px;
+
+    border:1px solid #2a607c;
+
+    background:#10334c;
+
+    color:#e6f8ff;
+
+    cursor:pointer;
+
+    display:none;
+}
+
+
+/* RESULT */
+
+.result{
+    display:none;
+
+    text-align:center;
+
+    padding:15px 5px 5px;
+}
+
+.result-icon{
+    font-size:55px;
+
+    margin-bottom:7px;
+}
+
+.result h3{
+    font-size:24px;
+
+    margin-bottom:5px;
+}
+
+.score{
+    font-size:42px;
+
+    font-weight:bold;
+
+    color:#60e4ff;
+
+    margin:7px 0;
+}
+
+.result p{
+    color:#9db6c8;
+
+    font-size:13px;
+
+    margin-bottom:17px;
+}
+
+.result-actions{
+    display:flex;
+
+    justify-content:center;
+
+    gap:9px;
+
+    flex-wrap:wrap;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer{
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#617d91;
+
+    font-size:11px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1050px){
+
+    .oceans-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .motion-grid{
+        grid-template-columns:
+            1fr;
+    }
+
+    .memory-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:800px){
+
+    .objectives,
+    .ocean-intro,
+    .compare-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stat-panel{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    main{
+        padding:
+            15px 12px 40px;
+    }
+
+    .header-inner{
+        padding:
+            11px 12px;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .brand p{
+        display:none;
+    }
+
+    .oceans-grid{
+        grid-template-columns:1fr;
+    }
+
+    .memory-grid{
+        grid-template-columns:1fr;
+    }
+
+    .flow-arrow{
+        transform:rotate(90deg);
+    }
+
+    .quiz-head{
+        align-items:flex-start;
+    }
+
+    .question-text{
+        font-size:17px;
+    }
+
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+<div class="header-inner">
+
+    <div class="brand">
+
+        <div class="logo">
+            🌊
+        </div>
+
+        <div>
+
+            <h1>
+                Bài 21 - Biển và đại dương
+            </h1>
+
+            <p>
+                Địa lí 6 · Kết nối tri thức với cuộc sống
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <a
+        href="index.html"
+        class="home-btn"
+    >
+        🏠 Trang chủ
+    </a>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="tag">
+        🌊 CHƯƠNG 5 · NƯỚC TRÊN TRÁI ĐẤT
+    </div>
+
+    <h2>
+        BÀI 21 - Biển và đại dương
+    </h2>
+
+    <p>
+        Khám phá đại dương thế giới,
+        tìm hiểu sự khác biệt về độ muối,
+        nhiệt độ nước biển và ba dạng vận động
+        quan trọng: <strong>sóng biển – thủy triều – dòng biển</strong>.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     MỤC TIÊU
+===================================================== -->
+
+<section class="section">
+
+<div class="section-title">
+
+    <div class="section-number">
+        🎯
+    </div>
+
+    <div>
+        <h3>
+            Mục tiêu bài học
+        </h3>
+
+        <p>
+            Sau bài học, em có thể...
+        </p>
+    </div>
+
+</div>
+
+
+<div class="objectives">
+
+    <div class="objective">
+
+        <div class="icon">
+            🗺️
+        </div>
+
+        <h4>
+            Xác định đại dương
+        </h4>
+
+        <p>
+            Xác định được vị trí các đại dương
+            trên bản đồ thế giới.
+        </p>
+
+    </div>
+
+
+    <div class="objective">
+
+        <div class="icon">
+            🌡️
+        </div>
+
+        <h4>
+            So sánh nước biển
+        </h4>
+
+        <p>
+            Nêu được sự khác biệt về nhiệt độ
+            và độ muối giữa vùng biển nhiệt đới
+            và vùng biển ôn đới.
+        </p>
+
+    </div>
+
+
+    <div class="objective">
+
+        <div class="icon">
+            🌊
+        </div>
+
+        <h4>
+            Hiểu vận động biển
+        </h4>
+
+        <p>
+            Trình bày được các hiện tượng
+            sóng biển, thủy triều và dòng biển.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     1. ĐẠI DƯƠNG THẾ GIỚI
+===================================================== -->
+
+<section class="section">
+
+<div class="section-title">
+
+    <div class="section-number">
+        1
+    </div>
+
+    <div>
+        <h3>
+            Đại dương thế giới
+        </h3>
+
+        <p>
+            Lớp nước liên tục bao phủ hơn 70% bề mặt Trái Đất
+        </p>
+    </div>
+
+</div>
+
+
+<div class="ocean-intro">
+
+    <div class="ocean-main">
+
+        <h4>
+            🌍 Đại dương thế giới là gì?
+        </h4>
+
+        <p>
+            Đại dương thế giới là lớp nước liên tục,
+            bao phủ hơn 70% diện tích bề mặt Trái Đất.
+            Đại dương thế giới gồm bốn đại dương:
+            <strong>Thái Bình Dương,
+            Đại Tây Dương,
+            Ấn Độ Dương và Bắc Băng Dương.</strong>
+        </p>
+
+
+        <div class="ocean-stat">
+
+            <strong>
+                70%+
+            </strong>
+
+            <span>
+                diện tích bề mặt Trái Đất
+                được bao phủ bởi đại dương thế giới.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-panel">
+
+        <div class="big-stat">
+
+            <div class="number">
+                4
+            </div>
+
+            <span>
+                đại dương
+            </span>
+
+        </div>
+
+
+        <div class="big-stat">
+
+            <div class="number">
+                70%+
+            </div>
+
+            <span>
+                diện tích bề mặt
+            </span>
+
+        </div>
+
+
+        <div class="big-stat">
+
+            <div class="number">
+                97,5%
+            </div>
+
+            <span>
+                khối nước mặn trên Trái Đất
+            </span>
+
+        </div>
+
+
+        <div class="big-stat">
+
+            <div class="number">
+                35‰
+            </div>
+
+            <span>
+                độ muối trung bình
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div style="height:14px"></div>
+
+
+<div class="oceans-grid">
+
+    <div
+        class="ocean-card"
+        data-ocean="pacific"
+    >
+
+        <span class="mini">
+            LỚN NHẤT
+        </span>
+
+        <div class="ocean-icon">
+            🌊
+        </div>
+
+        <h4>
+            Thái Bình Dương
+        </h4>
+
+        <p>
+            Nằm giữa châu Á – Ô-xtrây-li-a
+            và châu Mỹ.
+        </p>
+
+    </div>
+
+
+    <div
+        class="ocean-card"
+        data-ocean="atlantic"
+    >
+
+        <span class="mini">
+            ĐẠI DƯƠNG
+        </span>
+
+        <div class="ocean-icon">
+            🌊
+        </div>
+
+        <h4>
+            Đại Tây Dương
+        </h4>
+
+        <p>
+            Nằm giữa châu Mỹ và châu Âu,
+            châu Phi.
+        </p>
+
+    </div>
+
+
+    <div
+        class="ocean-card"
+        data-ocean="indian"
+    >
+
+        <span class="mini">
+            NHIỆT ĐỚI
+        </span>
+
+        <div class="ocean-icon">
+            🌊
+        </div>
+
+        <h4>
+            Ấn Độ Dương
+        </h4>
+
+        <p>
+            Nằm chủ yếu giữa châu Phi,
+            châu Á và Ô-xtrây-li-a.
+        </p>
+
+    </div>
+
+
+    <div
+        class="ocean-card"
+        data-ocean="arctic"
+    >
+
+        <span class="mini">
+            CỰC BẮC
+        </span>
+
+        <div class="ocean-icon">
+            🧊
+        </div>
+
+        <h4>
+            Bắc Băng Dương
+        </h4>
+
+        <p>
+            Bao quanh khu vực Bắc Cực,
+            tiếp giáp Bắc Mỹ và Á – Âu.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="oceanModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-head">
+
+            <h3 id="modalTitle">
+                Đại dương
+            </h3>
+
+            <button
+                class="close-btn"
+                id="closeModal"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <p id="modalText"></p>
+
+        <div
+            class="modal-list"
+            id="modalList"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     2. ĐỘ MUỐI VÀ NHIỆT ĐỘ
+===================================================== -->
+
+<section class="section">
+
+<div class="section-title">
+
+    <div class="section-number">
+        2
+    </div>
+
+    <div>
+        <h3>
+            Độ muối và nhiệt độ của nước biển
+        </h3>
+
+        <p>
+            Nước biển không giống nhau ở mọi nơi
+        </p>
+    </div>
+
+</div>
+
+
+<div class="compare-grid">
+
+
+    <!-- NHIỆT ĐỚI -->
+
+    <div class="compare-card tropical">
+
+        <h4>
+            ☀️ Vùng biển nhiệt đới
+        </h4>
+
+
+        <div class="metric">
+
+            <div class="metric-head">
+
+                <span>
+                    Độ muối trung bình
+                </span>
+
+                <strong>
+                    35 – 36‰
+                </strong>
+
+            </div>
+
+            <div class="bar salt">
+                <span></span>
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-head">
+
+                <span>
+                    Nhiệt độ mặt biển
+                </span>
+
+                <strong>
+                    24 – 27°C
+                </strong>
+
+            </div>
+
+            <div class="bar temp">
+                <span></span>
+            </div>
+
+        </div>
+
+
+        <div class="note">
+            🔎 Nhiệt độ cao hơn do nhận được
+            lượng bức xạ Mặt Trời lớn.
+            Độ muối thường cao hơn do
+            lượng bốc hơi lớn.
+        </div>
+
+    </div>
+
+
+    <!-- ÔN ĐỚI -->
+
+    <div class="compare-card temperate">
+
+        <h4>
+            ❄️ Vùng biển ôn đới
+        </h4>
+
+
+        <div class="metric">
+
+            <div class="metric-head">
+
+                <span>
+                    Độ muối trung bình
+                </span>
+
+                <strong>
+                    34 – 35‰
+                </strong>
+
+            </div>
+
+            <div class="bar salt">
+                <span></span>
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-head">
+
+                <span>
+                    Nhiệt độ mặt biển
+                </span>
+
+                <strong>
+                    16 – 18°C
+                </strong>
+
+            </div>
+
+            <div class="bar temp">
+                <span></span>
+            </div>
+
+        </div>
+
+
+        <div class="note">
+            🔎 Nhiệt độ thấp hơn vùng nhiệt đới.
+            Độ muối trung bình cũng thấp hơn
+            vùng biển nhiệt đới.
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+    <th>
+        Tiêu chí
+    </th>
+
+    <th>
+        Biển nhiệt đới
+    </th>
+
+    <th>
+        Biển ôn đới
+    </th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+    <td>
+        🌡️ Nhiệt độ mặt biển
+    </td>
+
+    <td>
+        Khoảng 24 – 27°C
+    </td>
+
+    <td>
+        Khoảng 16 – 18°C
+    </td>
+
+</tr>
+
+
+<tr>
+
+    <td>
+        🧂 Độ muối
+    </td>
+
+    <td>
+        Khoảng 35 – 36‰
+    </td>
+
+    <td>
+        Khoảng 34 – 35‰
+    </td>
+
+</tr>
+
+
+<tr>
+
+    <td>
+        ☀️ Đặc điểm
+    </td>
+
+    <td>
+        Nóng hơn, bốc hơi mạnh
+    </td>
+
+    <td>
+        Mát hơn, bốc hơi ít hơn
+    </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     3. VẬN ĐỘNG
+===================================================== -->
+
+<section class="section">
+
+<div class="section-title">
+
+    <div class="section-number">
+        3
+    </div>
+
+    <div>
+        <h3>
+            Một số dạng vận động của nước biển
+        </h3>
+
+        <p>
+            Sóng biển · Thủy triều · Dòng biển
+        </p>
+    </div>
+
+</div>
+
+
+<div class="motion-grid">
+
+
+    <!-- SÓNG -->
+
+    <div class="motion-card wave">
+
+        <div class="motion-icon">
+            🌊
+        </div>
+
+        <h4>
+            Sóng biển
+        </h4>
+
+        <p>
+            Là sự dao động của nước biển
+            tại chỗ, chủ yếu được hình thành
+            do tác động của gió.
+        </p>
+
+
+        <div class="wave-visual">
+
+            <div class="wave-line"></div>
+
+        </div>
+
+
+        <div class="note">
+
+            💨 Gió thổi càng mạnh và
+            thời gian càng lâu thì sóng
+            càng lớn.
+
+        </div>
+
+    </div>
+
+
+    <!-- THỦY TRIỀU -->
+
+    <div class="motion-card tide">
+
+        <div class="motion-icon">
+            🌙
+        </div>
+
+        <h4>
+            Thủy triều
+        </h4>
+
+        <p>
+            Là hiện tượng nước biển dâng cao
+            và hạ thấp theo quy luật hằng ngày.
+        </p>
+
+
+        <div class="tide-visual">
+
+            <div class="tide-bar"></div>
+
+            <div class="tide-bar"></div>
+
+            <div class="tide-bar"></div>
+
+        </div>
+
+
+        <div class="note">
+
+            🌙 Hình thành do lực hút của
+            Mặt Trăng và Mặt Trời cùng với
+            lực li tâm của Trái Đất.
+
+        </div>
+
+    </div>
+
+
+    <!-- DÒNG BIỂN -->
+
+    <div class="motion-card current">
+
+        <div class="motion-icon">
+            ↔️
+        </div>
+
+        <h4>
+            Dòng biển
+        </h4>
+
+        <p>
+            Là các dòng nước chảy trong biển
+            và đại dương. Có dòng biển nóng
+            và dòng biển lạnh.
+        </p>
+
+
+        <div class="current-visual">
+
+            <div class="current-arrow">
+                → → → → → →
+            </div>
+
+        </div>
+
+
+        <div class="note">
+
+            🌬️ Dòng biển được hình thành
+            chủ yếu do tác động của các loại
+            gió thường xuyên trên bề mặt
+            Trái Đất.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SÓNG THẦN -->
+
+<div class="tsunami">
+
+    <div class="tsunami-icon">
+        ⚠️
+    </div>
+
+    <div>
+
+        <h4>
+            Sóng thần – hiện tượng cần đặc biệt lưu ý
+        </h4>
+
+        <p>
+            Khi ngoài khơi xảy ra động đất hoặc
+            núi lửa ngầm, có thể xuất hiện những
+            sóng dài đơn độc, di chuyển nhanh.
+            Khi vào đến bờ, sóng có thể cao trên
+            20 m và gây thiệt hại nặng nề.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PHÂN BIỆT
+===================================================== -->
+
+<section class="section">
+
+<div class="section-title">
+
+    <div class="section-number">
+        🧠
+    </div>
+
+    <div>
+        <h3>
+            Phân biệt 3 dạng vận động
+        </h3>
+
+        <p>
+            Mẹo nhớ nhanh
+        </p>
+    </div>
+
+</div>
+
+
+<div class="flow">
+
+    <div class="flow-item">
+
+        <div class="icon">
+            🌊
+        </div>
+
+        <strong>
+            SÓNG
+        </strong>
+
+        <br>
+
+        <span style="color:#8faabd;font-size:11px">
+            Dao động của nước
+        </span>
+
+    </div>
+
+
+    <div class="flow-arrow">
+        →
+    </div>
+
+
+    <div class="flow-item">
+
+        <div class="icon">
+            🌙
+        </div>
+
+        <strong>
+            THỦY TRIỀU
+        </strong>
+
+        <br>
+
+        <span style="color:#8faabd;font-size:11px">
+            Dâng – hạ theo quy luật
+        </span>
+
+    </div>
+
+
+    <div class="flow-arrow">
+        →
+    </div>
+
+
+    <div class="flow-item">
+
+        <div class="icon">
+            ↔️
+        </div>
+
+        <strong>
+            DÒNG BIỂN
+        </strong>
+
+        <br>
+
+        <span style="color:#8faabd;font-size:11px">
+            Dòng nước chảy
+        </span>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     DÒNG BIỂN NÓNG / LẠNH
+===================================================== -->
+
+<section class="section">
+
+<div class="section-title">
+
+    <div class="section-number">
+        🌡️
+    </div>
+
+    <div>
+        <h3>
+            Dòng biển nóng và dòng biển lạnh
+        </h3>
+
+        <p>
+            Ảnh hưởng đến khí hậu ven biển
+        </p>
+    </div>
+
+</div>
+
+
+<div class="compare-grid">
+
+    <div class="compare-card tropical">
+
+        <h4>
+            🔥 Dòng biển nóng
+        </h4>
+
+        <p style="
+            color:#a9bdcb;
+            line-height:1.7;
+            font-size:13px;
+        ">
+
+            Là dòng biển có nhiệt độ cao hơn
+            so với nước biển xung quanh.
+            Thường chảy từ vĩ độ thấp hơn
+            về vĩ độ cao hơn.
+
+        </p>
+
+        <div class="note">
+
+            🌧️ Vùng ven biển có dòng biển nóng
+            chảy qua thường có khí hậu
+            ấm áp và mưa nhiều hơn.
+
+        </div>
+
+    </div>
+
+
+    <div class="compare-card temperate">
+
+        <h4>
+            ❄️ Dòng biển lạnh
+        </h4>
+
+        <p style="
+            color:#a9bdcb;
+            line-height:1.7;
+            font-size:13px;
+        ">
+
+            Là dòng biển có nhiệt độ thấp hơn
+            so với nước biển xung quanh.
+            Thường chảy từ vĩ độ cao hơn
+            về vĩ độ thấp hơn.
+
+        </p>
+
+        <div class="note">
+
+            🌵 Vùng ven biển có dòng biển lạnh
+            chảy qua thường có khí hậu
+            khô hơn.
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     GHI NHỚ
+===================================================== -->
+
+<section class="memory">
+
+    <h3>
+        🧠 Ghi nhớ nhanh 
+    </h3>
+    <div class="memory-grid">
+
+        <div class="memory-item">
+
+            <strong>
+                🌍 Đại dương
+            </strong>
+
+            <span>
+                4 đại dương:
+                Thái Bình Dương,
+                Đại Tây Dương,
+                Ấn Độ Dương,
+                Bắc Băng Dương.
+            </span>
+
+        </div>
+
+
+        <div class="memory-item">
+
+            <strong>
+                🧂 Độ muối
+            </strong>
+
+            <span>
+                Trung bình khoảng 35‰;
+                thay đổi theo lượng mưa,
+                nước sông và bốc hơi.
+            </span>
+
+        </div>
+
+
+        <div class="memory-item">
+
+            <strong>
+                🌡️ Nhiệt độ
+            </strong>
+
+            <span>
+                Nhiệt độ mặt biển thay đổi
+                theo vĩ độ và các điều kiện
+                khác.
+            </span>
+
+        </div>
+
+
+        <div class="memory-item">
+
+            <strong>
+                🌊 Vận động
+            </strong>
+
+            <span>
+                Sóng – thủy triều –
+                dòng biển.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUIZ
+===================================================== -->
+
+<section class="quiz">
+
+<div class="quiz-head">
+
+    <div>
+
+        <h3>
+            🎮 Thử thách kiến thức
+        </h3>
+
+        <p>
+            10 câu hỏi · 10 giây mỗi câu
+        </p>
+
+    </div>
+
+    <div
+        class="timer"
+        id="timer"
+    >
+        10s
+    </div>
+
+</div>
+
+
+<div class="quiz-body">
+
+
+<!-- START -->
+
+<div
+    class="quiz-start"
+    id="quizStart"
+>
+
+    <div class="big-icon">
+        🌊
+    </div>
+
+    <p>
+        Hãy kiểm tra xem bạn đã nắm được
+        những kiến thức quan trọng của
+        Bài 21 chưa nhé!
+        Mỗi câu có 10 giây để trả lời.
+    </p>
+
+    <button
+        class="start-btn"
+        id="startQuiz"
+    >
+        🚀 Bắt đầu thử thách
+    </button>
+
+</div>
+
+
+<!-- QUESTION -->
+
+<div
+    class="quiz-question"
+    id="quizQuestion"
+>
+
+    <div class="progress-row">
+
+        <span id="questionCount">
+            Câu 1/10
+        </span>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="progressFill"
+            ></div>
+
+        </div>
+
+        <span id="scoreSmall">
+            0 điểm
+        </span>
+
+    </div>
+
+
+    <div
+        class="question-text"
+        id="questionText"
+    ></div>
+
+
+    <div
+        class="answers"
+        id="answers"
+    ></div>
+
+
+    <div
+        class="feedback"
+        id="feedback"
+    ></div>
+
+
+    <button
+        class="next-btn"
+        id="nextBtn"
+    >
+        Câu tiếp theo →
+    </button>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div
+    class="result"
+    id="quizResult"
+>
+
+    <div
+        class="result-icon"
+        id="resultIcon"
+    >
+        🏆
+    </div>
+
+    <h3>
+        Hoàn thành thử thách!
+    </h3>
+
+    <div
+        class="score"
+        id="finalScore"
+    >
+        0/10
+    </div>
+
+    <p id="resultText">
+        ...
+    </p>
+
+
+    <div class="result-actions">
+
+        <button
+            class="start-btn"
+            id="retryQuiz"
+        >
+            🔄 Làm lại
+        </button>
+
+        <button
+            class="home-btn"
+            id="finishLesson"
+        >
+            ✅ Hoàn thành bài học
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+    Học liệu số Địa lí 6 · Bài 21: Biển và đại dương
+</footer>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   OCEAN MODAL
+===================================================== */
+
+const oceanData={
+
+    pacific:{
+        title:"🌊 Thái Bình Dương",
+
+        text:
+        "Thái Bình Dương là một trong bốn đại dương của thế giới và là đại dương lớn nhất.",
+
+        list:[
+            "📍 Nằm giữa châu Á – Ô-xtrây-li-a và châu Mỹ.",
+            "🌏 Phía bắc thông với Bắc Băng Dương.",
+            "🌊 Có diện tích lớn nhất trong các đại dương."
+        ]
+    },
+
+
+    atlantic:{
+        title:"🌊 Đại Tây Dương",
+
+        text:
+        "Đại Tây Dương nằm giữa châu Mỹ với châu Âu và châu Phi.",
+
+        list:[
+            "📍 Phía đông giáp châu Âu và châu Phi.",
+            "📍 Phía tây giáp châu Mỹ.",
+            "🌊 Là một trong bốn đại dương của thế giới."
+        ]
+    },
+
+
+    indian:{
+        title:"🌊 Ấn Độ Dương",
+
+        text:
+        "Ấn Độ Dương nằm chủ yếu giữa châu Phi, châu Á và Ô-xtrây-li-a.",
+
+        list:[
+            "📍 Phía bắc giáp châu Á.",
+            "📍 Phía tây giáp châu Phi.",
+            "📍 Phía đông giáp Ô-xtrây-li-a."
+        ]
+    },
+
+
+    arctic:{
+        title:"🧊 Bắc Băng Dương",
+
+        text:
+        "Bắc Băng Dương nằm quanh khu vực Bắc Cực.",
+
+        list:[
+            "📍 Nằm ở cực Bắc Trái Đất.",
+            "🧊 Có điều kiện tự nhiên lạnh giá.",
+            "🌍 Tiếp giáp khu vực phía bắc của Bắc Mỹ và Á – Âu."
+        ]
+    }
+
+};
+
+
+const modal=
+    document.getElementById(
+        "oceanModal"
+    );
+
+const modalTitle=
+    document.getElementById(
+        "modalTitle"
+    );
+
+const modalText=
+    document.getElementById(
+        "modalText"
+    );
+
+const modalList=
+    document.getElementById(
+        "modalList"
+    );
+
+
+document
+.querySelectorAll(".ocean-card")
+.forEach(card=>{
+
+    card.addEventListener(
+        "click",
+        ()=>{
+
+            const data=
+                oceanData[
+                    card.dataset.ocean
+                ];
+
+            modalTitle.textContent=
+                data.title;
+
+            modalText.textContent=
+                data.text;
+
+            modalList.innerHTML=
+                data.list
+                .map(
+                    item=>
+                    `<div>${item}</div>`
+                )
+                .join("");
+
+            modal.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+});
+
+
+document
+.getElementById("closeModal")
+.addEventListener(
+    "click",
+    ()=>{
+        modal.classList.remove(
+            "show"
+        );
+    }
+);
+
+
+modal.addEventListener(
+    "click",
+    e=>{
+
+        if(
+            e.target===modal
+        ){
+
+            modal.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   QUIZ
+===================================================== */
+
+const questions=[
+
+{
+    q:
+    "Đại dương thế giới bao phủ khoảng bao nhiêu diện tích bề mặt Trái Đất?",
+
+    options:[
+        "Khoảng 30%",
+        "Khoảng 50%",
+        "Hơn 70%",
+        "Khoảng 90%"
+    ],
+
+    answer:2,
+
+    explain:
+    "Đại dương thế giới là lớp nước liên tục, bao phủ hơn 70% diện tích bề mặt Trái Đất."
+},
+
+
+{
+    q:
+    "Trên thế giới có bao nhiêu đại dương?",
+
+    options:[
+        "2",
+        "3",
+        "4",
+        "5"
+    ],
+
+    answer:2,
+
+    explain:
+    "Theo nội dung bài học, có 4 đại dương: Thái Bình Dương, Đại Tây Dương, Ấn Độ Dương và Bắc Băng Dương."
+},
+
+
+{
+    q:
+    "Độ muối trung bình của nước đại dương là khoảng bao nhiêu?",
+
+    options:[
+        "15‰",
+        "25‰",
+        "35‰",
+        "45‰"
+    ],
+
+    answer:2,
+
+    explain:
+    "Độ muối trung bình của nước đại dương khoảng 35‰."
+},
+
+
+{
+    q:
+    "Nhiệt độ trung bình nước biển trên mặt ở vùng nhiệt đới khoảng bao nhiêu?",
+
+    options:[
+        "5 – 8°C",
+        "16 – 18°C",
+        "24 – 27°C",
+        "30 – 35°C"
+    ],
+
+    answer:2,
+
+    explain:
+    "Ở vùng nhiệt đới, nhiệt độ trung bình nước biển trên mặt dao động khoảng 24 – 27°C."
+},
+
+
+{
+    q:
+    "Sóng biển chủ yếu được hình thành do tác động của yếu tố nào?",
+
+    options:[
+        "Gió",
+        "Mưa",
+        "Dòng sông",
+        "Núi lửa trên đất liền"
+    ],
+
+    answer:0,
+
+    explain:
+    "Sóng biển chủ yếu được hình thành do tác động của gió."
+},
+
+
+{
+    q:
+    "Hiện tượng nước biển dâng cao và hạ thấp theo quy luật hằng ngày gọi là gì?",
+
+    options:[
+        "Sóng biển",
+        "Thủy triều",
+        "Dòng biển",
+        "Sóng thần"
+    ],
+
+    answer:1,
+
+    explain:
+    "Thủy triều là hiện tượng nước biển dâng cao và hạ thấp theo quy luật hằng ngày."
+},
+
+
+{
+    q:
+    "Thủy triều hình thành chủ yếu do lực hút của những thiên thể nào?",
+
+    options:[
+        "Trái Đất và Sao Hỏa",
+        "Mặt Trăng và Mặt Trời",
+        "Sao Kim và Mặt Trăng",
+        "Mặt Trời và Sao Mộc"
+    ],
+
+    answer:1,
+
+    explain:
+    "Thủy triều hình thành do lực hút của Mặt Trăng và Mặt Trời cùng với lực li tâm của Trái Đất."
+},
+
+
+{
+    q:
+    "Dòng biển được chia thành hai loại cơ bản nào?",
+
+    options:[
+        "Dòng biển lớn và nhỏ",
+        "Dòng biển nông và sâu",
+        "Dòng biển nóng và lạnh",
+        "Dòng biển ngày và đêm"
+    ],
+
+    answer:2,
+
+    explain:
+    "Có hai loại dòng biển cơ bản: dòng biển nóng và dòng biển lạnh."
+},
+
+
+{
+    q:
+    "Dòng biển được hình thành chủ yếu do tác động của yếu tố nào?",
+
+    options:[
+        "Các loại gió thường xuyên",
+        "Núi lửa",
+        "Động đất trên đất liền",
+        "Mưa lớn"
+    ],
+
+    answer:0,
+
+    explain:
+    "Dòng biển được hình thành chủ yếu do tác động của các loại gió thường xuyên trên bề mặt Trái Đất."
+},
+
+
+{
+    q:
+    "Hiện tượng sóng dài đơn độc có thể xuất hiện khi ngoài khơi xảy ra động đất hoặc núi lửa ngầm được gọi là gì?",
+
+    options:[
+        "Thủy triều",
+        "Dòng biển",
+        "Sóng thần",
+        "Sóng thường"
+    ],
+
+    answer:2,
+
+    explain:
+    "Động đất hoặc núi lửa ngầm ngoài khơi có thể tạo ra sóng thần."
+}
+
+];
+
+
+let currentQuestion=0;
+
+let score=0;
+
+let timer=10;
+
+let timerInterval=null;
+
+let answered=false;
+
+
+const quizStart=
+    document.getElementById(
+        "quizStart"
+    );
+
+const quizQuestion=
+    document.getElementById(
+        "quizQuestion"
+    );
+
+const quizResult=
+    document.getElementById(
+        "quizResult"
+    );
+
+const questionText=
+    document.getElementById(
+        "questionText"
+    );
+
+const answers=
+    document.getElementById(
+        "answers"
+    );
+
+const feedback=
+    document.getElementById(
+        "feedback"
+    );
+
+const nextBtn=
+    document.getElementById(
+        "nextBtn"
+    );
+
+const timerEl=
+    document.getElementById(
+        "timer"
+    );
+
+const questionCount=
+    document.getElementById(
+        "questionCount"
+    );
+
+const scoreSmall=
+    document.getElementById(
+        "scoreSmall"
+    );
+
+const progressFill=
+    document.getElementById(
+        "progressFill"
+    );
+
+
+function startQuiz(){
+
+    currentQuestion=0;
+
+    score=0;
+
+    quizStart.style.display=
+        "none";
+
+    quizResult.style.display=
+        "none";
+
+    quizQuestion.style.display=
+        "block";
+
+    showQuestion();
+
+}
+
+
+document
+.getElementById("startQuiz")
+.addEventListener(
+    "click",
+    startQuiz
+);
+
+
+function showQuestion(){
+
+    clearInterval(
+        timerInterval
+    );
+
+    answered=false;
+
+    const q=
+        questions[
+            currentQuestion
+        ];
+
+
+    questionCount.textContent=
+        `Câu ${currentQuestion+1}/10`;
+
+
+    scoreSmall.textContent=
+        `${score} điểm`;
+
+
+    progressFill.style.width=
+        `${(currentQuestion/questions.length)*100}%`;
+
+
+    questionText.textContent=
+        q.q;
+
+
+    answers.innerHTML="";
+
+
+    q.options.forEach(
+        (option,index)=>{
+
+            const btn=
+                document.createElement(
+                    "button"
+                );
+
+            btn.className=
+                "answer";
+
+            btn.textContent=
+                option;
+
+            btn.addEventListener(
+                "click",
+                ()=>{
+                    selectAnswer(
+                        index
+                    );
+                }
+            );
+
+            answers.appendChild(
+                btn
+            );
+
+        }
+    );
+
+
+    feedback.textContent=
+        "Hãy chọn đáp án đúng.";
+
+
+    nextBtn.style.display=
+        "none";
+
+
+    startTimer();
+
+}
+
+
+function startTimer(){
+
+    timer=10;
+
+    timerEl.textContent=
+        "10s";
+
+
+    timerInterval=
+        setInterval(
+            ()=>{
+
+                timer--;
+
+                timerEl.textContent=
+                    `${timer}s`;
+
+
+                if(timer<=0){
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    if(!answered){
+
+                        selectAnswer(
+                            -1
+                        );
+
+                    }
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+function selectAnswer(index){
+
+    if(answered)
+        return;
+
+    answered=true;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const q=
+        questions[
+            currentQuestion
+        ];
+
+
+    const buttons=
+        document.querySelectorAll(
+            ".answer"
+        );
+
+
+    buttons.forEach(
+        (btn,i)=>{
+
+            btn.disabled=true;
+
+
+            if(
+                i===q.answer
+            ){
+
+                btn.classList.add(
+                    "correct"
+                );
+
+            }
+
+
+            if(
+                i===index &&
+                i!==q.answer
+            ){
+
+                btn.classList.add(
+                    "wrong"
+                );
+
+            }
+
+        }
+    );
+
+
+    if(
+        index===q.answer
+    ){
+
+        score++;
+
+        feedback.innerHTML=
+            `✅ <strong>Chính xác!</strong> ${q.explain}`;
+
+    }
+    else if(
+        index===-1
+    ){
+
+        feedback.innerHTML=
+            `⏰ <strong>Hết thời gian!</strong>
+             Đáp án đúng là
+             <strong>${q.options[q.answer]}</strong>.
+             ${q.explain}`;
+
+    }
+    else{
+
+        feedback.innerHTML=
+            `❌ <strong>Chưa chính xác.</strong>
+             Đáp án đúng là
+             <strong>${q.options[q.answer]}</strong>.
+             ${q.explain}`;
+
+    }
+
+
+    scoreSmall.textContent=
+        `${score} điểm`;
+
+
+    nextBtn.style.display=
+        "inline-block";
+
+}
+
+
+nextBtn.addEventListener(
+    "click",
+    ()=>{
+
+        currentQuestion++;
+
+
+        if(
+            currentQuestion>=questions.length
+        ){
+
+            showResult();
+
+        }else{
+
+            showQuestion();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+function showResult(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    quizQuestion.style.display=
+        "none";
+
+    quizResult.style.display=
+        "block";
+
+
+    document
+    .getElementById(
+        "finalScore"
+    )
+    .textContent=
+        `${score}/10`;
+
+
+    const resultText=
+        document.getElementById(
+            "resultText"
+        );
+
+    const resultIcon=
+        document.getElementById(
+            "resultIcon"
+        );
+
+
+    if(score>=9){
+
+        resultIcon.textContent=
+            "🏆";
+
+        resultText.textContent=
+            "Xuất sắc! Bạn đã nắm rất chắc kiến thức về biển và đại dương.";
+
+    }
+    else if(score>=7){
+
+        resultIcon.textContent=
+            "🌟";
+
+        resultText.textContent=
+            "Rất tốt! Bạn đã hiểu phần lớn kiến thức trọng tâm của bài.";
+
+    }
+    else if(score>=5){
+
+        resultIcon.textContent=
+            "👍";
+
+        resultText.textContent=
+            "Khá tốt! Hãy xem lại phần vận động của nước biển để nhớ chắc hơn.";
+
+    }
+    else{
+
+        resultIcon.textContent=
+            "📚";
+
+        resultText.textContent=
+            "Bạn nên xem lại nội dung bài học rồi thử lại một lần nữa nhé.";
+
+    }
+
+}
+
+
+document
+.getElementById("retryQuiz")
+.addEventListener(
+    "click",
+    startQuiz
+);
+
+
+/* =====================================================
+   HOÀN THÀNH BÀI
+===================================================== */
+
+const PROGRESS_KEY=
+    "hoclieu6_progress_v1";
+
+
+document
+.getElementById("finishLesson")
+.addEventListener(
+    "click",
+    function(){
+
+        const p=
+            JSON.parse(
+                localStorage.getItem(
+                    PROGRESS_KEY
+                ) || "{}"
+            );
+
+
+        p.g21=true;
+
+
+        localStorage.setItem(
+            PROGRESS_KEY,
+            JSON.stringify(p)
+        );
+
+
+        this.textContent=
+            "✅ Đã hoàn thành";
+
+
+        this.disabled=true;
+
+        this.style.opacity=".7";
+
+    }
+);
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g21");</script>
+</body>
+</html>

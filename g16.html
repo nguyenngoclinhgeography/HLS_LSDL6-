@@ -1,0 +1,3167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 16 - Nhiệt độ không khí. Mây và mưa</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#061426;
+  --bg2:#091d34;
+  --panel:#0d2743;
+  --panel2:#102f50;
+  --border:rgba(100,180,255,.18);
+  --text:#eaf5ff;
+  --muted:#9db5ca;
+  --blue:#55d8ff;
+  --cyan:#72e3ff;
+  --green:#65dfad;
+  --orange:#ffbf78;
+  --red:#ff9686;
+}
+
+body{
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(25,103,158,.25),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(39,92,155,.20),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #061426,
+      #08192d 55%,
+      #061323
+    );
+
+  color:var(--text);
+
+  min-height:100vh;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  position:relative;
+
+  padding:55px 20px 48px;
+
+  overflow:hidden;
+
+  border-bottom:
+    1px solid rgba(93,182,255,.15);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(9,36,64,.98),
+      rgba(5,23,43,.96)
+    );
+}
+
+.header::before{
+  content:"";
+
+  position:absolute;
+
+  width:430px;
+  height:430px;
+
+  right:-160px;
+  top:-250px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(69,185,238,.16),
+      transparent 70%
+    );
+}
+
+.header-content{
+  position:relative;
+
+  max-width:1150px;
+
+  margin:auto;
+}
+
+.back-btn{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  margin-bottom:22px;
+
+  padding:8px 14px;
+
+  border-radius:10px;
+
+  color:#a9d8f7;
+
+  background:rgba(66,155,210,.08);
+
+  border:
+    1px solid rgba(89,181,238,.15);
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  transition:.2s;
+}
+
+.back-btn:hover{
+  background:rgba(66,155,210,.15);
+
+  transform:translateX(-2px);
+}
+
+.lesson-number{
+  display:inline-flex;
+
+  padding:7px 13px;
+
+  border-radius:999px;
+
+  color:#72dcff;
+
+  background:
+    rgba(74,180,235,.10);
+
+  border:
+    1px solid rgba(74,180,235,.2);
+
+  font-size:12px;
+
+  font-weight:800;
+
+  letter-spacing:.7px;
+
+  margin-bottom:12px;
+}
+
+.header h1{
+  font-size:
+    clamp(30px,5vw,48px);
+
+  line-height:1.15;
+
+  margin-bottom:13px;
+
+  letter-spacing:-.7px;
+}
+
+.header p{
+  max-width:800px;
+
+  color:var(--muted);
+
+  font-size:16px;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container{
+  max-width:1150px;
+
+  margin:auto;
+
+  padding:
+    35px 20px 70px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+  margin-bottom:28px;
+
+  padding:25px;
+
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13,39,67,.96),
+      rgba(8,28,49,.96)
+    );
+
+  border:
+    1px solid var(--border);
+
+  box-shadow:
+    0 14px 35px rgba(0,0,0,.18);
+}
+
+.section-title{
+  display:flex;
+
+  gap:14px;
+
+  align-items:flex-start;
+
+  margin-bottom:22px;
+}
+
+.section-icon{
+  width:44px;
+  height:44px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:13px;
+
+  background:
+    rgba(74,184,235,.10);
+
+  border:
+    1px solid rgba(74,184,235,.18);
+
+  font-size:22px;
+}
+
+.section-title h2{
+  font-size:23px;
+
+  margin-bottom:3px;
+}
+
+.section-title p{
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+
+/* =========================================================
+   OBJECTIVES
+========================================================= */
+
+.objective-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:15px;
+}
+
+.objective-card{
+  padding:19px;
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+.objective-icon{
+  font-size:25px;
+
+  margin-bottom:9px;
+}
+
+.objective-card h3{
+  font-size:15px;
+
+  margin-bottom:6px;
+}
+
+.objective-card p{
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content-block{
+  margin-bottom:20px;
+}
+
+.content-block:last-child{
+  margin-bottom:0;
+}
+
+.content-block h3{
+  color:#dff5ff;
+
+  font-size:18px;
+
+  margin-bottom:9px;
+}
+
+.content-block p{
+  color:#b5c9db;
+
+  font-size:15px;
+
+  line-height:1.75;
+}
+
+.highlight{
+  color:#72ddff;
+
+  font-weight:700;
+}
+
+
+/* =========================================================
+   INFO GRID
+========================================================= */
+
+.info-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:16px;
+}
+
+.info-card{
+  padding:20px;
+
+  border-radius:17px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+.info-card h3{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:9px;
+
+  font-size:17px;
+}
+
+.info-card p{
+  color:var(--muted);
+
+  font-size:14px;
+
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   FACTOR CARDS
+========================================================= */
+
+.factor-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:15px;
+}
+
+.factor-card{
+  padding:20px;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(48,129,176,.09),
+      rgba(255,255,255,.025)
+    );
+
+  border:
+    1px solid rgba(98,188,235,.12);
+}
+
+.factor-icon{
+  font-size:28px;
+
+  margin-bottom:8px;
+}
+
+.factor-card h3{
+  font-size:17px;
+
+  margin-bottom:7px;
+}
+
+.factor-card p{
+  color:var(--muted);
+
+  font-size:14px;
+
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   HIGHLIGHT BOX
+========================================================= */
+
+.highlight-box{
+  margin-top:18px;
+
+  padding:18px 20px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(59,166,215,.09),
+      rgba(255,255,255,.025)
+    );
+
+  border:
+    1px solid rgba(87,185,230,.15);
+}
+
+.highlight-box strong{
+  color:#dff7ff;
+}
+
+.highlight-box p{
+  margin-top:6px;
+
+  color:#a9bfd1;
+
+  font-size:14px;
+
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   SIMULATION GRID
+========================================================= */
+
+.simulation-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:18px;
+}
+
+
+/* =========================================================
+   SIMULATION CARD
+========================================================= */
+
+.sim-card{
+  overflow:hidden;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(9,31,53,.98),
+      rgba(7,24,43,.98)
+    );
+
+  border:
+    1px solid rgba(91,183,232,.16);
+
+  box-shadow:
+    0 13px 32px rgba(0,0,0,.18);
+}
+
+.sim-visual{
+  position:relative;
+
+  height:275px;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #102f50,
+      #071b31
+    );
+}
+
+
+/* =========================================================
+   SIM 1 - NHIỆT ĐỘ
+========================================================= */
+
+.temp-visual{
+  background:
+    linear-gradient(
+      180deg,
+      #12375b 0%,
+      #0b2948 55%,
+      #071a2d 100%
+    );
+}
+
+.temp-sun{
+  position:absolute;
+
+  right:28px;
+  top:22px;
+
+  font-size:45px;
+
+  filter:
+    drop-shadow(
+      0 0 18px rgba(255,211,86,.45)
+    );
+}
+
+.temp-earth{
+  position:absolute;
+
+  width:220px;
+  height:220px;
+
+  left:50%;
+
+  bottom:-155px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #328e9b,
+      #164c58
+    );
+
+  border:
+    3px solid rgba(102,209,231,.28);
+
+  box-shadow:
+    0 -15px 35px rgba(40,187,221,.13);
+}
+
+.temp-equator{
+  position:absolute;
+
+  left:50%;
+
+  bottom:62px;
+
+  width:175px;
+
+  height:2px;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    rgba(118,226,246,.55);
+}
+
+.temp-ray{
+  position:absolute;
+
+  width:180px;
+
+  height:3px;
+
+  left:50%;
+
+  top:68px;
+
+  transform-origin:left center;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,226,119,.9),
+      rgba(255,177,76,.15)
+    );
+
+  box-shadow:
+    0 0 10px rgba(255,194,92,.35);
+}
+
+.temp-ray.r1{
+  transform:
+    translateX(-15px)
+    rotate(30deg);
+}
+
+.temp-ray.r2{
+  transform:
+    translateX(-15px)
+    rotate(52deg);
+}
+
+.temp-ray.r3{
+  transform:
+    translateX(-15px)
+    rotate(74deg);
+}
+
+.temp-label{
+  position:absolute;
+
+  left:22px;
+  top:24px;
+
+  padding:9px 12px;
+
+  border-radius:11px;
+
+  background:
+    rgba(4,18,34,.68);
+
+  border:
+    1px solid rgba(111,200,240,.14);
+
+  color:#b9eaff;
+
+  font-size:12px;
+
+  font-weight:700;
+}
+
+.temp-degree{
+  position:absolute;
+
+  left:50%;
+
+  bottom:29px;
+
+  transform:
+    translateX(-50%);
+
+  padding:7px 12px;
+
+  border-radius:9px;
+
+  background:
+    rgba(5,18,34,.72);
+
+  color:#8ee8ff;
+
+  font-size:12px;
+
+  font-weight:800;
+}
+
+
+/* =========================================================
+   SIM 2 - MÂY MƯA
+========================================================= */
+
+.rain-visual{
+  background:
+    linear-gradient(
+      180deg,
+      #4b718e 0%,
+      #264a67 50%,
+      #0b253e 100%
+    );
+}
+
+.rain-sun{
+  position:absolute;
+
+  top:22px;
+  right:27px;
+
+  font-size:39px;
+
+  opacity:.9;
+}
+
+.cloud-preview{
+  position:absolute;
+
+  top:72px;
+  left:50%;
+
+  transform:
+    translateX(-50%);
+
+  width:180px;
+  height:65px;
+}
+
+.cloud-preview span{
+  position:absolute;
+
+  display:block;
+
+  background:#d9e7ef;
+
+  border-radius:50%;
+}
+
+.cloud-preview span:nth-child(1){
+  width:70px;
+  height:50px;
+
+  left:25px;
+  bottom:0;
+}
+
+.cloud-preview span:nth-child(2){
+  width:78px;
+  height:62px;
+
+  left:65px;
+  bottom:0;
+}
+
+.cloud-preview span:nth-child(3){
+  width:62px;
+  height:45px;
+
+  left:105px;
+  bottom:0;
+}
+
+.cloud-preview span:nth-child(4){
+  width:120px;
+  height:32px;
+
+  left:30px;
+  bottom:0;
+
+  border-radius:20px;
+}
+
+.rain-drop{
+  position:absolute;
+
+  width:2px;
+  height:20px;
+
+  background:
+    #9ee7ff;
+
+  border-radius:999px;
+
+  animation:
+    rainPreview 1.2s linear infinite;
+}
+
+.rain-drop:nth-child(1){
+  left:42%;
+  top:143px;
+}
+
+.rain-drop:nth-child(2){
+  left:49%;
+  top:155px;
+
+  animation-delay:.3s;
+}
+
+.rain-drop:nth-child(3){
+  left:56%;
+  top:145px;
+
+  animation-delay:.6s;
+}
+
+.rain-drop:nth-child(4){
+  left:63%;
+  top:152px;
+
+  animation-delay:.9s;
+}
+
+@keyframes rainPreview{
+
+  0%{
+    opacity:0;
+    transform:translateY(-5px);
+  }
+
+  25%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:.1;
+    transform:translateY(65px);
+  }
+
+}
+
+.evaporation{
+  position:absolute;
+
+  bottom:32px;
+  left:38%;
+
+  width:2px;
+  height:65px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(151,226,255,.05),
+      rgba(151,226,255,.7)
+    );
+
+  animation:
+    evaporate 2s ease-in-out infinite;
+}
+
+@keyframes evaporate{
+
+  0%,100%{
+    transform:
+      translateY(5px);
+    opacity:.25;
+  }
+
+  50%{
+    transform:
+      translateY(-13px);
+    opacity:.8;
+  }
+
+}
+
+.water-ground{
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:48px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #1a5e70,
+      #0e3749
+    );
+
+  border-top:
+    2px solid rgba(98,212,235,.4);
+}
+
+
+/* =========================================================
+   SIMULATION TEXT
+========================================================= */
+
+.sim-content{
+  padding:19px;
+}
+
+.sim-tag{
+  display:inline-flex;
+
+  padding:6px 10px;
+
+  border-radius:999px;
+
+  background:
+    rgba(70,179,229,.09);
+
+  color:#73dcff;
+
+  border:
+    1px solid rgba(82,188,237,.15);
+
+  font-size:11px;
+
+  font-weight:800;
+
+  letter-spacing:.5px;
+
+  margin-bottom:9px;
+}
+
+.sim-content h3{
+  font-size:19px;
+
+  margin-bottom:6px;
+}
+
+.sim-content p{
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.65;
+
+  min-height:66px;
+}
+
+.sim-button{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+  width:100%;
+
+  margin-top:15px;
+
+  padding:12px 16px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #177ca5,
+      #126487
+    );
+
+  border:
+    1px solid rgba(103,218,255,.25);
+
+  color:#fff;
+
+  text-decoration:none;
+
+  font-weight:800;
+
+  font-size:14px;
+
+  transition:.2s;
+}
+
+.sim-button:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 9px 20px rgba(14,117,159,.22);
+}
+
+
+/* =========================================================
+   PROCESS
+========================================================= */
+
+.process{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:9px;
+
+  margin-top:20px;
+}
+
+.process-item{
+  min-width:135px;
+
+  padding:12px;
+
+  text-align:center;
+
+  border-radius:13px;
+
+  background:#102e4a;
+
+  border:
+    1px solid rgba(93,190,238,.12);
+}
+
+.process-item span{
+  display:block;
+
+  font-size:11px;
+
+  color:#68dcff;
+
+  margin-bottom:3px;
+}
+
+.process-item strong{
+  font-size:13px;
+}
+
+.process-arrow{
+  color:#69d9ff;
+
+  font-size:21px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap{
+  overflow-x:auto;
+
+  border-radius:15px;
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+table{
+  width:100%;
+
+  border-collapse:collapse;
+
+  min-width:700px;
+}
+
+th,
+td{
+  padding:14px 15px;
+
+  text-align:left;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.06);
+
+  font-size:14px;
+}
+
+th{
+  color:#dff6ff;
+
+  background:
+    rgba(68,165,215,.08);
+
+  font-weight:800;
+}
+
+td{
+  color:#adc1d2;
+}
+
+tr:last-child td{
+  border-bottom:none;
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz-intro{
+  padding:18px;
+
+  border-radius:16px;
+
+  background:
+    rgba(65,161,211,.07);
+
+  border:
+    1px solid rgba(73,176,227,.13);
+
+  margin-bottom:18px;
+}
+
+.quiz-intro p{
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+.quiz-start{
+  margin-top:15px;
+
+  border:none;
+
+  padding:12px 20px;
+
+  border-radius:12px;
+
+  background:#14799f;
+
+  color:white;
+
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+.quiz-box{
+  display:none;
+}
+
+.quiz-box.active{
+  display:block;
+}
+
+.quiz-progress{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-bottom:13px;
+}
+
+.progress-text{
+  color:#9fc2d8;
+
+  font-size:13px;
+}
+
+.timer{
+  min-width:74px;
+
+  padding:7px 11px;
+
+  text-align:center;
+
+  border-radius:10px;
+
+  background:
+    rgba(255,174,104,.09);
+
+  border:
+    1px solid rgba(255,174,104,.18);
+
+  color:#ffc384;
+
+  font-weight:800;
+}
+
+.timer.danger{
+  background:
+    rgba(255,95,81,.12);
+
+  color:#ff9b8f;
+
+  border-color:
+    rgba(255,95,81,.24);
+}
+
+.question-card{
+  padding:22px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+.question-number{
+  color:#65dfff;
+
+  font-size:12px;
+
+  font-weight:800;
+
+  margin-bottom:8px;
+}
+
+.question-text{
+  font-size:19px;
+
+  font-weight:800;
+
+  margin-bottom:18px;
+
+  line-height:1.45;
+}
+
+.options{
+  display:grid;
+
+  gap:10px;
+}
+
+.option{
+  width:100%;
+
+  padding:13px 15px;
+
+  text-align:left;
+
+  border-radius:12px;
+
+  background:#102b46;
+
+  border:
+    1px solid rgba(99,180,226,.11);
+
+  color:#dcecf9;
+
+  cursor:pointer;
+
+  font-size:14px;
+
+  transition:.18s;
+}
+
+.option:hover{
+  background:#173957;
+
+  border-color:
+    rgba(95,196,242,.28);
+}
+
+.option.correct{
+  background:
+    rgba(57,196,139,.13);
+
+  border-color:
+    rgba(57,196,139,.4);
+
+  color:#7ee8ba;
+}
+
+.option.wrong{
+  background:
+    rgba(255,100,86,.12);
+
+  border-color:
+    rgba(255,100,86,.4);
+
+  color:#ffaaa0;
+}
+
+.option:disabled{
+  cursor:default;
+}
+
+.feedback{
+  display:none;
+
+  margin-top:15px;
+
+  padding:14px;
+
+  border-radius:13px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  color:#b8ccdd;
+
+  font-size:13px;
+
+  line-height:1.6;
+}
+
+.feedback.show{
+  display:block;
+}
+
+.next-question{
+  display:none;
+
+  margin-top:14px;
+
+  padding:10px 17px;
+
+  border:none;
+
+  border-radius:11px;
+
+  background:#147ba3;
+
+  color:white;
+
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result{
+  display:none;
+
+  text-align:center;
+
+  padding:30px 20px;
+}
+
+.result.show{
+  display:block;
+}
+
+.result-icon{
+  font-size:55px;
+
+  margin-bottom:10px;
+}
+
+.result h3{
+  font-size:25px;
+
+  margin-bottom:8px;
+}
+
+.result-score{
+  color:#6cddff;
+
+  font-size:34px;
+
+  font-weight:900;
+
+  margin:10px 0;
+}
+
+.result p{
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+.result-actions{
+  display:flex;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:20px;
+}
+
+.result-btn{
+  padding:11px 18px;
+
+  border-radius:11px;
+
+  border:1px solid rgba(105,190,235,.17);
+
+  background:#122f4b;
+
+  color:#dcefff;
+
+  cursor:pointer;
+
+  font-weight:800;
+}
+
+.result-btn.primary{
+  background:#137ca4;
+
+  color:white;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  max-width:1150px;
+
+  margin:0 auto;
+
+  padding:0 20px 45px;
+
+  text-align:center;
+
+  color:#68839a;
+
+  font-size:12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+  .objective-grid,
+  .factor-grid{
+    grid-template-columns:1fr;
+  }
+
+  .info-grid,
+  .simulation-grid{
+    grid-template-columns:1fr;
+  }
+
+  .process-arrow{
+    transform:rotate(90deg);
+  }
+
+}
+
+
+@media(max-width:600px){
+
+  .header{
+    padding-top:35px;
+  }
+
+  .container{
+    padding:
+      22px 12px 50px;
+  }
+
+  .section{
+    padding:18px;
+
+    border-radius:18px;
+  }
+
+  .section-title h2{
+    font-size:20px;
+  }
+
+  .sim-visual{
+    height:250px;
+  }
+
+  .temp-earth{
+    width:190px;
+    height:190px;
+  }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+  <div class="header-content">
+
+    <a
+      href="index.html"
+      class="back-btn"
+    >
+      ← Về trang chủ
+    </a>
+
+    <div class="lesson-number">
+      ĐỊA LÍ 6 · BÀI 16
+    </div>
+
+    <h1>
+      Nhiệt độ không khí.
+      Mây và mưa
+    </h1>
+
+    <p>
+      Tìm hiểu sự thay đổi của nhiệt độ không khí,
+      các yếu tố ảnh hưởng đến nhiệt độ và quá trình
+      hình thành mây, mưa trong khí quyển.
+    </p>
+
+  </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- =========================================================
+     MỤC TIÊU
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🎯
+    </div>
+
+    <div>
+      <h2>Mục tiêu bài học</h2>
+
+      <p>
+        Những kiến thức và kĩ năng cần hình thành.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="objective-grid">
+
+    <div class="objective-card">
+
+      <div class="objective-icon">
+        🌡️
+      </div>
+
+      <h3>
+        Nhận biết
+      </h3>
+
+      <p>
+        Nêu được khái niệm nhiệt độ không khí
+        và mô tả được sự thay đổi nhiệt độ
+        theo một số yếu tố.
+      </p>
+
+    </div>
+
+
+    <div class="objective-card">
+
+      <div class="objective-icon">
+        🌍
+      </div>
+
+      <h3>
+        Thông hiểu
+      </h3>
+
+      <p>
+        Giải thích được sự thay đổi nhiệt độ
+        không khí theo vĩ độ và độ cao.
+      </p>
+
+    </div>
+
+
+    <div class="objective-card">
+
+      <div class="objective-icon">
+        ☁️
+      </div>
+
+      <h3>
+        Vận dụng
+      </h3>
+
+      <p>
+        Mô tả được quá trình hình thành mây,
+        mưa và vận dụng kiến thức để giải thích
+        một số hiện tượng thực tế.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     1. NHIỆT ĐỘ KHÔNG KHÍ
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🌡️
+    </div>
+
+    <div>
+      <h2>1. Nhiệt độ không khí</h2>
+
+      <p>
+        Nhiệt độ không khí là một yếu tố quan trọng của thời tiết
+        và khí hậu.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="content-block">
+
+    <h3>
+      Nhiệt độ không khí là gì?
+    </h3>
+
+    <p>
+      <span class="highlight">
+        Nhiệt độ không khí
+      </span>
+      là độ nóng, lạnh của không khí.
+      Nhiệt độ không khí thường được đo bằng nhiệt kế
+      và biểu thị bằng độ C (°C).
+    </p>
+
+  </div>
+
+
+  <div class="info-grid">
+
+    <div class="info-card">
+
+      <h3>
+        ☀️ Nguồn nhiệt chủ yếu
+      </h3>
+
+      <p>
+        Bề mặt Trái Đất nhận năng lượng từ Mặt Trời.
+        Sau đó bề mặt Trái Đất hấp thụ và tỏa nhiệt
+        làm nóng lớp không khí bên trên.
+      </p>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <h3>
+        📏 Đo nhiệt độ
+      </h3>
+
+      <p>
+        Nhiệt độ không khí được đo bằng nhiệt kế.
+        Khi quan trắc, cần đặt nhiệt kế ở nơi thích hợp
+        để hạn chế ảnh hưởng trực tiếp của bức xạ Mặt Trời.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     2. CÁC YẾU TỐ ẢNH HƯỞNG
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🌍
+    </div>
+
+    <div>
+      <h2>2. Sự thay đổi nhiệt độ không khí</h2>
+
+      <p>
+        Nhiệt độ không khí thay đổi theo nhiều điều kiện tự nhiên.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="factor-grid">
+
+    <div class="factor-card">
+
+      <div class="factor-icon">
+        🌎
+      </div>
+
+      <h3>
+        Theo vĩ độ
+      </h3>
+
+      <p>
+        Từ Xích đạo về hai cực, góc chiếu của tia sáng Mặt Trời
+        giảm dần nên lượng nhiệt nhận được có xu hướng giảm.
+        Vì vậy nhiệt độ trung bình năm thường giảm dần
+        từ Xích đạo về hai cực.
+      </p>
+
+    </div>
+
+
+    <div class="factor-card">
+
+      <div class="factor-icon">
+        ⛰️
+      </div>
+
+      <h3>
+        Theo độ cao
+      </h3>
+
+      <p>
+        Càng lên cao, nhiệt độ không khí thường giảm.
+        Vì vậy các vùng núi cao thường có nhiệt độ thấp hơn
+        những khu vực thấp hơn ở cùng khu vực.
+      </p>
+
+    </div>
+
+
+    <div class="factor-card">
+
+      <div class="factor-icon">
+        🌊
+      </div>
+
+      <h3>
+        Theo vị trí gần biển
+      </h3>
+
+      <p>
+        Bề mặt đất và nước hấp thụ, tỏa nhiệt khác nhau.
+        Vì vậy các khu vực gần biển thường có sự điều hòa
+        nhiệt độ rõ hơn so với sâu trong lục địa.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="highlight-box">
+
+    <strong>
+      💡 Điểm cần nhớ
+    </strong>
+
+    <p>
+      Trong nội dung bài học, sự thay đổi nhiệt độ theo vĩ độ
+      là một biểu hiện quan trọng: càng xa Xích đạo về phía hai cực,
+      nhiệt độ trung bình năm càng có xu hướng giảm.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     3. MÔ PHỎNG 1
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      ☀️
+    </div>
+
+    <div>
+      <h2>
+        3. Mô phỏng: Nhiệt độ thay đổi theo vĩ độ
+      </h2>
+
+      <p>
+        Quan sát góc chiếu của tia sáng Mặt Trời và sự thay đổi
+        nhiệt độ từ Xích đạo về hai cực.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="simulation-grid">
+
+
+    <div class="sim-card">
+
+      <div class="sim-visual temp-visual">
+
+        <div class="temp-sun">
+          ☀️
+        </div>
+
+        <div class="temp-label">
+          Mô phỏng góc chiếu
+        </div>
+
+
+        <div class="temp-ray r1"></div>
+        <div class="temp-ray r2"></div>
+        <div class="temp-ray r3"></div>
+
+
+        <div class="temp-earth">
+
+          <div class="temp-equator"></div>
+
+        </div>
+
+
+        <div class="temp-degree">
+          Xích đạo → Hai cực
+        </div>
+
+      </div>
+
+
+      <div class="sim-content">
+
+        <div class="sim-tag">
+          🌡️ MÔ PHỎNG 01
+        </div>
+
+        <h3>
+          Nhiệt độ không khí theo vĩ độ
+        </h3>
+
+        <p>
+          Kéo thanh vĩ độ để quan sát sự thay đổi
+          của góc chiếu tia sáng Mặt Trời và nhiệt độ.
+          Mô phỏng giúp hình dung vì sao nhiệt độ trung bình
+          thường giảm từ Xích đạo về hai cực.
+        </p>
+
+        <a
+          href="mpndtvd.html"
+          class="sim-button"
+        >
+          🚀 Mở mô phỏng nhiệt độ
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MÔ PHỎNG 2
+    ====================================================== -->
+
+    <div class="sim-card">
+
+      <div class="sim-visual rain-visual">
+
+        <div class="rain-sun">
+          ☀️
+        </div>
+
+
+        <div class="cloud-preview">
+
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </div>
+
+
+        <span class="rain-drop"></span>
+        <span class="rain-drop"></span>
+        <span class="rain-drop"></span>
+        <span class="rain-drop"></span>
+
+
+        <div class="evaporation"></div>
+
+        <div class="water-ground"></div>
+
+      </div>
+
+
+      <div class="sim-content">
+
+        <div class="sim-tag">
+          ☁️ MÔ PHỎNG 02
+        </div>
+
+        <h3>
+          Quá trình hình thành mây và mưa
+        </h3>
+
+        <p>
+          Quan sát từng bước: nước bốc hơi,
+          không khí ẩm bốc lên, lạnh đi,
+          hơi nước ngưng tụ tạo thành mây
+          và khi các giọt nước đủ lớn sẽ tạo thành mưa.
+        </p>
+
+        <a
+          href="mpmm.html"
+          class="sim-button"
+        >
+          🚀 Mở mô phỏng mây và mưa
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     4. MÂY
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      ☁️
+    </div>
+
+    <div>
+      <h2>4. Mây</h2>
+
+      <p>
+        Mây hình thành từ hơi nước ngưng tụ trong khí quyển.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="content-block">
+
+    <h3>
+      Mây được hình thành như thế nào?
+    </h3>
+
+    <p>
+      Khi không khí chứa hơi nước bốc lên cao,
+      nhiệt độ giảm xuống. Hơi nước trong không khí
+      có thể ngưng tụ thành những hạt nước nhỏ hoặc tinh thể băng,
+      tập hợp lại tạo thành mây.
+    </p>
+
+  </div>
+
+
+  <div class="process">
+
+    <div class="process-item">
+
+      <span>
+        BƯỚC 1
+      </span>
+
+      <strong>
+        Nước bốc hơi
+      </strong>
+
+    </div>
+
+    <div class="process-arrow">
+      →
+    </div>
+
+    <div class="process-item">
+
+      <span>
+        BƯỚC 2
+      </span>
+
+      <strong>
+        Không khí ẩm bốc lên
+      </strong>
+
+    </div>
+
+    <div class="process-arrow">
+      →
+    </div>
+
+    <div class="process-item">
+
+      <span>
+        BƯỚC 3
+      </span>
+
+      <strong>
+        Không khí lạnh đi
+      </strong>
+
+    </div>
+
+    <div class="process-arrow">
+      →
+    </div>
+
+    <div class="process-item">
+
+      <span>
+        BƯỚC 4
+      </span>
+
+      <strong>
+        Hơi nước ngưng tụ
+      </strong>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     5. MƯA
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🌧️
+    </div>
+
+    <div>
+      <h2>5. Mưa</h2>
+
+      <p>
+        Mưa là một dạng giáng thủy phổ biến trên Trái Đất.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="content-block">
+
+    <h3>
+      Quá trình hình thành mưa
+    </h3>
+
+    <p>
+      Khi các hạt nước hoặc tinh thể băng trong mây
+      lớn dần và trở nên đủ nặng, chúng rơi xuống bề mặt Trái Đất
+      dưới tác dụng của trọng lực, tạo thành mưa.
+    </p>
+
+  </div>
+
+
+  <div class="info-grid">
+
+    <div class="info-card">
+
+      <h3>
+        💧 Ngưng tụ
+      </h3>
+
+      <p>
+        Hơi nước trong không khí lạnh đi và ngưng tụ
+        thành những hạt nước nhỏ hoặc tinh thể băng.
+      </p>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <h3>
+        🌧️ Giáng xuống
+      </h3>
+
+      <p>
+        Khi các hạt nước hoặc tinh thể băng đủ lớn,
+        chúng rơi xuống mặt đất tạo thành mưa.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     6. SƠ ĐỒ TỔNG KẾT
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      🧠
+    </div>
+
+    <div>
+      <h2>
+        6. Sơ đồ kiến thức
+      </h2>
+
+      <p>
+        Hệ thống hóa hai nội dung quan trọng của bài.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Nội dung
+          </th>
+
+          <th>
+            Kiến thức cần nhớ
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr>
+
+          <td>
+            Nhiệt độ không khí
+          </td>
+
+          <td>
+            Là độ nóng, lạnh của không khí.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Theo vĩ độ
+          </td>
+
+          <td>
+            Nhiệt độ trung bình năm có xu hướng giảm
+            từ Xích đạo về hai cực.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Theo độ cao
+          </td>
+
+          <td>
+            Càng lên cao, nhiệt độ không khí thường giảm.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Mây
+          </td>
+
+          <td>
+            Hình thành khi hơi nước trong không khí
+            ngưng tụ thành các hạt nước nhỏ hoặc tinh thể băng.
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Mưa
+          </td>
+
+          <td>
+            Hình thành khi các hạt nước hoặc tinh thể băng
+            trong mây lớn lên và rơi xuống mặt đất.
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     7. QUIZ
+========================================================= -->
+
+<section class="section">
+
+  <div class="section-title">
+
+    <div class="section-icon">
+      📝
+    </div>
+
+    <div>
+      <h2>
+        7. Kiểm tra kiến thức
+      </h2>
+
+      <p>
+        10 câu hỏi để kiểm tra mức độ hiểu bài.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="quiz-intro" id="quizIntro">
+
+    <p>
+      Mỗi câu hỏi có <strong>10 giây</strong> để trả lời.
+      Sau khi chọn đáp án, hệ thống sẽ hiển thị kết quả
+      và giải thích. Hoàn thành 10 câu để xem điểm.
+    </p>
+
+    <button
+      type="button"
+      class="quiz-start"
+      id="startQuizBtn"
+    >
+      ▶ Bắt đầu làm bài
+    </button>
+
+  </div>
+
+
+  <div
+    class="quiz-box"
+    id="quizBox"
+  >
+
+    <div class="quiz-progress">
+
+      <div
+        class="progress-text"
+        id="progressText"
+      >
+        Câu 1 / 10
+      </div>
+
+      <div
+        class="timer"
+        id="timer"
+      >
+        10s
+      </div>
+
+    </div>
+
+
+    <div class="question-card">
+
+      <div
+        class="question-number"
+        id="questionNumber"
+      >
+        CÂU 01
+      </div>
+
+      <div
+        class="question-text"
+        id="questionText"
+      ></div>
+
+      <div
+        class="options"
+        id="options"
+      ></div>
+
+      <div
+        class="feedback"
+        id="feedback"
+      ></div>
+
+      <button
+        type="button"
+        class="next-question"
+        id="nextQuestion"
+      >
+        Câu tiếp theo →
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="result"
+    id="result"
+  >
+
+    <div class="result-icon">
+      🎉
+    </div>
+
+    <h3>
+      Hoàn thành phần kiểm tra!
+    </h3>
+
+    <div
+      class="result-score"
+      id="resultScore"
+    >
+      0 / 10
+    </div>
+
+    <p id="resultMessage">
+      Em đã hoàn thành 10 câu hỏi.
+    </p>
+
+
+    <div class="result-actions">
+
+      <button
+        type="button"
+        class="result-btn"
+        id="restartBtn"
+      >
+        ↺ Làm lại
+      </button>
+
+      <button
+        type="button"
+        class="result-btn primary"
+        id="finishBtn"
+      >
+        ✓ Hoàn thành bài học
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+<footer class="footer">
+
+  Học liệu số Địa lí 6 · Bài 16
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   CẤU HÌNH TIẾN ĐỘ
+========================================================= */
+
+const PROGRESS_KEY =
+  'hoclieu6_progress_v1';
+
+
+/* =========================================================
+   NGÂN HÀNG CÂU HỎI
+========================================================= */
+
+const questions = [
+
+  {
+    q:
+      'Nhiệt độ không khí là gì?',
+
+    options:[
+      'Độ cao của không khí',
+      'Độ nóng, lạnh của không khí',
+      'Khối lượng của không khí',
+      'Tốc độ chuyển động của gió'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Nhiệt độ không khí biểu thị độ nóng, lạnh của không khí.'
+  },
+
+
+  {
+    q:
+      'Nguồn cung cấp nhiệt chủ yếu cho bề mặt Trái Đất là gì?',
+
+    options:[
+      'Mặt Trăng',
+      'Gió',
+      'Mặt Trời',
+      'Núi lửa'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Mặt Trời là nguồn cung cấp năng lượng chủ yếu cho bề mặt Trái Đất.'
+  },
+
+
+  {
+    q:
+      'Nhiệt độ trung bình năm có xu hướng thay đổi như thế nào từ Xích đạo về hai cực?',
+
+    options:[
+      'Tăng dần',
+      'Giảm dần',
+      'Không thay đổi',
+      'Tăng rồi giảm hoàn toàn ngẫu nhiên'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Từ Xích đạo về hai cực, góc chiếu của tia sáng Mặt Trời nhỏ dần nên nhiệt độ trung bình năm có xu hướng giảm.'
+  },
+
+
+  {
+    q:
+      'Vì sao nhiệt độ thường giảm từ Xích đạo về hai cực?',
+
+    options:[
+      'Do khoảng cách giữa Trái Đất và Mặt Trời thay đổi rất lớn',
+      'Do góc chiếu của tia sáng Mặt Trời giảm dần',
+      'Do hai cực gần Mặt Trời hơn',
+      'Do Xích đạo không nhận được ánh sáng'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Càng về hai cực, tia sáng Mặt Trời chiếu càng xiên nên lượng nhiệt nhận được trên cùng một diện tích có xu hướng giảm.'
+  },
+
+
+  {
+    q:
+      'Càng lên cao, nhiệt độ không khí thường như thế nào?',
+
+    options:[
+      'Tăng',
+      'Không thay đổi',
+      'Giảm',
+      'Luôn bằng 0°C'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Trong tầng đối lưu, càng lên cao nhiệt độ không khí thường giảm.'
+  },
+
+
+  {
+    q:
+      'Khi không khí ẩm bốc lên cao, điều gì thường xảy ra?',
+
+    options:[
+      'Không khí nóng lên mãi',
+      'Không khí lạnh đi',
+      'Hơi nước biến mất hoàn toàn',
+      'Không khí không thay đổi'
+    ],
+
+    answer:1,
+
+    explanation:
+      'Không khí bốc lên cao thường lạnh đi, tạo điều kiện cho hơi nước ngưng tụ.'
+  },
+
+
+  {
+    q:
+      'Mây được hình thành chủ yếu do quá trình nào?',
+
+    options:[
+      'Hơi nước ngưng tụ',
+      'Đất nóng lên',
+      'Đá bị phong hóa',
+      'Gió biến mất'
+    ],
+
+    answer:0,
+
+    explanation:
+      'Mây hình thành khi hơi nước trong không khí lạnh đi và ngưng tụ thành các hạt nước nhỏ hoặc tinh thể băng.'
+  },
+
+
+  {
+    q:
+      'Khi các hạt nước trong mây lớn và đủ nặng, hiện tượng gì có thể xảy ra?',
+
+    options:[
+      'Chúng bay lên cao hơn',
+      'Chúng biến thành gió',
+      'Chúng rơi xuống tạo thành mưa',
+      'Chúng biến mất hoàn toàn'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Khi các hạt nước hoặc tinh thể băng đủ lớn, chúng rơi xuống mặt đất tạo thành mưa.'
+  },
+
+
+  {
+    q:
+      'Quá trình nào sau đây thể hiện đúng sự hình thành mây?',
+
+    options:[
+      'Bốc hơi → không khí ẩm bốc lên → lạnh đi → ngưng tụ',
+      'Mưa → bốc hơi → đất lạnh → mây',
+      'Gió → núi → mưa → bốc hơi',
+      'Ngưng tụ → bốc hơi → nóng lên → mây'
+    ],
+
+    answer:0,
+
+    explanation:
+      'Nước bốc hơi, không khí chứa hơi nước bốc lên, lạnh đi và hơi nước ngưng tụ tạo thành mây.'
+  },
+
+
+  {
+    q:
+      'Phát biểu nào sau đây đúng?',
+
+    options:[
+      'Nhiệt độ không khí giống nhau ở mọi nơi',
+      'Nhiệt độ chỉ thay đổi theo thời gian trong ngày',
+      'Nhiệt độ có thể thay đổi theo vĩ độ và độ cao',
+      'Mây không liên quan đến hơi nước'
+    ],
+
+    answer:2,
+
+    explanation:
+      'Nhiệt độ không khí chịu ảnh hưởng của nhiều yếu tố, trong đó có vĩ độ, độ cao và đặc điểm bề mặt.'
+  }
+
+];
+
+
+/* =========================================================
+   BIẾN QUIZ
+========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timerValue = 10;
+
+let timerInterval = null;
+
+let answered = false;
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const quizIntro =
+  document.getElementById('quizIntro');
+
+const quizBox =
+  document.getElementById('quizBox');
+
+const result =
+  document.getElementById('result');
+
+const startQuizBtn =
+  document.getElementById('startQuizBtn');
+
+const progressText =
+  document.getElementById('progressText');
+
+const timer =
+  document.getElementById('timer');
+
+const questionNumber =
+  document.getElementById('questionNumber');
+
+const questionText =
+  document.getElementById('questionText');
+
+const options =
+  document.getElementById('options');
+
+const feedback =
+  document.getElementById('feedback');
+
+const nextQuestion =
+  document.getElementById('nextQuestion');
+
+const resultScore =
+  document.getElementById('resultScore');
+
+const resultMessage =
+  document.getElementById('resultMessage');
+
+const restartBtn =
+  document.getElementById('restartBtn');
+
+const finishBtn =
+  document.getElementById('finishBtn');
+
+
+/* =========================================================
+   START
+========================================================= */
+
+startQuizBtn.addEventListener(
+  'click',
+  startQuiz
+);
+
+
+function startQuiz(){
+
+  currentQuestion = 0;
+
+  score = 0;
+
+  clearInterval(timerInterval);
+
+  quizIntro.style.display =
+    'none';
+
+  result.classList.remove('show');
+
+  quizBox.classList.add('active');
+
+  loadQuestion();
+
+}
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion(){
+
+  clearInterval(timerInterval);
+
+  answered = false;
+
+  timerValue = 10;
+
+  timer.textContent =
+    timerValue + 's';
+
+  timer.classList.remove('danger');
+
+  feedback.classList.remove('show');
+
+  feedback.innerHTML = '';
+
+  nextQuestion.style.display =
+    'none';
+
+
+  const q =
+    questions[currentQuestion];
+
+
+  progressText.textContent =
+    `Câu ${currentQuestion + 1} / ${questions.length}`;
+
+
+  questionNumber.textContent =
+    `CÂU ${String(currentQuestion + 1).padStart(2,'0')}`;
+
+
+  questionText.textContent =
+    q.q;
+
+
+  options.innerHTML = '';
+
+
+  q.options.forEach(
+    (option,index)=>{
+
+      const button =
+        document.createElement('button');
+
+      button.type =
+        'button';
+
+      button.className =
+        'option';
+
+      button.textContent =
+        option;
+
+      button.addEventListener(
+        'click',
+        ()=>{
+          answerQuestion(index);
+        }
+      );
+
+      options.appendChild(button);
+
+    }
+  );
+
+
+  startTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+  timerInterval =
+    setInterval(
+      ()=>{
+
+        timerValue--;
+
+        timer.textContent =
+          timerValue + 's';
+
+
+        if(timerValue <= 3){
+
+          timer.classList.add(
+            'danger'
+          );
+
+        }
+
+
+        if(timerValue <= 0){
+
+          clearInterval(
+            timerInterval
+          );
+
+          timeOut();
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+/* =========================================================
+   ANSWER
+========================================================= */
+
+function answerQuestion(index){
+
+  if(answered){
+    return;
+  }
+
+  answered = true;
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  const q =
+    questions[currentQuestion];
+
+  const buttons =
+    options.querySelectorAll(
+      '.option'
+    );
+
+
+  buttons.forEach(
+    (button,i)=>{
+
+      button.disabled = true;
+
+      if(i === q.answer){
+
+        button.classList.add(
+          'correct'
+        );
+
+      }
+
+    }
+  );
+
+
+  if(index === q.answer){
+
+    score++;
+
+    feedback.innerHTML =
+      `<strong style="color:#72e6b1">
+        ✓ Chính xác!
+      </strong><br>
+      ${q.explanation}`;
+
+  }else{
+
+    buttons[index].classList.add(
+      'wrong'
+    );
+
+    feedback.innerHTML =
+      `<strong style="color:#ffaaa0">
+        ✕ Chưa chính xác.
+      </strong><br>
+      Đáp án đúng là:
+      <strong>${q.options[q.answer]}</strong>.<br>
+      ${q.explanation}`;
+
+  }
+
+
+  feedback.classList.add(
+    'show'
+  );
+
+
+  showNextButton();
+
+}
+
+
+/* =========================================================
+   TIMEOUT
+========================================================= */
+
+function timeOut(){
+
+  if(answered){
+    return;
+  }
+
+  answered = true;
+
+
+  const q =
+    questions[currentQuestion];
+
+  const buttons =
+    options.querySelectorAll(
+      '.option'
+    );
+
+
+  buttons.forEach(
+    (button,i)=>{
+
+      button.disabled = true;
+
+      if(i === q.answer){
+
+        button.classList.add(
+          'correct'
+        );
+
+      }
+
+    }
+  );
+
+
+  feedback.innerHTML =
+    `<strong style="color:#ffc27b">
+      ⏰ Hết thời gian!
+    </strong><br>
+    Đáp án đúng là:
+    <strong>${q.options[q.answer]}</strong>.<br>
+    ${q.explanation}`;
+
+
+  feedback.classList.add(
+    'show'
+  );
+
+
+  showNextButton();
+
+}
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+function showNextButton(){
+
+  nextQuestion.style.display =
+    'inline-block';
+
+  if(
+    currentQuestion ===
+    questions.length - 1
+  ){
+
+    nextQuestion.textContent =
+      'Xem kết quả →';
+
+  }else{
+
+    nextQuestion.textContent =
+      'Câu tiếp theo →';
+
+  }
+
+}
+
+
+nextQuestion.addEventListener(
+  'click',
+  ()=>{
+
+    currentQuestion++;
+
+    if(
+      currentQuestion >=
+      questions.length
+    ){
+
+      showResult();
+
+    }else{
+
+      loadQuestion();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function showResult(){
+
+  clearInterval(
+    timerInterval
+  );
+
+  quizBox.classList.remove(
+    'active'
+  );
+
+  result.classList.add(
+    'show'
+  );
+
+
+  resultScore.textContent =
+    `${score} / ${questions.length}`;
+
+
+  if(score >= 9){
+
+    resultMessage.textContent =
+      'Xuất sắc! Em đã nắm rất chắc kiến thức về nhiệt độ, mây và mưa.';
+
+  }
+  else if(score >= 7){
+
+    resultMessage.textContent =
+      'Rất tốt! Em đã hiểu phần lớn nội dung của bài học.';
+
+  }
+  else if(score >= 5){
+
+    resultMessage.textContent =
+      'Khá tốt! Em nên xem lại một số nội dung và thử lại nếu cần.';
+
+  }
+  else{
+
+    resultMessage.textContent =
+      'Em nên xem lại bài học, đặc biệt là phần nhiệt độ theo vĩ độ và quá trình hình thành mây, mưa.';
+
+  }
+
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+restartBtn.addEventListener(
+  'click',
+  ()=>{
+
+    result.classList.remove(
+      'show'
+    );
+
+    quizIntro.style.display =
+      'none';
+
+    quizBox.classList.add(
+      'active'
+    );
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    loadQuestion();
+
+  }
+);
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+finishBtn.addEventListener(
+  'click',
+  ()=>{
+
+    try{
+
+      const progress =
+        JSON.parse(
+          localStorage.getItem(
+            PROGRESS_KEY
+          ) || '{}'
+        );
+
+
+      progress.g16 = true;
+
+
+      localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(progress)
+      );
+
+
+      finishBtn.textContent =
+        '✓ Đã hoàn thành';
+
+      finishBtn.disabled =
+        true;
+
+      finishBtn.style.opacity =
+        '.7';
+
+      resultMessage.textContent =
+        '🎉 Bài 16 đã được đánh dấu hoàn thành! Em có thể quay về trang chủ để tiếp tục học.';
+
+    }catch(error){
+
+      alert(
+        'Không thể lưu tiến độ trên trình duyệt này.'
+      );
+
+    }
+
+  }
+);
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g16");</script>
+</body>
+</html>F

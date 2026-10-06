@@ -1,0 +1,3826 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 11 - Quá trình nội sinh và ngoại sinh. Hiện tượng tạo núi</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:#06101e;
+
+    color:#d9edf8;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   THANH ĐẦU TRANG
+========================================================= */
+
+.top{
+    position:sticky;
+    top:0;
+
+    z-index:100;
+
+    min-height:82px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    padding:
+        14px
+        32px;
+
+    background:
+        rgba(4,17,31,.96);
+
+    border-bottom:
+        1px solid
+        rgba(34,211,238,.22);
+
+    box-shadow:
+        0 5px 25px
+        rgba(0,0,0,.25);
+
+    backdrop-filter:blur(14px);
+}
+
+
+.brand{
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+
+.logo{
+    width:48px;
+    height:48px;
+
+    border-radius:15px;
+
+    display:grid;
+
+    place-items:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #08b9ed,
+            #2563eb
+        );
+
+    color:white;
+
+    font-size:24px;
+
+    box-shadow:
+        0 0 25px
+        rgba(34,211,238,.15);
+}
+
+
+.brand h1{
+    margin:0;
+
+    color:#edfaff;
+
+    font-size:20px;
+
+    font-weight:900;
+}
+
+
+.brand p{
+    margin:1px 0 0;
+
+    color:#7ea4bf;
+
+    font-size:12px;
+}
+
+
+.home{
+    border:
+        1px solid
+        rgba(34,211,238,.35);
+
+    background:
+        rgba(34,211,238,.06);
+
+    color:#d9f8ff;
+
+    border-radius:13px;
+
+    padding:
+        10px
+        17px;
+
+    font-size:15px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.home:hover{
+    background:
+        rgba(34,211,238,.14);
+
+    border-color:
+        rgba(34,211,238,.55);
+
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:475px;
+
+    display:flex;
+
+    align-items:center;
+
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(14,116,144,.16),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(37,99,235,.14),
+            transparent 24%
+        ),
+        linear-gradient(
+            135deg,
+            #071225,
+            #061b2b
+        );
+
+    border-bottom:
+        1px solid
+        rgba(34,211,238,.12);
+}
+
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:390px;
+    height:390px;
+
+    right:-100px;
+    top:-160px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(34,211,238,.12);
+
+    box-shadow:
+        0 0 0 70px
+        rgba(34,211,238,.025),
+        0 0 0 140px
+        rgba(34,211,238,.018);
+}
+
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+    height:150px;
+
+    left:-75px;
+    bottom:-65px;
+
+    border-radius:50%;
+
+    background:
+        rgba(37,99,235,.10);
+}
+
+
+.hero-content{
+    position:relative;
+
+    z-index:2;
+
+    width:100%;
+
+    max-width:1120px;
+
+    margin:auto;
+
+    padding:
+        70px
+        24px
+        72px;
+}
+
+
+.eyebrow{
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:
+        7px
+        14px;
+
+    border-radius:999px;
+
+    background:
+        rgba(34,211,238,.06);
+
+    border:
+        1px solid
+        rgba(34,211,238,.35);
+
+    color:#5fe2f3;
+
+    font-size:13px;
+
+    font-weight:900;
+
+    margin-bottom:24px;
+}
+
+
+.hero h2{
+    max-width:930px;
+
+    margin:0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(40px,5.4vw,68px);
+
+    line-height:1.08;
+
+    letter-spacing:-1.5px;
+
+    color:#f4fbff;
+}
+
+
+.hero h2 span{
+    color:#72e7f7;
+}
+
+
+.hero-description{
+    max-width:900px;
+
+    margin:
+        24px 0 0;
+
+    color:#9dc0d7;
+
+    font-size:18px;
+
+    line-height:1.85;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.wrap{
+    width:100%;
+
+    max-width:1120px;
+
+    margin:auto;
+
+    padding:
+        42px
+        24px
+        75px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+    margin-bottom:48px;
+}
+
+
+.section-title{
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    margin:
+        0 0 12px;
+
+    color:#f0faff;
+
+    font-size:31px;
+
+    font-weight:950;
+
+    line-height:1.25;
+}
+
+
+.section-title .icon{
+    width:43px;
+    height:43px;
+
+    flex:0 0 43px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,185,237,.20),
+            rgba(37,99,235,.16)
+        );
+
+    border:
+        1px solid
+        rgba(34,211,238,.28);
+
+    font-size:22px;
+}
+
+
+.section > p{
+    color:#92b3c9;
+
+    margin:
+        0 0 22px;
+}
+
+
+/* =========================================================
+   THẺ KIẾN THỨC
+========================================================= */
+
+.card-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:18px;
+}
+
+
+.card{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:24px;
+
+    border-radius:19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10,31,49,.92),
+            rgba(5,20,34,.94)
+        );
+
+    border:
+        1px solid
+        rgba(53,114,148,.30);
+
+    box-shadow:
+        0 14px 35px
+        rgba(0,0,0,.18);
+}
+
+
+.card::before{
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    right:-60px;
+    top:-60px;
+
+    border-radius:50%;
+
+    background:
+        rgba(34,211,238,.035);
+}
+
+
+.card h3{
+    position:relative;
+
+    margin:
+        0 0 10px;
+
+    color:#e9faff;
+
+    font-size:20px;
+}
+
+
+.card p{
+    position:relative;
+
+    color:#91b1c6;
+
+    margin:
+        0 0 10px;
+}
+
+
+.card ul{
+    margin:
+        12px 0 0;
+
+    padding-left:22px;
+
+    color:#9dbbd0;
+}
+
+
+.card li{
+    margin-bottom:7px;
+}
+
+
+.highlight{
+    color:#67e8f9;
+
+    font-weight:900;
+}
+
+
+/* =========================================================
+   KHỐI NỘI DUNG LỚN
+========================================================= */
+
+.knowledge-box{
+    padding:25px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,30,48,.94),
+            rgba(5,20,34,.96)
+        );
+
+    border:
+        1px solid
+        rgba(34,211,238,.20);
+
+    box-shadow:
+        0 15px 38px
+        rgba(0,0,0,.18);
+
+    margin-bottom:18px;
+}
+
+
+.knowledge-box h3{
+    margin:
+        0 0 10px;
+
+    color:#6fe6f6;
+
+    font-size:22px;
+}
+
+
+.knowledge-box p{
+    color:#9dbbd0;
+
+    margin:
+        0 0 12px;
+}
+
+
+.knowledge-box ul{
+    color:#9dbbd0;
+
+    padding-left:24px;
+
+    margin:
+        10px 0 0;
+}
+
+
+.knowledge-box li{
+    margin-bottom:8px;
+}
+
+
+/* =========================================================
+   SO SÁNH
+========================================================= */
+
+.compare-wrap{
+    overflow-x:auto;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        rgba(34,211,238,.20);
+
+    background:#071827;
+
+    box-shadow:
+        0 14px 35px
+        rgba(0,0,0,.18);
+}
+
+
+.compare{
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:680px;
+}
+
+
+.compare th{
+    padding:15px;
+
+    color:#e9fbff;
+
+    text-align:left;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0a3651,
+            #0b2941
+        );
+
+    border-bottom:
+        1px solid
+        rgba(34,211,238,.22);
+}
+
+
+.compare td{
+    padding:15px;
+
+    color:#9dbbd0;
+
+    border-bottom:
+        1px solid
+        rgba(75,112,135,.15);
+
+    vertical-align:top;
+}
+
+
+.compare tr:last-child td{
+    border-bottom:0;
+}
+
+
+.compare td:first-child{
+    color:#67e8f9;
+
+    font-weight:900;
+
+    width:24%;
+}
+
+
+/* =========================================================
+   MỤC TIÊU
+========================================================= */
+
+.objectives{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+    gap:15px;
+}
+
+
+.objective{
+    padding:21px;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0a2134,
+            #071827
+        );
+
+    border:
+        1px solid
+        rgba(34,211,238,.20);
+}
+
+
+.objective-icon{
+    width:42px;
+    height:42px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:13px;
+
+    margin-bottom:13px;
+
+    background:
+        rgba(34,211,238,.08);
+
+    color:#4fe2f5;
+
+    font-size:21px;
+}
+
+
+.objective h3{
+    margin:
+        0 0 6px;
+
+    color:#eafaff;
+
+    font-size:16px;
+}
+
+
+.objective p{
+    margin:0;
+
+    color:#87a9bf;
+
+    font-size:14px;
+}
+
+
+/* =========================================================
+   MÔ PHỎNG
+========================================================= */
+
+.sim-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:18px;
+}
+
+
+.sim-card{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:27px;
+
+    border-radius:21px;
+
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(34,211,238,.09),
+            transparent 32%
+        ),
+        linear-gradient(
+            145deg,
+            #081e31,
+            #061522
+        );
+
+    border:
+        1px solid
+        rgba(34,211,238,.25);
+
+    box-shadow:
+        0 16px 40px
+        rgba(0,0,0,.22);
+}
+
+
+.sim-number{
+    color:#4fe2f5;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    margin-bottom:8px;
+}
+
+
+.sim-card h3{
+    color:#edfaff;
+
+    font-size:22px;
+
+    margin:
+        0 0 9px;
+}
+
+
+.sim-card p{
+    color:#8eafc5;
+
+    margin:
+        0 0 20px;
+}
+
+
+.sim-btn{
+    border:0;
+
+    padding:
+        11px
+        18px;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #08b9ed,
+            #2563eb
+        );
+
+    color:#fff;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.sim-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px
+        rgba(34,211,238,.16);
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz-box{
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(34,211,238,.10),
+            transparent 28%
+        ),
+        linear-gradient(
+            145deg,
+            #071d31,
+            #061522
+        );
+
+    border:
+        1px solid
+        rgba(34,211,238,.28);
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:
+        0 18px 45px
+        rgba(0,0,0,.25);
+}
+
+
+/* =========================================================
+   MÀN HÌNH BẮT ĐẦU
+========================================================= */
+
+.quiz-start{
+    text-align:center;
+
+    padding:
+        30px 15px 25px;
+}
+
+
+.quiz-start-icon{
+    width:75px;
+    height:75px;
+
+    margin:
+        0 auto 18px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #08b9ed,
+            #2563eb
+        );
+
+    font-size:36px;
+
+    box-shadow:
+        0 0 35px
+        rgba(34,211,238,.15);
+}
+
+
+.quiz-start h3{
+    margin:
+        0 0 10px;
+
+    color:#f1fbff;
+
+    font-size:28px;
+}
+
+
+.quiz-start p{
+    max-width:650px;
+
+    margin:
+        0 auto 22px;
+
+    color:#91b4cf;
+}
+
+
+.quiz-info{
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:24px;
+}
+
+
+.quiz-info-item{
+    padding:
+        8px 13px;
+
+    border-radius:999px;
+
+    background:
+        rgba(34,211,238,.07);
+
+    border:
+        1px solid
+        rgba(34,211,238,.20);
+
+    color:#7fe7f7;
+
+    font-size:13px;
+
+    font-weight:800;
+}
+
+
+.start-btn{
+    border:0;
+
+    padding:
+        13px 25px;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #08b9ed,
+            #2563eb
+        );
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 8px 25px
+        rgba(34,211,238,.15);
+
+    transition:.2s;
+}
+
+
+.start-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 30px
+        rgba(34,211,238,.22);
+}
+
+
+/* =========================================================
+   KHU VỰC GAME
+========================================================= */
+
+.quiz-game{
+    display:none;
+}
+
+
+.quiz-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:16px;
+}
+
+
+.quiz-count{
+    color:#6ee7f7;
+
+    font-size:15px;
+
+    font-weight:900;
+}
+
+
+.timer{
+    min-width:78px;
+
+    padding:
+        8px 13px;
+
+    border-radius:11px;
+
+    text-align:center;
+
+    color:#e8fbff;
+
+    background:
+        rgba(34,211,238,.08);
+
+    border:
+        1px solid
+        rgba(34,211,238,.25);
+
+    font-weight:900;
+
+    font-size:17px;
+}
+
+
+.timer.warning{
+    color:#fca5a5;
+
+    border-color:
+        rgba(248,113,113,.45);
+
+    background:
+        rgba(127,29,29,.20);
+
+    animation:
+        timerPulse
+        .7s
+        infinite
+        alternate;
+}
+
+
+@keyframes timerPulse{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.04);
+    }
+
+}
+
+
+/* =========================================================
+   THANH TIẾN TRÌNH QUIZ
+========================================================= */
+
+.quiz-progress{
+    width:100%;
+
+    height:8px;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    background:#10283d;
+
+    margin-bottom:24px;
+}
+
+
+.quiz-progress-bar{
+    width:0%;
+
+    height:100%;
+
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #08b9ed,
+            #67e8f9
+        );
+
+    transition:
+        width .35s ease;
+}
+
+
+/* =========================================================
+   CÂU HỎI
+========================================================= */
+
+.quiz-question-box{
+    background:
+        rgba(5,21,35,.70);
+
+    border:
+        1px solid
+        rgba(56,118,153,.25);
+
+    border-radius:17px;
+
+    padding:23px;
+
+    margin-bottom:17px;
+}
+
+
+.quiz-question-number{
+    color:#4edcf1;
+
+    font-size:13px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:.7px;
+
+    margin-bottom:9px;
+}
+
+
+.quiz-question-text{
+    color:#f2faff;
+
+    font-size:20px;
+
+    line-height:1.5;
+
+    font-weight:900;
+
+    margin:0;
+}
+
+
+/* =========================================================
+   ĐÁP ÁN
+========================================================= */
+
+.quiz-answers{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:11px;
+
+    margin-top:17px;
+}
+
+
+.quiz-answer{
+    width:100%;
+
+    min-height:54px;
+
+    padding:
+        12px 15px;
+
+    text-align:left;
+
+    border-radius:12px;
+
+    border:
+        1px solid
+        rgba(64,119,150,.30);
+
+    background:
+        rgba(6,25,41,.88);
+
+    color:#a8c4da;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    transition:.18s;
+}
+
+
+.quiz-answer:hover{
+    border-color:
+        rgba(34,211,238,.45);
+
+    background:
+        rgba(12,67,92,.30);
+
+    color:#e6faff;
+
+    transform:translateY(-1px);
+}
+
+
+.quiz-answer:disabled{
+    cursor:default;
+
+    transform:none;
+}
+
+
+.quiz-answer.correct{
+    color:#86efac !important;
+
+    border-color:
+        #4ade80 !important;
+
+    background:
+        rgba(22,101,52,.25) !important;
+}
+
+
+.quiz-answer.wrong{
+    color:#fca5a5 !important;
+
+    border-color:
+        #f87171 !important;
+
+    background:
+        rgba(127,29,29,.25) !important;
+}
+
+
+/* =========================================================
+   GIẢI THÍCH
+========================================================= */
+
+.quiz-explanation{
+    display:none;
+
+    margin-top:18px;
+
+    padding:
+        17px 18px;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,66,91,.35),
+            rgba(6,28,45,.75)
+        );
+
+    border:
+        1px solid
+        rgba(34,211,238,.25);
+}
+
+
+.quiz-explanation.show{
+    display:block;
+
+    animation:
+        explanationIn
+        .25s
+        ease;
+}
+
+
+@keyframes explanationIn{
+
+    from{
+        opacity:0;
+
+        transform:
+            translateY(5px);
+    }
+
+    to{
+        opacity:1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+.explanation-title{
+    color:#67e8f9;
+
+    font-weight:900;
+
+    margin-bottom:6px;
+}
+
+
+.explanation-text{
+    color:#9fc0d8;
+
+    margin:0;
+}
+
+
+/* =========================================================
+   NÚT CÂU TIẾP
+========================================================= */
+
+.next-wrap{
+    display:none;
+
+    justify-content:flex-end;
+
+    margin-top:17px;
+}
+
+
+.next-btn{
+    border:0;
+
+    padding:
+        11px 19px;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #08b9ed,
+            #2563eb
+        );
+
+    color:#fff;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.next-btn:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(34,211,238,.15);
+}
+
+
+/* =========================================================
+   KẾT QUẢ
+========================================================= */
+
+.quiz-result{
+    display:none;
+
+    text-align:center;
+
+    padding:
+        28px 15px 15px;
+}
+
+
+.result-icon{
+    width:75px;
+    height:75px;
+
+    margin:
+        0 auto 15px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #08b9ed,
+            #2563eb
+        );
+
+    font-size:34px;
+
+    box-shadow:
+        0 0 30px
+        rgba(34,211,238,.15);
+}
+
+
+.quiz-result h3{
+    margin:
+        0 0 8px;
+
+    color:#f1fbff;
+
+    font-size:27px;
+}
+
+
+.result-score{
+    color:#67e8f9;
+
+    font-size:42px;
+
+    font-weight:1000;
+
+    margin:
+        8px 0;
+}
+
+
+.result-message{
+    color:#93b5ce;
+
+    margin-bottom:24px;
+}
+
+
+/* =========================================================
+   NÚT KẾT QUẢ
+========================================================= */
+
+.quiz-final-actions{
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+}
+
+
+.quiz-final-btn{
+    border-radius:12px;
+
+    padding:
+        11px 17px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.back-btn{
+    background:
+        rgba(34,211,238,.08);
+
+    border:
+        1px solid
+        rgba(34,211,238,.25);
+
+    color:#67e8f9;
+}
+
+
+.back-btn:hover{
+    background:
+        rgba(34,211,238,.15);
+}
+
+
+.retry-final-btn{
+    background:
+        rgba(37,99,235,.16);
+
+    border:
+        1px solid
+        rgba(59,130,246,.30);
+
+    color:#93c5fd;
+}
+
+
+.retry-final-btn:hover{
+    background:
+        rgba(37,99,235,.25);
+}
+
+
+.complete-final-btn{
+    border:0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #08b9ed,
+            #2563eb
+        );
+
+    color:#fff;
+
+    box-shadow:
+        0 7px 20px
+        rgba(34,211,238,.12);
+}
+
+
+.complete-final-btn:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 10px 25px
+        rgba(34,211,238,.18);
+}
+
+
+.complete-final-btn:disabled{
+    transform:none;
+
+    box-shadow:none;
+}
+
+
+/* =========================================================
+   THÔNG BÁO HOÀN THÀNH
+========================================================= */
+
+.completed-message{
+    display:none;
+
+    margin-top:18px;
+
+    padding:
+        14px 17px;
+
+    border-radius:13px;
+
+    color:#67e8f9;
+
+    font-weight:900;
+
+    background:
+        rgba(34,211,238,.08);
+
+    border:
+        1px solid
+        rgba(34,211,238,.28);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+    margin-top:20px;
+
+    padding:
+        28px 20px;
+
+    text-align:center;
+
+    color:#63859d;
+
+    border-top:
+        1px solid
+        rgba(34,211,238,.12);
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+    .card-grid,
+    .sim-grid{
+        grid-template-columns:1fr;
+    }
+
+    .objectives{
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .top{
+        padding:
+            12px 16px;
+    }
+
+    .brand p{
+        display:none;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .hero-content{
+        padding:
+            55px 18px 60px;
+    }
+
+    .hero h2{
+        font-size:40px;
+    }
+
+    .hero-description{
+        font-size:16px;
+    }
+
+    .wrap{
+        padding:
+            32px 16px 55px;
+    }
+
+    .section-title{
+        font-size:25px;
+    }
+
+    .objectives{
+        grid-template-columns:1fr;
+    }
+
+    .quiz-answers{
+        grid-template-columns:1fr;
+    }
+
+    .quiz-question-text{
+        font-size:18px;
+    }
+
+    .quiz-box{
+        padding:20px 16px;
+    }
+
+    .quiz-final-actions{
+        flex-direction:column;
+    }
+
+    .quiz-final-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="top">
+
+    <div class="brand">
+
+        <div class="logo">
+            🌐
+        </div>
+
+        <div>
+            <h1>
+                HỌC LIỆU SỐ ĐỊA LÍ 6
+            </h1>
+
+            <p>
+                Khám phá kiến thức Địa lí bằng tương tác
+            </p>
+        </div>
+
+    </div>
+
+
+    <button
+        class="home"
+        onclick="goHome()">
+
+        🏠 Trang chủ
+
+    </button>
+
+</header>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+
+        <div class="eyebrow">
+
+            🌎 ĐỊA LÍ 6 · BÀI 11
+
+        </div>
+
+
+        <h2>
+
+            Quá trình
+            <span>nội sinh và ngoại sinh.</span>
+
+            Hiện tượng tạo núi
+
+        </h2>
+
+
+        <p class="hero-description">
+
+            Tìm hiểu các quá trình nội sinh và ngoại sinh,
+            mối quan hệ giữa chúng trong việc hình thành
+            và biến đổi địa hình, đồng thời khám phá
+            hiện tượng tạo núi qua các hoạt động kiến tạo
+            của Trái Đất.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<main class="wrap">
+
+
+<!-- =========================================================
+     1. MỤC TIÊU
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            🎯
+        </span>
+
+        Mục tiêu bài học
+
+    </h2>
+
+
+    <p>
+
+        Sau khi học xong bài, học sinh có thể nhận biết
+        đặc điểm cơ bản của quá trình nội sinh, ngoại sinh
+        và bước đầu giải thích được sự hình thành,
+        biến đổi địa hình trên bề mặt Trái Đất.
+
+    </p>
+
+
+    <div class="objectives">
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                🌋
+            </div>
+
+            <h3>
+                Nhận biết
+            </h3>
+
+            <p>
+                Nhận biết được khái niệm và biểu hiện
+                của quá trình nội sinh.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                🌊
+            </div>
+
+            <h3>
+                Phân biệt
+            </h3>
+
+            <p>
+                Phân biệt được quá trình nội sinh
+                và quá trình ngoại sinh.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                ⛰️
+            </div>
+
+            <h3>
+                Giải thích
+            </h3>
+
+            <p>
+                Bước đầu giải thích được hiện tượng
+                tạo núi dưới tác động của vận động kiến tạo.
+            </p>
+
+        </div>
+
+
+        <div class="objective">
+
+            <div class="objective-icon">
+                🧠
+            </div>
+
+            <h3>
+                Vận dụng
+            </h3>
+
+            <p>
+                Liên hệ kiến thức với các dạng địa hình
+                và hiện tượng tự nhiên trong thực tế.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     2. QUÁ TRÌNH NỘI SINH
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            🌋
+        </span>
+
+        1. Quá trình nội sinh
+
+    </h2>
+
+
+    <div class="knowledge-box">
+
+        <h3>
+            🔹 Khái niệm
+        </h3>
+
+        <p>
+
+            <span class="highlight">
+                Quá trình nội sinh
+            </span>
+            là những quá trình xảy ra bên trong Trái Đất,
+            có tác động làm biến đổi địa hình bề mặt Trái Đất.
+
+        </p>
+
+
+        <p>
+
+            Các quá trình này có liên quan đến nguồn năng lượng
+            bên trong Trái Đất và sự vận động của vật chất
+            trong lòng Trái Đất.
+
+        </p>
+
+    </div>
+
+
+    <div class="card-grid">
+
+
+        <div class="card">
+
+            <h3>
+                ⚡ Biểu hiện
+            </h3>
+
+            <ul>
+
+                <li>
+                    Vận động nâng lên, hạ xuống của các khu vực
+                    trên vỏ Trái Đất.
+                </li>
+
+                <li>
+                    Các hoạt động kiến tạo làm biến dạng
+                    các lớp đá.
+                </li>
+
+                <li>
+                    Động đất.
+                </li>
+
+                <li>
+                    Núi lửa.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                ⛰️ Tác động đến địa hình
+            </h3>
+
+            <p>
+
+                Nội sinh có thể làm cho một số khu vực
+                được nâng lên, tạo ra các dạng địa hình
+                lớn và làm biến dạng cấu trúc của vỏ Trái Đất.
+
+            </p>
+
+
+            <p>
+
+                Đây là một trong những nhóm quá trình quan trọng
+                tham gia vào sự hình thành và biến đổi địa hình.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     3. QUÁ TRÌNH NGOẠI SINH
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            🌊
+        </span>
+
+        2. Quá trình ngoại sinh
+
+    </h2>
+
+
+    <div class="knowledge-box">
+
+        <h3>
+            🔹 Khái niệm
+        </h3>
+
+        <p>
+
+            <span class="highlight">
+                Quá trình ngoại sinh
+            </span>
+            là những quá trình xảy ra chủ yếu trên bề mặt
+            Trái Đất, chịu tác động của các yếu tố bên ngoài.
+
+        </p>
+
+
+        <p>
+
+            Các tác nhân như nước, gió, băng hà,
+            sự thay đổi nhiệt độ và sinh vật có thể
+            làm biến đổi địa hình theo thời gian.
+
+        </p>
+
+    </div>
+
+
+    <div class="card-grid">
+
+
+        <div class="card">
+
+            <h3>
+                💧 Các tác nhân chủ yếu
+            </h3>
+
+            <ul>
+
+                <li>
+                    Nước chảy và nước mưa.
+                </li>
+
+                <li>
+                    Gió.
+                </li>
+
+                <li>
+                    Băng hà.
+                </li>
+
+                <li>
+                    Sự thay đổi nhiệt độ.
+                </li>
+
+                <li>
+                    Sinh vật.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                🏞️ Các hoạt động chính
+            </h3>
+
+            <ul>
+
+                <li>
+                    Phong hóa.
+                </li>
+
+                <li>
+                    Xâm thực.
+                </li>
+
+                <li>
+                    Vận chuyển vật liệu.
+                </li>
+
+                <li>
+                    Bồi tụ.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     4. MỐI QUAN HỆ
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            🔄
+        </span>
+
+        3. Mối quan hệ giữa nội sinh và ngoại sinh
+
+    </h2>
+
+
+    <p>
+
+        Nội sinh và ngoại sinh là hai nhóm quá trình
+        cùng tác động đến bề mặt Trái Đất.
+
+    </p>
+
+
+    <div class="compare-wrap">
+
+        <table class="compare">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Tiêu chí
+                    </th>
+
+                    <th>
+                        Quá trình nội sinh
+                    </th>
+
+                    <th>
+                        Quá trình ngoại sinh
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Nơi xảy ra
+                    </td>
+
+                    <td>
+                        Chủ yếu liên quan đến các quá trình
+                        bên trong Trái Đất.
+                    </td>
+
+                    <td>
+                        Chủ yếu diễn ra ở bên ngoài và
+                        trên bề mặt Trái Đất.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Nguồn tác động
+                    </td>
+
+                    <td>
+                        Năng lượng và vận động bên trong
+                        Trái Đất.
+                    </td>
+
+                    <td>
+                        Nước, gió, băng, nhiệt độ,
+                        sinh vật và các tác nhân bên ngoài.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Biểu hiện
+                    </td>
+
+                    <td>
+                        Động đất, núi lửa, vận động kiến tạo,
+                        nâng lên và hạ xuống.
+                    </td>
+
+                    <td>
+                        Phong hóa, xâm thực, vận chuyển
+                        và bồi tụ.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Tác động
+                    </td>
+
+                    <td>
+                        Góp phần tạo, nâng lên và làm biến dạng
+                        các dạng địa hình.
+                    </td>
+
+                    <td>
+                        Phá hủy, vận chuyển và bồi tụ vật liệu,
+                        làm biến đổi địa hình.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     5. HIỆN TƯỢNG TẠO NÚI
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            ⛰️
+        </span>
+
+        4. Hiện tượng tạo núi
+
+    </h2>
+
+
+    <div class="knowledge-box">
+
+        <h3>
+            🌍 Vai trò của vận động kiến tạo
+        </h3>
+
+        <p>
+
+            Các mảng kiến tạo vận động và tương tác với nhau
+            có thể làm cho các lớp đá trong vỏ Trái Đất
+            bị biến dạng.
+
+        </p>
+
+
+        <ul>
+
+            <li>
+                Khi chịu tác động của lực nén ép,
+                các lớp đá có thể bị <strong>uốn nếp</strong>.
+            </li>
+
+            <li>
+                Trong những điều kiện nhất định,
+                các lớp đá có thể bị <strong>đứt gãy</strong>.
+            </li>
+
+            <li>
+                Sự biến dạng và nâng lên của vỏ Trái Đất
+                góp phần hình thành các khu vực núi.
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <div class="card-grid">
+
+
+        <div class="card">
+
+            <h3>
+                🧩 Uốn nếp
+            </h3>
+
+            <p>
+
+                Dưới tác động của lực nén ép,
+                các lớp đá có thể bị uốn cong,
+                tạo thành các nếp uốn.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                ⚡ Đứt gãy
+            </h3>
+
+            <p>
+
+                Khi lực tác động vượt quá khả năng chịu đựng
+                của vật liệu đá, các lớp đá có thể bị phá vỡ
+                và dịch chuyển theo các đứt gãy.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     6. MÔ PHỎNG
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            🧪
+        </span>
+
+        5. Khám phá qua mô phỏng tương tác
+
+    </h2>
+
+
+    <p>
+
+        Hãy sử dụng hai mô phỏng dưới đây để quan sát
+        trực quan các quá trình địa lí được học trong bài.
+
+    </p>
+
+
+    <div class="sim-grid">
+
+
+        <div class="sim-card">
+
+            <div class="sim-number">
+                MÔ PHỎNG 01
+            </div>
+
+
+            <h3>
+                🌋 Nội sinh và ngoại sinh
+            </h3>
+
+
+            <p>
+
+                Quan sát trực quan sự khác nhau giữa
+                quá trình nội sinh và ngoại sinh,
+                đồng thời tìm hiểu tác động của chúng
+                đến địa hình.
+
+            </p>
+
+
+            <button
+                class="sim-btn"
+                onclick="openInternalExternal()">
+
+                🚀 Mở mô phỏng
+
+            </button>
+
+        </div>
+
+
+
+        <div class="sim-card">
+
+            <div class="sim-number">
+                MÔ PHỎNG 02
+            </div>
+
+
+            <h3>
+                ⛰️ Hiện tượng tạo núi
+            </h3>
+
+
+            <p>
+
+                Quan sát quá trình các mảng kiến tạo
+                tương tác, gây biến dạng và nâng lên
+                các khu vực của vỏ Trái Đất.
+
+            </p>
+
+
+            <button
+                class="sim-btn"
+                onclick="openMountain()">
+
+                🚀 Mở mô phỏng
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     7. QUIZ
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            🎮
+        </span>
+
+        6. Thử sức cùng Bài 11
+
+    </h2>
+
+
+    <p>
+
+        Hoàn thành 10 câu hỏi để kiểm tra mức độ hiểu bài.
+        Mỗi câu có 10 giây để suy nghĩ và lựa chọn.
+        Sau khi trả lời, bạn sẽ được xem đáp án đúng
+        và phần giải thích.
+
+    </p>
+
+
+    <div class="quiz-box">
+
+
+        <!-- =================================================
+             MÀN HÌNH BẮT ĐẦU
+        ================================================== -->
+
+        <div
+            id="quizStart"
+            class="quiz-start">
+
+
+            <div class="quiz-start-icon">
+                🎯
+            </div>
+
+
+            <h3>
+                Sẵn sàng thử sức?
+            </h3>
+
+
+            <p>
+
+                Bài kiểm tra gồm
+                <strong>10 câu hỏi</strong>.
+                Mỗi câu có
+                <strong>10 giây</strong>
+                để suy nghĩ và lựa chọn đáp án.
+
+            </p>
+
+
+            <div class="quiz-info">
+
+                <div class="quiz-info-item">
+                    📚 10 câu hỏi
+                </div>
+
+                <div class="quiz-info-item">
+                    ⏱️ 10 giây / câu
+                </div>
+
+                <div class="quiz-info-item">
+                    🎯 1 điểm / câu
+                </div>
+
+            </div>
+
+
+            <button
+                class="start-btn"
+                onclick="startQuiz()">
+
+                🚀 Bắt đầu
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             KHU VỰC QUIZ
+        ================================================== -->
+
+        <div
+            id="quizGame"
+            class="quiz-game">
+
+
+            <div class="quiz-top">
+
+
+                <div
+                    id="quizCount"
+                    class="quiz-count">
+
+                    Câu 1 / 10
+
+                </div>
+
+
+                <div
+                    id="timer"
+                    class="timer">
+
+                    ⏱️ 10s
+
+                </div>
+
+            </div>
+
+
+            <div class="quiz-progress">
+
+                <div
+                    id="quizProgressBar"
+                    class="quiz-progress-bar">
+                </div>
+
+            </div>
+
+
+            <div class="quiz-question-box">
+
+
+                <div
+                    id="questionNumber"
+                    class="quiz-question-number">
+
+                    CÂU HỎI 1
+
+                </div>
+
+
+                <p
+                    id="questionText"
+                    class="quiz-question-text">
+                </p>
+
+
+                <div
+                    id="answers"
+                    class="quiz-answers">
+                </div>
+
+
+                <div
+                    id="explanation"
+                    class="quiz-explanation">
+
+
+                    <div class="explanation-title">
+
+                        💡 Giải thích
+
+                    </div>
+
+
+                    <p
+                        id="explanationText"
+                        class="explanation-text">
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="nextWrap"
+                    class="next-wrap">
+
+
+                    <button
+                        id="nextBtn"
+                        class="next-btn"
+                        onclick="nextQuestion()">
+
+                        Câu tiếp theo →
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             KẾT QUẢ
+        ================================================== -->
+
+        <div
+            id="quizResult"
+            class="quiz-result">
+
+
+            <div class="result-icon">
+                🏆
+            </div>
+
+
+            <h3>
+                Hoàn thành thử thách!
+            </h3>
+
+
+            <div
+                id="resultScore"
+                class="result-score">
+
+                0 / 10
+
+            </div>
+
+
+            <div
+                id="resultMessage"
+                class="result-message">
+            </div>
+
+
+            <div class="quiz-final-actions">
+
+
+                <button
+                    class="quiz-final-btn back-btn"
+                    onclick="backToLesson()">
+
+                    ↩️ Quay lại bài học
+
+                </button>
+
+
+                <button
+                    class="quiz-final-btn retry-final-btn"
+                    onclick="restartQuiz()">
+
+                    🔄 Làm lại
+
+                </button>
+
+
+                <button
+                    id="completeButton"
+                    class="quiz-final-btn complete-final-btn"
+                    onclick="completeLesson()">
+
+                    ✅ Hoàn thành bài học
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="completedMessage"
+                class="completed-message">
+
+                ✓ Đã hoàn thành Bài 11.
+                Tiến trình học tập đã được cập nhật.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     GHI NHỚ
+========================================================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        <span class="icon">
+            💡
+        </span>
+
+        Ghi nhớ
+
+    </h2>
+
+
+    <div class="knowledge-box">
+
+        <ul>
+
+            <li>
+
+                <strong class="highlight">
+                    Nội sinh
+                </strong>
+                là các quá trình xảy ra bên trong Trái Đất,
+                có thể làm nâng lên, biến dạng địa hình
+                và tạo ra các hiện tượng như động đất,
+                núi lửa.
+
+            </li>
+
+
+            <li>
+
+                <strong class="highlight">
+                    Ngoại sinh
+                </strong>
+                diễn ra chủ yếu ở bề mặt Trái Đất,
+                bao gồm phong hóa, xâm thực,
+                vận chuyển và bồi tụ.
+
+            </li>
+
+
+            <li>
+
+                Hai nhóm quá trình
+                <strong class="highlight">
+                    nội sinh và ngoại sinh
+                </strong>
+                cùng tác động và góp phần làm biến đổi
+                địa hình bề mặt Trái Đất.
+
+            </li>
+
+
+            <li>
+
+                Vận động kiến tạo có thể gây ra
+                uốn nếp, đứt gãy và nâng lên,
+                góp phần hình thành địa hình núi.
+
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    Học liệu số Địa lí 6 · Bài 11
+    <br>
+    Quá trình nội sinh và ngoại sinh · Hiện tượng tạo núi
+
+</footer>
+
+
+
+<script>
+
+/* =========================================================
+   TÊN FILE MÔ PHỎNG
+========================================================= */
+
+const INTERNAL_EXTERNAL_FILE =
+    "mpnsns.html";
+
+const MOUNTAIN_FILE =
+    "mphttn.html";
+
+
+/* =========================================================
+   TRANG CHỦ
+========================================================= */
+
+function goHome(){
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* =========================================================
+   MỞ MÔ PHỎNG
+========================================================= */
+
+function openInternalExternal(){
+
+    window.location.href =
+        INTERNAL_EXTERNAL_FILE;
+
+}
+
+
+function openMountain(){
+
+    window.location.href =
+        MOUNTAIN_FILE;
+
+}
+
+
+/* =========================================================
+   NGÂN HÀNG 10 CÂU HỎI
+========================================================= */
+
+const questions = [
+
+    {
+        question:
+            "Quá trình nội sinh là các quá trình chủ yếu xảy ra ở đâu?",
+
+        answers:[
+            "Trên bề mặt Trái Đất",
+            "Bên trong Trái Đất",
+            "Trong khí quyển",
+            "Trong đại dương"
+        ],
+
+        correct:1,
+
+        explanation:
+            "Quá trình nội sinh là những quá trình xảy ra bên trong Trái Đất, có liên quan đến nguồn năng lượng và sự vận động vật chất bên trong Trái Đất."
+    },
+
+
+    {
+        question:
+            "Hiện tượng nào sau đây là biểu hiện của quá trình nội sinh?",
+
+        answers:[
+            "Bồi tụ phù sa",
+            "Xâm thực do nước",
+            "Động đất",
+            "Tạo cồn cát do gió"
+        ],
+
+        correct:2,
+
+        explanation:
+            "Động đất là một biểu hiện của quá trình nội sinh vì có liên quan đến sự vận động và giải phóng năng lượng bên trong Trái Đất."
+    },
+
+
+    {
+        question:
+            "Quá trình ngoại sinh diễn ra chủ yếu ở đâu?",
+
+        answers:[
+            "Bên trong nhân Trái Đất",
+            "Chủ yếu trên bề mặt Trái Đất",
+            "Chỉ trong lớp phủ",
+            "Chỉ dưới đáy đại dương"
+        ],
+
+        correct:1,
+
+        explanation:
+            "Quá trình ngoại sinh diễn ra chủ yếu ở bên ngoài và trên bề mặt Trái Đất, chịu tác động của các yếu tố như nước, gió, băng, nhiệt độ và sinh vật."
+    },
+
+
+    {
+        question:
+            "Quá trình nào sau đây thuộc nhóm quá trình ngoại sinh?",
+
+        answers:[
+            "Núi lửa",
+            "Động đất",
+            "Xâm thực",
+            "Uốn nếp"
+        ],
+
+        correct:2,
+
+        explanation:
+            "Xâm thực là một quá trình ngoại sinh, trong đó các tác nhân như nước, gió hoặc băng có thể phá hủy và cuốn vật liệu khỏi nơi ban đầu."
+    },
+
+
+    {
+        question:
+            "Quá trình ngoại sinh có thể thực hiện những hoạt động nào?",
+
+        answers:[
+            "Chỉ nâng địa hình lên",
+            "Chỉ làm địa hình hạ xuống",
+            "Phong hóa, xâm thực, vận chuyển và bồi tụ",
+            "Chỉ tạo ra núi lửa"
+        ],
+
+        correct:2,
+
+        explanation:
+            "Các hoạt động tiêu biểu của ngoại sinh gồm phong hóa, xâm thực, vận chuyển và bồi tụ. Chúng làm phá hủy, di chuyển và tích tụ vật liệu, từ đó biến đổi địa hình."
+    },
+
+
+    {
+        question:
+            "Sự vận động của các mảng kiến tạo có vai trò như thế nào đối với quá trình tạo núi?",
+
+        answers:[
+            "Không liên quan đến quá trình tạo núi",
+            "Có thể gây biến dạng và nâng lên các khu vực của vỏ Trái Đất",
+            "Chỉ làm thay đổi lượng mưa",
+            "Chỉ làm thay đổi nhiệt độ không khí"
+        ],
+
+        correct:1,
+
+        explanation:
+            "Sự chuyển động và tương tác của các mảng kiến tạo có thể gây nén ép, uốn nếp, đứt gãy và nâng lên các khu vực của vỏ Trái Đất, góp phần hình thành núi."
+    },
+
+
+    {
+        question:
+            "Khi các lớp đá chịu tác động của lực nén ép mạnh, hiện tượng nào có thể xảy ra?",
+
+        answers:[
+            "Uốn nếp hoặc đứt gãy",
+            "Chỉ bồi tụ phù sa",
+            "Chỉ tạo thành cồn cát",
+            "Chỉ xảy ra phong hóa"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Dưới tác động của lực kiến tạo, các lớp đá có thể bị uốn nếp hoặc đứt gãy. Đây là những dạng biến dạng quan trọng của vỏ Trái Đất."
+    },
+
+
+    {
+        question:
+            "Yếu tố nào sau đây là tác nhân tiêu biểu của quá trình ngoại sinh?",
+
+        answers:[
+            "Nước",
+            "Magma trong lòng Trái Đất",
+            "Sự chuyển động của mảng kiến tạo",
+            "Năng lượng bên trong Trái Đất"
+        ],
+
+        correct:0,
+
+        explanation:
+            "Nước là một tác nhân quan trọng của ngoại sinh, tham gia vào các quá trình phong hóa, xâm thực, vận chuyển và bồi tụ."
+    },
+
+
+    {
+        question:
+            "Mối quan hệ giữa quá trình nội sinh và ngoại sinh được thể hiện như thế nào?",
+
+        answers:[
+            "Hoàn toàn không liên quan",
+            "Chỉ nội sinh tác động đến địa hình",
+            "Cùng góp phần tạo nên và biến đổi địa hình",
+            "Ngoại sinh luôn làm mất hoàn toàn tác động của nội sinh"
+        ],
+
+        correct:2,
+
+        explanation:
+            "Nội sinh và ngoại sinh cùng tác động đến bề mặt Trái Đất. Nội sinh góp phần tạo và làm biến dạng địa hình, còn ngoại sinh phá hủy, vận chuyển và bồi tụ vật liệu."
+    },
+
+
+    {
+        question:
+            "Phát biểu nào phù hợp nhất với hiện tượng tạo núi?",
+
+        answers:[
+            "Chỉ do nước mưa gây ra",
+            "Chỉ do gió tạo thành",
+            "Liên quan quan trọng đến hoạt động kiến tạo làm biến dạng và nâng vỏ Trái Đất",
+            "Chỉ do sinh vật tạo ra"
+        ],
+
+        correct:2,
+
+        explanation:
+            "Hiện tượng tạo núi liên quan quan trọng đến hoạt động kiến tạo. Sự tương tác giữa các mảng có thể gây nén ép, uốn nếp, đứt gãy và nâng các khu vực của vỏ Trái Đất."
+    }
+
+];
+
+
+/* =========================================================
+   BIẾN TRẠNG THÁI
+========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timeLeft = 10;
+
+let timerInterval = null;
+
+let answeredCurrent = false;
+
+
+/* =========================================================
+   BẮT ĐẦU
+========================================================= */
+
+function startQuiz(){
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    timeLeft = 10;
+
+    answeredCurrent = false;
+
+
+    document.getElementById(
+        "quizStart"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "quizResult"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "quizGame"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "completedMessage"
+    ).style.display = "none";
+
+
+    const completeButton =
+        document.getElementById(
+            "completeButton"
+        );
+
+
+    completeButton.disabled = false;
+
+    completeButton.textContent =
+        "✅ Hoàn thành bài học";
+
+    completeButton.style.opacity =
+        "1";
+
+
+    showQuestion();
+
+}
+
+
+/* =========================================================
+   HIỂN THỊ CÂU HỎI
+========================================================= */
+
+function showQuestion(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    answeredCurrent = false;
+
+    timeLeft = 10;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    document.getElementById(
+        "quizCount"
+    ).textContent =
+        "Câu " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+
+    document.getElementById(
+        "questionNumber"
+    ).textContent =
+        "CÂU HỎI " +
+        (currentQuestion + 1);
+
+
+    document.getElementById(
+        "questionText"
+    ).textContent =
+        q.question;
+
+
+    const percent =
+        (
+            currentQuestion /
+            questions.length
+        ) * 100;
+
+
+    document.getElementById(
+        "quizProgressBar"
+    ).style.width =
+        percent + "%";
+
+
+    const answersBox =
+        document.getElementById(
+            "answers"
+        );
+
+
+    answersBox.innerHTML = "";
+
+
+    q.answers.forEach(
+        function(answerText,index){
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "quiz-answer";
+
+
+            button.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                answerText;
+
+
+            button.onclick =
+                function(){
+
+                    selectAnswer(
+                        index,
+                        button
+                    );
+
+                };
+
+
+            answersBox.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    const explanation =
+        document.getElementById(
+            "explanation"
+        );
+
+
+    explanation.classList.remove(
+        "show"
+    );
+
+
+    document.getElementById(
+        "explanationText"
+    ).textContent =
+        "";
+
+
+    document.getElementById(
+        "nextWrap"
+    ).style.display =
+        "none";
+
+
+    updateTimer();
+
+
+    timerInterval =
+        setInterval(
+            function(){
+
+                timeLeft--;
+
+                updateTimer();
+
+
+                if(timeLeft <= 0){
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    timeUp();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function updateTimer(){
+
+    const timer =
+        document.getElementById(
+            "timer"
+        );
+
+
+    timer.textContent =
+        "⏱️ " +
+        timeLeft +
+        "s";
+
+
+    if(timeLeft <= 3){
+
+        timer.classList.add(
+            "warning"
+        );
+
+    }
+    else{
+
+        timer.classList.remove(
+            "warning"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CHỌN ĐÁP ÁN
+========================================================= */
+
+function selectAnswer(
+    selectedIndex,
+    selectedButton
+){
+
+    if(answeredCurrent){
+
+        return;
+
+    }
+
+
+    answeredCurrent = true;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".quiz-answer"
+        );
+
+
+    buttons.forEach(
+        function(button){
+
+            button.disabled = true;
+
+        }
+    );
+
+
+    buttons[
+        q.correct
+    ].classList.add(
+        "correct"
+    );
+
+
+    if(
+        selectedIndex !== q.correct
+    ){
+
+        selectedButton.classList.add(
+            "wrong"
+        );
+
+    }
+    else{
+
+        score++;
+
+    }
+
+
+    showExplanation(false);
+
+}
+
+
+/* =========================================================
+   HẾT GIỜ
+========================================================= */
+
+function timeUp(){
+
+    if(answeredCurrent){
+
+        return;
+
+    }
+
+
+    answeredCurrent = true;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".quiz-answer"
+        );
+
+
+    buttons.forEach(
+        function(button){
+
+            button.disabled = true;
+
+        }
+    );
+
+
+    buttons[
+        q.correct
+    ].classList.add(
+        "correct"
+    );
+
+
+    showExplanation(true);
+
+}
+
+
+/* =========================================================
+   GIẢI THÍCH
+========================================================= */
+
+function showExplanation(
+    timeout = false
+){
+
+    const q =
+        questions[currentQuestion];
+
+
+    const explanation =
+        document.getElementById(
+            "explanation"
+        );
+
+
+    const explanationText =
+        document.getElementById(
+            "explanationText"
+        );
+
+
+    const correctAnswer =
+        String.fromCharCode(
+            65 + q.correct
+        ) +
+        ". " +
+        q.answers[q.correct];
+
+
+    if(timeout){
+
+        explanationText.innerHTML =
+
+            "<strong style='color:#fca5a5'>" +
+            "⏰ Hết giờ!</strong> " +
+
+            "Đáp án đúng là " +
+
+            "<strong style='color:#67e8f9'>" +
+            correctAnswer +
+            "</strong>." +
+
+            "<br><br>" +
+
+            q.explanation;
+
+    }
+    else{
+
+        explanationText.innerHTML =
+
+            "<strong style='color:#67e8f9'>" +
+            "Đáp án đúng: " +
+            correctAnswer +
+            "</strong>" +
+
+            "<br><br>" +
+
+            q.explanation;
+
+    }
+
+
+    explanation.classList.add(
+        "show"
+    );
+
+
+    const nextWrap =
+        document.getElementById(
+            "nextWrap"
+        );
+
+
+    nextWrap.style.display =
+        "flex";
+
+
+    const nextBtn =
+        document.getElementById(
+            "nextBtn"
+        );
+
+
+    if(
+        currentQuestion ===
+        questions.length - 1
+    ){
+
+        nextBtn.textContent =
+            "🏆 Xem kết quả";
+
+    }
+    else{
+
+        nextBtn.textContent =
+            "Câu tiếp theo →";
+
+    }
+
+}
+
+
+/* =========================================================
+   CÂU TIẾP
+========================================================= */
+
+function nextQuestion(){
+
+    if(
+        currentQuestion <
+        questions.length - 1
+    ){
+
+        currentQuestion++;
+
+        showQuestion();
+
+    }
+    else{
+
+        finishQuiz();
+
+    }
+
+}
+
+
+/* =========================================================
+   KẾT THÚC
+========================================================= */
+
+function finishQuiz(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document.getElementById(
+        "quizGame"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "quizResult"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "quizProgressBar"
+    ).style.width =
+        "100%";
+
+
+    document.getElementById(
+        "resultScore"
+    ).textContent =
+        score +
+        " / " +
+        questions.length;
+
+
+    let message;
+
+
+    if(score === 10){
+
+        message =
+            "🎉 Xuất sắc! Bạn đã nắm rất chắc kiến thức của Bài 11.";
+
+    }
+    else if(score >= 8){
+
+        message =
+            "🌟 Rất tốt! Bạn đã hiểu khá vững các nội dung trọng tâm.";
+
+    }
+    else if(score >= 6){
+
+        message =
+            "👍 Khá tốt! Bạn đã nắm được phần lớn kiến thức.";
+
+    }
+    else if(score >= 4){
+
+        message =
+            "📖 Bạn nên xem lại một số nội dung rồi thử lại nhé.";
+
+    }
+    else{
+
+        message =
+            "💪 Hãy xem lại phần lý thuyết và thử sức lại nhé!";
+
+    }
+
+
+    document.getElementById(
+        "resultMessage"
+    ).textContent =
+        message;
+
+}
+
+
+/* =========================================================
+   LÀM LẠI
+========================================================= */
+
+function restartQuiz(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    timeLeft = 10;
+
+    answeredCurrent = false;
+
+
+    document.getElementById(
+        "quizResult"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "quizGame"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "completedMessage"
+    ).style.display =
+        "none";
+
+
+    const completeButton =
+        document.getElementById(
+            "completeButton"
+        );
+
+
+    completeButton.disabled = false;
+
+    completeButton.textContent =
+        "✅ Hoàn thành bài học";
+
+    completeButton.style.opacity =
+        "1";
+
+
+    showQuestion();
+
+}
+
+
+/* =========================================================
+   QUAY LẠI
+========================================================= */
+
+function backToLesson(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document.getElementById(
+        "quizResult"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "quizGame"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "quizStart"
+    ).style.display =
+        "block";
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =========================================================
+   HOÀN THÀNH BÀI HỌC
+========================================================= */
+
+function completeLesson(){
+
+    const key =
+        "hoclieu6_progress_v1";
+
+
+    let progress = {};
+
+
+    try{
+
+        progress =
+            JSON.parse(
+                localStorage.getItem(
+                    key
+                ) || "{}"
+            );
+
+    }
+    catch(e){
+
+        progress = {};
+
+    }
+
+
+    /*
+       Chỉ tại đây Bài 11 mới
+       được ghi nhận hoàn thành.
+    */
+
+    progress.g11 = true;
+
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(
+            progress
+        )
+    );
+
+
+    const completed =
+        document.getElementById(
+            "completedMessage"
+        );
+
+
+    completed.style.display =
+        "block";
+
+
+    const completeButton =
+        document.getElementById(
+            "completeButton"
+        );
+
+
+    completeButton.textContent =
+        "✓ Đã hoàn thành";
+
+
+    completeButton.disabled =
+        true;
+
+
+    completeButton.style.opacity =
+        "0.65";
+
+
+    completeButton.style.cursor =
+        "default";
+
+}
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g11");</script>
+</body>
+</html>

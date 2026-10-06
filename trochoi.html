@@ -1,0 +1,3419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trò chơi - Học liệu số 6</title>
+
+<style>
+:root{
+    --bg:#07111f;
+    --bg2:#0b1829;
+    --card:#101f33;
+    --card2:#14263d;
+    --border:#223a56;
+    --text:#edf5ff;
+    --muted:#9db0c5;
+
+    --blue:#4da3ff;
+    --cyan:#42d9e8;
+    --green:#45d39b;
+    --yellow:#f4c95d;
+    --red:#ff6f7d;
+    --purple:#a98cff;
+
+    --shadow:0 14px 40px rgba(0,0,0,.28);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(77,163,255,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(169,140,255,.09),
+            transparent 28%
+        ),
+        var(--bg);
+
+    line-height:1.6;
+}
+
+button{
+    font:inherit;
+    cursor:pointer;
+}
+
+.container{
+    width:min(1160px,92%);
+    margin:auto;
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    background:rgba(7,17,31,.91);
+    backdrop-filter:blur(14px);
+
+    border-bottom:1px solid var(--border);
+}
+
+.topbar-inner{
+    min-height:66px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+.back-btn{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+
+    padding:9px 15px;
+    border-radius:12px;
+
+    transition:.2s;
+}
+
+.back-btn:hover{
+    border-color:var(--blue);
+    transform:translateY(-1px);
+}
+
+.top-title{
+    color:var(--muted);
+    font-size:14px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    padding:55px 0 35px;
+}
+
+.hero-box{
+    position:relative;
+    overflow:hidden;
+
+    padding:38px;
+
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(77,163,255,.12),
+            rgba(169,140,255,.05)
+        ),
+        var(--card);
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+}
+
+.hero-decoration{
+    position:absolute;
+
+    width:210px;
+    height:210px;
+
+    right:-70px;
+    top:-70px;
+
+    border-radius:50%;
+
+    border:1px solid rgba(77,163,255,.16);
+    box-shadow:
+        0 0 0 35px rgba(77,163,255,.035),
+        0 0 0 70px rgba(77,163,255,.02);
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    padding:7px 13px;
+
+    border-radius:999px;
+
+    background:#102944;
+
+    color:#8bc7ff;
+
+    border:1px solid #234568;
+
+    font-size:13px;
+    font-weight:800;
+}
+
+h1{
+    margin:16px 0 9px;
+
+    font-size:
+        clamp(32px,6vw,54px);
+
+    line-height:1.08;
+
+    letter-spacing:-1.5px;
+}
+
+.hero p{
+    max-width:760px;
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:17px;
+}
+
+.stats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+
+    margin-top:24px;
+}
+
+.stat{
+    padding:9px 13px;
+
+    border-radius:11px;
+
+    background:#0c1b2c;
+
+    border:1px solid var(--border);
+
+    color:#cbdced;
+
+    font-size:13px;
+}
+
+
+/* =========================
+   SECTION
+========================= */
+
+.section{
+    margin:30px 0;
+}
+
+.section-title{
+    margin-bottom:17px;
+
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+
+    gap:12px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:25px;
+}
+
+.section-title p{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+}
+
+
+/* =========================
+   GAME GRID
+========================= */
+
+.game-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:17px;
+}
+
+.game-card{
+    position:relative;
+    overflow:hidden;
+
+    padding:24px;
+
+    min-height:220px;
+
+    border-radius:22px;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.16);
+
+    transition:
+        transform .2s,
+        border-color .2s,
+        background .2s;
+}
+
+.game-card:hover{
+    transform:translateY(-4px);
+
+    border-color:#355d83;
+
+    background:
+        linear-gradient(
+            135deg,
+            #11263e,
+            #101f33
+        );
+}
+
+.game-number{
+    position:absolute;
+
+    top:18px;
+    right:19px;
+
+    color:#5c7691;
+
+    font-size:13px;
+    font-weight:800;
+}
+
+.game-icon{
+    width:55px;
+    height:55px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:16px;
+
+    font-size:28px;
+
+    background:#132b45;
+
+    border:1px solid #24496d;
+}
+
+.game-card h3{
+    margin:15px 0 6px;
+
+    font-size:21px;
+}
+
+.game-card p{
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    max-width:500px;
+}
+
+.game-tags{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:7px;
+
+    margin-top:15px;
+}
+
+.tag{
+    padding:5px 9px;
+
+    border-radius:8px;
+
+    background:#0c1b2c;
+
+    border:1px solid var(--border);
+
+    color:#a9bfd5;
+
+    font-size:11px;
+}
+
+.play-btn{
+    margin-top:19px;
+
+    border:0;
+
+    padding:10px 16px;
+
+    border-radius:11px;
+
+    color:white;
+
+    background:#287dc8;
+
+    font-weight:800;
+
+    transition:.2s;
+}
+
+.play-btn:hover{
+    filter:brightness(1.1);
+    transform:translateY(-1px);
+}
+
+
+/* =========================
+   GAME AREA
+========================= */
+
+.game-area{
+    margin-top:22px;
+
+    display:none;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:24px;
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+}
+
+.game-area.show{
+    display:block;
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.game-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding-bottom:17px;
+
+    border-bottom:1px solid var(--border);
+}
+
+.game-head h2{
+    margin:0;
+}
+
+.close-game{
+    border:1px solid var(--border);
+
+    background:#0c1b2c;
+
+    color:#cbdced;
+
+    padding:8px 13px;
+
+    border-radius:10px;
+}
+
+.game-content{
+    padding-top:22px;
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-meta{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:18px;
+}
+
+.quiz-badge{
+    padding:7px 11px;
+
+    border-radius:9px;
+
+    background:#0c1b2c;
+
+    border:1px solid var(--border);
+
+    color:#b9cce0;
+
+    font-size:13px;
+}
+
+.timer{
+    color:var(--yellow);
+
+    font-weight:900;
+}
+
+.question{
+    font-size:22px;
+    font-weight:800;
+
+    margin:18px 0;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+
+    gap:11px;
+}
+
+.option{
+    padding:14px;
+
+    border:1px solid var(--border);
+
+    background:#0c1b2c;
+
+    color:var(--text);
+
+    border-radius:13px;
+
+    text-align:left;
+
+    transition:.2s;
+}
+
+.option:hover:not(:disabled){
+    border-color:var(--blue);
+    background:#102943;
+}
+
+.option.correct{
+    border-color:var(--green);
+    background:rgba(69,211,155,.11);
+}
+
+.option.wrong{
+    border-color:var(--red);
+    background:rgba(255,111,125,.10);
+}
+
+.feedback{
+    margin-top:17px;
+
+    padding:13px 15px;
+
+    border-radius:12px;
+
+    display:none;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.good{
+    color:#a9f0d2;
+    background:rgba(69,211,155,.08);
+    border:1px solid rgba(69,211,155,.3);
+}
+
+.feedback.bad{
+    color:#ffc0c7;
+    background:rgba(255,111,125,.08);
+    border:1px solid rgba(255,111,125,.3);
+}
+
+.next-btn{
+    margin-top:17px;
+
+    display:none;
+
+    border:0;
+
+    padding:10px 17px;
+
+    border-radius:11px;
+
+    color:white;
+
+    background:#287dc8;
+
+    font-weight:800;
+}
+
+.next-btn.show{
+    display:inline-block;
+}
+
+
+/* =========================
+   MEMORY MATCH
+========================= */
+
+.memory-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+    gap:10px;
+
+    max-width:720px;
+
+    margin:20px auto;
+}
+
+.memory-card{
+    aspect-ratio:1/1;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    background:#0c1b2c;
+
+    color:transparent;
+
+    position:relative;
+
+    font-size:20px;
+
+    transition:.2s;
+
+    overflow:hidden;
+}
+
+.memory-card::before{
+    content:"?";
+    color:#66809a;
+
+    position:absolute;
+    inset:0;
+
+    display:grid;
+    place-items:center;
+
+    font-size:24px;
+    font-weight:900;
+}
+
+.memory-card.open,
+.memory-card.matched{
+    background:#112b45;
+    color:var(--text);
+}
+
+.memory-card.open::before,
+.memory-card.matched::before{
+    display:none;
+}
+
+.memory-card.matched{
+    border-color:var(--green);
+    background:rgba(69,211,155,.09);
+}
+
+.memory-info{
+    text-align:center;
+
+    color:var(--muted);
+
+    margin-bottom:10px;
+}
+
+
+/* =========================
+   CLASSIFY
+========================= */
+
+.classify-zone{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:15px;
+
+    margin-top:20px;
+}
+
+.class-box{
+    min-height:250px;
+
+    padding:17px;
+
+    border-radius:17px;
+
+    border:1px dashed #365674;
+
+    background:#0b1929;
+}
+
+.class-box h3{
+    margin-top:0;
+}
+
+.class-items{
+    display:grid;
+    gap:9px;
+}
+
+.class-item{
+    padding:11px 13px;
+
+    border-radius:10px;
+
+    background:#14283e;
+
+    border:1px solid var(--border);
+
+    cursor:pointer;
+
+    color:#dce9f5;
+}
+
+.class-item:hover{
+    border-color:var(--blue);
+}
+
+.class-item.selected{
+    border-color:var(--yellow);
+
+    background:
+        rgba(244,201,93,.09);
+}
+
+.class-actions{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:9px;
+
+    margin-top:17px;
+}
+
+
+/* =========================
+   TIMELINE
+========================= */
+
+.timeline-items{
+    display:grid;
+    gap:10px;
+
+    max-width:760px;
+
+    margin:20px auto;
+}
+
+.timeline-item{
+    padding:15px;
+
+    border-radius:13px;
+
+    background:#0c1b2c;
+
+    border:1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    cursor:grab;
+}
+
+.timeline-item:active{
+    cursor:grabbing;
+}
+
+.timeline-num{
+    width:31px;
+    height:31px;
+
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    flex:none;
+
+    background:#173451;
+
+    color:#9dccf4;
+
+    font-weight:900;
+}
+
+.timeline-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:17px;
+}
+
+
+/* =========================
+   WORD PUZZLE
+========================= */
+
+.word-board{
+    display:grid;
+
+    gap:8px;
+
+    justify-content:center;
+
+    margin:20px auto;
+}
+
+.word-row{
+    display:flex;
+    gap:7px;
+}
+
+.letter{
+    width:43px;
+    height:43px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:9px;
+
+    background:#0b1a2a;
+
+    border:1px solid var(--border);
+
+    font-weight:900;
+
+    color:#dce9f5;
+}
+
+.letter.found{
+    background:#123b3b;
+
+    border-color:
+        rgba(69,211,155,.55);
+
+    color:#9ff0ce;
+}
+
+.clue{
+    padding:14px;
+
+    background:#0c1b2c;
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    max-width:700px;
+
+    margin:15px auto;
+
+    text-align:center;
+}
+
+.word-input{
+    max-width:380px;
+
+    margin:12px auto;
+
+    display:block;
+
+    padding:12px;
+
+    width:100%;
+
+    border-radius:11px;
+
+    border:1px solid var(--border);
+
+    background:#091625;
+
+    color:white;
+
+    text-align:center;
+
+    outline:none;
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+.result{
+    text-align:center;
+
+    padding:25px 10px;
+}
+
+.result-icon{
+    font-size:58px;
+}
+
+.result h2{
+    font-size:29px;
+    margin:9px 0;
+}
+
+.result p{
+    color:var(--muted);
+}
+
+.score-big{
+    font-size:45px;
+    font-weight:900;
+
+    color:#8bc7ff;
+
+    margin:10px 0;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    margin-top:60px;
+
+    padding:30px 0 50px;
+
+    border-top:1px solid var(--border);
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:800px){
+
+    .game-grid{
+        grid-template-columns:1fr;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .classify-zone{
+        grid-template-columns:1fr;
+    }
+
+    .memory-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .hero-box{
+        padding:26px;
+    }
+}
+
+@media(max-width:520px){
+
+    .top-title{
+        display:none;
+    }
+
+    .hero{
+        padding-top:30px;
+    }
+
+    .memory-grid{
+        gap:7px;
+    }
+
+    .memory-card{
+        border-radius:10px;
+    }
+
+    .letter{
+        width:34px;
+        height:34px;
+        font-size:13px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<header class="topbar">
+
+    <div class="container topbar-inner">
+
+        <button
+            class="back-btn"
+            type="button"
+            onclick="goHome()"
+        >
+            ← Trang chủ
+        </button>
+
+        <div class="top-title">
+            🎮 Học liệu số 6 · Khu vui chơi kiến thức
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="hero-box">
+
+        <div class="hero-decoration"></div>
+
+        <span class="badge">
+            🎮 KHU VUI CHƠI KIẾN THỨC
+        </span>
+
+        <h1>
+            Chơi để nhớ,
+            <br>
+            học để khám phá!
+        </h1>
+
+        <p>
+            Cùng củng cố kiến thức Lịch sử và Địa lí 6
+            thông qua những thử thách ngắn, trực quan và tương tác.
+        </p>
+
+        <div class="stats">
+
+            <div class="stat">
+                🎯 5 trò chơi
+            </div>
+
+            <div class="stat">
+                🏛️ Lịch sử
+            </div>
+
+            <div class="stat">
+                🌎 Địa lí
+            </div>
+
+            <div class="stat">
+                💻 Chạy offline
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     GAME LIST
+========================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>
+            🕹️ Chọn trò chơi
+        </h2>
+
+        <p>
+            Mỗi trò chơi là một thử thách nhỏ
+        </p>
+
+    </div>
+
+
+    <div class="game-grid">
+
+
+        <!-- GAME 1 -->
+
+        <article class="game-card">
+
+            <div class="game-number">
+                GAME 01
+            </div>
+
+            <div class="game-icon">
+                ⚡
+            </div>
+
+            <h3>
+                Đấu trường 10 giây
+            </h3>
+
+            <p>
+                Trả lời thật nhanh các câu hỏi kiến thức
+                Lịch sử và Địa lí. Mỗi câu chỉ có 10 giây!
+            </p>
+
+            <div class="game-tags">
+                <span class="tag">10 câu</span>
+                <span class="tag">10 giây/câu</span>
+                <span class="tag">Lịch sử + Địa lí</span>
+            </div>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="startGame(1)"
+            >
+                Chơi ngay →
+            </button>
+
+        </article>
+
+
+        <!-- GAME 2 -->
+
+        <article class="game-card">
+
+            <div class="game-number">
+                GAME 02
+            </div>
+
+            <div class="game-icon">
+                🧩
+            </div>
+
+            <h3>
+                Ghép đôi kiến thức
+            </h3>
+
+            <p>
+                Lật các thẻ và tìm đúng cặp khái niệm –
+                nội dung tương ứng.
+            </p>
+
+            <div class="game-tags">
+                <span class="tag">Trí nhớ</span>
+                <span class="tag">12 thẻ</span>
+                <span class="tag">Tương tác</span>
+            </div>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="startGame(2)"
+            >
+                Chơi ngay →
+            </button>
+
+        </article>
+
+
+        <!-- GAME 3 -->
+
+        <article class="game-card">
+
+            <div class="game-number">
+                GAME 03
+            </div>
+
+            <div class="game-icon">
+                🧠
+            </div>
+
+            <h3>
+                Ô chữ khám phá
+            </h3>
+
+            <p>
+                Đọc gợi ý, suy luận và tìm từ khóa liên quan
+                đến kiến thức Lịch sử – Địa lí 6.
+            </p>
+
+            <div class="game-tags">
+                <span class="tag">Từ khóa</span>
+                <span class="tag">Suy luận</span>
+                <span class="tag">Ô chữ</span>
+            </div>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="startGame(3)"
+            >
+                Chơi ngay →
+            </button>
+
+        </article>
+
+
+        <!-- GAME 4 -->
+
+        <article class="game-card">
+
+            <div class="game-number">
+                GAME 04
+            </div>
+
+            <div class="game-icon">
+                🌍
+            </div>
+
+            <h3>
+                Thợ săn Địa lí
+            </h3>
+
+            <p>
+                Phân loại các hiện tượng và yếu tố theo đúng
+                nhóm kiến thức Địa lí.
+            </p>
+
+            <div class="game-tags">
+                <span class="tag">Địa lí 6</span>
+                <span class="tag">Phân loại</span>
+                <span class="tag">Tư duy</span>
+            </div>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="startGame(4)"
+            >
+                Chơi ngay →
+            </button>
+
+        </article>
+
+
+        <!-- GAME 5 -->
+
+        <article class="game-card">
+
+            <div class="game-number">
+                GAME 05
+            </div>
+
+            <div class="game-icon">
+                🏛️
+            </div>
+
+            <h3>
+                Dòng thời gian Lịch sử
+            </h3>
+
+            <p>
+                Sắp xếp các sự kiện theo trình tự thời gian
+                để hoàn thành dòng lịch sử.
+            </p>
+
+            <div class="game-tags">
+                <span class="tag">Lịch sử 6</span>
+                <span class="tag">Sắp xếp</span>
+                <span class="tag">Tư duy</span>
+            </div>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="startGame(5)"
+            >
+                Chơi ngay →
+            </button>
+
+        </article>
+
+    </div>
+
+
+    <!-- =========================
+         GAME AREA
+    ========================= -->
+
+    <div
+        id="gameArea"
+        class="game-area"
+    >
+
+        <div class="game-head">
+
+            <h2 id="gameTitle">
+                Trò chơi
+            </h2>
+
+            <button
+                class="close-game"
+                type="button"
+                onclick="closeGame()"
+            >
+                ✕ Đóng
+            </button>
+
+        </div>
+
+        <div
+            id="gameContent"
+            class="game-content"
+        ></div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    HỌC LIỆU SỐ LỊCH SỬ VÀ ĐỊA LÍ 6
+    · KHU VUI CHƠI KIẾN THỨC
+
+</footer>
+
+
+<script>
+
+/* =====================================================
+   CƠ BẢN
+===================================================== */
+
+const gameArea =
+    document.getElementById("gameArea");
+
+const gameTitle =
+    document.getElementById("gameTitle");
+
+const gameContent =
+    document.getElementById("gameContent");
+
+
+function goHome(){
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+function closeGame(){
+
+    gameArea.classList.remove("show");
+
+    gameContent.innerHTML = "";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =====================================================
+   GAME 1
+   ĐẤU TRƯỜNG 10 GIÂY
+===================================================== */
+
+const quizQuestions = [
+
+    {
+        q:"Trái Đất tự quay quanh trục theo hướng nào?",
+        options:[
+            "Từ Tây sang Đông",
+            "Từ Đông sang Tây",
+            "Từ Bắc xuống Nam",
+            "Từ Nam lên Bắc"
+        ],
+        answer:0,
+        explain:
+            "Trái Đất tự quay quanh trục theo hướng từ Tây sang Đông."
+    },
+
+    {
+        q:"Lớp nào nằm ở ngoài cùng của Trái Đất?",
+        options:[
+            "Nhân",
+            "Manti",
+            "Vỏ Trái Đất",
+            "Lõi trong"
+        ],
+        answer:2,
+        explain:
+            "Vỏ Trái Đất là lớp ngoài cùng, nơi con người đang sinh sống."
+    },
+
+    {
+        q:"Khí quyển là gì?",
+        options:[
+            "Lớp đất bao quanh Trái Đất",
+            "Lớp không khí bao quanh Trái Đất",
+            "Lớp nước bao phủ Trái Đất",
+            "Lớp đá bên trong Trái Đất"
+        ],
+        answer:1,
+        explain:
+            "Khí quyển là lớp không khí bao quanh Trái Đất."
+    },
+
+    {
+        q:"Sông thường có những bộ phận chính nào?",
+        options:[
+            "Nguồn, dòng sông, cửa sông",
+            "Núi, đồng bằng, biển",
+            "Mây, mưa, gió",
+            "Đất, đá, khoáng sản"
+        ],
+        answer:0,
+        explain:
+            "Một con sông thường gồm nguồn sông, dòng sông và cửa sông."
+    },
+
+    {
+        q:"Hiện tượng nào là một dạng vận động của biển?",
+        options:[
+            "Động đất",
+            "Sóng biển",
+            "Núi lửa",
+            "Phong hóa"
+        ],
+        answer:1,
+        explain:
+            "Sóng biển là một trong những vận động chủ yếu của biển và đại dương."
+    },
+
+    {
+        q:"Nguyên nhân trực tiếp tạo ra ngày và đêm luân phiên là gì?",
+        options:[
+            "Trái Đất quay quanh Mặt Trời",
+            "Mặt Trời quay quanh Trái Đất",
+            "Trái Đất tự quay quanh trục",
+            "Mặt Trăng quay quanh Trái Đất"
+        ],
+        answer:2,
+        explain:
+            "Trái Đất tự quay quanh trục làm các khu vực lần lượt hướng về và khuất khỏi Mặt Trời."
+    },
+
+    {
+        q:"Rừng nhiệt đới có đặc điểm nổi bật nào?",
+        options:[
+            "Nghèo sinh vật",
+            "Nhiều loài sinh vật",
+            "Luôn có băng tuyết",
+            "Hầu như không có cây"
+        ],
+        answer:1,
+        explain:
+            "Rừng nhiệt đới có điều kiện thuận lợi cho nhiều loài sinh vật sinh sống."
+    },
+
+    {
+        q:"Dân cư thế giới phân bố như thế nào?",
+        options:[
+            "Hoàn toàn đồng đều",
+            "Chỉ tập trung ở miền núi",
+            "Không đồng đều",
+            "Chỉ tập trung ở hoang mạc"
+        ],
+        answer:2,
+        explain:
+            "Dân cư thế giới phân bố không đồng đều giữa các khu vực."
+    },
+
+    {
+        q:"Phát triển bền vững là gì?",
+        options:[
+            "Khai thác tài nguyên càng nhiều càng tốt",
+            "Chỉ quan tâm đến kinh tế",
+            "Đáp ứng nhu cầu hiện tại mà không làm tổn hại nhu cầu tương lai",
+            "Không sử dụng tài nguyên thiên nhiên"
+        ],
+        answer:2,
+        explain:
+            "Phát triển bền vững phải đáp ứng nhu cầu hiện tại nhưng không làm ảnh hưởng đến thế hệ tương lai."
+    },
+
+    {
+        q:"Việc làm nào góp phần bảo vệ thiên nhiên?",
+        options:[
+            "Khai thác tài nguyên lãng phí",
+            "Xả rác xuống sông",
+            "Sử dụng tài nguyên hợp lí",
+            "Chặt phá rừng tùy ý"
+        ],
+        answer:2,
+        explain:
+            "Sử dụng tài nguyên hợp lí, tiết kiệm và bảo vệ môi trường là những hành động cần thiết."
+    }
+
+];
+
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizTimer = null;
+let quizTime = 10;
+let quizAnswered = false;
+
+
+function startGame(number){
+
+    gameArea.classList.add("show");
+
+    if(number === 1){
+        startQuiz();
+    }
+
+    if(number === 2){
+        startMemory();
+    }
+
+    if(number === 3){
+        startWord();
+    }
+
+    if(number === 4){
+        startClassify();
+    }
+
+    if(number === 5){
+        startTimeline();
+    }
+
+    setTimeout(() => {
+
+        gameArea.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    },50);
+
+}
+
+
+/* ---------- QUIZ ---------- */
+
+function startQuiz(){
+
+    gameTitle.textContent =
+        "⚡ Đấu trường 10 giây";
+
+    quizIndex = 0;
+    quizScore = 0;
+
+    renderQuiz();
+
+}
+
+
+function renderQuiz(){
+
+    clearInterval(quizTimer);
+
+    quizAnswered = false;
+    quizTime = 10;
+
+    const item =
+        quizQuestions[quizIndex];
+
+    gameContent.innerHTML = `
+
+        <div class="quiz-meta">
+
+            <div class="quiz-badge">
+                Câu ${quizIndex + 1}/${quizQuestions.length}
+            </div>
+
+            <div class="quiz-badge timer">
+                ⏱️ <span id="quizTimer">10</span>s
+            </div>
+
+            <div class="quiz-badge">
+                ⭐ Điểm: ${quizScore}
+            </div>
+
+        </div>
+
+        <div class="question">
+            ${item.q}
+        </div>
+
+        <div class="options">
+
+            ${item.options.map((option,index)=>`
+
+                <button
+                    class="option"
+                    type="button"
+                    onclick="answerQuiz(${index})"
+                >
+                    ${String.fromCharCode(65+index)}.
+                    ${option}
+                </button>
+
+            `).join("")}
+
+        </div>
+
+        <div
+            id="quizFeedback"
+            class="feedback"
+        ></div>
+
+        <button
+            id="nextQuiz"
+            class="next-btn"
+            type="button"
+            onclick="nextQuiz()"
+        >
+            ${quizIndex === quizQuestions.length-1
+                ? "Xem kết quả"
+                : "Câu tiếp theo →"}
+        </button>
+    `;
+
+
+    quizTimer =
+        setInterval(() => {
+
+            quizTime--;
+
+            const timer =
+                document.getElementById("quizTimer");
+
+            if(timer){
+                timer.textContent =
+                    quizTime;
+            }
+
+            if(quizTime <= 0){
+
+                clearInterval(quizTimer);
+
+                if(!quizAnswered){
+
+                    quizAnswered = true;
+
+                    showQuizResult(
+                        -1
+                    );
+
+                }
+
+            }
+
+        },1000);
+
+}
+
+
+function answerQuiz(index){
+
+    if(quizAnswered){
+        return;
+    }
+
+    quizAnswered = true;
+
+    clearInterval(quizTimer);
+
+    const correct =
+        quizQuestions[quizIndex].answer;
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach((button,i)=>{
+
+        button.disabled = true;
+
+        if(i === correct){
+            button.classList.add("correct");
+        }
+
+        if(i === index && i !== correct){
+            button.classList.add("wrong");
+        }
+
+    });
+
+    if(index === correct){
+
+        quizScore++;
+
+        showQuizResult(1);
+
+    }else{
+
+        showQuizResult(0);
+
+    }
+
+}
+
+
+function showQuizResult(type){
+
+    const item =
+        quizQuestions[quizIndex];
+
+    const feedback =
+        document.getElementById("quizFeedback");
+
+    if(type === 1){
+
+        feedback.className =
+            "feedback show good";
+
+        feedback.innerHTML =
+            "✓ Chính xác! " + item.explain;
+
+    }else if(type === 0){
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.innerHTML =
+            "✗ Chưa chính xác. " + item.explain;
+
+    }else{
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.innerHTML =
+            "⏰ Hết giờ! " + item.explain;
+
+    }
+
+    document
+        .getElementById("nextQuiz")
+        .classList.add("show");
+
+}
+
+
+function nextQuiz(){
+
+    quizIndex++;
+
+    if(quizIndex >= quizQuestions.length){
+
+        showQuizFinal();
+
+        return;
+    }
+
+    renderQuiz();
+
+}
+
+
+function showQuizFinal(){
+
+    clearInterval(quizTimer);
+
+    let message =
+        "Có thể thử lại để phá kỉ lục!";
+
+    let icon = "💪";
+
+    if(quizScore >= 9){
+
+        message =
+            "Xuất sắc! Kiến thức của bạn rất chắc.";
+
+        icon = "🏆";
+
+    }else if(quizScore >= 7){
+
+        message =
+            "Rất tốt! Bạn đã nắm khá vững kiến thức.";
+
+        icon = "🌟";
+
+    }else if(quizScore >= 5){
+
+        message =
+            "Khá tốt! Hãy ôn lại một vài nội dung.";
+
+        icon = "👍";
+
+    }
+
+    gameContent.innerHTML = `
+
+        <div class="result">
+
+            <div class="result-icon">
+                ${icon}
+            </div>
+
+            <h2>
+                Hoàn thành thử thách!
+            </h2>
+
+            <div class="score-big">
+                ${quizScore}/10
+            </div>
+
+            <p>
+                ${message}
+            </p>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="startQuiz()"
+            >
+                🔄 Chơi lại
+            </button>
+
+        </div>
+    `;
+
+}
+
+
+/* =====================================================
+   GAME 2
+   MEMORY
+===================================================== */
+
+const memoryPairs = [
+
+    ["Trái Đất","Hành tinh"],
+    ["Khí quyển","Không khí"],
+    ["Thủy quyển","Nước"],
+    ["Sinh quyển","Sự sống"],
+    ["Dân cư","Con người"],
+    ["Thiên nhiên","Môi trường"]
+
+];
+
+let memoryCards = [];
+let memoryFirst = null;
+let memorySecond = null;
+let memoryLock = false;
+let memoryMatches = 0;
+let memoryMoves = 0;
+
+
+function startMemory(){
+
+    gameTitle.textContent =
+        "🧩 Ghép đôi kiến thức";
+
+    memoryFirst = null;
+    memorySecond = null;
+    memoryLock = false;
+    memoryMatches = 0;
+    memoryMoves = 0;
+
+    memoryCards = [];
+
+    memoryPairs.forEach((pair,index)=>{
+
+        memoryCards.push({
+            id:index,
+            pair:index,
+            text:pair[0]
+        });
+
+        memoryCards.push({
+            id:index + 100,
+            pair:index,
+            text:pair[1]
+        });
+
+    });
+
+    shuffle(memoryCards);
+
+    gameContent.innerHTML = `
+
+        <div class="memory-info">
+            Lật hai thẻ. Hãy tìm các cặp kiến thức có liên hệ với nhau.
+            <br>
+            Lượt chơi:
+            <strong id="memoryMoves">0</strong>
+            · Đã ghép:
+            <strong id="memoryMatches">0/6</strong>
+        </div>
+
+        <div class="memory-grid">
+
+            ${memoryCards.map((card,index)=>`
+
+                <button
+                    class="memory-card"
+                    id="memory-${index}"
+                    type="button"
+                    onclick="flipMemory(${index})"
+                >
+                    ${card.text}
+                </button>
+
+            `).join("")}
+
+        </div>
+    `;
+
+}
+
+
+function shuffle(array){
+
+    for(let i=array.length-1;i>0;i--){
+
+        const j =
+            Math.floor(
+                Math.random()*(i+1)
+            );
+
+        [
+            array[i],
+            array[j]
+        ] =
+        [
+            array[j],
+            array[i]
+        ];
+
+    }
+
+    return array;
+
+}
+
+
+function flipMemory(index){
+
+    if(memoryLock){
+        return;
+    }
+
+    const card =
+        document.getElementById(
+            "memory-" + index
+        );
+
+    if(
+        card.classList.contains("open") ||
+        card.classList.contains("matched")
+    ){
+        return;
+    }
+
+    card.classList.add("open");
+
+    if(memoryFirst === null){
+
+        memoryFirst = index;
+
+        return;
+    }
+
+    memorySecond = index;
+
+    memoryMoves++;
+
+    document.getElementById(
+        "memoryMoves"
+    ).textContent = memoryMoves;
+
+    const first =
+        memoryCards[memoryFirst];
+
+    const second =
+        memoryCards[memorySecond];
+
+    if(first.pair === second.pair){
+
+        document
+            .getElementById(
+                "memory-" + memoryFirst
+            )
+            .classList.add("matched");
+
+        document
+            .getElementById(
+                "memory-" + memorySecond
+            )
+            .classList.add("matched");
+
+        memoryMatches++;
+
+        document.getElementById(
+            "memoryMatches"
+        ).textContent =
+            `${memoryMatches}/6`;
+
+        memoryFirst = null;
+        memorySecond = null;
+
+        if(memoryMatches === memoryPairs.length){
+
+            setTimeout(showMemoryResult,500);
+
+        }
+
+    }else{
+
+        memoryLock = true;
+
+        setTimeout(()=>{
+
+            document
+                .getElementById(
+                    "memory-" + memoryFirst
+                )
+                .classList.remove("open");
+
+            document
+                .getElementById(
+                    "memory-" + memorySecond
+                )
+                .classList.remove("open");
+
+            memoryFirst = null;
+            memorySecond = null;
+
+            memoryLock = false;
+
+        },800);
+
+    }
+
+}
+
+
+function showMemoryResult(){
+
+    gameContent.innerHTML = `
+
+        <div class="result">
+
+            <div class="result-icon">
+                🧩
+            </div>
+
+            <h2>
+                Ghép đủ 6 cặp!
+            </h2>
+
+            <div class="score-big">
+                ${memoryMoves} lượt
+            </div>
+
+            <p>
+                ${memoryMoves <= 10
+                    ? "Quá xuất sắc! Trí nhớ rất tốt."
+                    : "Hoàn thành rồi! Hãy thử lại để giảm số lượt."}
+            </p>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="startMemory()"
+            >
+                🔄 Chơi lại
+            </button>
+
+        </div>
+    `;
+
+}
+
+
+/* =====================================================
+   GAME 3
+   Ô CHỮ KHÁM PHÁ
+===================================================== */
+
+/*
+    GAME 3 gồm 10 câu.
+
+    Luồng chơi:
+
+    Câu 1
+       ↓
+    Nhập đáp án
+       ↓
+    Kiểm tra / Xem đáp án
+       ↓
+    Hiện đáp án + giải thích
+       ↓
+    Câu tiếp theo →
+       ↓
+    ...
+       ↓
+    Câu 10
+       ↓
+    Kết quả
+*/
+
+
+const wordQuestions = [
+
+    {
+        answer: "KHÍ QUYỂN",
+
+        clue:
+            "Lớp không khí bao quanh Trái Đất, có vai trò quan trọng đối với sự sống.",
+
+        explain:
+            "Khí quyển là lớp không khí bao quanh Trái Đất, gồm nhiều loại khí khác nhau và có vai trò quan trọng đối với sự sống."
+    },
+
+
+    {
+        answer: "VỎ TRÁI ĐẤT",
+
+        clue:
+            "Lớp ngoài cùng của Trái Đất, nơi con người và nhiều sinh vật sinh sống.",
+
+        explain:
+            "Vỏ Trái Đất là lớp ngoài cùng của Trái Đất, có độ dày khác nhau ở các khu vực."
+    },
+
+
+    {
+        answer: "THỦY QUYỂN",
+
+        clue:
+            "Toàn bộ lớp nước trên Trái Đất, bao gồm nước ở biển, đại dương, sông, hồ, băng và nước ngầm.",
+
+        explain:
+            "Thủy quyển là toàn bộ lớp nước trên Trái Đất, bao gồm nước ở đại dương, biển, sông, hồ, băng hà, nước ngầm và hơi nước."
+    },
+
+
+    {
+        answer: "SINH QUYỂN",
+
+        clue:
+            "Bộ phận của Trái Đất có sự sống tồn tại.",
+
+        explain:
+            "Sinh quyển là nơi tồn tại của các sinh vật trên Trái Đất, bao gồm thực vật, động vật và vi sinh vật."
+    },
+
+
+    {
+        answer: "THỦY TRIỀU",
+
+        clue:
+            "Hiện tượng mực nước biển lên xuống theo chu kì.",
+
+        explain:
+            "Thủy triều là hiện tượng nước biển dâng lên và hạ xuống theo chu kì, chủ yếu do sức hút của Mặt Trăng và Mặt Trời."
+    },
+
+
+    {
+        answer: "DÒNG BIỂN",
+
+        clue:
+            "Sự chuyển động thành dòng tương đối ổn định của nước biển và đại dương.",
+
+        explain:
+            "Dòng biển là sự chuyển động thành dòng tương đối ổn định của nước biển và đại dương."
+    },
+
+
+    {
+        answer: "MẬT ĐỘ DÂN SỐ",
+
+        clue:
+            "Số người trung bình sinh sống trên một đơn vị diện tích.",
+
+        explain:
+            "Mật độ dân số cho biết số dân trung bình sống trên một đơn vị diện tích, thường tính bằng người/km²."
+    },
+
+
+    {
+        answer: "DÂN SỐ",
+
+        clue:
+            "Tổng số người sinh sống trên một lãnh thổ tại một thời điểm nhất định.",
+
+        explain:
+            "Dân số là tổng số người sinh sống trên một lãnh thổ tại một thời điểm nhất định."
+    },
+
+
+    {
+        answer: "THỜI TIẾT",
+
+        clue:
+            "Trạng thái của khí quyển tại một địa điểm trong khoảng thời gian ngắn.",
+
+        explain:
+            "Thời tiết là trạng thái của khí quyển tại một địa điểm trong một thời gian ngắn, biểu hiện qua nhiệt độ, mưa, gió, mây..."
+    },
+
+
+    {
+        answer: "PHÁT TRIỂN BỀN VỮNG",
+
+        clue:
+            "Sự phát triển đáp ứng nhu cầu hiện tại nhưng không làm ảnh hưởng đến khả năng đáp ứng nhu cầu của các thế hệ tương lai.",
+
+        explain:
+            "Phát triển bền vững là phát triển nhằm đáp ứng nhu cầu của hiện tại nhưng không làm tổn hại đến khả năng đáp ứng nhu cầu của các thế hệ tương lai."
+    }
+
+];
+
+
+let wordIndex = 0;
+
+let wordScore = 0;
+
+let wordAnswered = false;
+
+
+/* =====================================================
+   CHUẨN HÓA ĐÁP ÁN
+===================================================== */
+
+function normalizeWord(text){
+
+    return String(text)
+
+        .trim()
+
+        .normalize("NFD")
+
+        .replace(/[\u0300-\u036f]/g, "")
+
+        .replace(/đ/gi, "d")
+
+        .replace(/[^a-zA-Z0-9]/g, "")
+
+        .toUpperCase();
+
+}
+
+
+/* =====================================================
+   BẮT ĐẦU GAME 3
+===================================================== */
+
+function startWord(){
+
+    gameTitle.textContent =
+        "🧠 Ô chữ khám phá";
+
+    wordIndex = 0;
+
+    wordScore = 0;
+
+    wordAnswered = false;
+
+    renderWordQuestion();
+
+}
+
+
+/* =====================================================
+   HIỂN THỊ CÂU HỎI
+===================================================== */
+
+function renderWordQuestion(){
+
+    wordAnswered = false;
+
+    const item =
+        wordQuestions[wordIndex];
+
+
+    gameContent.innerHTML = `
+
+        <div class="quiz-meta">
+
+            <div class="quiz-badge">
+
+                🧠 Câu
+                ${wordIndex + 1}/${wordQuestions.length}
+
+            </div>
+
+
+            <div class="quiz-badge">
+
+                ⭐ Điểm:
+                ${wordScore}
+
+            </div>
+
+        </div>
+
+
+        <div class="clue">
+
+            <strong>
+                🔎 Gợi ý
+            </strong>
+
+            <br><br>
+
+            ${item.clue}
+
+        </div>
+
+
+        <div
+            id="wordBoard"
+            class="word-board"
+        ></div>
+
+
+        <input
+
+            id="wordInput"
+
+            class="word-input"
+
+            type="text"
+
+            placeholder="Nhập đáp án..."
+
+            autocomplete="off"
+
+        >
+
+
+        <div style="text-align:center">
+
+            <button
+
+                id="wordCheckButton"
+
+                class="play-btn"
+
+                type="button"
+
+                onclick="checkWord()"
+
+            >
+
+                🔍 Kiểm tra
+
+            </button>
+
+
+            <button
+
+                id="wordRevealButton"
+
+                class="close-game"
+
+                type="button"
+
+                onclick="revealWord()"
+
+                style="margin-left:8px"
+
+            >
+
+                💡 Xem đáp án
+
+            </button>
+
+        </div>
+
+
+        <div
+
+            id="wordFeedback"
+
+            class="feedback"
+
+        ></div>
+
+
+        <div style="text-align:center">
+
+            <button
+
+                id="nextWordButton"
+
+                class="next-btn"
+
+                type="button"
+
+                onclick="nextWord()"
+
+            >
+
+                Câu tiếp theo →
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    renderWordBoard();
+
+
+    /*
+        Cho phép nhấn Enter để kiểm tra.
+    */
+
+    document
+        .getElementById("wordInput")
+        .addEventListener("keydown",function(event){
+
+            if(event.key === "Enter"){
+
+                event.preventDefault();
+
+                checkWord();
+
+            }
+
+        });
+
+
+    /*
+        Tự động đưa con trỏ vào ô nhập.
+    */
+
+    document
+        .getElementById("wordInput")
+        .focus();
+
+}
+
+
+/* =====================================================
+   TẠO CÁC Ô CHỮ
+===================================================== */
+
+function renderWordBoard(showAnswer = false){
+
+    const board =
+        document.getElementById("wordBoard");
+
+
+    if(!board){
+        return;
+    }
+
+
+    const answer =
+        normalizeWord(
+            wordQuestions[wordIndex].answer
+        );
+
+
+    board.innerHTML = `
+
+        <div class="word-row">
+
+            ${
+                answer
+                    .split("")
+                    .map(letter => `
+
+                        <div class="letter">
+
+                            ${
+                                showAnswer
+                                ? letter
+                                : "•"
+                            }
+
+                        </div>
+
+                    `)
+                    .join("")
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   KHÓA CÂU SAU KHI TRẢ LỜI
+===================================================== */
+
+function lockWordQuestion(){
+
+    const input =
+        document.getElementById("wordInput");
+
+
+    const checkButton =
+        document.getElementById(
+            "wordCheckButton"
+        );
+
+
+    const revealButton =
+        document.getElementById(
+            "wordRevealButton"
+        );
+
+
+    const nextButton =
+        document.getElementById(
+            "nextWordButton"
+        );
+
+
+    if(input){
+        input.disabled = true;
+    }
+
+
+    if(checkButton){
+        checkButton.disabled = true;
+    }
+
+
+    if(revealButton){
+        revealButton.disabled = true;
+    }
+
+
+    if(nextButton){
+
+        nextButton.classList.add("show");
+
+    }
+
+}
+
+
+/* =====================================================
+   KIỂM TRA ĐÁP ÁN
+===================================================== */
+
+function checkWord(){
+
+    /*
+        Nếu câu đã được trả lời
+        thì không cho kiểm tra lại.
+    */
+
+    if(wordAnswered){
+        return;
+    }
+
+
+    const input =
+        document.getElementById(
+            "wordInput"
+        );
+
+
+    const feedback =
+        document.getElementById(
+            "wordFeedback"
+        );
+
+
+    const userAnswer =
+        normalizeWord(
+            input.value
+        );
+
+
+    /*
+        Không nhập gì.
+    */
+
+    if(!userAnswer){
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.innerHTML =
+
+            "⚠️ Bạn chưa nhập đáp án. Hãy thử trả lời trước nhé.";
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    const correctAnswer =
+        normalizeWord(
+            wordQuestions[wordIndex].answer
+        );
+
+
+    /*
+        Đánh dấu câu đã trả lời.
+    */
+
+    wordAnswered = true;
+
+
+    /*
+        Hiện toàn bộ đáp án.
+    */
+
+    renderWordBoard(true);
+
+
+    /*
+        Khóa ô nhập và nút kiểm tra.
+    */
+
+    lockWordQuestion();
+
+
+    /*
+        Xử lí đúng / sai.
+    */
+
+    if(userAnswer === correctAnswer){
+
+        wordScore++;
+
+
+        feedback.className =
+            "feedback show good";
+
+
+        feedback.innerHTML = `
+
+            <strong>
+                🎉 Chính xác!
+            </strong>
+
+            <br><br>
+
+            Đáp án:
+
+            <strong>
+                ${wordQuestions[wordIndex].answer}
+            </strong>
+
+            <br><br>
+
+            ${wordQuestions[wordIndex].explain}
+
+        `;
+
+    }
+
+    else{
+
+        feedback.className =
+            "feedback show bad";
+
+
+        feedback.innerHTML = `
+
+            <strong>
+                ❌ Chưa chính xác!
+            </strong>
+
+            <br><br>
+
+            Đáp án đúng là:
+
+            <strong>
+                ${wordQuestions[wordIndex].answer}
+            </strong>
+
+            <br><br>
+
+            ${wordQuestions[wordIndex].explain}
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   XEM ĐÁP ÁN
+===================================================== */
+
+function revealWord(){
+
+    /*
+        Nếu đã trả lời rồi thì không xử lí lại.
+    */
+
+    if(wordAnswered){
+        return;
+    }
+
+
+    wordAnswered = true;
+
+
+    /*
+        Hiện toàn bộ chữ.
+    */
+
+    renderWordBoard(true);
+
+
+    /*
+        Khóa phần trả lời.
+    */
+
+    lockWordQuestion();
+
+
+    const feedback =
+        document.getElementById(
+            "wordFeedback"
+        );
+
+
+    feedback.className =
+        "feedback show";
+
+
+    feedback.innerHTML = `
+
+        <strong>
+            💡 Đáp án:
+        </strong>
+
+        <strong>
+            ${wordQuestions[wordIndex].answer}
+        </strong>
+
+        <br><br>
+
+        ${wordQuestions[wordIndex].explain}
+
+    `;
+
+}
+
+
+/* =====================================================
+   SANG CÂU TIẾP THEO
+===================================================== */
+
+function nextWord(){
+
+    /*
+        Chưa trả lời thì không cho qua câu.
+    */
+
+    if(!wordAnswered){
+
+        return;
+
+    }
+
+
+    /*
+        Nếu chưa phải câu cuối:
+        chuyển sang câu tiếp theo.
+    */
+
+    if(wordIndex < wordQuestions.length - 1){
+
+        wordIndex++;
+
+        renderWordQuestion();
+
+        return;
+
+    }
+
+
+    /*
+        Nếu đã hoàn thành câu 10:
+        hiện kết quả.
+    */
+
+    showWordFinal();
+
+}
+
+
+/* =====================================================
+   KẾT QUẢ Ô CHỮ
+===================================================== */
+
+function showWordFinal(){
+
+    let icon = "💪";
+
+    let message =
+        "Hãy thử lại để ghi nhớ các khái niệm tốt hơn!";
+
+
+    if(wordScore >= 9){
+
+        icon = "🏆";
+
+        message =
+            "Xuất sắc! Bạn nắm rất chắc các thuật ngữ Lịch sử và Địa lí 6.";
+
+    }
+
+    else if(wordScore >= 7){
+
+        icon = "🌟";
+
+        message =
+            "Rất tốt! Bạn đã ghi nhớ phần lớn các khái niệm.";
+
+    }
+
+    else if(wordScore >= 5){
+
+        icon = "👍";
+
+        message =
+            "Khá tốt! Hãy ôn lại một số thuật ngữ quan trọng.";
+
+    }
+
+
+    gameContent.innerHTML = `
+
+        <div class="result">
+
+            <div class="result-icon">
+
+                ${icon}
+
+            </div>
+
+
+            <h2>
+
+                Hoàn thành Ô chữ khám phá!
+
+            </h2>
+
+
+            <div class="score-big">
+
+                ${wordScore}/10
+
+            </div>
+
+
+            <p>
+
+                ${message}
+
+            </p>
+
+
+            <br>
+
+
+            <button
+
+                class="play-btn"
+
+                type="button"
+
+                onclick="startWord()"
+
+            >
+
+                🔄 Chơi lại
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+/* =====================================================
+   GAME 4
+   THỢ SĂN ĐỊA LÍ
+===================================================== */
+
+const classifyData = [
+
+    {
+        text:"Sông",
+        group:"tuNhien"
+    },
+
+    {
+        text:"Núi",
+        group:"tuNhien"
+    },
+
+    {
+        text:"Khí hậu",
+        group:"tuNhien"
+    },
+
+    {
+        text:"Khoáng sản",
+        group:"tuNhien"
+    },
+
+    {
+        text:"Dân cư",
+        group:"conNguoi"
+    },
+
+    {
+        text:"Thành phố",
+        group:"conNguoi"
+    },
+
+    {
+        text:"Hoạt động sản xuất",
+        group:"conNguoi"
+    },
+
+    {
+        text:"Mật độ dân số",
+        group:"conNguoi"
+    }
+
+];
+
+let selectedClassify = null;
+
+
+function startClassify(){
+
+    gameTitle.textContent =
+        "🌍 Thợ săn Địa lí";
+
+    selectedClassify = null;
+
+    gameContent.innerHTML = `
+
+        <p style="
+            color:var(--muted);
+            margin-top:0;
+        ">
+            Hãy chọn một thẻ, sau đó chọn nhóm phù hợp:
+            <strong>Thiên nhiên</strong> hoặc
+            <strong>Con người</strong>.
+        </p>
+
+        <div class="classify-zone">
+
+            <div class="class-box">
+
+                <h3>
+                    🌿 Yếu tố tự nhiên
+                </h3>
+
+                <div
+                    id="naturalZone"
+                    class="class-items"
+                ></div>
+
+            </div>
+
+            <div class="class-box">
+
+                <h3>
+                    👥 Yếu tố con người
+                </h3>
+
+                <div
+                    id="humanZone"
+                    class="class-items"
+                ></div>
+
+            </div>
+
+        </div>
+
+        <div
+            id="classifyItems"
+            class="class-items"
+            style="margin-top:18px"
+        ></div>
+
+        <div class="class-actions">
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="putClassify('tuNhien')"
+            >
+                🌿 Đưa vào Thiên nhiên
+            </button>
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="putClassify('conNguoi')"
+            >
+                👥 Đưa vào Con người
+            </button>
+
+            <button
+                class="close-game"
+                type="button"
+                onclick="startClassify()"
+            >
+                ↺ Làm lại
+            </button>
+
+        </div>
+
+        <div
+            id="classifyFeedback"
+            class="feedback"
+        ></div>
+
+    `;
+
+    renderClassify();
+
+}
+
+
+function renderClassify(){
+
+    const container =
+        document.getElementById(
+            "classifyItems"
+        );
+
+    container.innerHTML = "";
+
+    classifyData
+        .filter(item => !item.placed)
+        .forEach((item,index)=>{
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "class-item";
+
+            button.type =
+                "button";
+
+            button.textContent =
+                item.text;
+
+            button.onclick = () => {
+
+                document
+                    .querySelectorAll(
+                        "#classifyItems .class-item"
+                    )
+                    .forEach(el =>
+                        el.classList.remove("selected")
+                    );
+
+                button.classList.add("selected");
+
+                selectedClassify =
+                    item;
+
+            };
+
+            container.appendChild(button);
+
+        });
+
+}
+
+
+function putClassify(group){
+
+    const feedback =
+        document.getElementById(
+            "classifyFeedback"
+        );
+
+    if(!selectedClassify){
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.textContent =
+            "⚠️ Hãy chọn một thẻ trước.";
+
+        return;
+    }
+
+    if(selectedClassify.group === group){
+
+        selectedClassify.placed = true;
+
+        const zone =
+            group === "tuNhien"
+            ? document.getElementById("naturalZone")
+            : document.getElementById("humanZone");
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "class-item";
+
+        item.textContent =
+            "✓ " + selectedClassify.text;
+
+        zone.appendChild(item);
+
+        feedback.className =
+            "feedback show good";
+
+        feedback.textContent =
+            "✓ Chính xác!";
+
+        selectedClassify = null;
+
+        renderClassify();
+
+        if(
+            classifyData.every(
+                item => item.placed
+            )
+        ){
+
+            setTimeout(()=>{
+
+                gameContent.innerHTML = `
+
+                    <div class="result">
+
+                        <div class="result-icon">
+                            🌍
+                        </div>
+
+                        <h2>
+                            Hoàn thành!
+                        </h2>
+
+                        <p>
+                            Bạn đã phân loại đúng toàn bộ
+                            các yếu tố.
+                        </p>
+
+                        <button
+                            class="play-btn"
+                            type="button"
+                            onclick="startClassify()"
+                        >
+                            🔄 Chơi lại
+                        </button>
+
+                    </div>
+
+                `;
+
+            },500);
+
+        }
+
+    }else{
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.textContent =
+            "✗ Chưa đúng. Hãy suy nghĩ xem yếu tố này thuộc về thiên nhiên hay hoạt động của con người.";
+
+    }
+
+}
+
+
+/* =====================================================
+   GAME 5
+   DÒNG THỜI GIAN
+===================================================== */
+
+const timelineCorrect = [
+
+    {
+        text:"Con người xuất hiện",
+        year:1
+    },
+
+    {
+        text:"Các quốc gia cổ đại hình thành",
+        year:2
+    },
+
+    {
+        text:"Văn Lang – Âu Lạc",
+        year:3
+    },
+
+    {
+        text:"Thời Bắc thuộc",
+        year:4
+    },
+
+    {
+        text:"Đấu tranh giành độc lập",
+        year:5
+    }
+
+];
+
+
+let timelineItems = [];
+
+
+function startTimeline(){
+
+    gameTitle.textContent =
+        "🏛️ Dòng thời gian Lịch sử";
+
+    timelineItems =
+        [...timelineCorrect];
+
+    shuffle(timelineItems);
+
+    renderTimeline();
+
+}
+
+
+function renderTimeline(){
+
+    gameContent.innerHTML = `
+
+        <p style="
+            color:var(--muted);
+            margin-top:0;
+        ">
+            Hãy sắp xếp các thẻ theo trình tự từ
+            <strong>sớm → muộn</strong>.
+            Bạn có thể dùng các nút ↑ ↓.
+        </p>
+
+        <div
+            id="timelineItems"
+            class="timeline-items"
+        ></div>
+
+        <div class="timeline-actions">
+
+            <button
+                class="play-btn"
+                type="button"
+                onclick="checkTimeline()"
+            >
+                ✓ Kiểm tra
+            </button>
+
+            <button
+                class="close-game"
+                type="button"
+                onclick="startTimeline()"
+            >
+                ↺ Trộn lại
+            </button>
+
+        </div>
+
+        <div
+            id="timelineFeedback"
+            class="feedback"
+        ></div>
+
+    `;
+
+    const container =
+        document.getElementById(
+            "timelineItems"
+        );
+
+    timelineItems.forEach((item,index)=>{
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "timeline-item";
+
+        row.innerHTML = `
+
+            <div class="timeline-num">
+                ${index+1}
+            </div>
+
+            <div style="flex:1">
+                ${item.text}
+            </div>
+
+            <button
+                class="close-game"
+                type="button"
+                onclick="moveTimeline(${index},-1)"
+            >
+                ↑
+            </button>
+
+            <button
+                class="close-game"
+                type="button"
+                onclick="moveTimeline(${index},1)"
+            >
+                ↓
+            </button>
+        `;
+
+        container.appendChild(row);
+
+    });
+
+}
+
+
+function moveTimeline(index,direction){
+
+    const target =
+        index + direction;
+
+    if(
+        target < 0 ||
+        target >= timelineItems.length
+    ){
+        return;
+    }
+
+    [
+        timelineItems[index],
+        timelineItems[target]
+    ] =
+    [
+        timelineItems[target],
+        timelineItems[index]
+    ];
+
+    renderTimeline();
+
+}
+
+
+function checkTimeline(){
+
+    const correct =
+        timelineItems.every(
+            (item,index)=>
+                item.year === index+1
+        );
+
+    const feedback =
+        document.getElementById(
+            "timelineFeedback"
+        );
+
+    if(correct){
+
+        feedback.className =
+            "feedback show good";
+
+        feedback.innerHTML =
+            "🏆 Xuất sắc! Bạn đã hoàn thành dòng thời gian chính xác.";
+
+    }else{
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.innerHTML =
+            "✗ Chưa chính xác. Hãy xem lại thứ tự các sự kiện.";
+
+    }
+
+}
+
+
+/* =====================================================
+   KHỞI TẠO
+===================================================== */
+
+window.addEventListener(
+    "beforeunload",
+    () => clearInterval(quizTimer)
+);
+
+</script>
+
+</body>
+</html>

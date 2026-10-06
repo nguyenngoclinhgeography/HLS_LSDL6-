@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 11 | Các quốc gia sơ kì ở Đông Nam Á</title>
+<style>
+:root{
+  --bg:#071923;--panel:#0d2430;--panel2:#102d3b;--line:#285365;
+  --cyan:#5fd6e8;--cyan2:#2daec8;--gold:#d7a45a;--gold2:#f0c77d;
+  --text:#e8f5f8;--muted:#9db7c1;--green:#6fd39b;--red:#ef7d7d;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 15% 5%,#123445 0,#071923 38%,#06131b 100%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.6}button{font:inherit}a{color:inherit}
+.top{position:sticky;top:0;z-index:50;background:rgba(5,17,24,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;letter-spacing:.5px}.home{padding:8px 13px;border:1px solid #396477;border-radius:10px;text-decoration:none;background:#0d2734}.home:hover{border-color:var(--cyan)}
+.hero{padding:46px 7% 34px;background:linear-gradient(135deg,rgba(22,73,91,.55),rgba(7,25,35,.25));border-bottom:1px solid #173d4c}.eyebrow{color:var(--gold2);font-size:12px;font-weight:900;letter-spacing:2px}.hero h1{font-size:clamp(30px,5vw,56px);line-height:1.05;margin:10px 0}.hero p{max-width:900px;color:var(--muted);font-size:17px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid #315b6a;border-radius:999px;padding:6px 10px;color:#c9e5eb;background:#0c2632;font-size:12px}
+.wrap{width:min(1200px,92%);margin:auto}.section{padding:34px 0}.section-title{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:18px}.section-title h2{margin:0;font-size:25px}.section-desc{color:var(--muted);font-size:14px}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.card{background:linear-gradient(145deg,rgba(17,46,59,.96),rgba(9,29,39,.96));border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 18px 45px rgba(0,0,0,.18)}.card h3{margin-top:0}.key{border-left:4px solid var(--gold);padding:12px 15px;background:rgba(215,164,90,.08);border-radius:10px;margin:14px 0}.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.mini{padding:15px;border:1px solid #244b5b;border-radius:14px;background:#0a222d}.mini b{display:block;color:var(--cyan);margin-bottom:5px}.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.time{position:relative;padding:16px;border-top:3px solid var(--gold);background:#0a222d;border-radius:12px}.time strong{color:var(--gold2)}
+/* MAP */
+.atlas{border:1px solid #31596a;border-radius:20px;overflow:hidden;background:#06141d;box-shadow:0 22px 55px rgba(0,0,0,.3)}.atlas-head{padding:18px 20px;border-bottom:1px solid #244653;background:linear-gradient(90deg,#0b2634,#09202b)}.atlas-kicker{font-size:11px;letter-spacing:2px;color:#7fdbea;font-weight:900}.atlas-head h2{margin:3px 0 4px;font-size:25px}.atlas-head p{margin:0;color:#93b4be;font-size:13px}.tabs{display:flex;overflow:auto;border-bottom:1px solid #244653;background:#081b25}.tab{flex:1;min-width:180px;border:0;border-right:1px solid #203f4c;background:transparent;color:#9ebac3;padding:13px 10px;font-weight:800;cursor:pointer}.tab.active{background:#103746;color:#e9fbff;box-shadow:inset 0 -3px var(--cyan)}.map-layout{display:grid;grid-template-columns:205px minmax(0,1fr) 270px;min-height:590px}.side{padding:16px;background:#081d27;border-right:1px solid #234652}.side.right{border-right:0;border-left:1px solid #234652}.side h4{margin:0 0 12px;font-size:12px;letter-spacing:1.2px;color:#7fdbea}.layer{display:flex;align-items:center;gap:8px;padding:9px 7px;border-radius:8px;color:#b4cbd2;font-size:12px}.layer:hover{background:#0c2a37}.layer input{accent-color:var(--cyan)}.mapbox{position:relative;min-height:590px;background:#d8edf2;border-left:1px solid #a8c7ce;border-right:1px solid #a8c7ce}.mapcanvas{position:absolute;inset:0;overflow:hidden;background:#d9eff5}.map-svg{width:100%;height:100%;display:block}.country{fill:#eee5cf;stroke:#7d9ba1;stroke-width:1.1;opacity:.96}.highlight{fill:#f3c66f;stroke:#805f2c;stroke-width:1.2}.ancient{fill:#efb05f;stroke:#b56f32;stroke-width:1.1;opacity:.82}.ancient-pink{fill:#e68ca8;stroke:#a64c67;stroke-width:1.1;opacity:.82}.boundary{fill:none;stroke:#8f9b9d;stroke-width:1;stroke-dasharray:5 4;opacity:.85}.route{fill:none;stroke:#b47a39;stroke-width:2;stroke-dasharray:7 6;opacity:.85}.river{fill:none;stroke:#4fa9c0;stroke-width:1.5;opacity:.8}.citydot{fill:#b96b36;stroke:#fff7e8;stroke-width:1.5;cursor:pointer}.citytext{font-size:11px;font-weight:800;fill:#34484e;paint-order:stroke;stroke:#e8f6f8;stroke-width:3px}.sea{font-size:12px;letter-spacing:2px;fill:#26809a;opacity:.9;font-weight:800}.moderntext{font-size:10px;font-weight:700;fill:#59676a;paint-order:stroke;stroke:#e8f6f8;stroke-width:3px}.map-ui{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.9);border:1px solid #8cb3bd;border-radius:10px;padding:7px 9px;font-size:11px;color:#3e5c64}.zoom{position:absolute;right:12px;top:12px;display:grid;gap:5px}.zoom button{width:34px;height:34px;border:1px solid #6d9ca8;background:#f7ffff;color:#355a64;border-radius:8px;cursor:pointer;font-weight:900;box-shadow:0 2px 8px rgba(42,91,103,.12)}.north{position:absolute;right:18px;bottom:18px;color:#315e68;font-weight:900;font-size:12px}.legend{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.93);border:1px solid #9bbac1;border-radius:8px;padding:9px 11px;font-size:11px;color:#41575d;box-shadow:0 5px 15px rgba(42,91,103,.12)}.lg{display:flex;gap:7px;align-items:center;margin:4px 0}.sw{width:18px;height:10px;border-radius:2px}.info-icon{font-size:34px}.info h3{margin:5px 0;color:#effcff}.info p{color:#9ebbc3;font-size:13px}.facts{display:grid;gap:9px;margin-top:15px}.fact{background:#0b2530;border:1px solid #244c5a;border-radius:10px;padding:9px 10px;font-size:12px}.fact span{display:block;color:#7fa7b2;font-size:10px;text-transform:uppercase;letter-spacing:.7px}.fact b{color:#dceef2}.profile-note{margin-top:16px;padding:11px;border-radius:10px;background:rgba(95,214,232,.07);border:1px solid #285365;color:#a9cbd3;font-size:12px}
+/* evidence */
+.evidence{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.e-card{cursor:pointer;min-height:160px;transition:.2s}.e-card:hover{transform:translateY(-3px);border-color:var(--cyan)}.e-icon{font-size:30px}.e-card h3{margin:6px 0;font-size:15px}.e-card p{margin:0;color:var(--muted);font-size:12px}.detail{display:none;margin-top:14px}.detail.show{display:block}
+/* quiz */
+.quiz-shell{border:1px solid #31596a;border-radius:20px;overflow:hidden;background:#071a24}.quiz-top{padding:14px 18px;border-bottom:1px solid #254a58;display:flex;align-items:center;gap:15px}.quiz-label{font-size:11px;font-weight:900;letter-spacing:1.5px;color:var(--gold2);white-space:nowrap}.quiz-progress{height:7px;background:#153440;border-radius:999px;flex:1;overflow:hidden}.quiz-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan2),var(--cyan));transition:.25s}.quiz-body{padding:28px;min-height:330px;display:grid;place-items:center}.quiz-intro{text-align:center;max-width:650px}.big-icon{font-size:50px}.quiz-intro h3{font-size:25px;margin:7px 0}.quiz-intro p{color:var(--muted)}.primary-btn,.secondary-btn{border:0;border-radius:11px;padding:11px 18px;cursor:pointer;font-weight:900}.primary-btn{background:linear-gradient(135deg,#2daec8,#5fd6e8);color:#05202a}.secondary-btn{background:#173642;color:#d8eef2;border:1px solid #356170}.primary-btn:disabled{opacity:.5;cursor:not-allowed}.question-wrap{width:min(850px,100%)}.question-meta{display:flex;justify-content:space-between;color:#9fc0c9;font-size:12px;margin-bottom:12px}.timer{color:var(--gold2)}.question{font-size:21px;font-weight:800;margin-bottom:18px}.answers{display:grid;gap:9px}.answer{text-align:left;border:1px solid #315768;background:#0c2632;color:#d9edf1;border-radius:11px;padding:12px 14px;cursor:pointer}.answer:hover:not(:disabled){border-color:var(--cyan);background:#103746}.answer:disabled{cursor:default}.answer.correct{background:rgba(61,153,106,.25);border-color:#65d69b}.answer.wrong{background:rgba(190,67,67,.25);border-color:#ef7d7d}.result{text-align:center}.score{font-size:58px;font-weight:1000;color:var(--cyan)}
+footer{padding:30px;text-align:center;color:#6f929e;border-top:1px solid #193b48;font-size:12px}.source{font-size:11px;color:#6f929e;margin-top:8px}
+@media(max-width:900px){.map-layout{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid #234652}.side.right{border-left:0;border-top:1px solid #234652}.mapbox{min-height:480px}.cols,.evidence,.timeline,.grid2{grid-template-columns:1fr 1fr}}@media(max-width:600px){.hero{padding:35px 5%}.wrap{width:94%}.cols,.evidence,.timeline{grid-template-columns:1fr}.mapbox{min-height:430px}.quiz-body{padding:20px}.question{font-size:18px}}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+<body>
+<div class="top"><div class="brand">📜 HỌC LIỆU SỐ 6 · LỊCH SỬ</div><a class="home" href="index.html">⌂ Trang chủ</a></div>
+
+<header class="hero"><div class="wrap">
+<div class="eyebrow">CHƯƠNG 4 · ĐÔNG NAM Á</div>
+<h1>Bài 11. Các quốc gia sơ kì ở Đông Nam Á</h1>
+<p>Khám phá vị trí của Đông Nam Á, nền văn minh lúa nước, quá trình xuất hiện các quốc gia sơ kì và mạng lưới giao lưu thương mại từ khoảng thế kỉ VII TCN đến thế kỉ VII.</p>
+<div class="chips"><span class="chip">🌾 Văn minh lúa nước</span><span class="chip">🗺️ Bản đồ lịch sử</span><span class="chip">⚓ Giao thương biển</span><span class="chip">🏺 quốc gia sơ kì</span></div>
+</div></header>
+
+<main class="wrap">
+<section class="section"><div class="section-title"><div><h2>1. “Cái nôi” của nền văn minh lúa nước</h2><div class="section-desc">Từ vị trí địa lí đến điều kiện tự nhiên thuận lợi cho cư dân Đông Nam Á.</div></div></div>
+<div class="grid2"><div class="card"><h3>Đông Nam Á – một vị trí kết nối</h3><p>Đông Nam Á nằm trên tuyến hàng hải nối Ấn Độ Dương với Thái Bình Dương, từ lâu là cầu nối giữa Trung Quốc, Nhật Bản với Ấn Độ, Tây Á và Địa Trung Hải.</p><div class="key"><b>Ghi nhớ:</b> Khu vực gồm <b>Đông Nam Á lục địa</b> và <b>Đông Nam Á hải đảo</b>, nằm trong vùng nhiệt đới gió mùa, có lượng mưa lớn, thuận lợi cho cây lúa nước và nhiều cây trồng.</div></div>
+<div class="card"><h3>Vì sao lúa nước phát triển?</h3><div class="cols"><div class="mini"><b>🌧️ Khí hậu</b>Nhiệt đới gió mùa, lượng mưa lớn.</div><div class="mini"><b>🌊 Sông ngòi</b>Nguồn nước thuận lợi cho sản xuất.</div><div class="mini"><b>🌱 Đất đai</b>Điều kiện phù hợp với nhiều cây trồng.</div></div></div></div></section>
+
+<section class="section"><div class="section-title"><div><h2>2. Khám phá bản đồ Đông Nam Á</h2><div class="section-desc">Lược đồ học tập mô phỏng vị trí các quốc gia sơ kì và các điểm giao thương tiêu biểu. Không dùng để đo đạc ranh giới pháp lý.</div></div></div>
+<div class="atlas">
+<div class="atlas-head"><div class="atlas-kicker">ATLAS LỊCH SỬ · ĐÔNG NAM Á</div><h2>Các quốc gia sơ kì và không gian giao thương</h2><p>Chọn chế độ để quan sát vị trí khu vực, các quốc gia/địa điểm tiêu biểu và tuyến giao thương.</p></div>
+<div class="tabs"><button class="tab active" data-mode="overview">🌏 KHÔNG GIAN ĐÔNG NAM Á</button><button class="tab" data-mode="states">🏺 QUỐC GIA SƠ KÌ</button><button class="tab" data-mode="trade">⚓ GIAO THƯƠNG</button></div>
+<div class="map-layout">
+<aside class="side"><h4>KHÁM PHÁ BẢN ĐỒ</h4>
+<label class="layer"><input type="checkbox" id="layerBase" checked> Nền đất & đường bờ biển</label>
+<label class="layer"><input type="checkbox" id="layerStates" checked> quốc gia sơ kì</label>
+<label class="layer"><input type="checkbox" id="layerBound" checked> Biên giới hiện nay</label>
+<label class="layer"><input type="checkbox" id="layerCities" checked> Địa điểm / đô thị</label>
+<label class="layer"><input type="checkbox" id="layerRivers" checked> Sông lớn</label>
+<label class="layer"><input type="checkbox" id="layerRoutes" checked> Tuyến giao thương (sơ đồ)</label>
+<label class="layer"><input type="checkbox" id="layerSeas" checked> Tên biển / đại dương</label>
+<hr style="border:0;border-top:1px solid #244653;margin:13px 0">
+<div style="font-size:11px;color:#789ba6">Điều khiển</div>
+<div style="display:grid;gap:6px;margin-top:7px"><button class="secondary-btn" id="zoomIn">＋ Phóng to</button><button class="secondary-btn" id="zoomOut">－ Thu nhỏ</button><button class="secondary-btn" id="resetMap">◎ Toàn cảnh</button></div>
+</aside>
+<div class="mapbox"><div class="mapcanvas" id="mapCanvas"></div><div class="legend"><div class="lg"><i class="sw" style="background:#c78845"></i> Quốc gia sơ kì</div><div class="lg"><i class="sw" style="background:#f0b86c"></i> Địa điểm / thương cảng</div><div class="lg"><i class="sw" style="background:#e0ae62"></i> Tuyến giao thương (sơ đồ)</div></div><div class="zoom"><button id="zoomIn2">＋</button><button id="zoomOut2">−</button></div><div class="north">N ↑</div><div class="map-ui" id="mapStatus">Lược đồ tương tác · dữ liệu học tập</div></div>
+<aside class="side right"><div class="info"><div class="info-icon" id="infoIcon">🌏</div><h3 id="infoTitle">Đông Nam Á</h3><p id="infoDescription">Khu vực nằm giữa Ấn Độ Dương và Thái Bình Dương, gồm Đông Nam Á lục địa và hải đảo.</p><div class="facts"><div class="fact"><span>Không gian</span><b id="infoSpace">Lục địa · hải đảo</b></div><div class="fact"><span>Quốc gia / địa điểm</span><b id="infoCenter">Âu Lạc · Lâm Ấp · Phù Nam</b></div><div class="fact"><span>Giao thương</span><b id="infoSea">Óc Eo · Ta-cô-la</b></div></div><div class="profile-note" id="infoKey">Hãy bấm vào một điểm trên bản đồ để xem hồ sơ.</div></div></aside>
+</div></div>
+</section>
+
+<section class="section"><div class="section-title"><div><h2>3. Quá trình hình thành các quốc gia sơ kì</h2><div class="section-desc">Khoảng thế kỉ VII TCN đến thế kỉ VII, các quốc gia sơ kì lần lượt xuất hiện ở nhiều khu vực Đông Nam Á.</div></div></div>
+<div class="timeline"><div class="time"><strong>VII TCN</strong><br>Văn Lang – Âu Lạc hình thành ở khu vực Việt Nam.</div><div class="time"><strong>Đầu Công nguyên</strong><br>Nhiều trung tâm chính trị – thương mại phát triển ở Đông Nam Á.</div><div class="time"><strong>Đến thế kỉ VII</strong><br>Xuất hiện nhiều quốc gia sơ kì ở lục địa và hải đảo.</div><div class="time"><strong>Giao lưu</strong><br>Buôn bán đường biển thúc đẩy kết nối trong và ngoài khu vực.</div></div>
+<div class="card" style="margin-top:14px"><h3>Một số quốc gia và trung tâm tiêu biểu</h3><div class="evidence"><div class="card e-card" data-detail="aulac"><div class="e-icon">🏺</div><h3>Âu Lạc</h3><p>quốc gia sơ kì ở khu vực Bắc Bộ và Bắc Trung Bộ Việt Nam.</p></div><div class="card e-card" data-detail="lamap"><div class="e-icon">🛕</div><h3>Lâm Ấp / Chăm-pa</h3><p>Xuất hiện ở khu vực miền Trung Việt Nam.</p></div><div class="card e-card" data-detail="funan"><div class="e-icon">⚓</div><h3>Phù Nam</h3><p>Phát triển ở khu vực Nam Bộ và có hoạt động thương mại biển đáng chú ý.</p></div><div class="card e-card" data-detail="others"><div class="e-icon">🌴</div><h3>Các trung tâm khác</h3><p>Sri Kse-tra, Dva-ra-va-ti, Chân Lạp, Ta-ru-ma, Ka-lin-ga...</p></div></div><div class="detail card" id="detailBox"></div></div>
+</section>
+
+<section class="section"><div class="section-title"><div><h2>4. Giao lưu thương mại</h2><div class="section-desc">Hoạt động buôn bán giữa các quốc gia Đông Nam Á và với bên ngoài phát triển, đặc biệt bằng đường biển.</div></div></div><div class="grid2"><div class="card"><h3>⚓ Những điểm giao thương</h3><p><b>Óc Eo</b> ở Nam Bộ Việt Nam và <b>Ta-cô-la</b> trên bán đảo Mã Lai là những địa điểm được nhắc đến trong bài học. Một số thành thị đồng thời là hải cảng sầm uất đã xuất hiện.</p><div class="key">Các tư liệu khảo cổ cho thấy có sự trao đổi hàng hóa giữa các khu vực Đông Nam Á với nhau và với Ấn Độ, Trung Quốc, thậm chí có hiện vật kiểu La Mã.</div></div><div class="card"><h3>🔎 Từ hiện vật đến kết luận</h3><div class="cols"><div class="mini"><b>Trong khu vực</b>Hiện vật tương đồng được phát hiện ở các địa điểm khác nhau.</div><div class="mini"><b>Với bên ngoài</b>Hiện vật Ấn Độ, nhà Hán và kiểu La Mã được phát hiện ở Đông Nam Á.</div><div class="mini"><b>Ý nghĩa</b>Chứng tỏ mạng lưới giao thương khá rộng mở.</div></div></div></div></section>
+
+<section class="section" id="quiz"><div class="section-title"><div><h2>5. Thử thách kiến thức</h2><div class="section-desc">10 câu hỏi · mỗi câu có 10 giây.</div></div></div>
+<div class="quiz-shell"><div class="quiz-top"><div class="quiz-label">THỬ THÁCH KIẾN THỨC</div><div class="quiz-progress"><span id="quizProgress"></span></div></div><div class="quiz-body" id="quizBody"><div class="quiz-intro"><div class="big-icon">🌾</div><h3>Sẵn sàng khám phá?</h3><p>Hãy trả lời 10 câu hỏi về các quốc gia sơ kì ở Đông Nam Á. Mỗi câu có 10 giây để suy nghĩ.</p><button class="primary-btn" id="startQuiz">Bắt đầu</button></div></div></div>
+</section>
+
+<section class="section"><div class="card" id="completionBox"><div style="display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap"><div><h3 style="margin:0">Hoàn thành bài học</h3><p id="completionText" style="color:var(--muted);margin:5px 0">Sau khi hoàn thành quiz, em có thể lưu Bài 11 vào tiến độ.</p></div><span id="lessonStatus" style="display:none;padding:7px 10px;border-radius:999px;background:#123d2e;color:#80e0ac;font-size:12px;font-weight:900">✓ Đã hoàn thành</span></div><button class="primary-btn" id="finishLesson" disabled style="margin-top:12px">Hoàn thành bài học</button></div></section>
+</main>
+<footer>HỌC LIỆU SỐ 6 · LỊCH SỬ · BÀI 11<br>“Các quốc gia sơ kì ở Đông Nam Á” · Bản đồ là lược đồ học tập, không dùng cho đo đạc hoặc xác định ranh giới pháp lý.<div class="source">Nội dung bám theo Lịch sử và Địa lí 6 – Kết nối tri thức với cuộc sống, Bài 11.</div></footer>
+
+<script>
+/* =========================================================
+   LƯỢC ĐỒ LỊCH SỬ — PHỎNG THEO LƯỢC ĐỒ SGK
+   Màu nền/đường bờ dùng để định hướng không gian hiện nay;
+   vùng màu là phạm vi khái quát của các quốc gia sơ kì,
+   không phải đường biên giới pháp lý chính xác.
+========================================================= */
+const mapCanvas=document.getElementById('mapCanvas');
+const svgNS='http://www.w3.org/2000/svg';
+let mapScale=1,mapX=0,mapY=0;
+const W=900,H=590;
+const svg=document.createElementNS(svgNS,'svg');
+svg.setAttribute('class','map-svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);mapCanvas.appendChild(svg);
+const baseG=document.createElementNS(svgNS,'g'),statesG=document.createElementNS(svgNS,'g'),boundG=document.createElementNS(svgNS,'g'),riversG=document.createElementNS(svgNS,'g'),routesG=document.createElementNS(svgNS,'g'),seasG=document.createElementNS(svgNS,'g'),citiesG=document.createElementNS(svgNS,'g');
+[baseG,statesG,boundG,riversG,routesG,seasG,citiesG].forEach(g=>svg.appendChild(g));
+function poly(points,cls,parent=baseG){const p=document.createElementNS(svgNS,'polygon');p.setAttribute('points',points.map(x=>x.join(',')).join(' '));p.setAttribute('class',cls);parent.appendChild(p);return p}
+function path(d,cls,parent){const p=document.createElementNS(svgNS,'path');p.setAttribute('d',d);p.setAttribute('class',cls);parent.appendChild(p);return p}
+function text(x,y,t,cls,parent=seasG){const e=document.createElementNS(svgNS,'text');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('class',cls);e.textContent=t;parent.appendChild(e);return e}
+
+/* Đường bờ khái quát, bố trí gần với lược đồ SGK: lục địa ở trái, hải đảo ở dưới/phải. */
+poly([[75,78],[140,45],[205,48],[250,82],[278,135],[265,190],[235,235],[218,285],[195,335],[168,375],[145,360],[150,315],[130,275],[112,230],[92,195],[65,150]],'country');
+poly([[205,58],[265,50],[315,76],[338,120],[326,170],[300,210],[278,255],[262,305],[240,330],[220,300],[226,255],[238,210],[250,165],[235,120]],'country');
+poly([[320,78],[385,65],[440,92],[468,135],[460,185],[435,220],[405,255],[380,285],[350,300],[322,270],[330,225],[345,180],[338,135]],'country');
+poly([[450,72],[510,68],[555,90],[585,128],[575,170],[548,205],[510,225],[478,208],[458,170],[445,125]],'country');
+poly([[555,92],[620,85],[675,105],[710,142],[705,180],[675,205],[635,205],[605,182],[575,145]],'country');
+/* Việt Nam kéo dài ven Biển Đông */
+poly([[445,110],[462,128],[470,155],[466,190],[475,220],[466,250],[448,277],[434,300],[425,326],[408,345],[394,333],[400,305],[411,276],[415,245],[408,215],[416,185],[425,155]],'country');
+/* bán đảo Mã Lai */
+poly([[350,305],[382,300],[405,325],[405,360],[390,400],[372,435],[350,460],[333,445],[344,410],[351,375],[345,340]],'country');
+/* các đảo lớn */
+poly([[365,410],[430,395],[500,405],[545,435],[532,475],[478,492],[415,478],[372,450]],'country');
+poly([[535,350],[595,340],[650,360],[690,395],[682,430],[640,448],[590,435],[548,405]],'country');
+poly([[650,235],[710,220],[755,240],[780,280],[770,320],[735,345],[700,330],[680,295]],'country');
+poly([[735,365],[805,350],[850,375],[865,420],[840,455],[790,450],[748,425]],'country');
+poly([[565,455],[620,448],[670,470],[700,505],[680,535],[625,532],[585,505]],'country');
+poly([[700,485],[760,470],[825,490],[850,525],[820,555],[760,552],[715,530]],'country');
+
+/* Một số đảo định hướng */
+[[270,350],[300,375],[330,480],[455,520],[510,530],[545,545],[590,555],[655,560],[730,570],[790,555],[830,535],[865,505]].forEach((pt,i)=>{const e=document.createElementNS(svgNS,'ellipse');e.setAttribute('cx',pt[0]);e.setAttribute('cy',pt[1]);e.setAttribute('rx',i%3?7:10);e.setAttribute('ry',i%2?3:4);e.setAttribute('class','country');baseG.appendChild(e)});
+
+/* Ranh giới hiện nay: chỉ minh họa, không dùng để xác định phạm vi quốc gia cổ. */
+path('M250 60 L250 170 L270 250 L240 330','boundary',boundG);
+path('M325 75 L345 145 L330 225 L350 300','boundary',boundG);
+path('M440 92 L425 155 L415 215 L435 300','boundary',boundG);
+path('M510 75 L500 125 L510 220','boundary',boundG);
+path('M580 100 L575 145 L600 180 L635 205','boundary',boundG);
+path('M365 410 L415 430 L478 435 L545 435','boundary',boundG);
+
+/* Sông lớn */
+path('M160 55 C172 110 170 160 188 205 C198 240 188 280 172 315','river',riversG);
+path('M285 65 C278 120 285 175 305 225 C318 255 310 285 300 310','river',riversG);
+path('M355 70 C365 120 355 165 370 205 C382 240 370 275 355 300','river',riversG);
+path('M425 92 C435 145 430 190 445 230 C450 260 440 290 425 320','river',riversG);
+
+/* Phạm vi các quốc gia sơ kì — dùng vùng màu mềm, không vẽ như biên giới chính xác. */
+poly([[175,195],[215,178],[252,190],[260,235],[245,270],[215,285],[188,260]],'ancient',statesG); // Sri Kse-tra / khu vực Myanmar
+poly([[250,205],[290,190],[325,210],[335,245],[315,270],[278,265],[252,240]],'ancient',statesG); // Dva-ra-va-ti / hạ lưu Chao Phraya
+poly([[400,170],[432,155],[455,175],[454,225],[438,255],[418,275],[405,245],[410,210]],'ancient-pink',statesG); // Lâm Ấp
+poly([[375,265],[418,250],[450,275],[455,315],[430,335],[392,325],[370,300]],'ancient',statesG); // Phù Nam
+poly([[425,275],[470,260],[505,275],[510,315],[485,335],[445,325]],'ancient-pink',statesG); // Chân Lạp
+poly([[345,320],[370,315],[388,338],[380,370],[362,395],[345,380]],'ancient',statesG); // Tam-bra-lin-ga / bán đảo Mã Lai
+poly([[325,380],[365,370],[400,390],[405,420],[375,445],[340,430]],'ancient',statesG); // Lang-ka-su-ka / Ma-lay
+poly([[505,355],[550,345],[585,365],[585,400],[555,415],[520,395]],'ancient',statesG); // các trung tâm hải đảo phía tây
+poly([[650,420],[700,405],[735,425],[730,455],[690,470],[655,450]],'ancient-pink',statesG); // Ta-ru-ma
+poly([[735,470],[785,455],[820,480],[815,515],[770,525],[735,505]],'ancient',statesG); // Ka-lin-ga
+poly([[455,90],[470,105],[468,135],[455,150],[440,140],[442,115]],'ancient-pink',statesG); // Âu Lạc
+
+/* Tuyến giao thương (sơ đồ) dạng sơ đồ */
+path('M440 125 C390 170 340 215 300 250 C260 275 235 285 210 300','route',routesG);
+path('M300 250 C350 280 400 300 445 300 C500 300 545 335 590 380','route',routesG);
+path('M360 390 C425 420 490 425 560 400 C625 375 690 405 760 480','route',routesG);
+path('M445 300 C500 350 535 390 585 430 C650 480 720 500 800 500','route',routesG);
+
+/* Tên biển / đại dương */
+text(115,135,'ẤN ĐỘ DƯƠNG','sea');
+text(535,265,'BIỂN ĐÔNG','sea');
+text(710,180,'THÁI BÌNH DƯƠNG','sea');
+text(465,515,'ĐÔNG NAM Á HẢI ĐẢO','sea');
+text(78,355,'ĐÔNG NAM Á LỤC ĐỊA','sea');
+text(310,430,'BIỂN GIA-VA','sea');
+
+/* Nhãn quốc gia hiện nay — chữ nhỏ, màu xám; chỉ giúp học sinh định hướng */
+function modernLabel(x,y,t){return text(x,y,t,'moderntext',citiesG)}
+modernLabel(220,145,'MYANMAR');
+modernLabel(285,170,'THÁI LAN');
+modernLabel(360,205,'LÀO');
+modernLabel(425,205,'VIỆT NAM');
+modernLabel(400,365,'CAM-PU-CHIA');
+modernLabel(350,420,'MALAYSIA');
+modernLabel(600,390,'BRU-NÂY');
+modernLabel(690,285,'PHI-LÍP-PIN');
+modernLabel(760,520,'IN-ĐÔ-NÊ-XI-A');
+
+/* Tên các quốc gia sơ kì theo danh mục của bài */
+function stateLabel(x,y,t,cls='citytext'){return text(x,y,t,cls,citiesG)}
+stateLabel(440,120,'ÂU LẠC','citytext');
+stateLabel(430,185,'LÂM ẤP','citytext');
+stateLabel(392,295,'PHÙ NAM','citytext');
+stateLabel(465,305,'CHÂN LẠP','citytext');
+stateLabel(275,225,'DVA-RA-VA-TI','citytext');
+stateLabel(205,220,'SRI KSE-TRA','citytext');
+stateLabel(350,350,'TAM-BRA-LIN-GA','citytext');
+stateLabel(350,405,'LANG-KA-SU-KA','citytext');
+stateLabel(540,380,'MA-LAY','citytext');
+stateLabel(690,445,'TA-RU-MA','citytext');
+stateLabel(775,490,'KA-LIN-GA','citytext');
+
+const places=[
+ {x:438,y:132,name:'Âu Lạc',icon:'🏺',desc:'quốc gia sơ kì trong không gian Bắc Bộ và Bắc Trung Bộ Việt Nam.'},
+ {x:438,y:190,name:'Lâm Ấp',icon:'🛕',desc:'quốc gia sơ kì ở khu vực miền Trung Việt Nam; về sau phát triển thành Chăm-pa.'},
+ {x:395,y:300,name:'Phù Nam',icon:'⚓',desc:'quốc gia sơ kì ở khu vực Nam Bộ, gắn với mạng lưới giao thương đường biển.'},
+ {x:475,y:315,name:'Chân Lạp',icon:'🏺',desc:'Một quốc gia được bài học và lược đồ nhắc đến trong không gian Đông Nam Á lục địa.'},
+ {x:270,y:215,name:'Pông-tuc',icon:'🔎',desc:'Di chỉ ở Thái Lan, nơi phát hiện hiện vật góp phần chứng minh giao lưu thương mại.'},
+ {x:352,y:355,name:'Ta-cô-la',icon:'⚓',desc:'Địa điểm/hải cảng trên bán đảo Mã Lai, nay thuộc Thái Lan, được bài học nhắc đến.'},
+ {x:410,y:315,name:'Óc Eo',icon:'⚓',desc:'Địa điểm/thành thị - hải cảng gắn với Phù Nam ở Nam Bộ Việt Nam.'}
+];
+places.forEach(c=>{const g=document.createElementNS(svgNS,'g');const dot=document.createElementNS(svgNS,'circle');dot.setAttribute('cx',c.x);dot.setAttribute('cy',c.y);dot.setAttribute('r',6);dot.setAttribute('class','citydot');g.appendChild(dot);text(c.x+9,c.y+4,c.name,'citytext',g);g.addEventListener('click',()=>showPlace(c));citiesG.appendChild(g)});
+function showPlace(c){document.getElementById('infoIcon').textContent=c.icon;document.getElementById('infoTitle').textContent=c.name;document.getElementById('infoDescription').textContent=c.desc;document.getElementById('infoSpace').textContent='Đông Nam Á';document.getElementById('infoCenter').textContent=c.name;document.getElementById('infoSea').textContent='Giao thương khu vực';document.getElementById('infoKey').textContent='Vị trí trên lược đồ được khái quát theo bài học; không dùng để xác định ranh giới pháp lý.'}
+function transformMap(){svg.style.transform=`translate(${mapX}px,${mapY}px) scale(${mapScale})`;svg.style.transformOrigin='50% 50%'}
+function zoom(delta){mapScale=Math.max(.8,Math.min(1.8,mapScale+delta));transformMap()}
+function resetMap(){mapScale=1;mapX=0;mapY=0;transformMap()}
+['zoomIn','zoomIn2'].forEach(id=>document.getElementById(id).addEventListener('click',()=>zoom(.12)));
+['zoomOut','zoomOut2'].forEach(id=>document.getElementById(id).addEventListener('click',()=>zoom(-.12)));
+document.getElementById('resetMap').addEventListener('click',resetMap);
+let dragging=false,lastX=0,lastY=0;mapCanvas.addEventListener('pointerdown',e=>{if(e.target.tagName==='BUTTON')return;dragging=true;lastX=e.clientX;lastY=e.clientY;mapCanvas.setPointerCapture(e.pointerId)});mapCanvas.addEventListener('pointermove',e=>{if(!dragging)return;mapX+=e.clientX-lastX;mapY+=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;transformMap()});mapCanvas.addEventListener('pointerup',()=>dragging=false);mapCanvas.addEventListener('pointercancel',()=>dragging=false);
+function setLayer(id,g){document.getElementById(id).addEventListener('change',e=>g.style.display=e.target.checked?'':'none')}
+setLayer('layerBase',baseG);setLayer('layerStates',statesG);setLayer('layerBound',boundG);setLayer('layerCities',citiesG);setLayer('layerRivers',riversG);setLayer('layerRoutes',routesG);setLayer('layerSeas',seasG);
+const modeInfo={overview:['🌏','Đông Nam Á','Khu vực gồm Đông Nam Á lục địa và hải đảo, nằm trên tuyến hàng hải nối Ấn Độ Dương với Thái Bình Dương.','Lục địa · hải đảo','Âu Lạc · Lâm Ấp · Phù Nam','Ấn Độ Dương · Thái Bình Dương','Vị trí địa lí tạo điều kiện cho giao lưu và phát triển nông nghiệp lúa nước.'],states:['🏺','Các quốc gia sơ kì','Khoảng thế kỉ VII TCN đến thế kỉ VII, nhiều quốc gia sơ kì lần lượt xuất hiện trong khu vực.','Đông Nam Á','Âu Lạc · Lâm Ấp · Phù Nam · Chân Lạp...','Các vùng biển và sông','Tên và vị trí trên lược đồ được khái quát theo SGK, không dùng biên giới hiện đại để gán cho quốc gia cổ.'],trade:['⚓','Mạng lưới giao thương','Hoạt động thương mại bằng đường biển phát triển; các quốc gia trong khu vực giao thương với nhau và với bên ngoài.','Óc Eo · Ta-cô-la','Các thương cảng và đô thị','Ấn Độ Dương · Biển Đông','Hiện vật khảo cổ cho thấy phạm vi giao lưu rộng mở.']};
+function applyMode(mode){const d=modeInfo[mode];['infoIcon','infoTitle','infoDescription','infoSpace','infoCenter','infoSea','infoKey'].forEach((id,i)=>document.getElementById(id).textContent=d[i]);statesG.style.opacity=mode==='overview'?'.72':mode==='states'?'1':'.72';routesG.style.opacity=mode==='trade'?'1':'.45';citiesG.style.opacity=mode==='states'||mode==='trade'?'1':'.9';document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode))}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>applyMode(b.dataset.mode)));
+
+/* evidence */
+const details={aulac:'Âu Lạc là một trong những quốc gia sơ kì được bài học nhắc đến, thuộc không gian Việt Nam cổ.',lamap:'Lâm Ấp là tên gọi được bài học sử dụng khi liệt kê các quốc gia sơ kì; về sau phát triển thành Chăm-pa.',funan:'Phù Nam là quốc gia sơ kì ở khu vực Nam Bộ, có hoạt động thương mại đường biển đáng chú ý.',others:'Lược đồ bài học còn thể hiện/nhắc đến nhiều quốc gia và trung tâm khác như Sri Kse-tra, Dva-ra-va-ti, Ha-ri-pun-giay-a, Chân Lạp, Tam-bra-lin-ga, Lang-ka-su-ka, Ma-lay, Ta-ru-ma, Ka-lin-ga.'};
+document.querySelectorAll('.e-card').forEach(c=>c.addEventListener('click',()=>{const box=document.getElementById('detailBox');box.textContent=details[c.dataset.detail];box.classList.add('show')}));
+
+/* =========================================================
+   QUIZ — TÁCH KHỎI BẢN ĐỒ
+========================================================= */
+const questions=[
+ {q:'Đông Nam Á nằm ở vị trí nào?',a:['Ở trung tâm châu Âu','Trên con đường hàng hải nối Ấn Độ Dương với Thái Bình Dương','Giữa Đại Tây Dương và Bắc Băng Dương','Ở phía bắc Trung Quốc'],correct:1},
+ {q:'Đông Nam Á gồm hai khu vực lớn nào?',a:['Đông Nam Á Bắc và Đông Nam Á Nam','Chỉ gồm các đảo','Đông Nam Á lục địa và Đông Nam Á hải đảo','Đông Nam Á Tây và Đông Nam Á Đông'],correct:2},
+ {q:'Điều kiện nào thuận lợi cho sự phát triển nền văn minh lúa nước?',a:['Khí hậu hàn đới','Thiếu nguồn nước','Sa mạc rộng lớn','Nhiệt đới gió mùa, lượng mưa lớn'],correct:3},
+ {q:'Khoảng thời gian xuất hiện các quốc gia sơ kì Đông Nam Á được nêu trong bài là:',a:['Khoảng thế kỉ VII TCN đến thế kỉ VII','Thế kỉ XV đến XVII','Thế kỉ X đến XV','Thế kỉ XIX đến XX'],correct:0},
+ {q:'Quốc gia nào sau đây được bài học nhắc đến?',a:['La Mã','Phù Nam','Ai Cập','Ba Tư'],correct:1},
+ {q:'Lâm Ấp được nhắc đến trong không gian nào?',a:['Bắc Phi','Bán đảo Italia','Khu vực miền Trung Việt Nam','Nam Á'],correct:2},
+ {q:'Hoạt động thương mại nào phát triển ở các quốc gia sơ kì?',a:['Chỉ buôn bán trong làng','Chỉ trao đổi bằng đường bộ','Không có giao thương','Đặc biệt là buôn bán bằng đường biển'],correct:3},
+ {q:'Óc Eo được bài học nhắc đến như thế nào?',a:['Một địa điểm/thành thị gắn với thương mại ở Nam Bộ','Thủ đô La Mã','Một thành bang Hy Lạp','Một cảng ở Địa Trung Hải'],correct:0},
+ {q:'Ta-cô-la nằm ở khu vực nào theo tài liệu bài học?',a:['Bắc Bộ Việt Nam','Italia','Bán đảo Mã Lai, nay thuộc Thái Lan','Ai Cập'],correct:2},
+ {q:'Các hiện vật khảo cổ cho thấy điều gì?',a:['Đông Nam Á hoàn toàn biệt lập','Có giao thương giữa Đông Nam Á với nhau và với bên ngoài','Chỉ có chiến tranh','Không có quan hệ với các khu vực khác'],correct:1}
+];
+let qi=0,score=0,timer=null,time=10,quizFinished=false;
+const qb=document.getElementById('quizBody'),qp=document.getElementById('quizProgress'),finish=document.getElementById('finishLesson'),status=document.getElementById('lessonStatus'),completion=document.getElementById('completionBox'),completionText=document.getElementById('completionText');
+document.getElementById('startQuiz').addEventListener('click',startQuiz);
+function startQuiz(){clearInterval(timer);qi=0;score=0;quizFinished=false;finish.disabled=true;finish.textContent='Hoàn thành bài học';renderQ()}
+function renderQ(){clearInterval(timer);const q=questions[qi];qp.style.width=(qi/questions.length*100)+'%';qb.innerHTML=`<div class="question-wrap"><div class="question-meta"><span>Câu ${qi+1} / ${questions.length}</span><span class="timer">⏱ <b id="timer">10</b>s</span></div><div class="question">${q.q}</div><div class="answers">${q.a.map((x,i)=>`<button class="answer" data-i="${i}">${String.fromCharCode(65+i)}. ${x}</button>`).join('')}</div></div>`;document.querySelectorAll('.answer').forEach(b=>b.addEventListener('click',()=>choose(Number(b.dataset.i))));time=10;timer=setInterval(tick,1000)}
+function tick(){time--;const el=document.getElementById('timer');if(el)el.textContent=time;if(time<=0){clearInterval(timer);choose(-1)}}
+function choose(i){clearInterval(timer);const q=questions[qi];document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;const n=Number(b.dataset.i);if(n===q.correct)b.classList.add('correct');if(n===i&&i!==q.correct)b.classList.add('wrong')});if(i===q.correct)score++;setTimeout(()=>{qi++;qi>=questions.length?showResult():renderQ()},800)}
+function showResult(){quizFinished=true;qp.style.width='100%';const pct=Math.round(score/questions.length*100);const msg=pct>=80?'Rất tốt! Em đã nắm khá chắc nội dung bài học.':pct>=60?'Khá tốt! Hãy xem lại một vài nội dung còn nhầm.':'Hãy xem lại nội dung bài học và thử lại nhé.';qb.innerHTML=`<div class="result"><div class="score">${score}/${questions.length}</div><div>${pct}% · ${msg}</div><div style="margin-top:22px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap"><button class="secondary-btn" id="restart">🔄 Làm lại</button><button class="primary-btn" id="resultFinish">✓ Hoàn thành bài học</button></div></div>`;finish.disabled=false;document.getElementById('restart').addEventListener('click',startQuiz);document.getElementById('resultFinish').addEventListener('click',completeLesson)}
+const PROGRESS_KEY='hoclieu6_progress_v1',LESSON_ID='h11';
+function checkProgress(){const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');if(p[LESSON_ID]===true){status.style.display='inline-flex';finish.disabled=true;finish.textContent='✓ Đã hoàn thành';completion.classList.add('success');completionText.textContent='Bài 11 đã được lưu vào tiến độ học tập.'}}
+function completeLesson(){if(!quizFinished)return;const p=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');p[LESSON_ID]=true;localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));status.style.display='inline-flex';finish.disabled=true;finish.textContent='✓ Đã hoàn thành';completion.classList.add('success');completionText.textContent='✓ Đã lưu Bài 11 vào tiến độ học tập. Tiến độ Tổng và Lịch sử đã được cập nhật.'}
+finish.addEventListener('click',completeLesson);checkProgress();
+</script>
+<script>if(window.HLS6) HLS6.bindLessonPage("h11");</script>
+</body>
+</html>

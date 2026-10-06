@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 30 - Thực hành: Con người và thiên nhiên ở địa phương</title>
+
+<style>
+:root{
+    --bg:#07111f;
+    --bg2:#0b1829;
+    --card:#101f33;
+    --card2:#14263d;
+    --border:#223a56;
+    --text:#edf5ff;
+    --muted:#9db0c5;
+    --blue:#4da3ff;
+    --cyan:#42d9e8;
+    --green:#45d39b;
+    --yellow:#f4c95d;
+    --red:#ff6f7d;
+    --purple:#a98cff;
+    --shadow:0 12px 35px rgba(0,0,0,.28);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:
+        radial-gradient(circle at 10% 0%,rgba(77,163,255,.10),transparent 28%),
+        radial-gradient(circle at 90% 10%,rgba(66,217,232,.07),transparent 25%),
+        var(--bg);
+    color:var(--text);
+    line-height:1.65;
+}
+
+button,
+input,
+textarea,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.container{
+    width:min(1120px,92%);
+    margin:auto;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(7,17,31,.90);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+}
+
+.topbar-inner{
+    min-height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+}
+
+.back-btn{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:9px 15px;
+    border-radius:12px;
+    transition:.2s;
+}
+
+.back-btn:hover{
+    border-color:var(--blue);
+    transform:translateY(-1px);
+}
+
+.progress-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    font-size:14px;
+}
+
+.progress{
+    width:130px;
+    height:8px;
+    border-radius:999px;
+    background:#17283d;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    transition:.3s;
+}
+
+.hero{
+    padding:54px 0 34px;
+}
+
+.hero-box{
+    background:
+        linear-gradient(135deg,rgba(77,163,255,.10),rgba(66,217,232,.03)),
+        var(--card);
+    border:1px solid var(--border);
+    border-radius:26px;
+    padding:34px;
+    box-shadow:var(--shadow);
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 12px;
+    border-radius:999px;
+    background:#102944;
+    color:#8bc7ff;
+    border:1px solid #234568;
+    font-size:13px;
+    font-weight:700;
+}
+
+h1{
+    margin:15px 0 10px;
+    font-size:clamp(29px,5vw,48px);
+    line-height:1.12;
+    letter-spacing:-1px;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:800px;
+    margin:0;
+    font-size:17px;
+}
+
+.section{
+    margin:28px 0;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:24px;
+}
+
+.section-title span{
+    color:var(--muted);
+    font-size:14px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.topic{
+    border:1px solid var(--border);
+    background:var(--card);
+    border-radius:20px;
+    padding:22px;
+    transition:.2s;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+}
+
+.topic:hover{
+    transform:translateY(-3px);
+    border-color:#39648d;
+}
+
+.topic.active{
+    border-color:var(--blue);
+    background:linear-gradient(135deg,#102a45,#101f33);
+}
+
+.topic-icon{
+    font-size:32px;
+}
+
+.topic h3{
+    margin:8px 0 5px;
+}
+
+.topic p{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+}
+
+.topic-check{
+    position:absolute;
+    top:17px;
+    right:17px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--border);
+    color:var(--muted);
+}
+
+.topic.active .topic-check{
+    background:rgba(69,211,155,.15);
+    color:var(--green);
+    border-color:rgba(69,211,155,.4);
+}
+
+.workflow{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:10px;
+}
+
+.step{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px 12px;
+    text-align:center;
+}
+
+.step-num{
+    width:34px;
+    height:34px;
+    margin:auto;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:#163251;
+    color:#9bd0ff;
+    font-weight:800;
+}
+
+.step strong{
+    display:block;
+    margin-top:8px;
+    font-size:13px;
+}
+
+.step small{
+    display:block;
+    color:var(--muted);
+    margin-top:4px;
+    font-size:11px;
+}
+
+.workspace{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:18px;
+}
+
+.panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:22px;
+}
+
+.panel h3{
+    margin-top:0;
+}
+
+label{
+    display:block;
+    font-weight:700;
+    margin:14px 0 7px;
+    font-size:14px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    background:#0a1727;
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:11px;
+    padding:11px 12px;
+    outline:none;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border-color:var(--blue);
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.report{
+    min-height:100%;
+}
+
+.report-header{
+    padding-bottom:18px;
+    border-bottom:1px solid var(--border);
+}
+
+.report-header h3{
+    font-size:25px;
+    margin:0 0 4px;
+}
+
+.report-header p{
+    color:var(--muted);
+    margin:0;
+}
+
+.report-block{
+    margin-top:18px;
+    padding:17px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:15px;
+}
+
+.report-block h4{
+    margin:0 0 8px;
+    color:#b9dcff;
+}
+
+.report-block p{
+    margin:0;
+    color:#d8e4f1;
+    white-space:pre-wrap;
+}
+
+.empty{
+    color:var(--muted);
+    font-style:italic;
+}
+
+.checklist{
+    display:grid;
+    gap:10px;
+}
+
+.check-item{
+    display:flex;
+    gap:11px;
+    align-items:flex-start;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:13px;
+}
+
+.check-item input{
+    width:19px;
+    height:19px;
+    margin-top:3px;
+    accent-color:#4da3ff;
+}
+
+.check-item span{
+    color:#dbe8f5;
+    font-size:14px;
+}
+
+.action-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
+}
+
+.primary,
+.secondary,
+.success{
+    border:none;
+    border-radius:11px;
+    padding:11px 16px;
+    font-weight:800;
+}
+
+.primary{
+    background:#287dc8;
+    color:white;
+}
+
+.secondary{
+    background:#172b42;
+    color:#d9e8f8;
+    border:1px solid var(--border);
+}
+
+.success{
+    background:#176c55;
+    color:#eafff8;
+}
+
+.primary:hover,
+.secondary:hover,
+.success:hover{
+    filter:brightness(1.1);
+}
+
+.info-box{
+    padding:18px;
+    background:#0d2034;
+    border:1px solid #244866;
+    border-radius:16px;
+    color:#cfe2f5;
+}
+
+.info-box strong{
+    color:#8bc7ff;
+}
+
+.tip-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.tip{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+}
+
+.tip-icon{
+    font-size:25px;
+}
+
+.tip h3{
+    margin:7px 0 5px;
+    font-size:16px;
+}
+
+.tip p{
+    color:var(--muted);
+    font-size:13px;
+    margin:0;
+}
+
+.status{
+    margin-top:15px;
+    padding:12px 14px;
+    border-radius:11px;
+    background:#0b1828;
+    border:1px solid var(--border);
+    color:var(--muted);
+    font-size:14px;
+}
+
+.status.done{
+    color:#a9f0d2;
+    border-color:rgba(69,211,155,.35);
+    background:rgba(69,211,155,.08);
+}
+
+footer{
+    margin-top:55px;
+    padding:30px 0 50px;
+    border-top:1px solid var(--border);
+    color:var(--muted);
+    text-align:center;
+    font-size:13px;
+}
+
+@media(max-width:900px){
+    .workflow{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .workspace{
+        grid-template-columns:1fr;
+    }
+
+    .tip-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+    .hero{
+        padding-top:32px;
+    }
+
+    .hero-box{
+        padding:23px;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .workflow{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .topbar-inner{
+        align-items:flex-start;
+        padding:10px 0;
+    }
+
+    .progress-wrap{
+        font-size:12px;
+    }
+
+    .progress{
+        width:80px;
+    }
+}
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="container topbar-inner">
+        <button class="back-btn" onclick="goHome()">← Trang chủ</button>
+
+        <div class="progress-wrap">
+            <span id="progressText">Tiến độ 0%</span>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div class="hero-box">
+            <span class="badge">🌎 ĐỊA LÍ 6 · CHƯƠNG 7</span>
+
+            <h1>Bài 30. Thực hành</h1>
+
+            <p>
+                <strong>Tìm hiểu mối quan hệ giữa con người và thiên nhiên ở địa phương</strong>.
+                Hãy lựa chọn một vấn đề thực tế, thu thập thông tin và xây dựng báo cáo về địa phương của em.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- MỤC TIÊU -->
+    <section class="section">
+        <div class="section-title">
+            <h2>🎯 Sau bài thực hành, em có thể</h2>
+        </div>
+
+        <div class="tip-grid">
+
+            <div class="tip">
+                <div class="tip-icon">🔎</div>
+                <h3>Tìm hiểu địa phương</h3>
+                <p>
+                    Nhận biết được một số biểu hiện trong mối quan hệ
+                    giữa con người và thiên nhiên ở địa phương.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">📚</div>
+                <h3>Khai thác thông tin</h3>
+                <p>
+                    Biết tìm kiếm, lựa chọn và xử lí thông tin từ tài liệu,
+                    hình ảnh, số liệu hoặc khảo sát thực tế.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">📝</div>
+                <h3>Tạo sản phẩm</h3>
+                <p>
+                    Biết trình bày kết quả tìm hiểu bằng báo cáo,
+                    hình ảnh, bảng số liệu hoặc bài thuyết trình.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CHỌN NỘI DUNG -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>🧭 1. Chọn nội dung thực hành</h2>
+            <span>Nhấn vào một chủ đề</span>
+        </div>
+
+        <div class="cards">
+
+            <div class="topic" data-topic="natural">
+                <div class="topic-check">○</div>
+                <div class="topic-icon">🌱</div>
+                <h3>Nguồn lợi tự nhiên</h3>
+                <p>
+                    Tài nguyên đất, nước, sinh vật, khoáng sản...
+                    và vai trò của chúng đối với đời sống, sản xuất.
+                </p>
+            </div>
+
+            <div class="topic" data-topic="pollution">
+                <div class="topic-check">○</div>
+                <div class="topic-icon">🏭</div>
+                <h3>Ô nhiễm môi trường</h3>
+                <p>
+                    Ô nhiễm không khí, nước, đất; hậu quả
+                    và những biện pháp khắc phục.
+                </p>
+            </div>
+
+            <div class="topic" data-topic="disaster">
+                <div class="topic-check">○</div>
+                <div class="topic-icon">🌪️</div>
+                <h3>Thiên tai và phòng chống</h3>
+                <p>
+                    Tìm hiểu các thiên tai thường xảy ra ở địa phương
+                    và cách phòng chống, ứng phó.
+                </p>
+            </div>
+
+            <div class="topic" data-topic="protection">
+                <div class="topic-check">○</div>
+                <div class="topic-icon">🌳</div>
+                <h3>Bảo vệ thiên nhiên</h3>
+                <p>
+                    Sử dụng tài nguyên hợp lí, bảo vệ và cải tạo
+                    thiên nhiên ở địa phương.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- QUY TRÌNH -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>🛠️ 2. Quy trình thực hành</h2>
+            <span>6 bước từ ý tưởng đến sản phẩm</span>
+        </div>
+
+        <div class="workflow">
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <strong>Lập nhóm</strong>
+                <small>Chọn thành viên</small>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <strong>Phân công</strong>
+                <small>Giao nhiệm vụ</small>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <strong>Xác định</strong>
+                <small>Thời gian, địa điểm</small>
+            </div>
+
+            <div class="step">
+                <div class="step-num">4</div>
+                <strong>Thu thập</strong>
+                <small>Tài liệu, số liệu</small>
+            </div>
+
+            <div class="step">
+                <div class="step-num">5</div>
+                <strong>Xử lí</strong>
+                <small>Chọn lọc thông tin</small>
+            </div>
+
+            <div class="step">
+                <div class="step-num">6</div>
+                <strong>Báo cáo</strong>
+                <small>Trình bày kết quả</small>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- XƯỞNG TẠO BÁO CÁO -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>📝 3. Xưởng tạo báo cáo</h2>
+            <span>Điền thông tin để tạo bản báo cáo mẫu</span>
+        </div>
+
+        <div class="workspace">
+
+            <div class="panel">
+
+                <h3>Thông tin nhóm</h3>
+
+                <label for="groupName">Tên nhóm</label>
+                <input
+                    id="groupName"
+                    type="text"
+                    placeholder="Ví dụ: Nhóm Xanh"
+                >
+
+                <label for="locality">Địa phương</label>
+                <input
+                    id="locality"
+                    type="text"
+                    placeholder="Ví dụ: Đồng Nai"
+                >
+
+                <label for="topicSelect">Nội dung thực hành</label>
+
+                <select id="topicSelect">
+                    <option value="">-- Chọn nội dung --</option>
+                    <option value="Nguồn lợi tự nhiên ở địa phương">
+                        Nguồn lợi tự nhiên ở địa phương
+                    </option>
+                    <option value="Ô nhiễm môi trường">
+                        Ô nhiễm môi trường
+                    </option>
+                    <option value="Thiên tai và phòng chống thiên tai">
+                        Thiên tai và phòng chống thiên tai
+                    </option>
+                    <option value="Bảo vệ thiên nhiên">
+                        Bảo vệ thiên nhiên
+                    </option>
+                </select>
+
+                <label for="place">Địa điểm khảo sát</label>
+                <input
+                    id="place"
+                    type="text"
+                    placeholder="Ví dụ: khu dân cư, sông, cánh đồng..."
+                >
+
+                <label for="time">Thời gian thực hiện</label>
+                <input
+                    id="time"
+                    type="text"
+                    placeholder="Ví dụ: 05/10/2026"
+                >
+
+                <label for="findings">Thông tin thu thập được</label>
+                <textarea
+                    id="findings"
+                    placeholder="Ghi lại những điều nhóm quan sát, tìm hiểu được..."
+                ></textarea>
+
+                <label for="impact">Mối quan hệ giữa con người và thiên nhiên</label>
+                <textarea
+                    id="impact"
+                    placeholder="Thiên nhiên tác động thế nào? Con người tác động ra sao?"
+                ></textarea>
+
+                <label for="solution">Đề xuất / giải pháp</label>
+                <textarea
+                    id="solution"
+                    placeholder="Nhóm đề xuất những việc làm nào?"
+                ></textarea>
+
+                <div class="action-row">
+
+                    <button
+                        class="primary"
+                        type="button"
+                        onclick="createReport()"
+                    >
+                        ✨ Tạo báo cáo
+                    </button>
+
+                    <button
+                        class="secondary"
+                        type="button"
+                        onclick="clearReport()"
+                    >
+                        ↺ Xóa
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PREVIEW -->
+            <div class="panel report">
+
+                <div class="report-header">
+                    <h3 id="reportTitle">
+                        Báo cáo thực hành
+                    </h3>
+
+                    <p id="reportSubtitle">
+                        Chưa có thông tin. Hãy điền phiếu bên trái.
+                    </p>
+                </div>
+
+                <div class="report-block">
+                    <h4>📍 Địa điểm và thời gian</h4>
+                    <p id="reportPlace" class="empty">
+                        Chưa nhập thông tin.
+                    </p>
+                </div>
+
+                <div class="report-block">
+                    <h4>🔎 Nội dung tìm hiểu</h4>
+                    <p id="reportTopic" class="empty">
+                        Chưa nhập thông tin.
+                    </p>
+                </div>
+
+                <div class="report-block">
+                    <h4>📚 Kết quả thu thập thông tin</h4>
+                    <p id="reportFindings" class="empty">
+                        Chưa nhập thông tin.
+                    </p>
+                </div>
+
+                <div class="report-block">
+                    <h4>🔄 Mối quan hệ giữa con người và thiên nhiên</h4>
+                    <p id="reportImpact" class="empty">
+                        Chưa nhập thông tin.
+                    </p>
+                </div>
+
+                <div class="report-block">
+                    <h4>🌱 Đề xuất / giải pháp</h4>
+                    <p id="reportSolution" class="empty">
+                        Chưa nhập thông tin.
+                    </p>
+                </div>
+
+                <div id="reportStatus" class="status">
+                    💡 Hãy hoàn thiện báo cáo rồi kiểm tra sản phẩm.
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- NGUỒN THÔNG TIN -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>📚 4. Có thể tìm thông tin từ đâu?</h2>
+        </div>
+
+        <div class="cards">
+
+            <div class="tip">
+                <div class="tip-icon">📖</div>
+                <h3>Sách và tài liệu</h3>
+                <p>
+                    SGK, sách tham khảo, tài liệu của địa phương
+                    và các tài liệu do giáo viên cung cấp.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">🌐</div>
+                <h3>Nguồn trực tuyến</h3>
+                <p>
+                    Trang thông tin chính thống, báo chí,
+                    website của cơ quan quản lí và tổ chức liên quan.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">👀</div>
+                <h3>Quan sát thực tế</h3>
+                <p>
+                    Quan sát địa điểm, chụp ảnh, ghi chép,
+                    phỏng vấn hoặc khảo sát phù hợp.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">📊</div>
+                <h3>Số liệu và hình ảnh</h3>
+                <p>
+                    Bảng số liệu, biểu đồ, bản đồ, ảnh thực tế
+                    giúp báo cáo có sức thuyết phục hơn.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- KIỂM TRA SẢN PHẨM -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>✅ 5. Kiểm tra sản phẩm trước khi trình bày</h2>
+        </div>
+
+        <div class="panel">
+
+            <div class="checklist">
+
+                <label class="check-item">
+                    <input type="checkbox" class="product-check">
+                    <span>
+                        Nhóm đã xác định rõ nội dung và phạm vi tìm hiểu.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox" class="product-check">
+                    <span>
+                        Thông tin được thu thập từ nguồn phù hợp.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox" class="product-check">
+                    <span>
+                        Báo cáo có hình ảnh, số liệu hoặc dẫn chứng khi cần.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox" class="product-check">
+                    <span>
+                        Nhóm đã chỉ ra được mối quan hệ giữa con người và thiên nhiên.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox" class="product-check">
+                    <span>
+                        Các đề xuất/giải pháp phù hợp với địa phương.
+                    </span>
+                </label>
+
+                <label class="check-item">
+                    <input type="checkbox" class="product-check">
+                    <span>
+                        Các thành viên đều biết phần việc của mình khi trình bày.
+                    </span>
+                </label>
+
+            </div>
+
+            <div id="checkStatus" class="status">
+                Đã hoàn thành 0/6 tiêu chí.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GỢI Ý TRÌNH BÀY -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>🎤 6. Gợi ý khi trình bày</h2>
+        </div>
+
+        <div class="cards">
+
+            <div class="tip">
+                <div class="tip-icon">1️⃣</div>
+                <h3>Giới thiệu</h3>
+                <p>
+                    Nêu địa phương, nội dung nhóm lựa chọn
+                    và lí do chọn vấn đề.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">2️⃣</div>
+                <h3>Kết quả</h3>
+                <p>
+                    Trình bày những thông tin, hình ảnh,
+                    số liệu và dẫn chứng nổi bật.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">3️⃣</div>
+                <h3>Nhận xét</h3>
+                <p>
+                    Chỉ ra tác động qua lại giữa con người
+                    và thiên nhiên ở địa phương.
+                </p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-icon">4️⃣</div>
+                <h3>Đề xuất</h3>
+                <p>
+                    Đưa ra những việc làm hoặc giải pháp
+                    phù hợp để cải thiện vấn đề.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- HOÀN THÀNH -->
+    <section class="section">
+
+        <div class="info-box">
+            <strong>🌎 Thông điệp của bài thực hành:</strong><br>
+            Thiên nhiên và con người có mối quan hệ chặt chẽ.
+            Hiểu địa phương của mình là bước đầu để biết trân trọng,
+            sử dụng hợp lí tài nguyên và cùng nhau bảo vệ môi trường sống.
+        </div>
+
+        <div class="action-row">
+
+            <button
+                class="success"
+                type="button"
+                onclick="finishLesson()"
+            >
+                ✓ Hoàn thành Bài 30
+            </button>
+
+        </div>
+
+        <div id="finishStatus" class="status">
+            Sau khi hoàn thành, tiến độ Bài 30 sẽ được lưu trên thiết bị.
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    HỌC LIỆU SỐ ĐỊA LÍ 6 · BÀI 30 · THỰC HÀNH ĐỊA PHƯƠNG
+</footer>
+
+
+<script>
+
+const PROGRESS_KEY = "hoclieu6_progress_v1";
+
+function getProgress(){
+    try{
+        return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {};
+    }catch(e){
+        return {};
+    }
+}
+
+function saveProgress(progress){
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+}
+
+
+function goHome(){
+    window.location.href = "index.html";
+}
+
+
+/* =========================
+   CHỌN CHỦ ĐỀ
+========================= */
+
+const topics = document.querySelectorAll(".topic");
+const topicSelect = document.getElementById("topicSelect");
+
+topics.forEach(topic => {
+
+    topic.addEventListener("click", () => {
+
+        topics.forEach(t => t.classList.remove("active"));
+
+        topic.classList.add("active");
+
+        const type = topic.dataset.topic;
+
+        const map = {
+            natural:"Nguồn lợi tự nhiên ở địa phương",
+            pollution:"Ô nhiễm môi trường",
+            disaster:"Thiên tai và phòng chống thiên tai",
+            protection:"Bảo vệ thiên nhiên"
+        };
+
+        topicSelect.value = map[type];
+
+        updateProgress();
+
+    });
+
+});
+
+
+/* =========================
+   TẠO BÁO CÁO
+========================= */
+
+function value(id){
+    return document.getElementById(id).value.trim();
+}
+
+
+function display(id,text){
+
+    const el = document.getElementById(id);
+
+    if(text){
+        el.textContent = text;
+        el.classList.remove("empty");
+    }else{
+        el.textContent = "Chưa nhập thông tin.";
+        el.classList.add("empty");
+    }
+
+}
+
+
+function createReport(){
+
+    const group = value("groupName");
+    const locality = value("locality");
+    const topic = value("topicSelect");
+    const place = value("place");
+    const time = value("time");
+    const findings = value("findings");
+    const impact = value("impact");
+    const solution = value("solution");
+
+    const reportTitle =
+        topic
+        ? topic
+        : "Báo cáo thực hành";
+
+    document.getElementById("reportTitle").textContent =
+        reportTitle;
+
+    document.getElementById("reportSubtitle").textContent =
+        `${group || "Nhóm thực hành"}${locality ? " · " + locality : ""}`;
+
+    display(
+        "reportPlace",
+        `${place || "Chưa xác định địa điểm"}${time ? " · " + time : ""}`
+    );
+
+    display("reportTopic",topic);
+    display("reportFindings",findings);
+    display("reportImpact",impact);
+    display("reportSolution",solution);
+
+    const status = document.getElementById("reportStatus");
+
+    if(topic && findings && impact && solution){
+
+        status.textContent =
+            "✓ Báo cáo đã có đủ các phần nội dung chính. Hãy tiếp tục kiểm tra sản phẩm trước khi trình bày.";
+
+        status.classList.add("done");
+
+    }else{
+
+        status.textContent =
+            "⚠️ Báo cáo đã được tạo nhưng vẫn còn phần chưa hoàn thiện.";
+
+        status.classList.remove("done");
+
+    }
+
+    updateProgress();
+
+}
+
+
+/* =========================
+   XÓA BÁO CÁO
+========================= */
+
+function clearReport(){
+
+    [
+        "groupName",
+        "locality",
+        "place",
+        "time",
+        "findings",
+        "impact",
+        "solution"
+    ].forEach(id => {
+        document.getElementById(id).value = "";
+    });
+
+    topicSelect.value = "";
+
+    topics.forEach(t => t.classList.remove("active"));
+
+    document.getElementById("reportTitle").textContent =
+        "Báo cáo thực hành";
+
+    document.getElementById("reportSubtitle").textContent =
+        "Chưa có thông tin. Hãy điền phiếu bên trái.";
+
+    [
+        "reportPlace",
+        "reportTopic",
+        "reportFindings",
+        "reportImpact",
+        "reportSolution"
+    ].forEach(id => {
+        display(id,"");
+    });
+
+    document.getElementById("reportStatus").textContent =
+        "💡 Hãy hoàn thiện báo cáo rồi kiểm tra sản phẩm.";
+
+    document.getElementById("reportStatus").classList.remove("done");
+
+    updateProgress();
+
+}
+
+
+/* =========================
+   CHECKLIST
+========================= */
+
+const checks =
+    document.querySelectorAll(".product-check");
+
+checks.forEach(check => {
+
+    check.addEventListener("change", () => {
+
+        updateChecklist();
+
+        updateProgress();
+
+    });
+
+});
+
+
+function updateChecklist(){
+
+    const total = checks.length;
+
+    const done =
+        [...checks].filter(c => c.checked).length;
+
+    const status =
+        document.getElementById("checkStatus");
+
+    status.textContent =
+        `Đã hoàn thành ${done}/${total} tiêu chí.`;
+
+    if(done === total){
+
+        status.textContent =
+            "✓ Đã hoàn thành toàn bộ tiêu chí. Nhóm đã sẵn sàng trình bày sản phẩm.";
+
+        status.classList.add("done");
+
+    }else{
+
+        status.classList.remove("done");
+
+    }
+
+}
+
+
+/* =========================
+   TIẾN ĐỘ
+========================= */
+
+function reportReady(){
+
+    return (
+        value("topicSelect") &&
+        value("findings") &&
+        value("impact") &&
+        value("solution")
+    );
+}
+
+
+function updateProgress(){
+
+    const topicDone =
+        document.querySelector(".topic.active") ? 1 : 0;
+
+    const reportDone =
+        reportReady() ? 1 : 0;
+
+    const checkDone =
+        checks.length > 0 &&
+        [...checks].every(c => c.checked)
+        ? 1 : 0;
+
+    const total =
+        topicDone +
+        reportDone +
+        checkDone;
+
+    const percent =
+        Math.round((total / 3) * 100);
+
+    document.getElementById("progressText").textContent =
+        `Tiến độ ${percent}%`;
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+
+}
+
+
+/* =========================
+   HOÀN THÀNH BÀI
+========================= */
+
+function finishLesson(){
+
+    const progress = getProgress();
+
+    progress.g30 = true;
+
+    saveProgress(progress);
+
+    const status =
+        document.getElementById("finishStatus");
+
+    status.textContent =
+        "🎉 Tuyệt vời! Bài 30 đã được đánh dấu hoàn thành.";
+
+    status.classList.add("done");
+
+    updateProgress();
+
+}
+
+
+/* =========================
+   KHÔI PHỤC TIẾN ĐỘ
+========================= */
+
+function restoreCompletion(){
+
+    const progress = getProgress();
+
+    if(progress.g30){
+
+        const status =
+            document.getElementById("finishStatus");
+
+        status.textContent =
+            "✓ Bài 30 đã được hoàn thành trước đó.";
+
+        status.classList.add("done");
+
+    }
+
+}
+
+
+/* =========================
+   KHỞI TẠO
+========================= */
+
+updateChecklist();
+updateProgress();
+restoreCompletion();
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g30");</script>
+</body>
+</html>

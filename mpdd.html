@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mô phỏng hiện tượng động đất</title>
+
+<style>
+    *{
+        box-sizing:border-box;
+    }
+
+    body{
+        margin:0;
+        font-family:Arial, Helvetica, sans-serif;
+        background:
+            radial-gradient(circle at top,#102b52 0%,#07172d 45%,#040c18 100%);
+        color:#eaf6ff;
+        min-height:100vh;
+    }
+
+    .page{
+        width:min(1450px,96%);
+        margin:auto;
+        padding:22px 0 35px;
+    }
+
+    .header{
+        background:rgba(10,28,52,.88);
+        border:1px solid rgba(75,190,255,.3);
+        border-radius:20px;
+        padding:22px 25px;
+        box-shadow:0 15px 45px rgba(0,0,0,.35);
+        margin-bottom:18px;
+    }
+
+    .header h1{
+        margin:0 0 8px;
+        color:#62d8ff;
+        font-size:clamp(25px,3vw,38px);
+    }
+
+    .header p{
+        margin:0;
+        color:#b9d8ed;
+        line-height:1.6;
+    }
+
+    .layout{
+        display:grid;
+        grid-template-columns:1fr 340px;
+        gap:18px;
+    }
+
+    .simulation-card,
+    .control-card,
+    .knowledge-card{
+        background:rgba(8,25,47,.9);
+        border:1px solid rgba(73,190,255,.25);
+        border-radius:20px;
+        box-shadow:0 15px 45px rgba(0,0,0,.3);
+    }
+
+    .simulation-card{
+        padding:15px;
+    }
+
+    .canvas-wrap{
+        position:relative;
+        width:100%;
+        overflow:hidden;
+        border-radius:16px;
+        border:1px solid rgba(99,210,255,.22);
+        background:#071426;
+    }
+
+    canvas{
+        display:block;
+        width:100%;
+        height:auto;
+        cursor:crosshair;
+    }
+
+    .stage{
+        padding:17px 5px 4px;
+    }
+
+    .stage-title{
+        font-size:22px;
+        font-weight:800;
+        color:#6cddff;
+        margin-bottom:7px;
+    }
+
+    .stage-text{
+        color:#c7dfef;
+        line-height:1.6;
+        min-height:52px;
+    }
+
+    .progress-box{
+        margin-top:15px;
+    }
+
+    .progress-track{
+        height:12px;
+        background:#122943;
+        border-radius:20px;
+        overflow:hidden;
+    }
+
+    .progress-bar{
+        height:100%;
+        width:0%;
+        background:linear-gradient(90deg,#1eb9ff,#63efff);
+        border-radius:20px;
+        transition:width .12s linear;
+    }
+
+    .progress-label{
+        display:flex;
+        justify-content:space-between;
+        margin-top:7px;
+        color:#8fb4ca;
+        font-size:13px;
+    }
+
+    .control-card{
+        padding:20px;
+    }
+
+    .control-card h2{
+        margin:0 0 18px;
+        color:#65d9ff;
+        font-size:21px;
+    }
+
+    .control-group{
+        margin-bottom:21px;
+    }
+
+    .control-group label{
+        display:block;
+        margin-bottom:9px;
+        color:#c7dfef;
+        font-weight:700;
+    }
+
+    input[type=range]{
+        width:100%;
+        accent-color:#28c5ff;
+        cursor:pointer;
+    }
+
+    .percent{
+        text-align:center;
+        font-size:29px;
+        font-weight:800;
+        color:#6ce4ff;
+        margin:5px 0 14px;
+    }
+
+    .buttons{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+
+    button{
+        border:none;
+        border-radius:11px;
+        padding:12px 13px;
+        color:white;
+        background:#12395d;
+        border:1px solid rgba(98,216,255,.2);
+        cursor:pointer;
+        font-weight:700;
+        transition:.2s;
+    }
+
+    button:hover{
+        transform:translateY(-1px);
+        background:#18547d;
+    }
+
+    button.primary{
+        background:linear-gradient(135deg,#0e9fd5,#087bb5);
+    }
+
+    button.primary:hover{
+        background:linear-gradient(135deg,#18b6ed,#0a8bc8);
+    }
+
+    .full{
+        grid-column:1/-1;
+    }
+
+    .knowledge-card{
+        padding:20px;
+        margin-top:18px;
+    }
+
+    .knowledge-card h2{
+        margin:0 0 12px;
+        color:#65d9ff;
+    }
+
+    .knowledge-card p{
+        color:#c8deed;
+        line-height:1.7;
+        margin:7px 0;
+    }
+
+    .knowledge-grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:12px;
+        margin-top:16px;
+    }
+
+    .info-box{
+        background:rgba(15,47,77,.7);
+        border:1px solid rgba(84,194,240,.18);
+        border-radius:14px;
+        padding:15px;
+    }
+
+    .info-box strong{
+        display:block;
+        color:#71ddff;
+        margin-bottom:7px;
+    }
+
+    .check{
+        display:flex;
+        align-items:center;
+        gap:9px;
+        color:#b9d8ed;
+        font-size:14px;
+        margin-top:12px;
+    }
+
+    .check input{
+        accent-color:#28c5ff;
+    }
+
+    .back{
+        margin-top:18px;
+        text-align:center;
+    }
+
+    .back button{
+        min-width:230px;
+    }
+
+    @media(max-width:1000px){
+        .layout{
+            grid-template-columns:1fr;
+        }
+
+        .knowledge-grid{
+            grid-template-columns:1fr;
+        }
+    }
+
+    @media(max-width:650px){
+        .page{
+            width:94%;
+        }
+
+        .buttons{
+            grid-template-columns:1fr;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+        <h1>🌋 Mô phỏng hiện tượng động đất</h1>
+        <p>
+            Khám phá cách năng lượng được tích tụ trong lớp vỏ Trái Đất,
+            được giải phóng đột ngột tại đứt gãy và tạo ra các
+            <strong>sóng địa chấn</strong> làm mặt đất rung chuyển.
+        </p>
+    </div>
+
+    <div class="layout">
+
+        <div class="simulation-card">
+
+            <div class="canvas-wrap">
+                <canvas id="simCanvas" width="1050" height="650"></canvas>
+            </div>
+
+            <div class="stage">
+
+                <div class="stage-title" id="stageTitle">
+                    Giai đoạn 1: Trạng thái ban đầu
+                </div>
+
+                <div class="stage-text" id="stageText">
+                    Các khối đá nằm tương đối ổn định. Chưa có sự giải phóng
+                    năng lượng lớn gây ra động đất.
+                </div>
+
+            </div>
+
+            <div class="progress-box">
+                <div class="progress-track">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <div class="progress-label">
+                    <span>Quá trình hình thành động đất</span>
+                    <span id="progressText">0%</span>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="control-card">
+
+            <h2>🎛️ Điều khiển mô phỏng</h2>
+
+            <div class="control-group">
+
+                <label for="progress">
+                    Mức độ diễn biến
+                </label>
+
+                <div class="percent" id="percent">
+                    0%
+                </div>
+
+                <input
+                    type="range"
+                    id="progress"
+                    min="0"
+                    max="100"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    class="primary"
+                    id="playBtn"
+                    onclick="togglePlay()">
+                    ▶ Tự động chạy
+                </button>
+
+                <button onclick="resetSimulation()">
+                    ↺ Đặt lại
+                </button>
+
+                <button onclick="previousStage()">
+                    ◀ Giai đoạn trước
+                </button>
+
+                <button onclick="nextStage()">
+                    Giai đoạn tiếp theo ▶
+                </button>
+
+            </div>
+
+
+            <div style="margin-top:22px">
+
+                <label class="check">
+                    <input
+                        type="checkbox"
+                        id="showLabels"
+                        checked
+                        onchange="draw()">
+                    Hiện chú thích
+                </label>
+
+                <label class="check">
+                    <input
+                        type="checkbox"
+                        id="showWaves"
+                        checked
+                        onchange="draw()">
+                    Hiện sóng địa chấn
+                </label>
+
+                <label class="check">
+                    <input
+                        type="checkbox"
+                        id="showArrows"
+                        checked
+                        onchange="draw()">
+                    Hiện hướng chuyển động
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="knowledge-card">
+
+        <h2>📚 Kiến thức cần ghi nhớ</h2>
+
+        <p>
+            <strong>Động đất</strong> là hiện tượng mặt đất rung chuyển
+            do sự giải phóng đột ngột năng lượng trong lòng đất,
+            thường liên quan đến sự vận động và đứt gãy của các khối đá.
+        </p>
+
+        <div class="knowledge-grid">
+
+            <div class="info-box">
+                <strong>1. Tích tụ ứng suất</strong>
+                Các lực bên trong Trái Đất tác động lên các khối đá,
+                làm chúng biến dạng và tích tụ năng lượng.
+            </div>
+
+            <div class="info-box">
+                <strong>2. Đứt gãy và giải phóng năng lượng</strong>
+                Khi ứng suất vượt quá khả năng chịu đựng của đá,
+                các khối đá có thể trượt hoặc dịch chuyển đột ngột.
+            </div>
+
+            <div class="info-box">
+                <strong>3. Sóng địa chấn</strong>
+                Năng lượng được giải phóng truyền ra xung quanh
+                dưới dạng sóng địa chấn, gây rung chuyển mặt đất.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="back">
+        <button onclick="goBack()">
+            ← Quay lại bài học
+        </button>
+    </div>
+
+</div>
+
+
+<script>
+
+const canvas = document.getElementById("simCanvas");
+const ctx = canvas.getContext("2d");
+
+const slider = document.getElementById("progress");
+const percent = document.getElementById("percent");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+const stageTitle = document.getElementById("stageTitle");
+const stageText = document.getElementById("stageText");
+
+const playBtn = document.getElementById("playBtn");
+
+let progress = 0;
+let playing = false;
+let animationId = null;
+
+let lastTime = 0;
+
+
+/* =========================
+   DỮ LIỆU CÁC GIAI ĐOẠN
+========================= */
+
+const stages = [
+
+    {
+        min:0,
+        max:18,
+        title:"Giai đoạn 1: Trạng thái ban đầu",
+        text:
+        "Các khối đá trong lớp vỏ Trái Đất tương đối ổn định. " +
+        "Một đới đứt gãy tồn tại trong lòng đất nhưng chưa xảy ra " +
+        "sự dịch chuyển đột ngột."
+    },
+
+    {
+        min:18,
+        max:42,
+        title:"Giai đoạn 2: Tích tụ ứng suất",
+        text:
+        "Các lực tác động làm các khối đá bị nén, kéo hoặc trượt. " +
+        "Đá biến dạng và năng lượng đàn hồi dần được tích tụ."
+    },
+
+    {
+        min:42,
+        max:60,
+        title:"Giai đoạn 3: Ứng suất tăng cao",
+        text:
+        "Ứng suất tiếp tục tăng. Các khối đá bị biến dạng mạnh hơn " +
+        "và hệ thống đứt gãy tiến gần đến trạng thái mất ổn định."
+    },
+
+    {
+        min:60,
+        max:73,
+        title:"Giai đoạn 4: Đứt gãy và giải phóng năng lượng",
+        text:
+        "Khi ứng suất vượt quá giới hạn chịu đựng, các khối đá dịch chuyển " +
+        "đột ngột dọc theo đứt gãy. Năng lượng được giải phóng."
+    },
+
+    {
+        min:73,
+        max:100,
+        title:"Giai đoạn 5: Sóng địa chấn lan truyền",
+        text:
+        "Năng lượng giải phóng truyền ra xung quanh dưới dạng sóng địa chấn, " +
+        "làm mặt đất rung chuyển và có thể gây thiệt hại cho công trình."
+    }
+
+];
+
+
+/* =========================
+   HÀM TIỆN ÍCH
+========================= */
+
+function clamp(v,min,max){
+    return Math.max(min,Math.min(max,v));
+}
+
+
+function lerp(a,b,t){
+    return a+(b-a)*t;
+}
+
+
+function easeInOut(t){
+    return t<0.5
+        ? 2*t*t
+        : 1-Math.pow(-2*t+2,2)/2;
+}
+
+
+/* =========================
+   GIAI ĐOẠN
+========================= */
+
+function getStage(p){
+
+    for(let i=0;i<stages.length;i++){
+
+        if(
+            p>=stages[i].min &&
+            p<=stages[i].max
+        ){
+            return stages[i];
+        }
+
+    }
+
+    return stages[stages.length-1];
+}
+
+
+function updateStage(){
+
+    const stage = getStage(progress);
+
+    stageTitle.textContent = stage.title;
+    stageText.textContent = stage.text;
+
+    percent.textContent = Math.round(progress)+"%";
+
+    progressBar.style.width = progress+"%";
+
+    progressText.textContent = Math.round(progress)+"%";
+}
+
+
+/* =========================
+   SLIDER
+========================= */
+
+slider.addEventListener("input",function(){
+
+    progress = Number(this.value);
+
+    updateStage();
+    draw();
+
+});
+
+
+/* =========================
+   NỀN TRỜI
+========================= */
+
+function drawSky(){
+
+    const gradient = ctx.createLinearGradient(
+        0,0,0,350
+    );
+
+    gradient.addColorStop(0,"#071c35");
+    gradient.addColorStop(1,"#12385a");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0,0,canvas.width,350);
+
+}
+
+
+/* =========================
+   MẶT ĐẤT
+========================= */
+
+function drawGround(shake){
+
+    const groundY = 300;
+
+    ctx.save();
+
+    ctx.translate(shake,0);
+
+    ctx.fillStyle="#263f49";
+    ctx.fillRect(0,groundY,canvas.width,40);
+
+    ctx.fillStyle="#304e55";
+
+    for(let x=0;x<canvas.width;x+=60){
+
+        ctx.beginPath();
+        ctx.moveTo(x,groundY+40);
+        ctx.lineTo(x+30,groundY+85);
+        ctx.lineTo(x+60,groundY+40);
+        ctx.closePath();
+        ctx.fill();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   CÁC LỚP ĐẤT
+========================= */
+
+function drawSoil(){
+
+    ctx.fillStyle="#4c352b";
+    ctx.fillRect(0,340,canvas.width,310);
+
+    ctx.fillStyle="#5d4336";
+
+    for(let y=365;y<650;y+=50){
+
+        for(let x=10;x<canvas.width;x+=90){
+
+            ctx.beginPath();
+            ctx.arc(
+                x+(y%30),
+                y,
+                2,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+
+    }
+
+}
+
+
+/* =========================
+   ĐƯỜNG ĐỨT GÃY
+========================= */
+
+function drawFault(){
+
+    ctx.save();
+
+    ctx.strokeStyle="#ffbd63";
+    ctx.lineWidth=5;
+    ctx.setLineDash([14,10]);
+
+    ctx.beginPath();
+
+    ctx.moveTo(490,330);
+    ctx.lineTo(650,650);
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   KHỐI ĐÁ
+========================= */
+
+function drawRockBlocks(){
+
+    let movement = 0;
+
+    if(progress>=60){
+
+        const t =
+            clamp((progress-60)/18,0,1);
+
+        movement = easeInOut(t)*45;
+
+    }
+
+    ctx.save();
+
+    /*
+       Khối bên trái
+    */
+
+    ctx.fillStyle="#755443";
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,340);
+    ctx.lineTo(500-movement,340);
+    ctx.lineTo(610-movement,650);
+    ctx.lineTo(0,650);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /*
+       Khối bên phải
+    */
+
+    ctx.fillStyle="#80604b";
+
+    ctx.beginPath();
+
+    ctx.moveTo(500+movement,340);
+    ctx.lineTo(canvas.width,340);
+    ctx.lineTo(canvas.width,650);
+    ctx.lineTo(610+movement,650);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   HƯỚNG CHUYỂN ĐỘNG
+========================= */
+
+function drawArrow(x1,y1,x2,y2){
+
+    const angle =
+        Math.atan2(y2-y1,x2-x1);
+
+    ctx.save();
+
+    ctx.strokeStyle="#66e1ff";
+    ctx.fillStyle="#66e1ff";
+    ctx.lineWidth=4;
+
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
+
+    ctx.beginPath();
+
+    ctx.moveTo(x2,y2);
+
+    ctx.lineTo(
+        x2-15*Math.cos(angle-.5),
+        y2-15*Math.sin(angle-.5)
+    );
+
+    ctx.lineTo(
+        x2-15*Math.cos(angle+.5),
+        y2-15*Math.sin(angle+.5)
+    );
+
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   CÔNG TRÌNH TRÊN MẶT ĐẤT
+========================= */
+
+function drawBuilding(x,y,scale,shake){
+
+    ctx.save();
+
+    ctx.translate(x+shake,y);
+
+    ctx.scale(scale,scale);
+
+    /*
+       thân nhà
+    */
+
+    ctx.fillStyle="#d3e8f2";
+
+    ctx.fillRect(-35,-80,70,80);
+
+    /*
+       mái
+    */
+
+    ctx.fillStyle="#55778c";
+
+    ctx.beginPath();
+
+    ctx.moveTo(-45,-80);
+    ctx.lineTo(0,-115);
+    ctx.lineTo(45,-80);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /*
+       cửa sổ
+    */
+
+    ctx.fillStyle="#24506a";
+
+    ctx.fillRect(-23,-62,16,17);
+    ctx.fillRect(7,-62,16,17);
+
+    ctx.fillRect(-23,-35,16,17);
+    ctx.fillRect(7,-35,16,17);
+
+    /*
+       cửa
+    */
+
+    ctx.fillStyle="#38505d";
+    ctx.fillRect(-9,-22,18,22);
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   CÂY
+========================= */
+
+function drawTree(x,y,scale,shake){
+
+    ctx.save();
+
+    ctx.translate(x+shake,y);
+    ctx.scale(scale,scale);
+
+    ctx.fillStyle="#5b3c27";
+    ctx.fillRect(-6,-60,12,60);
+
+    ctx.fillStyle="#3f8c68";
+
+    ctx.beginPath();
+    ctx.arc(0,-80,32,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(-22,-58,25,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(22,-58,25,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   NHÃN
+========================= */
+
+function label(text,x,y){
+
+    if(!document.getElementById("showLabels").checked){
+        return;
+    }
+
+    ctx.save();
+
+    ctx.font="bold 15px Arial";
+
+    const width =
+        ctx.measureText(text).width+22;
+
+    ctx.fillStyle="rgba(4,18,32,.82)";
+
+    ctx.beginPath();
+
+    /*
+       Dùng rect thay roundRect
+       để tương thích trình duyệt rộng hơn
+    */
+
+    ctx.fillRect(
+        x-width/2,
+        y-19,
+        width,
+        32
+    );
+
+    ctx.strokeStyle="rgba(101,220,255,.35)";
+    ctx.strokeRect(
+        x-width/2,
+        y-19,
+        width,
+        32
+    );
+
+    ctx.fillStyle="#d9f7ff";
+    ctx.textAlign="center";
+    ctx.fillText(text,x,y+3);
+
+    ctx.restore();
+
+}
+
+
+/* =========================
+   SÓNG ĐỊA CHẤN
+========================= */
+
+function drawSeismicWaves(){
+
+    if(!document.getElementById("showWaves").checked){
+        return;
+    }
+
+    if(progress<68){
+        return;
+    }
+
+    const t =
+        clamp((progress-68)/32,0,1);
+
+    const centerX=570;
+    const centerY=390;
+
+    for(let i=0;i<4;i++){
+
+        const radius =
+            30 +
+            ((t*330 + i*75)%390);
+
+        const alpha =
+            1-radius/430;
+
+        if(alpha<=0){
+            continue;
+        }
+
+        ctx.save();
+
+        ctx.strokeStyle=
+            `rgba(93,220,255,${alpha})`;
+
+        ctx.lineWidth=4;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            centerX,
+            centerY,
+            radius,
+            0,
+            Math.PI*2
+        );
+
+        ctx.stroke();
+
+        ctx.restore();
+
+    }
+
+}
+
+
+/* =========================
+   RUNG MẶT ĐẤT
+========================= */
+
+function getShake(){
+
+    if(progress<68){
+        return 0;
+    }
+
+    const intensity =
+        clamp((progress-68)/32,0,1);
+
+    /*
+       Tạo rung nhanh
+    */
+
+    return Math.sin(
+        performance.now()/45
+    ) * 10 * intensity;
+
+}
+
+
+/* =========================
+   VẼ TOÀN BỘ
+========================= */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    drawSky();
+
+
+    const shake=getShake();
+
+
+    /*
+       Các công trình được vẽ trước mặt đất
+    */
+
+    drawBuilding(
+        160,
+        300,
+        1.0,
+        shake
+    );
+
+    drawBuilding(
+        320,
+        300,
+        .72,
+        shake*1.1
+    );
+
+    drawTree(
+        800,
+        300,
+        1,
+        shake*1.2
+    );
+
+    drawTree(
+        910,
+        300,
+        .8,
+        shake*1.25
+    );
+
+
+    drawGround(shake);
+
+
+    drawSoil();
+
+
+    drawRockBlocks();
+
+
+    drawFault();
+
+
+    /*
+       Tích tụ ứng suất
+    */
+
+    if(
+        progress>=18 &&
+        progress<60 &&
+        document.getElementById("showArrows").checked
+    ){
+
+        const strength =
+            clamp((progress-18)/42,0,1);
+
+        drawArrow(
+            300,
+            460,
+            390+strength*50,
+            460
+        );
+
+        drawArrow(
+            800,
+            520,
+            710-strength*50,
+            520
+        );
+
+    }
+
+
+    /*
+       Sau khi đứt gãy
+    */
+
+    if(
+        progress>=60 &&
+        document.getElementById("showArrows").checked
+    ){
+
+        drawArrow(
+            360,
+            470,
+            430,
+            510
+        );
+
+        drawArrow(
+            770,
+            510,
+            700,
+            470
+        );
+
+    }
+
+
+    drawSeismicWaves();
+
+
+    /*
+       Điểm phát sinh động đất
+    */
+
+    if(progress>=60){
+
+        ctx.save();
+
+        const pulse =
+            1+
+            Math.sin(performance.now()/120)*.18;
+
+        ctx.fillStyle="#ffdc72";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            570,
+            390,
+            9*pulse,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        ctx.restore();
+
+    }
+
+
+    /*
+       Chú thích
+    */
+
+    label(
+        "Mặt đất",
+        100,
+        290
+    );
+
+    label(
+        "Đới đứt gãy",
+        565,
+        355
+    );
+
+    if(progress>=18 && progress<60){
+
+        label(
+            "Tích tụ ứng suất",
+            350,
+            440
+        );
+
+    }
+
+    if(progress>=60){
+
+        label(
+            "Tâm chấn / vùng phát sinh",
+            720,
+            390
+        );
+
+        label(
+            "Sóng địa chấn",
+            850,
+            450
+        );
+
+    }
+
+}
+
+
+/* =========================
+   TỰ ĐỘNG CHẠY
+========================= */
+
+function togglePlay(){
+
+    playing=!playing;
+
+    if(playing){
+
+        playBtn.textContent="⏸ Tạm dừng";
+
+        lastTime=performance.now();
+
+        animationId=
+            requestAnimationFrame(animate);
+
+    }else{
+
+        playBtn.textContent="▶ Tự động chạy";
+
+        if(animationId){
+            cancelAnimationFrame(animationId);
+        }
+
+    }
+
+}
+
+
+function animate(time){
+
+    if(!playing){
+        return;
+    }
+
+    const delta =
+        (time-lastTime)/1000;
+
+    lastTime=time;
+
+
+    progress += delta*7;
+
+
+    if(progress>=100){
+
+        progress=100;
+
+        playing=false;
+
+        playBtn.textContent="▶ Tự động chạy";
+
+    }
+
+
+    slider.value=progress;
+
+    updateStage();
+    draw();
+
+
+    if(playing){
+
+        animationId=
+            requestAnimationFrame(animate);
+
+    }
+
+}
+
+
+/* =========================
+   ĐẶT LẠI
+========================= */
+
+function resetSimulation(){
+
+    playing=false;
+
+    if(animationId){
+        cancelAnimationFrame(animationId);
+    }
+
+    playBtn.textContent="▶ Tự động chạy";
+
+    progress=0;
+
+    slider.value=0;
+
+    updateStage();
+    draw();
+
+}
+
+
+/* =========================
+   GIAI ĐOẠN TRƯỚC
+========================= */
+
+function previousStage(){
+
+    const boundaries=[
+        0,
+        18,
+        42,
+        60,
+        73,
+        100
+    ];
+
+    let target=0;
+
+    for(let i=boundaries.length-1;i>=0;i--){
+
+        if(progress>boundaries[i]+1){
+
+            target=boundaries[i];
+            break;
+
+        }
+
+    }
+
+    progress=target;
+
+    slider.value=progress;
+
+    updateStage();
+    draw();
+
+}
+
+
+/* =========================
+   GIAI ĐOẠN TIẾP THEO
+========================= */
+
+function nextStage(){
+
+    const boundaries=[
+        18,
+        42,
+        60,
+        73,
+        100
+    ];
+
+    for(let i=0;i<boundaries.length;i++){
+
+        if(progress<boundaries[i]-1){
+
+            progress=boundaries[i];
+
+            break;
+
+        }
+
+    }
+
+    slider.value=progress;
+
+    updateStage();
+    draw();
+
+}
+
+
+/* =========================
+   QUAY LẠI BÀI HỌC
+========================= */
+
+function goBack(){
+
+    /*
+       Nếu file mô phỏng nằm cùng thư mục
+       với g12.html thì dùng dòng dưới.
+    */
+
+    window.location.href="g12.html";
+
+}
+
+
+/* =========================
+   ANIMATION RUNG LIÊN TỤC
+========================= */
+
+function renderLoop(){
+
+    draw();
+
+    requestAnimationFrame(renderLoop);
+
+}
+
+
+/* =========================
+   KHỞI TẠO
+========================= */
+
+updateStage();
+draw();
+renderLoop();
+
+</script>
+
+</body>
+</html>

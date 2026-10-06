@@ -1,0 +1,3891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 2 - Bản đồ. Một số lưới kinh, vĩ tuyến. Phương hướng trên bản đồ</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(14,165,233,.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(34,211,238,.07),
+            transparent 30%
+        ),
+        #06101f;
+
+    color:#e5f3ff;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 28px;
+
+    background:
+        rgba(3,12,26,.93);
+
+    backdrop-filter:blur(16px);
+
+    border-bottom:
+        1px solid rgba(56,189,248,.18);
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.35);
+}
+
+
+.brand{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+
+.brand-icon{
+
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0ea5e9,
+            #06b6d4
+        );
+
+    font-size:22px;
+
+    box-shadow:
+        0 0 22px rgba(14,165,233,.35);
+}
+
+
+.brand-text strong{
+
+    display:block;
+
+    color:#f0f9ff;
+
+    font-size:16px;
+}
+
+
+.brand-text span{
+
+    display:block;
+
+    color:#64748b;
+
+    font-size:11px;
+
+    margin-top:2px;
+}
+
+
+.home-btn{
+
+    border:
+        1px solid rgba(56,189,248,.25);
+
+    background:
+        rgba(15,23,42,.8);
+
+    color:#bae6fd;
+
+    padding:9px 15px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+
+.home-btn:hover{
+
+    background:#0c4a6e;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:
+        55px 25px 35px;
+
+    text-align:center;
+}
+
+
+.badge{
+
+    display:inline-block;
+
+    padding:
+        7px 13px;
+
+    border-radius:999px;
+
+    background:
+        rgba(14,165,233,.10);
+
+    border:
+        1px solid rgba(56,189,248,.25);
+
+    color:#67e8f9;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    letter-spacing:.7px;
+
+    margin-bottom:16px;
+}
+
+
+.hero h1{
+
+    margin:0;
+
+    font-size:
+        clamp(28px,5vw,48px);
+
+    line-height:1.15;
+
+    color:#f8fafc;
+}
+
+
+.hero h1 span{
+
+    color:#38bdf8;
+}
+
+
+.hero p{
+
+    max-width:780px;
+
+    margin:
+        17px auto 0;
+
+    color:#94a3b8;
+
+    line-height:1.7;
+
+    font-size:15px;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.container{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:
+        0 25px 70px;
+}
+
+
+.section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:
+        30px 0 18px;
+
+    font-size:21px;
+
+    color:#e0f2fe;
+}
+
+
+.section-title::before{
+
+    content:"";
+
+    width:5px;
+    height:25px;
+
+    border-radius:5px;
+
+    background:#22d3ee;
+}
+
+
+/* =========================================================
+   OBJECTIVES
+========================================================= */
+
+.knowledge-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:14px;
+}
+
+
+.card{
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,.96),
+            rgba(8,25,45,.92)
+        );
+
+    border:
+        1px solid rgba(56,189,248,.13);
+
+    border-radius:16px;
+
+    padding:20px;
+
+    transition:.25s;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.18);
+}
+
+
+.card:hover{
+
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(56,189,248,.35);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.3);
+}
+
+
+.card-icon{
+
+    font-size:30px;
+
+    margin-bottom:12px;
+}
+
+
+.card h3{
+
+    margin:
+        0 0 8px;
+
+    color:#7dd3fc;
+
+    font-size:16px;
+}
+
+
+.card p{
+
+    margin:0;
+
+    color:#94a3b8;
+
+    line-height:1.6;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   DEFINITION
+========================================================= */
+
+.definition{
+
+    margin-top:25px;
+
+    padding:25px;
+
+    border-radius:19px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,47,73,.65),
+            rgba(15,23,42,.95)
+        );
+
+    border:
+        1px solid rgba(56,189,248,.17);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+
+.definition::after{
+
+    content:"MAP";
+
+    position:absolute;
+
+    right:-15px;
+    top:-30px;
+
+    font-size:120px;
+
+    font-weight:900;
+
+    color:
+        rgba(56,189,248,.035);
+}
+
+
+.definition-label{
+
+    color:#67e8f9;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+    margin-bottom:10px;
+}
+
+
+.definition h2{
+
+    margin:
+        0 0 10px;
+
+    color:#f0f9ff;
+
+    font-size:22px;
+}
+
+
+.definition p{
+
+    margin:0;
+
+    max-width:900px;
+
+    color:#cbd5e1;
+
+    line-height:1.8;
+
+    font-size:14px;
+}
+
+
+.highlight{
+
+    color:#facc15;
+
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   ROLE CARDS
+========================================================= */
+
+.role-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:14px;
+}
+
+
+.role-card{
+
+    padding:20px;
+
+    border-radius:16px;
+
+    background:#071a2d;
+
+    border:
+        1px solid rgba(56,189,248,.13);
+
+    transition:.25s;
+}
+
+
+.role-card:hover{
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(56,189,248,.35);
+}
+
+
+.role-number{
+
+    width:36px;
+    height:36px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    background:
+        rgba(14,165,233,.13);
+
+    color:#67e8f9;
+
+    font-weight:bold;
+
+    margin-bottom:13px;
+}
+
+
+.role-card h3{
+
+    margin:
+        0 0 8px;
+
+    color:#e0f2fe;
+
+    font-size:15px;
+}
+
+
+.role-card p{
+
+    margin:0;
+
+    color:#94a3b8;
+
+    line-height:1.6;
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   MAP LAB
+========================================================= */
+
+.map-lab{
+
+    margin-top:30px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:#020817;
+
+    border:
+        1px solid rgba(56,189,248,.2);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.4);
+}
+
+
+.map-lab-header{
+
+    padding:
+        18px 22px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8,47,73,.75),
+            rgba(8,25,45,.65)
+        );
+
+    border-bottom:
+        1px solid rgba(56,189,248,.15);
+}
+
+
+.map-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+
+.map-icon{
+
+    width:42px;
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:#082f49;
+
+    font-size:23px;
+}
+
+
+.map-title h2{
+
+    margin:0;
+
+    color:#f0f9ff;
+
+    font-size:18px;
+}
+
+
+.map-title p{
+
+    margin:
+        4px 0 0;
+
+    color:#64748b;
+
+    font-size:12px;
+}
+
+
+.map-status{
+
+    display:flex;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+}
+
+
+.status{
+
+    padding:
+        7px 10px;
+
+    border-radius:999px;
+
+    font-size:10px;
+
+    color:#7dd3fc;
+
+    background:
+        rgba(14,165,233,.08);
+
+    border:
+        1px solid rgba(56,189,248,.18);
+}
+
+
+/* =========================================================
+   MAP CONTENT
+========================================================= */
+
+.map-content{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 300px;
+
+    min-height:510px;
+}
+
+
+.map-board{
+
+    position:relative;
+
+    min-height:510px;
+
+    padding:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(14,116,144,.22),
+            transparent 50%
+        ),
+
+        linear-gradient(
+            145deg,
+            #061827,
+            #020817
+        );
+}
+
+
+/* decorative grid */
+
+.map-board::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:
+
+        linear-gradient(
+            rgba(56,189,248,.045) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(56,189,248,.045) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        35px 35px;
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   SIMPLE WORLD MAP
+========================================================= */
+
+.world-map{
+
+    width:
+        min(720px,100%);
+
+    height:
+        370px;
+
+    position:relative;
+
+    border-radius:22px;
+
+    border:
+        1px solid rgba(56,189,248,.25);
+
+    background:
+
+        radial-gradient(
+            ellipse at center,
+            #0b4260,
+            #05283e 55%,
+            #031a2d
+        );
+
+    box-shadow:
+        0 0 50px rgba(14,165,233,.13);
+
+    overflow:hidden;
+}
+
+
+/* latitude */
+
+.world-map .lat{
+
+    position:absolute;
+
+    left:4%;
+    right:4%;
+
+    height:1px;
+
+    background:
+        rgba(125,211,252,.22);
+
+    transform:
+        translateY(-50%);
+}
+
+
+.lat.l1{top:20%;}
+.lat.l2{top:35%;}
+.lat.l3{
+    top:50%;
+    background:#22c55e;
+    height:2px;
+}
+.lat.l4{top:65%;}
+.lat.l5{top:80%;}
+
+
+/* longitude */
+
+.world-map .lon{
+
+    position:absolute;
+
+    top:3%;
+    bottom:3%;
+
+    width:1px;
+
+    background:
+        rgba(125,211,252,.20);
+
+    transform:
+        translateX(-50%);
+}
+
+
+.lon.n1{left:15%;}
+.lon.n2{left:30%;}
+.lon.n3{left:45%;}
+.lon.n4{
+    left:50%;
+    background:#facc15;
+    width:2px;
+}
+.lon.n5{left:60%;}
+.lon.n6{left:75%;}
+.lon.n7{left:90%;}
+
+
+/* =========================================================
+   CONTINENT SHAPES
+========================================================= */
+
+.land{
+
+    position:absolute;
+
+    background:
+        linear-gradient(
+            145deg,
+            #5d9f58,
+            #326b48
+        );
+
+    border:
+        1px solid rgba(139,209,125,.55);
+
+    box-shadow:
+        0 0 12px rgba(74,222,128,.08);
+
+    opacity:.95;
+}
+
+
+/* Bắc Mỹ */
+
+.land.na{
+
+    width:19%;
+    height:25%;
+
+    left:12%;
+    top:18%;
+
+    border-radius:
+        50% 38% 45% 55% /
+        45% 45% 55% 55%;
+
+    transform:
+        rotate(-12deg);
+}
+
+
+/* Nam Mỹ */
+
+.land.sa{
+
+    width:10%;
+    height:29%;
+
+    left:28%;
+    top:47%;
+
+    border-radius:
+        55% 45% 55% 45% /
+        35% 55% 65% 45%;
+
+    transform:
+        rotate(12deg);
+}
+
+
+/* Europe */
+
+.land.eu{
+
+    width:11%;
+    height:10%;
+
+    left:49%;
+    top:25%;
+
+    border-radius:
+        45% 55% 50% 40%;
+}
+
+
+/* Africa */
+
+.land.af{
+
+    width:13%;
+    height:28%;
+
+    left:51%;
+    top:37%;
+
+    border-radius:
+        45% 55% 48% 52% /
+        35% 45% 60% 65%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #d39b4a,
+            #9b6b31
+        );
+}
+
+
+/* Asia */
+
+.land.as{
+
+    width:29%;
+    height:20%;
+
+    left:59%;
+    top:24%;
+
+    border-radius:
+        45% 55% 40% 50%;
+}
+
+
+/* India */
+
+.land.ind{
+
+    width:5%;
+    height:10%;
+
+    left:67%;
+    top:43%;
+
+    border-radius:
+        40% 50% 55% 50%;
+
+    background:
+        #d39b4a;
+}
+
+
+/* Australia */
+
+.land.au{
+
+    width:15%;
+    height:14%;
+
+    left:75%;
+    top:65%;
+
+    border-radius:
+        50% 45% 50% 55%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #d39b4a,
+            #9b6b31
+        );
+}
+
+
+/* =========================================================
+   COMPASS
+========================================================= */
+
+.compass{
+
+    position:absolute;
+
+    right:25px;
+    bottom:22px;
+
+    width:100px;
+    height:100px;
+
+    border-radius:50%;
+
+    background:
+        rgba(2,8,23,.82);
+
+    border:
+        1px solid rgba(56,189,248,.25);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.4);
+}
+
+
+.compass::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:2px;
+    height:68px;
+
+    background:#facc15;
+
+    transform:
+        translate(-50%,-50%);
+}
+
+
+.compass::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:68px;
+    height:2px;
+
+    background:#38bdf8;
+
+    transform:
+        translate(-50%,-50%);
+}
+
+
+.compass span{
+
+    position:absolute;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    color:#cbd5e1;
+}
+
+
+.compass .north{
+    top:7px;
+    left:50%;
+    transform:
+        translateX(-50%);
+    color:#facc15;
+}
+
+
+.compass .south{
+    bottom:7px;
+    left:50%;
+    transform:
+        translateX(-50%);
+}
+
+
+.compass .west{
+    left:9px;
+    top:50%;
+    transform:
+        translateY(-50%);
+}
+
+
+.compass .east{
+    right:9px;
+    top:50%;
+    transform:
+        translateY(-50%);
+}
+
+
+/* =========================================================
+   MAP LEGEND
+========================================================= */
+
+.map-label{
+
+    position:absolute;
+
+    left:25px;
+    top:20px;
+
+    padding:
+        8px 12px;
+
+    border-radius:9px;
+
+    background:
+        rgba(2,8,23,.72);
+
+    border:
+        1px solid rgba(56,189,248,.15);
+
+    color:#94a3b8;
+
+    font-size:10px;
+}
+
+
+/* =========================================================
+   SIDE PANEL
+========================================================= */
+
+.map-side{
+
+    padding:20px;
+
+    background:
+        rgba(4,15,30,.95);
+
+    border-left:
+        1px solid rgba(56,189,248,.15);
+}
+
+
+.map-side h3{
+
+    margin:
+        0 0 15px;
+
+    color:#67e8f9;
+
+    font-size:14px;
+}
+
+
+.direction-btn{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:8px;
+
+    border-radius:10px;
+
+    background:#071a2d;
+
+    border:
+        1px solid rgba(56,189,248,.12);
+
+    color:#cbd5e1;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    text-align:left;
+}
+
+
+.direction-btn:hover{
+
+    background:#082f49;
+
+    border-color:#0891b2;
+}
+
+
+.direction-btn.active{
+
+    background:
+        rgba(14,165,233,.13);
+
+    border-color:#0891b2;
+
+    color:#67e8f9;
+}
+
+
+.direction-symbol{
+
+    display:inline-flex;
+
+    width:27px;
+    height:27px;
+
+    align-items:center;
+    justify-content:center;
+
+    margin-right:8px;
+
+    border-radius:7px;
+
+    background:
+        rgba(56,189,248,.08);
+}
+
+
+.side-info{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:#061827;
+
+    border:
+        1px solid rgba(56,189,248,.10);
+}
+
+
+.side-info small{
+
+    color:#64748b;
+
+    font-size:10px;
+}
+
+
+.side-info strong{
+
+    display:block;
+
+    margin:
+        6px 0;
+
+    color:#facc15;
+
+    font-size:18px;
+}
+
+
+.side-info p{
+
+    margin:0;
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   GRID TYPES
+========================================================= */
+
+.grid-section{
+
+    margin-top:30px;
+}
+
+
+.grid-tabs{
+
+    display:flex;
+
+    gap:9px;
+
+    margin-bottom:15px;
+
+    flex-wrap:wrap;
+}
+
+
+.grid-tab{
+
+    padding:
+        10px 15px;
+
+    border-radius:10px;
+
+    border:
+        1px solid rgba(56,189,248,.14);
+
+    background:#071a2d;
+
+    color:#94a3b8;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    transition:.2s;
+}
+
+
+.grid-tab:hover{
+
+    background:#082f49;
+
+    color:#bae6fd;
+}
+
+
+.grid-tab.active{
+
+    background:
+        rgba(14,165,233,.14);
+
+    border-color:#0891b2;
+
+    color:#67e8f9;
+}
+
+
+.grid-display{
+
+    min-height:330px;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #061827,
+            #020817
+        );
+
+    border:
+        1px solid rgba(56,189,248,.15);
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:25px;
+
+    align-items:center;
+}
+
+
+.grid-visual{
+
+    height:270px;
+
+    border-radius:15px;
+
+    background:#05283e;
+
+    border:
+        1px solid rgba(56,189,248,.18);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+
+.grid-visual .vline{
+
+    position:absolute;
+
+    top:0;
+    bottom:0;
+
+    width:1px;
+
+    background:
+        rgba(125,211,252,.30);
+}
+
+
+.grid-visual .hline{
+
+    position:absolute;
+
+    left:0;
+    right:0;
+
+    height:1px;
+
+    background:
+        rgba(125,211,252,.30);
+}
+
+
+.grid-visual.cone .vline{
+
+    top:25%;
+
+    height:55%;
+
+    bottom:auto;
+
+    transform-origin:bottom;
+
+}
+
+
+.grid-visual.cone .vline.v1{
+    left:25%;
+    transform:rotate(-20deg);
+}
+
+
+.grid-visual.cone .vline.v2{
+    left:40%;
+    transform:rotate(-10deg);
+}
+
+
+.grid-visual.cone .vline.v3{
+    left:55%;
+    transform:rotate(10deg);
+}
+
+
+.grid-visual.cone .vline.v4{
+    left:70%;
+    transform:rotate(20deg);
+}
+
+
+.grid-visual.cone .hline{
+
+    border-radius:50%;
+
+    background:none;
+
+    border:
+        1px solid rgba(125,211,252,.25);
+
+    height:55px;
+
+    left:12%;
+    right:12%;
+
+    transform:
+        translateY(-50%);
+
+}
+
+
+.grid-visual.cone .h1{
+    top:38%;
+}
+
+.grid-visual.cone .h2{
+    top:55%;
+}
+
+.grid-visual.cone .h3{
+    top:72%;
+}
+
+
+/* cylinder */
+
+.grid-visual.cylinder .vline{
+
+    top:0;
+    bottom:0;
+}
+
+
+.grid-visual.cylinder .hline{
+
+    left:0;
+    right:0;
+}
+
+
+.grid-visual.cylinder .center-line{
+
+    position:absolute;
+
+    left:50%;
+    top:0;
+    bottom:0;
+
+    width:2px;
+
+    background:#facc15;
+}
+
+
+/* info */
+
+.grid-info h3{
+
+    margin:
+        0 0 10px;
+
+    color:#67e8f9;
+
+    font-size:19px;
+}
+
+
+.grid-info p{
+
+    margin:0 0 13px;
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+
+.grid-feature{
+
+    display:flex;
+
+    gap:10px;
+
+    margin:
+        9px 0;
+
+    color:#cbd5e1;
+
+    font-size:12px;
+}
+
+
+.grid-feature span{
+
+    color:#22d3ee;
+
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   KEY TAKEAWAY
+========================================================= */
+
+.takeaway{
+
+    margin-top:30px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+
+.take-card{
+
+    padding:20px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,47,73,.65),
+            rgba(15,23,42,.9)
+        );
+
+    border:
+        1px solid rgba(56,189,248,.14);
+}
+
+
+.take-card .icon{
+
+    font-size:28px;
+
+    margin-bottom:10px;
+}
+
+
+.take-card h3{
+
+    margin:
+        0 0 7px;
+
+    color:#e0f2fe;
+
+    font-size:15px;
+}
+
+
+.take-card p{
+
+    margin:0;
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz-section{
+
+    margin-top:35px;
+
+    padding:24px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,47,73,.55),
+            rgba(15,23,42,.9)
+        );
+
+    border:
+        1px solid rgba(56,189,248,.16);
+}
+
+
+.quiz-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+
+.quiz-header h2{
+
+    margin:0;
+
+    color:#f0f9ff;
+
+    font-size:20px;
+}
+
+
+.quiz-header p{
+
+    margin:
+        4px 0 0;
+
+    color:#64748b;
+
+    font-size:12px;
+}
+
+
+.quiz-start{
+
+    border:none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #2563eb
+        );
+
+    color:white;
+
+    padding:
+        11px 18px;
+
+    border-radius:11px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.quiz-start:hover{
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(14,165,233,.3);
+}
+
+
+.quiz-content{
+
+    display:none;
+}
+
+
+.quiz-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:12px;
+}
+
+
+.question-number{
+
+    color:#67e8f9;
+
+    font-size:12px;
+
+    font-weight:bold;
+}
+
+
+.timer{
+
+    color:#facc15;
+
+    font-weight:bold;
+
+    font-size:13px;
+}
+
+
+.question{
+
+    padding:18px;
+
+    border-radius:13px;
+
+    background:#071a2d;
+
+    color:#e0f2fe;
+
+    font-size:16px;
+
+    line-height:1.6;
+
+    margin-bottom:14px;
+}
+
+
+.options{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+}
+
+
+.option{
+
+    padding:
+        13px 15px;
+
+    border-radius:11px;
+
+    border:
+        1px solid rgba(56,189,248,.13);
+
+    background:#0b1729;
+
+    color:#cbd5e1;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    transition:.2s;
+}
+
+
+.option:hover{
+
+    background:#082f49;
+
+    border-color:#0891b2;
+}
+
+
+.option.correct{
+
+    background:
+        rgba(22,163,74,.18);
+
+    border-color:#22c55e;
+
+    color:#86efac;
+}
+
+
+.option.wrong{
+
+    background:
+        rgba(220,38,38,.18);
+
+    border-color:#ef4444;
+
+    color:#fca5a5;
+}
+
+
+.feedback{
+
+    min-height:42px;
+
+    margin-top:14px;
+
+    padding:
+        11px 13px;
+
+    border-radius:10px;
+
+    display:none;
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+
+.quiz-next{
+
+    margin-top:13px;
+
+    display:none;
+
+    border:none;
+
+    background:#0891b2;
+
+    color:white;
+
+    padding:
+        10px 17px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+
+.quiz-result{
+
+    display:none;
+
+    text-align:center;
+
+    padding:
+        30px 15px;
+}
+
+
+.result-icon{
+
+    font-size:52px;
+
+    margin-bottom:10px;
+}
+
+
+.result-title{
+
+    color:#67e8f9;
+
+    font-size:23px;
+
+    font-weight:bold;
+}
+
+
+.result-score{
+
+    color:#facc15;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    margin:12px;
+}
+
+
+.result-text{
+
+    color:#94a3b8;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+.finish-box{
+
+    margin-top:30px;
+
+    padding:24px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,47,73,.65),
+            rgba(15,23,42,.9)
+        );
+
+    border:
+        1px solid rgba(56,189,248,.15);
+}
+
+
+.finish-box h3{
+
+    margin:
+        0 0 8px;
+
+    color:#e0f2fe;
+}
+
+
+.finish-box p{
+
+    color:#64748b;
+
+    font-size:13px;
+}
+
+
+.finish-btn{
+
+    margin-top:10px;
+
+    border:none;
+
+    padding:
+        12px 22px;
+
+    border-radius:10px;
+
+    background:#16a34a;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1000px){
+
+    .knowledge-grid,
+    .role-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .map-content{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .map-side{
+
+        border-left:none;
+
+        border-top:
+            1px solid rgba(56,189,248,.15);
+
+    }
+
+    .grid-display{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .takeaway{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .topbar{
+
+        padding:
+            0 15px;
+
+    }
+
+    .hero{
+
+        padding:
+            38px 18px 25px;
+
+    }
+
+    .container{
+
+        padding:
+            0 15px 50px;
+
+    }
+
+    .knowledge-grid,
+    .role-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .world-map{
+
+        height:300px;
+
+    }
+
+    .map-board{
+
+        padding:15px;
+
+    }
+
+    .compass{
+
+        transform:
+            scale(.8);
+
+        right:8px;
+
+        bottom:8px;
+
+    }
+
+    .map-label{
+
+        left:10px;
+
+        top:10px;
+
+    }
+
+    .options{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .quiz-header{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+    }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🗺️
+        </div>
+
+        <div class="brand-text">
+
+            <strong>
+                HỌC LIỆU SỐ 6
+            </strong>
+
+            <span>
+                LỊCH SỬ & ĐỊA LÍ · LỚP 6
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="home-btn"
+        onclick="goHome()"
+    >
+        🏠 Trang chủ
+    </button>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="badge">
+        🌎 ĐỊA LÍ 6 · CHƯƠNG 1
+    </div>
+
+
+    <h1>
+
+        BÀI 2 - Bản đồ. Một số lưới kinh, vĩ tuyến.<br>
+
+        <span>
+            Phương hướng trên bản đồ
+        </span>
+
+    </h1>
+
+
+    <p>
+
+        Tìm hiểu bản đồ là gì, bản đồ được xây dựng
+        như thế nào, một số dạng lưới kinh – vĩ tuyến
+        và cách xác định phương hướng trên bản đồ.
+
+    </p>
+
+</section>
+
+
+<main class="container">
+
+
+<!-- =========================================================
+     OBJECTIVES
+========================================================= -->
+
+<h2 class="section-title">
+    🎯 Mục tiêu bài học
+</h2>
+
+
+<div class="knowledge-grid">
+
+
+    <div class="card">
+
+        <div class="card-icon">
+            🗺️
+        </div>
+
+        <h3>
+            Hiểu bản đồ
+        </h3>
+
+        <p>
+            Nêu được khái niệm bản đồ và phân biệt
+            bản đồ với quả Địa Cầu.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-icon">
+            🌐
+        </div>
+
+        <h3>
+            Lưới kinh – vĩ tuyến
+        </h3>
+
+        <p>
+            Nhận biết một số dạng lưới kinh,
+            vĩ tuyến được sử dụng trên bản đồ.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-icon">
+            🧭
+        </div>
+
+        <h3>
+            Phương hướng
+        </h3>
+
+        <p>
+            Xác định được các hướng chính
+            trên bản đồ dựa vào kinh tuyến,
+            vĩ tuyến hoặc mũi tên Bắc.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-icon">
+            🚶
+        </div>
+
+        <h3>
+            Vận dụng
+        </h3>
+
+        <p>
+            Biết sử dụng bản đồ để xác định vị trí,
+            tìm đường và khai thác thông tin địa lí.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     DEFINITION
+========================================================= -->
+
+<h2 class="section-title">
+    🗺️ 1. Khái niệm bản đồ
+</h2>
+
+
+<div class="definition">
+
+    <div class="definition-label">
+        KHÁI NIỆM CỐT LÕI
+    </div>
+
+
+    <h2>
+        Bản đồ là gì?
+    </h2>
+
+
+    <p>
+
+        <strong>
+            Bản đồ là hình vẽ thu nhỏ một phần hoặc toàn bộ
+            bề mặt Trái Đất lên mặt phẳng trên cơ sở toán học,
+            trên đó các đối tượng địa lí được thể hiện bằng
+            các kí hiệu bản đồ.
+        </strong>
+
+    </p>
+
+</div>
+
+
+<!-- =========================================================
+     SO SÁNH
+========================================================= -->
+
+<div class="concept-grid"
+style="
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-top:15px;
+">
+
+    <div class="concept-card"
+    style="
+    padding:20px;
+    border-radius:17px;
+    background:linear-gradient(135deg,rgba(8,47,73,.65),rgba(15,23,42,.95));
+    border:1px solid rgba(56,189,248,.15);
+    ">
+
+        <h3 style="
+        margin:0 0 10px;
+        color:#67e8f9;
+        ">
+            🌍 Quả Địa Cầu
+        </h3>
+
+
+        <p style="
+        margin:0;
+        color:#94a3b8;
+        line-height:1.7;
+        font-size:13px;
+        ">
+
+            Là mô hình dạng cầu mô phỏng toàn bộ
+            bề mặt Trái Đất. Các đối tượng được thể hiện
+            trên bề mặt cong của quả cầu.
+
+        </p>
+
+    </div>
+
+
+    <div class="concept-card"
+    style="
+    padding:20px;
+    border-radius:17px;
+    background:linear-gradient(135deg,rgba(8,47,73,.65),rgba(15,23,42,.95));
+    border:1px solid rgba(56,189,248,.15);
+    ">
+
+        <h3 style="
+        margin:0 0 10px;
+        color:#67e8f9;
+        ">
+            🗺️ Bản đồ
+        </h3>
+
+
+        <p style="
+        margin:0;
+        color:#94a3b8;
+        line-height:1.7;
+        font-size:13px;
+        ">
+
+            Là hình vẽ thu nhỏ bề mặt Trái Đất
+            lên mặt phẳng. Khi chuyển bề mặt cong
+            sang mặt phẳng, các đối tượng có thể
+            bị biến dạng nhất định.
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ROLE
+========================================================= -->
+
+<h2 class="section-title">
+    💡 Vai trò của bản đồ
+</h2>
+
+
+<div class="role-grid">
+
+
+    <div class="role-card">
+
+        <div class="role-number">
+            01
+        </div>
+
+        <h3>
+            📍 Xác định vị trí
+        </h3>
+
+        <p>
+            Xác định vị trí của một địa điểm,
+            khu vực hoặc đối tượng địa lí.
+        </p>
+
+    </div>
+
+
+    <div class="role-card">
+
+        <div class="role-number">
+            02
+        </div>
+
+        <h3>
+            🧭 Tìm đường
+        </h3>
+
+        <p>
+            Hỗ trợ xác định phương hướng
+            và tìm đường đi đến một địa điểm.
+        </p>
+
+    </div>
+
+
+    <div class="role-card">
+
+        <div class="role-number">
+            03
+        </div>
+
+        <h3>
+            🌦️ Tìm hiểu tự nhiên
+        </h3>
+
+        <p>
+            Thể hiện và hỗ trợ nghiên cứu
+            các hiện tượng tự nhiên như bão,
+            gió và sự phân bố địa lí.
+        </p>
+
+    </div>
+
+
+    <div class="role-card">
+
+        <div class="role-number">
+            04
+        </div>
+
+        <h3>
+            📚 Học tập & đời sống
+        </h3>
+
+        <p>
+            Được sử dụng trong học tập,
+            du lịch, kinh tế, quân sự
+            và nhiều hoạt động khác.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MAP LAB
+========================================================= -->
+
+<h2 class="section-title">
+    🧭 2. Xác định phương hướng trên bản đồ
+</h2>
+
+
+<section class="map-lab">
+
+
+    <div class="map-lab-header">
+
+        <div class="map-title">
+
+            <div class="map-icon">
+                🧭
+            </div>
+
+            <div>
+
+                <h2>
+                    Bản đồ phương hướng
+                </h2>
+
+                <p>
+                    Chọn một hướng để khám phá
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="map-status">
+
+            <div class="status">
+                BẮC – NAM
+            </div>
+
+            <div class="status">
+                ĐÔNG – TÂY
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="map-content">
+
+
+        <div class="map-board">
+
+            <div class="map-label">
+                BẢN ĐỒ THẾ GIỚI · MINH HỌA
+            </div>
+
+
+            <div class="world-map">
+
+
+                <!-- lưới -->
+
+                <div class="lat l1"></div>
+                <div class="lat l2"></div>
+                <div class="lat l3"></div>
+                <div class="lat l4"></div>
+                <div class="lat l5"></div>
+
+
+                <div class="lon n1"></div>
+                <div class="lon n2"></div>
+                <div class="lon n3"></div>
+                <div class="lon n4"></div>
+                <div class="lon n5"></div>
+                <div class="lon n6"></div>
+                <div class="lon n7"></div>
+
+
+                <!-- châu lục -->
+
+                <div class="land na"></div>
+                <div class="land sa"></div>
+                <div class="land eu"></div>
+                <div class="land af"></div>
+                <div class="land as"></div>
+                <div class="land ind"></div>
+                <div class="land au"></div>
+
+
+                <!-- la bàn -->
+
+                <div class="compass">
+
+                    <span class="north">
+                        B
+                    </span>
+
+                    <span class="south">
+                        N
+                    </span>
+
+                    <span class="west">
+                        T
+                    </span>
+
+                    <span class="east">
+                        Đ
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <aside class="map-side">
+
+            <h3>
+                🧭 Chọn hướng
+            </h3>
+
+
+            <button
+                class="direction-btn"
+                onclick="showDirection('Bắc')"
+            >
+
+                <span class="direction-symbol">
+                    ↑
+                </span>
+
+                Bắc
+
+            </button>
+
+
+            <button
+                class="direction-btn"
+                onclick="showDirection('Nam')"
+            >
+
+                <span class="direction-symbol">
+                    ↓
+                </span>
+
+                Nam
+
+            </button>
+
+
+            <button
+                class="direction-btn"
+                onclick="showDirection('Đông')"
+            >
+
+                <span class="direction-symbol">
+                    →
+                </span>
+
+                Đông
+
+            </button>
+
+
+            <button
+                class="direction-btn"
+                onclick="showDirection('Tây')"
+            >
+
+                <span class="direction-symbol">
+                    ←
+                </span>
+
+                Tây
+
+            </button>
+
+
+            <div class="side-info">
+
+                <small>
+                    HƯỚNG ĐANG CHỌN
+                </small>
+
+                <strong
+                    id="directionName"
+                >
+                    Bắc
+                </strong>
+
+                <p
+                    id="directionText"
+                >
+
+                    Đầu trên của kinh tuyến
+                    chỉ hướng Bắc.
+
+                </p>
+
+            </div>
+
+        </aside>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     GRID TYPES
+========================================================= -->
+
+<h2 class="section-title">
+    🌐 3. Một số lưới kinh, vĩ tuyến
+</h2>
+
+
+<div class="grid-section">
+
+
+    <div class="grid-tabs">
+
+        <button
+            class="grid-tab active"
+            onclick="showGrid('cone',this)"
+        >
+            🔺 Lưới chiếu hình nón
+        </button>
+
+
+        <button
+            class="grid-tab"
+            onclick="showGrid('cylinder',this)"
+        >
+            🟦 Lưới chiếu hình trụ
+        </button>
+
+
+        <button
+            class="grid-tab"
+            onclick="showGrid('compare',this)"
+        >
+            ⚖️ So sánh
+        </button>
+
+    </div>
+
+
+    <div
+        class="grid-display"
+        id="gridDisplay"
+    >
+
+        <div
+            class="grid-visual cone"
+            id="gridVisual"
+        >
+
+            <div class="vline v1"></div>
+            <div class="vline v2"></div>
+            <div class="vline v3"></div>
+            <div class="vline v4"></div>
+
+            <div class="hline h1"></div>
+            <div class="hline h2"></div>
+            <div class="hline h3"></div>
+
+        </div>
+
+
+        <div class="grid-info">
+
+            <h3 id="gridTitle">
+                🔺 Lưới chiếu hình nón
+            </h3>
+
+
+            <p id="gridText">
+
+                Khi thể hiện bản đồ thế giới bằng
+                lưới chiếu hình nón, các kinh tuyến
+                thường là những đường thẳng đồng quy,
+                còn các vĩ tuyến là những cung tròn
+                đồng tâm.
+
+            </p>
+
+
+            <div class="grid-feature">
+
+                <span>01</span>
+
+                Kinh tuyến: các đường thẳng
+                đồng quy.
+
+            </div>
+
+
+            <div class="grid-feature">
+
+                <span>02</span>
+
+                Vĩ tuyến: các cung tròn
+                đồng tâm.
+
+            </div>
+
+
+            <div class="grid-feature">
+
+                <span>03</span>
+
+                Hình dạng lưới phụ thuộc
+                vào phép chiếu bản đồ.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     KEY KNOWLEDGE
+========================================================= -->
+
+<h2 class="section-title">
+    🧠 Ghi nhớ nhanh
+</h2>
+
+
+<div class="takeaway">
+
+
+    <div class="take-card">
+
+        <div class="icon">
+            🗺️
+        </div>
+
+        <h3>
+            Bản đồ
+        </h3>
+
+        <p>
+            Là hình vẽ thu nhỏ bề mặt Trái Đất
+            lên mặt phẳng trên cơ sở toán học.
+        </p>
+
+    </div>
+
+
+    <div class="take-card">
+
+        <div class="icon">
+            🌐
+        </div>
+
+        <h3>
+            Lưới kinh – vĩ tuyến
+        </h3>
+
+        <p>
+            Có hình dạng khác nhau tùy thuộc
+            vào phép chiếu được sử dụng để
+            chuyển bề mặt cong sang mặt phẳng.
+        </p>
+
+    </div>
+
+
+    <div class="take-card">
+
+        <div class="icon">
+            🧭
+        </div>
+
+        <h3>
+            Phương hướng
+        </h3>
+
+        <p>
+            Có thể dựa vào kinh tuyến,
+            vĩ tuyến hoặc mũi tên chỉ hướng Bắc.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     QUIZ
+========================================================= -->
+
+<section class="quiz-section">
+
+
+    <div class="quiz-header">
+
+        <div>
+
+            <h2>
+                🎮 Thử thách Bản đồ
+            </h2>
+
+            <p>
+                8 câu hỏi · 10 giây/câu ·
+                phản hồi ngay sau mỗi câu
+            </p>
+
+        </div>
+
+
+        <button
+            class="quiz-start"
+            id="startQuizBtn"
+            onclick="startQuiz()"
+        >
+            🚀 Bắt đầu
+        </button>
+
+    </div>
+
+
+    <div
+        class="quiz-content"
+        id="quizContent"
+    >
+
+        <div class="quiz-top">
+
+            <div
+                class="question-number"
+                id="questionNumber"
+            >
+                CÂU 1/8
+            </div>
+
+
+            <div
+                class="timer"
+                id="timer"
+            >
+                ⏱ 10s
+            </div>
+
+        </div>
+
+
+        <div
+            class="question"
+            id="questionText"
+        >
+        </div>
+
+
+        <div
+            class="options"
+            id="options"
+        >
+        </div>
+
+
+        <div
+            class="feedback"
+            id="feedback"
+        >
+        </div>
+
+
+        <button
+            class="quiz-next"
+            id="nextBtn"
+            onclick="nextQuestion()"
+        >
+            Câu tiếp theo →
+        </button>
+
+    </div>
+
+
+    <div
+        class="quiz-result"
+        id="quizResult"
+    >
+
+        <div class="result-icon">
+            🏆
+        </div>
+
+
+        <div class="result-title">
+            Hoàn thành thử thách!
+        </div>
+
+
+        <div
+            class="result-score"
+            id="resultScore"
+        >
+            0/8
+        </div>
+
+
+        <div
+            class="result-text"
+            id="resultText"
+        >
+        </div>
+
+
+        <br>
+
+
+        <button
+            class="quiz-start"
+            onclick="startQuiz()"
+        >
+            🔄 Làm lại
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FINISH
+========================================================= -->
+
+<div class="finish-box">
+
+    <h3>
+        🎓 Bạn đã hoàn thành Bài 2?
+    </h3>
+
+
+    <p>
+        Sau khi học nội dung và hoàn thành
+        thử thách, hãy đánh dấu bài học.
+    </p>
+
+
+    <button
+        class="finish-btn"
+        onclick="finishLesson()"
+    >
+        ✓ Đánh dấu đã hoàn thành
+    </button>
+
+</div>
+
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function goHome(){
+
+    window.location.href="index.html";
+
+}
+
+
+/* =========================================================
+   DIRECTION INTERACTION
+========================================================= */
+
+const directionData={
+
+    "Bắc":{
+        text:
+        "Đầu trên của các kinh tuyến chỉ hướng Bắc. Đây là một trong bốn hướng chính trên bản đồ."
+    },
+
+    "Nam":{
+        text:
+        "Đầu dưới của các kinh tuyến chỉ hướng Nam."
+    },
+
+    "Đông":{
+        text:
+        "Đầu bên phải của các vĩ tuyến chỉ hướng Đông."
+    },
+
+    "Tây":{
+        text:
+        "Đầu bên trái của các vĩ tuyến chỉ hướng Tây."
+    }
+
+};
+
+
+function showDirection(direction){
+
+    document
+        .getElementById("directionName")
+        .innerText=direction;
+
+
+    document
+        .getElementById("directionText")
+        .innerText=
+            directionData[direction].text;
+
+
+    document
+        .querySelectorAll(".direction-btn")
+        .forEach(
+            btn=>{
+                btn.classList.remove("active");
+
+                if(
+                    btn.innerText
+                        .includes(direction)
+                ){
+
+                    btn.classList.add("active");
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   GRID TYPES
+========================================================= */
+
+function showGrid(type,button){
+
+    document
+        .querySelectorAll(".grid-tab")
+        .forEach(
+            btn=>{
+                btn.classList.remove("active");
+            }
+        );
+
+    button.classList.add("active");
+
+
+    const visual=
+        document.getElementById(
+            "gridVisual"
+        );
+
+    const title=
+        document.getElementById(
+            "gridTitle"
+        );
+
+    const text=
+        document.getElementById(
+            "gridText"
+        );
+
+
+    if(type==="cone"){
+
+        visual.className=
+            "grid-visual cone";
+
+
+        visual.innerHTML=`
+
+            <div class="vline v1"></div>
+            <div class="vline v2"></div>
+            <div class="vline v3"></div>
+            <div class="vline v4"></div>
+
+            <div class="hline h1"></div>
+            <div class="hline h2"></div>
+            <div class="hline h3"></div>
+
+        `;
+
+
+        title.innerText=
+            "🔺 Lưới chiếu hình nón";
+
+
+        text.innerText=
+            "Trong lưới chiếu hình nón, các kinh tuyến thường là những đường thẳng đồng quy, còn các vĩ tuyến là những cung tròn đồng tâm.";
+
+    }
+
+
+    else if(type==="cylinder"){
+
+        visual.className=
+            "grid-visual cylinder";
+
+
+        visual.innerHTML=`
+
+            <div class="vline" style="left:15%"></div>
+            <div class="vline" style="left:30%"></div>
+            <div class="vline" style="left:45%"></div>
+            <div class="vline" style="left:60%"></div>
+            <div class="vline" style="left:75%"></div>
+            <div class="vline" style="left:90%"></div>
+
+            <div class="hline" style="top:20%"></div>
+            <div class="hline" style="top:35%"></div>
+            <div class="hline" style="top:50%"></div>
+            <div class="hline" style="top:65%"></div>
+            <div class="hline" style="top:80%"></div>
+
+            <div class="center-line"></div>
+
+        `;
+
+
+        title.innerText=
+            "🟦 Lưới chiếu hình trụ";
+
+
+        text.innerText=
+            "Ở lưới chiếu hình trụ đứng đồng góc, hệ thống kinh tuyến và vĩ tuyến được thể hiện thành các đường thẳng song song và vuông góc với nhau.";
+
+    }
+
+
+    else{
+
+        visual.className=
+            "grid-visual cylinder";
+
+
+        visual.innerHTML=`
+
+            <div class="vline" style="left:20%"></div>
+            <div class="vline" style="left:40%"></div>
+            <div class="vline" style="left:60%"></div>
+            <div class="vline" style="left:80%"></div>
+
+            <div class="hline" style="top:25%"></div>
+            <div class="hline" style="top:50%"></div>
+            <div class="hline" style="top:75%"></div>
+
+        `;
+
+
+        title.innerText=
+            "⚖️ Các lưới kinh – vĩ tuyến";
+
+
+        text.innerText=
+            "Bề mặt cong của Trái Đất khi được chuyển lên mặt phẳng phải thông qua phép chiếu bản đồ. Vì vậy, các dạng lưới kinh – vĩ tuyến có thể khác nhau.";
+
+    }
+
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const quizData=[
+
+    {
+        q:
+        "Bản đồ là gì?",
+
+        a:[
+            "Mô hình dạng cầu của Trái Đất.",
+            "Hình vẽ thu nhỏ một phần hoặc toàn bộ bề mặt Trái Đất lên mặt phẳng trên cơ sở toán học.",
+            "Một bức ảnh chụp bề mặt Trái Đất.",
+            "Một hình vẽ không cần tỉ lệ."
+        ],
+
+        correct:1,
+
+        explain:
+        "Bản đồ là hình vẽ thu nhỏ một phần hoặc toàn bộ bề mặt Trái Đất lên mặt phẳng trên cơ sở toán học."
+    },
+
+
+    {
+        q:
+        "Khi chuyển bề mặt cong của Trái Đất lên mặt phẳng, người ta sử dụng:",
+
+        a:[
+            "Phép chiếu bản đồ.",
+            "Kim chỉ nam.",
+            "Tỉ lệ bản đồ.",
+            "Kí hiệu bản đồ."
+        ],
+
+        correct:0,
+
+        explain:
+        "Muốn chuyển bề mặt cong của Trái Đất lên mặt phẳng, người ta sử dụng các phép chiếu bản đồ."
+    },
+
+
+    {
+        q:
+        "Trong lưới chiếu hình nón, kinh tuyến thường được thể hiện như thế nào?",
+
+        a:[
+            "Các đường tròn đồng tâm.",
+            "Các đường thẳng song song.",
+            "Các đường thẳng đồng quy.",
+            "Các đường cong song song."
+        ],
+
+        correct:2,
+
+        explain:
+        "Trong lưới chiếu hình nón, các kinh tuyến thường là những đường thẳng đồng quy."
+    },
+
+
+    {
+        q:
+        "Trong lưới chiếu hình nón, vĩ tuyến thường được thể hiện như thế nào?",
+
+        a:[
+            "Các cung tròn đồng tâm.",
+            "Các đường thẳng song song.",
+            "Các đường thẳng đồng quy.",
+            "Các đường chéo."
+        ],
+
+        correct:0,
+
+        explain:
+        "Các vĩ tuyến trong lưới chiếu hình nón thường là những cung tròn đồng tâm."
+    },
+
+
+    {
+        q:
+        "Theo quy ước, đầu trên của kinh tuyến chỉ hướng nào?",
+
+        a:[
+            "Đông.",
+            "Tây.",
+            "Nam.",
+            "Bắc."
+        ],
+
+        correct:3,
+
+        explain:
+        "Đầu trên của các kinh tuyến chỉ hướng Bắc."
+    },
+
+
+    {
+        q:
+        "Theo quy ước, đầu bên phải của vĩ tuyến chỉ hướng nào?",
+
+        a:[
+            "Tây.",
+            "Đông.",
+            "Bắc.",
+            "Nam."
+        ],
+
+        correct:1,
+
+        explain:
+        "Đầu bên phải của các vĩ tuyến chỉ hướng Đông."
+    },
+
+
+    {
+        q:
+        "Trên bản đồ không có hệ thống kinh, vĩ tuyến, ta có thể xác định phương hướng dựa vào:",
+
+        a:[
+            "Màu sắc của bản đồ.",
+            "Tên bản đồ.",
+            "Mũi tên chỉ hướng Bắc.",
+            "Kích thước bản đồ."
+        ],
+
+        correct:2,
+
+        explain:
+        "Trên một số bản đồ không có hệ thống kinh, vĩ tuyến, người ta sử dụng mũi tên chỉ hướng Bắc để xác định phương hướng."
+    },
+
+
+    {
+        q:
+        "Bản đồ có thể được sử dụng để làm gì trong đời sống?",
+
+        a:[
+            "Chỉ dùng để học thuộc tên địa danh.",
+            "Chỉ dùng trong môn Địa lí.",
+            "Xác định vị trí, tìm đường và khai thác nhiều thông tin địa lí.",
+            "Chỉ dùng trong quân sự."
+        ],
+
+        correct:2,
+
+        explain:
+        "Bản đồ có nhiều vai trò trong học tập và đời sống như xác định vị trí, tìm đường và khai thác thông tin địa lí."
+    }
+
+];
+
+
+let quizIndex=0;
+
+let quizScore=0;
+
+let timerValue=10;
+
+let timerInterval=null;
+
+let answered=false;
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startQuiz(){
+
+    quizIndex=0;
+
+    quizScore=0;
+
+    answered=false;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document
+        .getElementById("startQuizBtn")
+        .style.display="none";
+
+
+    document
+        .getElementById("quizResult")
+        .style.display="none";
+
+
+    document
+        .getElementById("quizContent")
+        .style.display="block";
+
+
+    loadQuestion();
+
+}
+
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+function loadQuestion(){
+
+    answered=false;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const data=
+        quizData[quizIndex];
+
+
+    document
+        .getElementById("questionNumber")
+        .innerText=
+            `CÂU ${quizIndex+1}/${quizData.length}`;
+
+
+    document
+        .getElementById("questionText")
+        .innerText=
+            data.q;
+
+
+    const options=
+        document.getElementById("options");
+
+
+    options.innerHTML="";
+
+
+    data.a.forEach(
+        (answer,index)=>{
+
+            const button=
+                document.createElement("button");
+
+
+            button.className=
+                "option";
+
+
+            button.innerText=
+                `${String.fromCharCode(65+index)}. ${answer}`;
+
+
+            button.onclick=
+                ()=>{
+                    checkAnswer(
+                        index,
+                        button
+                    );
+                };
+
+
+            options.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.style.display="none";
+
+    feedback.innerHTML="";
+
+
+    document
+        .getElementById("nextBtn")
+        .style.display="none";
+
+
+    startTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    timerValue=10;
+
+
+    const timer=
+        document.getElementById(
+            "timer"
+        );
+
+
+    timer.innerText="⏱ 10s";
+
+
+    timerInterval=
+        setInterval(()=>{
+
+            timerValue--;
+
+
+            timer.innerText=
+                `⏱ ${timerValue}s`;
+
+
+            if(timerValue<=0){
+
+                clearInterval(
+                    timerInterval
+                );
+
+
+                if(!answered){
+
+                    timeOut();
+
+                }
+
+            }
+
+        },1000);
+
+}
+
+
+/* =========================================================
+   TIMEOUT
+========================================================= */
+
+function timeOut(){
+
+    answered=true;
+
+
+    const data=
+        quizData[quizIndex];
+
+
+    const buttons=
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        btn=>{
+            btn.disabled=true;
+        }
+    );
+
+
+    buttons[data.correct]
+        .classList.add(
+            "correct"
+        );
+
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.style.display="block";
+
+    feedback.style.background=
+        "rgba(220,38,38,.12)";
+
+    feedback.style.color=
+        "#fca5a5";
+
+
+    feedback.innerHTML=
+        `⏰ Hết thời gian! ${data.explain}`;
+
+
+    document
+        .getElementById("nextBtn")
+        .style.display="inline-block";
+
+}
+
+
+/* =========================================================
+   CHECK
+========================================================= */
+
+function checkAnswer(
+    selected,
+    button
+){
+
+    if(answered)
+        return;
+
+
+    answered=true;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const data=
+        quizData[quizIndex];
+
+
+    const buttons=
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        btn=>{
+            btn.disabled=true;
+        }
+    );
+
+
+    if(selected===data.correct){
+
+        quizScore++;
+
+
+        button.classList.add(
+            "correct"
+        );
+
+    }else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        buttons[data.correct]
+            .classList.add(
+                "correct"
+            );
+
+    }
+
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.style.display="block";
+
+
+    if(selected===data.correct){
+
+        feedback.style.background=
+            "rgba(22,163,74,.13)";
+
+        feedback.style.color=
+            "#86efac";
+
+
+        feedback.innerHTML=
+            `✅ Chính xác! ${data.explain}`;
+
+    }else{
+
+        feedback.style.background=
+            "rgba(220,38,38,.13)";
+
+        feedback.style.color=
+            "#fca5a5";
+
+
+        feedback.innerHTML=
+            `❌ Chưa chính xác. ${data.explain}`;
+
+    }
+
+
+    document
+        .getElementById("nextBtn")
+        .style.display="inline-block";
+
+}
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+function nextQuestion(){
+
+    quizIndex++;
+
+
+    if(
+        quizIndex<
+        quizData.length
+    ){
+
+        loadQuestion();
+
+    }else{
+
+        finishQuiz();
+
+    }
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function finishQuiz(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document
+        .getElementById("quizContent")
+        .style.display="none";
+
+
+    document
+        .getElementById("quizResult")
+        .style.display="block";
+
+
+    document
+        .getElementById("resultScore")
+        .innerText=
+            `${quizScore}/${quizData.length}`;
+
+
+    let text="";
+
+
+    if(quizScore===8){
+
+        text=
+        "🌟 Xuất sắc! Bạn đã nắm rất chắc kiến thức về bản đồ, lưới kinh – vĩ tuyến và phương hướng.";
+
+    }
+
+    else if(quizScore>=6){
+
+        text=
+        "👏 Rất tốt! Bạn đã hiểu phần lớn nội dung của bài học.";
+
+    }
+
+    else if(quizScore>=4){
+
+        text=
+        "💪 Khá tốt! Hãy xem lại phần lưới kinh – vĩ tuyến và phương hướng.";
+
+    }
+
+    else{
+
+        text=
+        "📚 Hãy xem lại kiến thức trọng tâm rồi thử lại nhé.";
+
+    }
+
+
+    document
+        .getElementById("resultText")
+        .innerText=text;
+
+}
+
+
+/* =========================================================
+   FINISH LESSON
+========================================================= */
+
+function finishLesson(){
+
+    const key=
+        "hoclieu6_progress_v1";
+
+
+    let progress={};
+
+
+    try{
+
+        progress=
+            JSON.parse(
+                localStorage.getItem(key)
+                || "{}"
+            );
+
+    }catch(e){
+
+        progress={};
+
+    }
+
+
+    progress.g02=true;
+
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(progress)
+    );
+
+
+    alert(
+        "🎉 Tuyệt vời! Bạn đã đánh dấu hoàn thành Bài 2 Địa lí 6."
+    );
+
+}
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g02");</script>
+</body>
+</html>

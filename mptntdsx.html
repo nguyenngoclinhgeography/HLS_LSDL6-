@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô phỏng - Thiên nhiên tác động đến sản xuất</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#e6eef7;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top,#132e49 0%,#071522 55%,#030a11 100%);
+}
+
+.container{
+    width:min(1200px,94%);
+    margin:auto;
+    padding:25px 0 45px;
+}
+
+.topbar{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+}
+
+.back-btn{
+    border:none;
+    background:#10243a;
+    color:#dbeafe;
+    padding:11px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.back-btn:hover{
+    background:#193754;
+}
+
+h1{
+    margin:0;
+    font-size:clamp(25px,4vw,38px);
+    color:#f2f7fc;
+}
+
+.subtitle{
+    margin-top:8px;
+    color:#9db3c8;
+    line-height:1.6;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:330px 1fr;
+    gap:20px;
+    align-items:start;
+}
+
+.panel,
+.scene-wrap,
+.result{
+    background:rgba(11,27,44,.96);
+    border:1px solid #1d3953;
+    border-radius:18px;
+    box-shadow:0 12px 35px rgba(0,0,0,.2);
+}
+
+.panel{
+    padding:20px;
+}
+
+.panel h2{
+    margin:0 0 18px;
+    font-size:20px;
+}
+
+.control-group{
+    margin-bottom:17px;
+}
+
+.control-group label{
+    display:block;
+    margin-bottom:8px;
+    color:#d9e8f6;
+    font-weight:700;
+}
+
+select{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #31516e;
+    background:#091a2b;
+    color:#eaf3fc;
+    font-size:15px;
+    outline:none;
+}
+
+select:focus{
+    border-color:#3b82f6;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:22px;
+}
+
+.run-btn,
+.reset-btn{
+    border:0;
+    border-radius:11px;
+    padding:13px 9px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.run-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.run-btn:hover{
+    background:#3478ed;
+}
+
+.reset-btn{
+    background:#182d43;
+    color:#d9e8f6;
+}
+
+.reset-btn:hover{
+    background:#233d58;
+}
+
+.hint{
+    margin-top:17px;
+    padding:12px;
+    background:#091a2b;
+    border:1px solid #1c3852;
+    border-radius:10px;
+    color:#92a9bf;
+    line-height:1.6;
+    font-size:13px;
+}
+
+
+/* ================================
+   SCENE
+================================ */
+
+.scene-wrap{
+    padding:15px;
+    overflow:hidden;
+}
+
+.scene{
+    position:relative;
+    width:100%;
+    max-width:760px;
+    height:500px;
+    margin:auto;
+    overflow:hidden;
+    border-radius:14px;
+    border:1px solid #315674;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #285a7d 0%,
+            #6e9caf 55%,
+            #8aa878 56%,
+            #456c37 100%
+        );
+
+    transition:.5s;
+}
+
+.scene.dry{
+    background:
+        linear-gradient(
+            to bottom,
+            #765d39 0%,
+            #a98755 55%,
+            #9a813f 56%,
+            #665028 100%
+        );
+}
+
+.scene.flooded{
+    background:
+        linear-gradient(
+            to bottom,
+            #234e6c 0%,
+            #57849b 55%,
+            #477f8c 56%,
+            #24596c 100%
+        );
+}
+
+
+/* mặt trời */
+
+.sun{
+    position:absolute;
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    background:#ffd76a;
+    right:65px;
+    top:45px;
+    box-shadow:
+        0 0 25px rgba(255,215,106,.45),
+        0 0 55px rgba(255,215,106,.16);
+    transition:.5s;
+}
+
+.sun.hidden{
+    opacity:.15;
+    transform:scale(.8);
+}
+
+
+/* mây */
+
+.cloud{
+    position:absolute;
+    width:110px;
+    height:34px;
+    border-radius:30px;
+    background:#dce8ef;
+    opacity:.8;
+    transition:.5s;
+}
+
+.cloud:before,
+.cloud:after{
+    content:"";
+    position:absolute;
+    background:inherit;
+    border-radius:50%;
+}
+
+.cloud:before{
+    width:48px;
+    height:48px;
+    left:18px;
+    top:-25px;
+}
+
+.cloud:after{
+    width:58px;
+    height:58px;
+    right:14px;
+    top:-30px;
+}
+
+.cloud-1{
+    left:70px;
+    top:70px;
+}
+
+.cloud-2{
+    left:285px;
+    top:50px;
+    transform:scale(.75);
+}
+
+.cloud-3{
+    right:160px;
+    top:135px;
+    transform:scale(.65);
+}
+
+.cloud.hidden{
+    opacity:.06;
+}
+
+
+/* núi */
+
+.mountain{
+    position:absolute;
+    bottom:190px;
+    width:0;
+    height:0;
+
+    border-left:125px solid transparent;
+    border-right:125px solid transparent;
+    border-bottom:190px solid #405657;
+
+    z-index:2;
+}
+
+.mountain-1{
+    left:20px;
+}
+
+.mountain-2{
+    left:220px;
+    transform:scale(.75);
+}
+
+.mountain-3{
+    right:-10px;
+    transform:scale(.9);
+}
+
+
+/* ruộng */
+
+.field{
+    position:absolute;
+    z-index:4;
+    left:0;
+    right:0;
+    bottom:0;
+    height:205px;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #527c37 0px,
+            #527c37 17px,
+            #41662f 18px,
+            #41662f 21px
+        );
+}
+
+.field.dry{
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #8b743d 0px,
+            #8b743d 17px,
+            #6e5a31 18px,
+            #6e5a31 21px
+        );
+}
+
+.field.water{
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #347f91 0px,
+            #347f91 20px,
+            #2b6979 21px,
+            #2b6979 24px
+        );
+}
+
+
+/* cây trồng */
+
+.crop{
+    position:absolute;
+    z-index:6;
+    bottom:170px;
+    width:7px;
+    height:45px;
+    background:#477d35;
+    border-radius:8px;
+    transform-origin:bottom;
+    transition:.5s;
+}
+
+.crop:before,
+.crop:after{
+    content:"";
+    position:absolute;
+    width:22px;
+    height:7px;
+    background:#5e963f;
+    border-radius:10px;
+}
+
+.crop:before{
+    left:-16px;
+    top:18px;
+    transform:rotate(-25deg);
+}
+
+.crop:after{
+    right:-16px;
+    top:28px;
+    transform:rotate(25deg);
+}
+
+.crop-1{left:12%}
+.crop-2{left:20%}
+.crop-3{left:28%}
+.crop-4{left:37%}
+.crop-5{left:47%}
+.crop-6{left:57%}
+.crop-7{left:67%}
+.crop-8{left:77%}
+.crop-9{left:87%}
+
+
+/* cây héo */
+
+.crop.wilt{
+    transform:rotate(28deg) scale(.75);
+    background:#725f32;
+}
+
+.crop.wilt:before,
+.crop.wilt:after{
+    background:#806a37;
+}
+
+
+/* cây khỏe */
+
+.crop.healthy{
+    transform:scale(1.12);
+}
+
+
+/* nhà kho */
+
+.farm-house{
+    position:absolute;
+    z-index:8;
+    left:43%;
+    bottom:92px;
+    width:145px;
+    height:90px;
+    background:#9a6646;
+    border:4px solid #4e3027;
+}
+
+.farm-roof{
+    position:absolute;
+    width:0;
+    height:0;
+    border-left:85px solid transparent;
+    border-right:85px solid transparent;
+    border-bottom:60px solid #673b32;
+    left:-15px;
+    top:-58px;
+}
+
+.farm-door{
+    position:absolute;
+    bottom:0;
+    left:53px;
+    width:38px;
+    height:58px;
+    background:#43291f;
+}
+
+
+/* người nông dân */
+
+.farmer{
+    position:absolute;
+    z-index:9;
+    left:34%;
+    bottom:96px;
+    width:35px;
+    height:82px;
+    transition:.6s;
+}
+
+.farmer.move{
+    transform:translateX(45px);
+}
+
+.farmer-head{
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:#dca47b;
+    margin:auto;
+}
+
+.farmer-body{
+    width:29px;
+    height:38px;
+    background:#3d72a5;
+    border-radius:8px;
+    margin:2px auto 0;
+}
+
+.farmer-legs{
+    width:26px;
+    height:18px;
+    margin:auto;
+    border-left:6px solid #252d36;
+    border-right:6px solid #252d36;
+}
+
+
+/* mưa */
+
+.rain{
+    position:absolute;
+    inset:0;
+    z-index:12;
+    pointer-events:none;
+    opacity:0;
+
+    background-image:
+        repeating-linear-gradient(
+            105deg,
+            transparent 0,
+            transparent 12px,
+            rgba(211,240,255,.6) 13px,
+            transparent 14px,
+            transparent 25px
+        );
+
+    background-size:55px 55px;
+}
+
+.rain.active{
+    opacity:.75;
+    animation:rainMove .45s linear infinite;
+}
+
+@keyframes rainMove{
+    from{
+        background-position:0 0;
+    }
+    to{
+        background-position:-25px 50px;
+    }
+}
+
+
+/* hạn hán */
+
+.heat{
+    position:absolute;
+    inset:0;
+    z-index:11;
+    pointer-events:none;
+    opacity:0;
+    background:rgba(255,125,0,.18);
+    transition:.5s;
+}
+
+.heat.active{
+    opacity:1;
+}
+
+
+/* nước lũ */
+
+.flood-water{
+    position:absolute;
+    z-index:10;
+    left:0;
+    right:0;
+    bottom:0;
+    height:0;
+    background:rgba(39,145,181,.78);
+    transition:.8s;
+}
+
+.flood-water.active{
+    height:125px;
+}
+
+
+/* nhãn */
+
+.scene-label{
+    position:absolute;
+    z-index:20;
+    top:16px;
+    left:16px;
+    padding:8px 12px;
+    border-radius:9px;
+    background:rgba(3,13,24,.67);
+    border:1px solid rgba(180,210,230,.2);
+    color:#eef7ff;
+    font-size:13px;
+    backdrop-filter:blur(4px);
+}
+
+
+/* ================================
+   KẾT QUẢ
+================================ */
+
+.result{
+    margin-top:15px;
+    padding:18px;
+}
+
+.result h3{
+    margin:0 0 13px;
+}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.result-item{
+    padding:13px;
+    border-radius:10px;
+    background:#0d2237;
+    border:1px solid #1d3953;
+}
+
+.result-item small{
+    display:block;
+    color:#8fa7bd;
+    margin-bottom:5px;
+}
+
+.result-item strong{
+    color:#e4f0fc;
+    line-height:1.5;
+}
+
+.explanation{
+    margin-top:13px;
+    color:#a8bdd1;
+    line-height:1.65;
+    font-size:14px;
+}
+
+
+/* responsive */
+
+@media(max-width:850px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .container{
+        width:96%;
+        padding-top:15px;
+    }
+
+    .panel{
+        padding:15px;
+    }
+
+    .scene{
+        height:380px;
+    }
+
+    .field{
+        height:155px;
+    }
+
+    .mountain{
+        bottom:145px;
+        transform:scale(.7);
+        transform-origin:bottom center;
+    }
+
+    .farm-house{
+        bottom:65px;
+        transform:scale(.72);
+        transform-origin:bottom center;
+    }
+
+    .farmer{
+        bottom:68px;
+        transform:scale(.75);
+        transform-origin:bottom center;
+    }
+
+    .crop{
+        bottom:130px;
+        transform:scale(.8);
+    }
+
+    .result-grid{
+        grid-template-columns:1fr;
+    }
+
+    .buttons{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <button class="back-btn" id="backBtn">
+            ← Bài 28
+        </button>
+
+        <div>
+
+            <h1>🌱 Thiên nhiên tác động đến sản xuất</h1>
+
+            <div class="subtitle">
+                Khám phá cách khí hậu, nguồn nước, đất đai và thiên tai
+                ảnh hưởng đến hoạt động sản xuất của con người.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="layout">
+
+
+        <!-- ======================================
+             BẢNG ĐIỀU KHIỂN
+        ======================================= -->
+
+        <div class="panel">
+
+            <h2>🎛️ Điều kiện tự nhiên</h2>
+
+
+            <div class="control-group">
+
+                <label for="climate">
+                    🌡️ Khí hậu
+                </label>
+
+                <select id="climate">
+
+                    <option value="temperate">
+                        Ôn hòa
+                    </option>
+
+                    <option value="tropical">
+                        Nóng ẩm
+                    </option>
+
+                    <option value="dry">
+                        Khô hạn
+                    </option>
+
+                    <option value="cold">
+                        Lạnh
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <label for="waterSource">
+                    💧 Nguồn nước
+                </label>
+
+                <select id="waterSource">
+
+                    <option value="rich">
+                        Dồi dào
+                    </option>
+
+                    <option value="limited">
+                        Hạn chế
+                    </option>
+
+                    <option value="flood">
+                        Ngập lụt
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <label for="soil">
+                    🌱 Đất đai
+                </label>
+
+                <select id="soil">
+
+                    <option value="fertile">
+                        Màu mỡ
+                    </option>
+
+                    <option value="alluvial">
+                        Phù sa
+                    </option>
+
+                    <option value="poor">
+                        Bạc màu
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <label for="disaster">
+                    ⚠️ Thiên tai
+                </label>
+
+                <select id="disaster">
+
+                    <option value="none">
+                        Không có
+                    </option>
+
+                    <option value="storm">
+                        Bão
+                    </option>
+
+                    <option value="drought">
+                        Hạn hán
+                    </option>
+
+                    <option value="flood">
+                        Lũ lụt
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button class="run-btn" id="runBtn">
+                    ▶ CHẠY MÔ PHỎNG
+                </button>
+
+                <button class="reset-btn" id="resetBtn">
+                    ↻ ĐẶT LẠI
+                </button>
+
+            </div>
+
+
+            <div class="hint">
+
+                💡 <strong>Cách sử dụng:</strong><br>
+
+                Chọn các điều kiện tự nhiên khác nhau,
+                sau đó nhấn <strong>“Chạy mô phỏng”</strong>
+                để quan sát sự thay đổi của hoạt động sản xuất.
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             KHU VỰC MÔ PHỎNG
+        ======================================= -->
+
+        <div>
+
+
+            <div class="scene-wrap">
+
+                <div class="scene" id="scene">
+
+                    <div class="scene-label" id="sceneLabel">
+                        Điều kiện ban đầu
+                    </div>
+
+
+                    <!-- mặt trời -->
+
+                    <div class="sun" id="sun"></div>
+
+
+                    <!-- mây -->
+
+                    <div class="cloud cloud-1" id="cloud1"></div>
+
+                    <div class="cloud cloud-2" id="cloud2"></div>
+
+                    <div class="cloud cloud-3" id="cloud3"></div>
+
+
+                    <!-- núi -->
+
+                    <div class="mountain mountain-1"></div>
+
+                    <div class="mountain mountain-2"></div>
+
+                    <div class="mountain mountain-3"></div>
+
+
+                    <!-- ruộng -->
+
+                    <div class="field" id="field"></div>
+
+
+                    <!-- cây trồng -->
+
+                    <div class="crop crop-1"></div>
+                    <div class="crop crop-2"></div>
+                    <div class="crop crop-3"></div>
+                    <div class="crop crop-4"></div>
+                    <div class="crop crop-5"></div>
+                    <div class="crop crop-6"></div>
+                    <div class="crop crop-7"></div>
+                    <div class="crop crop-8"></div>
+                    <div class="crop crop-9"></div>
+
+
+                    <!-- nhà kho -->
+
+                    <div class="farm-house">
+
+                        <div class="farm-roof"></div>
+
+                        <div class="farm-door"></div>
+
+                    </div>
+
+
+                    <!-- nông dân -->
+
+                    <div class="farmer" id="farmer">
+
+                        <div class="farmer-head"></div>
+
+                        <div class="farmer-body"></div>
+
+                        <div class="farmer-legs"></div>
+
+                    </div>
+
+
+                    <!-- mưa -->
+
+                    <div class="rain" id="rain"></div>
+
+
+                    <!-- nóng -->
+
+                    <div class="heat" id="heat"></div>
+
+
+                    <!-- nước lũ -->
+
+                    <div class="flood-water" id="floodWater"></div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ======================================
+                 KẾT QUẢ
+            ======================================= -->
+
+            <div class="result">
+
+                <h3>📊 Kết quả mô phỏng</h3>
+
+
+                <div class="result-grid">
+
+
+                    <div class="result-item">
+
+                        <small>
+                            🌾 Sản xuất
+                        </small>
+
+                        <strong id="productionResult">
+                            Chưa chạy mô phỏng
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <small>
+                            💧 Nguồn lực
+                        </small>
+
+                        <strong id="resourceResult">
+                            Chưa chạy mô phỏng
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <small>
+                            ✅ Thuận lợi
+                        </small>
+
+                        <strong id="goodResult">
+                            Chưa chạy mô phỏng
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <small>
+                            ⚠️ Khó khăn
+                        </small>
+
+                        <strong id="badResult">
+                            Chưa chạy mô phỏng
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="explanation" id="explanation">
+
+                    Hãy lựa chọn các điều kiện tự nhiên
+                    và chạy mô phỏng.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   THIÊN NHIÊN TÁC ĐỘNG ĐẾN SẢN XUẤT
+   ========================================================= */
+
+
+/* DOM */
+
+const climate = document.getElementById("climate");
+const waterSource = document.getElementById("waterSource");
+const soil = document.getElementById("soil");
+const disaster = document.getElementById("disaster");
+
+const runBtn = document.getElementById("runBtn");
+const resetBtn = document.getElementById("resetBtn");
+const backBtn = document.getElementById("backBtn");
+
+const scene = document.getElementById("scene");
+const sceneLabel = document.getElementById("sceneLabel");
+
+const sun = document.getElementById("sun");
+
+const cloud1 = document.getElementById("cloud1");
+const cloud2 = document.getElementById("cloud2");
+const cloud3 = document.getElementById("cloud3");
+
+const field = document.getElementById("field");
+
+const crops = document.querySelectorAll(".crop");
+
+const farmer = document.getElementById("farmer");
+
+const rain = document.getElementById("rain");
+
+const heat = document.getElementById("heat");
+
+const floodWater = document.getElementById("floodWater");
+
+const productionResult =
+    document.getElementById("productionResult");
+
+const resourceResult =
+    document.getElementById("resourceResult");
+
+const goodResult =
+    document.getElementById("goodResult");
+
+const badResult =
+    document.getElementById("badResult");
+
+const explanation =
+    document.getElementById("explanation");
+
+
+/* =========================================================
+   HÀM RESET CẢNH
+   ========================================================= */
+
+function resetScene(){
+
+    scene.classList.remove("dry");
+    scene.classList.remove("flooded");
+
+    sun.classList.remove("hidden");
+
+    cloud1.classList.remove("hidden");
+    cloud2.classList.remove("hidden");
+    cloud3.classList.remove("hidden");
+
+    field.classList.remove("dry");
+    field.classList.remove("water");
+
+    rain.classList.remove("active");
+
+    heat.classList.remove("active");
+
+    floodWater.classList.remove("active");
+
+    farmer.classList.remove("move");
+
+    crops.forEach(function(crop){
+
+        crop.classList.remove("wilt");
+        crop.classList.remove("healthy");
+
+    });
+
+}
+
+
+/* =========================================================
+   CHẠY MÔ PHỎNG
+   ========================================================= */
+
+function runSimulation(){
+
+    const climateValue = climate.value;
+    const waterValue = waterSource.value;
+    const soilValue = soil.value;
+    const disasterValue = disaster.value;
+
+
+    resetScene();
+
+
+    let production =
+        "Hoạt động sản xuất tương đối ổn định.";
+
+    let resource =
+        "Điều kiện tự nhiên tương đối phù hợp.";
+
+    let good = [];
+
+    let bad = [];
+
+
+    /* =====================================================
+       KHÍ HẬU
+    ===================================================== */
+
+    if(climateValue === "temperate"){
+
+        sceneLabel.textContent =
+            "🌤️ Khí hậu ôn hòa";
+
+        production =
+            "Sản xuất có điều kiện phát triển tương đối thuận lợi.";
+
+        good.push(
+            "Khí hậu ôn hòa tạo điều kiện thuận lợi cho nhiều hoạt động sản xuất."
+        );
+
+    }
+
+
+    else if(climateValue === "tropical"){
+
+        sceneLabel.textContent =
+            "🌦️ Khí hậu nóng ẩm";
+
+        rain.classList.add("active");
+
+        good.push(
+            "Nhiệt và ẩm thích hợp cho nhiều loại cây trồng nhiệt đới."
+        );
+
+        production =
+            "Điều kiện khí hậu thuận lợi cho sản xuất nông nghiệp nhiệt đới.";
+
+    }
+
+
+    else if(climateValue === "dry"){
+
+        sceneLabel.textContent =
+            "☀️ Khí hậu khô hạn";
+
+        scene.classList.add("dry");
+
+        field.classList.add("dry");
+
+        heat.classList.add("active");
+
+        crops.forEach(function(crop){
+            crop.classList.add("wilt");
+        });
+
+        production =
+            "Sản xuất nông nghiệp có thể gặp khó khăn do khô hạn.";
+
+        resource =
+            "Nguồn nước tự nhiên có thể thiếu.";
+
+        bad.push(
+            "Khô hạn làm giảm nguồn nước phục vụ sản xuất."
+        );
+
+    }
+
+
+    else if(climateValue === "cold"){
+
+        sceneLabel.textContent =
+            "❄️ Khí hậu lạnh";
+
+        sun.classList.add("hidden");
+
+        cloud1.classList.remove("hidden");
+        cloud2.classList.remove("hidden");
+
+        production =
+            "Nhiệt độ thấp có thể hạn chế sự sinh trưởng của một số cây trồng.";
+
+        bad.push(
+            "Nhiệt độ thấp có thể làm giảm khả năng sinh trưởng của một số cây trồng."
+        );
+
+    }
+
+
+    /* =====================================================
+       NGUỒN NƯỚC
+    ===================================================== */
+
+    if(waterValue === "rich"){
+
+        good.push(
+            "Nguồn nước dồi dào thuận lợi cho tưới tiêu và sản xuất."
+        );
+
+        resource =
+            "Nguồn nước dồi dào.";
+
+    }
+
+
+    else if(waterValue === "limited"){
+
+        resource =
+            "Nguồn nước hạn chế.";
+
+        bad.push(
+            "Thiếu nước gây khó khăn cho tưới tiêu và sản xuất."
+        );
+
+        crops.forEach(function(crop){
+            crop.classList.add("wilt");
+        });
+
+    }
+
+
+    else if(waterValue === "flood"){
+
+        scene.classList.add("flooded");
+
+        field.classList.add("water");
+
+        floodWater.classList.add("active");
+
+        farmer.classList.add("move");
+
+        rain.classList.add("active");
+
+        resource =
+            "Nước dâng cao gây ảnh hưởng đến khu vực sản xuất.";
+
+        production =
+            "Hoạt động sản xuất có thể bị gián đoạn do ngập lụt.";
+
+        bad.push(
+            "Ngập lụt có thể làm hư hại cây trồng và cơ sở sản xuất."
+        );
+
+    }
+
+
+    /* =====================================================
+       ĐẤT ĐAI
+    ===================================================== */
+
+    if(soilValue === "fertile"){
+
+        good.push(
+            "Đất màu mỡ cung cấp điều kiện thuận lợi cho cây trồng."
+        );
+
+        crops.forEach(function(crop){
+            crop.classList.add("healthy");
+        });
+
+    }
+
+
+    else if(soilValue === "alluvial"){
+
+        good.push(
+            "Đất phù sa thích hợp cho nhiều hoạt động trồng trọt."
+        );
+
+        crops.forEach(function(crop){
+            crop.classList.add("healthy");
+        });
+
+        production =
+            "Đất phù sa tạo điều kiện thuận lợi cho sản xuất nông nghiệp.";
+
+    }
+
+
+    else if(soilValue === "poor"){
+
+        bad.push(
+            "Đất bạc màu có thể làm giảm mức độ thuận lợi cho trồng trọt."
+        );
+
+        production =
+            "Sản xuất trồng trọt có thể gặp khó khăn trên đất bạc màu.";
+
+        crops.forEach(function(crop){
+            crop.classList.add("wilt");
+        });
+
+    }
+
+
+    /* =====================================================
+       THIÊN TAI
+    ===================================================== */
+
+    if(disasterValue === "storm"){
+
+        sceneLabel.textContent =
+            "🌧️ Bão";
+
+        rain.classList.add("active");
+
+        floodWater.classList.add("active");
+
+        production =
+            "Sản xuất có thể bị thiệt hại do bão.";
+
+        bad.push(
+            "Bão có thể gây mưa lớn, gió mạnh và làm hư hại cây trồng, cơ sở sản xuất."
+        );
+
+    }
+
+
+    else if(disasterValue === "drought"){
+
+        sceneLabel.textContent =
+            "☀️ Hạn hán";
+
+        scene.classList.add("dry");
+
+        field.classList.add("dry");
+
+        heat.classList.add("active");
+
+        crops.forEach(function(crop){
+            crop.classList.add("wilt");
+        });
+
+        production =
+            "Sản xuất nông nghiệp có thể giảm do thiếu nước.";
+
+        bad.push(
+            "Hạn hán làm giảm nguồn nước phục vụ sản xuất."
+        );
+
+    }
+
+
+    else if(disasterValue === "flood"){
+
+        sceneLabel.textContent =
+            "🌊 Lũ lụt";
+
+        scene.classList.add("flooded");
+
+        field.classList.add("water");
+
+        floodWater.classList.add("active");
+
+        rain.classList.add("active");
+
+        farmer.classList.add("move");
+
+        production =
+            "Sản xuất có thể bị ngập và gián đoạn.";
+
+        bad.push(
+            "Lũ lụt có thể gây thiệt hại cho cây trồng và cơ sở sản xuất."
+        );
+
+    }
+
+
+    /* =====================================================
+       KẾT QUẢ CUỐI
+    ===================================================== */
+
+    if(good.length === 0){
+
+        good.push(
+            "Con người có thể tận dụng các điều kiện tự nhiên phù hợp để phát triển sản xuất."
+        );
+
+    }
+
+
+    if(bad.length === 0){
+
+        bad.push(
+            "Chưa xuất hiện tác động bất lợi nổi bật trong lựa chọn hiện tại."
+        );
+
+    }
+
+
+    productionResult.textContent =
+        production;
+
+    resourceResult.textContent =
+        resource;
+
+    goodResult.textContent =
+        good.join(" ");
+
+    badResult.textContent =
+        bad.join(" ");
+
+
+    /* =====================================================
+       GIẢI THÍCH
+    ===================================================== */
+
+    explanation.innerHTML =
+        "<strong>💡 Giải thích:</strong> " +
+        "Thiên nhiên cung cấp những điều kiện và nguồn lực " +
+        "quan trọng cho sản xuất như nhiệt, ẩm, nước và đất. " +
+        "Tuy nhiên, các điều kiện bất lợi hoặc thiên tai có thể " +
+        "gây khó khăn, thiệt hại và làm gián đoạn hoạt động sản xuất. " +
+        "Vì vậy, con người cần khai thác hợp lí tài nguyên và " +
+        "chủ động thích nghi với điều kiện tự nhiên.";
+
+}
+
+
+/* =========================================================
+   ĐẶT LẠI
+========================================================= */
+
+function resetSimulation(){
+
+    climate.value = "temperate";
+
+    waterSource.value = "rich";
+
+    soil.value = "fertile";
+
+    disaster.value = "none";
+
+
+    resetScene();
+
+
+    sceneLabel.textContent =
+        "Điều kiện ban đầu";
+
+
+    productionResult.textContent =
+        "Chưa chạy mô phỏng";
+
+
+    resourceResult.textContent =
+        "Chưa chạy mô phỏng";
+
+
+    goodResult.textContent =
+        "Chưa chạy mô phỏng";
+
+
+    badResult.textContent =
+        "Chưa chạy mô phỏng";
+
+
+    explanation.innerHTML =
+        "Hãy lựa chọn các điều kiện tự nhiên " +
+        "và chạy mô phỏng.";
+
+}
+
+
+/* =========================================================
+   QUAY VỀ BÀI 28
+========================================================= */
+
+backBtn.addEventListener("click",function(){
+
+    window.location.href = "g28.html";
+
+});
+
+
+/* =========================================================
+   NÚT CHẠY
+========================================================= */
+
+runBtn.addEventListener("click",function(){
+
+    runSimulation();
+
+});
+
+
+/* =========================================================
+   NÚT RESET
+========================================================= */
+
+resetBtn.addEventListener("click",function(){
+
+    resetSimulation();
+
+});
+
+
+/* =========================================================
+   KHỞI TẠO
+========================================================= */
+
+resetSimulation();
+
+</script>
+
+</body>
+</html>

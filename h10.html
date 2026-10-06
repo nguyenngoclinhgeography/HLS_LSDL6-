@@ -1,0 +1,5489 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 10 · Hy Lạp và La Mã cổ đại</title>
+
+<!-- =========================================================
+     LEAFLET
+     ========================================================= -->
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+
+<style>
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root{
+
+  --bg:#06131f;
+  --bg2:#081b2a;
+
+  --panel:#0b2030;
+  --panel2:#0e293b;
+
+  --line:#1b4056;
+
+  --cyan:#42c7ed;
+  --cyan2:#79dcf5;
+
+  --gold:#e3a74d;
+  --orange:#ef8050;
+  --red:#dc665b;
+  --green:#62c58b;
+
+  --text:#eef7fb;
+  --muted:#9cb5c5;
+  --muted2:#708c9e;
+
+  --shadow:0 20px 50px rgba(0,0,0,.30);
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+
+  margin:0;
+
+  background:
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(39,112,145,.13),
+      transparent 32%
+    ),
+
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(211,140,61,.08),
+      transparent 30%
+    ),
+
+    var(--bg);
+
+  color:var(--text);
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  line-height:1.6;
+}
+
+button,
+a{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.topbar{
+
+  position:sticky;
+  top:0;
+  z-index:5000;
+
+  height:70px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 28px;
+
+  background:rgba(5,18,29,.94);
+
+  border-bottom:
+    1px solid rgba(88,154,184,.20);
+
+  backdrop-filter:blur(18px);
+}
+
+.brand{
+
+  display:flex;
+  align-items:center;
+
+  gap:13px;
+}
+
+.brand-mark{
+
+  width:38px;
+  height:38px;
+
+  display:grid;
+  place-items:center;
+
+  border:
+    1px solid rgba(72,199,237,.35);
+
+  border-radius:11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(66,199,237,.18),
+      rgba(227,167,77,.10)
+    );
+
+  color:var(--cyan);
+
+  font-size:18px;
+}
+
+.brand-title{
+
+  font-size:12px;
+
+  font-weight:800;
+
+  letter-spacing:1.8px;
+}
+
+.brand-sub{
+
+  margin-top:1px;
+
+  color:var(--muted2);
+
+  font-size:10px;
+
+  letter-spacing:1px;
+}
+
+.home-btn{
+
+  padding:9px 15px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:9px;
+
+  color:#dcecf4;
+
+  background:rgba(15,39,55,.85);
+
+  font-size:13px;
+
+  font-weight:700;
+
+  transition:.2s;
+}
+
+.home-btn:hover{
+
+  border-color:
+    rgba(66,199,237,.6);
+
+  color:var(--cyan2);
+
+  transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+
+  max-width:1450px;
+
+  margin:auto;
+
+  padding:55px 28px 35px;
+}
+
+.eyebrow{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  padding:6px 10px;
+
+  border:
+    1px solid rgba(66,199,237,.22);
+
+  border-radius:999px;
+
+  background:
+    rgba(66,199,237,.06);
+
+  color:var(--cyan2);
+
+  font-size:11px;
+
+  font-weight:800;
+
+  letter-spacing:1.4px;
+}
+
+.eyebrow-dot{
+
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:var(--cyan);
+
+  box-shadow:
+    0 0 12px var(--cyan);
+}
+
+.hero h1{
+
+  max-width:900px;
+
+  margin:18px 0 10px;
+
+  font-size:
+    clamp(36px,5vw,68px);
+
+  line-height:1.04;
+
+  letter-spacing:-2px;
+}
+
+.hero h1 span{
+  color:var(--cyan);
+}
+
+.hero p{
+
+  max-width:850px;
+
+  color:var(--muted);
+
+  font-size:16px;
+}
+
+.hero-meta{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:9px;
+
+  margin-top:22px;
+}
+
+.meta{
+
+  padding:7px 11px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:7px;
+
+  background:
+    rgba(12,35,50,.65);
+
+  color:#b7ccd7;
+
+  font-size:11px;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section{
+
+  max-width:1450px;
+
+  margin:auto;
+
+  padding:30px 28px;
+}
+
+.section-head{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:end;
+
+  gap:20px;
+
+  margin-bottom:20px;
+}
+
+.section-number{
+
+  color:var(--gold);
+
+  font-size:11px;
+
+  font-weight:900;
+
+  letter-spacing:2px;
+}
+
+.section h2{
+
+  margin:5px 0 0;
+
+  font-size:29px;
+
+  line-height:1.15;
+}
+
+.section-desc{
+
+  max-width:700px;
+
+  color:var(--muted);
+
+  font-size:14px;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.grid-3{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:16px;
+}
+
+.grid-2{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:16px;
+}
+
+.card{
+
+  padding:22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15,42,59,.94),
+      rgba(8,27,42,.94)
+    );
+
+  border:
+    1px solid rgba(91,145,169,.18);
+
+  border-radius:15px;
+
+  box-shadow:var(--shadow);
+}
+
+.card-icon{
+
+  width:38px;
+  height:38px;
+
+  display:grid;
+
+  place-items:center;
+
+  margin-bottom:15px;
+
+  border-radius:10px;
+
+  background:
+    rgba(66,199,237,.09);
+
+  border:
+    1px solid rgba(66,199,237,.16);
+
+  color:var(--cyan);
+}
+
+.card h3{
+
+  margin:0 0 7px;
+
+  font-size:17px;
+}
+
+.card p{
+
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:13px;
+}
+
+
+/* =========================================================
+   ATLAS
+   ========================================================= */
+
+.atlas-shell{
+
+  overflow:hidden;
+
+  border:
+    1px solid rgba(89,145,171,.24);
+
+  border-radius:18px;
+
+  background:#071621;
+
+  box-shadow:
+    0 30px 70px rgba(0,0,0,.35);
+}
+
+.atlas-head{
+
+  padding:23px 24px 18px;
+
+  border-bottom:
+    1px solid rgba(91,145,169,.16);
+
+  background:
+    linear-gradient(
+      100deg,
+      rgba(12,42,59,.96),
+      rgba(6,25,38,.96)
+    );
+}
+
+.atlas-kicker{
+
+  color:var(--cyan);
+
+  font-size:10px;
+
+  font-weight:900;
+
+  letter-spacing:2px;
+}
+
+.atlas-title{
+
+  margin-top:5px;
+
+  font-size:25px;
+
+  font-weight:850;
+}
+
+.atlas-description{
+
+  max-width:900px;
+
+  margin-top:5px;
+
+  color:var(--muted);
+
+  font-size:12px;
+}
+
+.map-tabs{
+
+  display:flex;
+
+  gap:7px;
+
+  flex-wrap:wrap;
+
+  margin-top:18px;
+}
+
+.map-tab{
+
+  cursor:pointer;
+
+  padding:9px 13px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:8px;
+
+  background:#0b2232;
+
+  color:#9fb8c7;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  transition:.2s;
+}
+
+.map-tab:hover{
+
+  border-color:
+    rgba(66,199,237,.45);
+}
+
+.map-tab.active{
+
+  background:
+    rgba(66,199,237,.13);
+
+  border-color:
+    rgba(66,199,237,.55);
+
+  color:var(--cyan2);
+}
+
+
+/* =========================================================
+   ATLAS BODY
+   ========================================================= */
+
+.atlas-body{
+
+  display:grid;
+
+  grid-template-columns:
+    220px
+    minmax(0,1fr)
+    290px;
+
+  min-height:650px;
+}
+
+
+/* =========================================================
+   MAP TOOLS
+   ========================================================= */
+
+.map-tools{
+
+  padding:18px;
+
+  background:#081b2a;
+
+  border-right:
+    1px solid rgba(91,145,169,.16);
+}
+
+.tool-label{
+
+  margin-bottom:8px;
+
+  color:var(--muted2);
+
+  font-size:9px;
+
+  font-weight:900;
+
+  letter-spacing:1.8px;
+}
+
+.tool-title{
+
+  margin-bottom:18px;
+
+  font-size:13px;
+
+  font-weight:800;
+}
+
+.layer-item{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  margin-bottom:10px;
+
+  color:#b8cad4;
+
+  font-size:11px;
+
+  cursor:pointer;
+}
+
+.layer-item input{
+  accent-color:var(--cyan);
+}
+
+.zoom-buttons{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr 1fr;
+
+  gap:5px;
+
+  margin-top:17px;
+}
+
+.zoom-buttons button{
+
+  height:34px;
+
+  cursor:pointer;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:7px;
+
+  background:#0d293b;
+
+  color:#cde1eb;
+
+  font-weight:800;
+}
+
+.zoom-buttons button:hover{
+
+  border-color:var(--cyan);
+
+  color:var(--cyan);
+}
+
+.legend{
+
+  margin-top:23px;
+
+  padding-top:17px;
+
+  border-top:
+    1px solid rgba(91,145,169,.14);
+}
+
+.legend-item{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  margin:9px 0;
+
+  color:#9eb5c2;
+
+  font-size:10px;
+}
+
+.legend-dot{
+
+  width:12px;
+  height:12px;
+
+  border-radius:4px;
+}
+
+.legend-greece{
+  background:#2bb9dd;
+}
+
+.legend-rome{
+  background:#dc754c;
+}
+
+.legend-modern{
+  background:#c59c52;
+}
+
+.legend-neutral{
+  background:#344f60;
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.map-wrap{
+
+  position:relative;
+
+  min-height:650px;
+
+  background:#0a2534;
+}
+
+#map{
+
+  width:100%;
+
+  height:650px;
+}
+
+.map-status{
+
+  position:absolute;
+
+  left:14px;
+  top:14px;
+
+  z-index:800;
+
+  padding:7px 10px;
+
+  border:
+    1px solid rgba(111,177,202,.28);
+
+  border-radius:7px;
+
+  background:
+    rgba(4,18,29,.85);
+
+  color:#b9d3df;
+
+  font-size:10px;
+
+  pointer-events:none;
+}
+
+.map-title-overlay{
+
+  position:absolute;
+
+  left:16px;
+  bottom:16px;
+
+  z-index:800;
+
+  padding:11px 13px;
+
+  border:
+    1px solid rgba(99,160,187,.24);
+
+  border-radius:8px;
+
+  background:
+    rgba(5,20,31,.86);
+
+  backdrop-filter:blur(8px);
+
+  pointer-events:none;
+}
+
+.map-title-overlay strong{
+
+  display:block;
+
+  color:#e9f5fa;
+
+  font-size:12px;
+}
+
+.map-title-overlay span{
+
+  color:#829eaf;
+
+  font-size:9px;
+}
+
+
+/* =========================================================
+   RIGHT INFO
+   ========================================================= */
+
+.map-info{
+
+  padding:21px;
+
+  background:#091d2c;
+
+  border-left:
+    1px solid rgba(91,145,169,.16);
+}
+
+.info-kicker{
+
+  color:var(--cyan);
+
+  font-size:9px;
+
+  font-weight:900;
+
+  letter-spacing:1.7px;
+}
+
+.info-icon{
+
+  width:46px;
+  height:46px;
+
+  display:grid;
+
+  place-items:center;
+
+  margin:13px 0 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(66,199,237,.09);
+
+  border:
+    1px solid rgba(66,199,237,.2);
+
+  font-size:20px;
+}
+
+.map-info h3{
+
+  margin:0 0 7px;
+
+  font-size:20px;
+}
+
+.map-info p{
+
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:12px;
+}
+
+.info-list{
+  margin-top:18px;
+}
+
+.info-row{
+
+  padding:11px 0;
+
+  border-top:
+    1px solid rgba(91,145,169,.13);
+}
+
+.info-row span{
+
+  display:block;
+
+  color:var(--muted2);
+
+  font-size:9px;
+
+  font-weight:900;
+
+  letter-spacing:1px;
+}
+
+.info-row strong{
+
+  display:block;
+
+  margin-top:2px;
+
+  color:#dbeaf0;
+
+  font-size:11px;
+}
+
+
+/* =========================================================
+   LEAFLET
+   ========================================================= */
+
+.leaflet-container{
+
+  background:#09202f;
+
+  font-family:inherit;
+}
+
+.leaflet-control-zoom a{
+
+  background:#0b2233 !important;
+
+  color:#d7e8ef !important;
+
+  border-color:#23465b !important;
+}
+
+.leaflet-control-zoom a:hover{
+
+  background:#123449 !important;
+
+  color:#5ed1ef !important;
+}
+
+.leaflet-control-attribution{
+
+  background:
+    rgba(5,18,28,.78) !important;
+
+  color:#8da6b4 !important;
+
+  font-size:9px !important;
+}
+
+.leaflet-control-attribution a{
+
+  color:#8fc8dc !important;
+}
+
+.place-marker{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:6px;
+}
+
+.place-dot{
+
+  width:9px;
+  height:9px;
+
+  border-radius:50%;
+
+  background:#58d3ef;
+
+  border:
+    2px solid #071925;
+
+  box-shadow:
+    0 0 0 2px rgba(88,211,239,.25);
+}
+
+.place-label{
+
+  padding:3px 6px;
+
+  border-radius:5px;
+
+  background:
+    rgba(4,19,29,.82);
+
+  border:
+    1px solid rgba(93,165,190,.22);
+
+  color:#dcecf2;
+
+  font-size:9px;
+
+  font-weight:800;
+
+  white-space:nowrap;
+}
+
+.city-marker{
+
+  background:transparent;
+
+  border:none;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.content-list{
+
+  display:grid;
+
+  gap:10px;
+
+  margin-top:15px;
+}
+
+.content-item{
+
+  display:flex;
+
+  gap:11px;
+
+  align-items:flex-start;
+}
+
+.content-bullet{
+
+  flex:none;
+
+  width:8px;
+  height:8px;
+
+  margin-top:7px;
+
+  border-radius:50%;
+
+  background:var(--cyan);
+
+  box-shadow:
+    0 0 10px rgba(66,199,237,.45);
+}
+
+.content-item p{
+
+  margin:0;
+
+  color:#b3c7d2;
+
+  font-size:13px;
+}
+
+.timeline{
+
+  display:grid;
+
+  gap:10px;
+
+  margin-top:15px;
+}
+
+.timeline-item{
+
+  display:grid;
+
+  grid-template-columns:85px 1fr;
+
+  gap:14px;
+
+  padding:12px;
+
+  border:
+    1px solid rgba(91,145,169,.14);
+
+  border-radius:10px;
+
+  background:
+    rgba(8,27,41,.62);
+}
+
+.timeline-year{
+
+  color:var(--gold);
+
+  font-weight:900;
+
+  font-size:12px;
+}
+
+.timeline-text{
+
+  color:#b9cbd4;
+
+  font-size:12px;
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+
+.achievement{
+
+  position:relative;
+
+  min-height:190px;
+
+  padding:22px;
+
+  overflow:hidden;
+}
+
+.achievement::after{
+
+  content:"";
+
+  position:absolute;
+
+  right:-30px;
+  bottom:-45px;
+
+  width:150px;
+  height:150px;
+
+  border:
+    1px solid rgba(66,199,237,.12);
+
+  border-radius:50%;
+}
+
+.achievement h3{
+
+  margin:0 0 7px;
+}
+
+.achievement p{
+
+  color:var(--muted);
+
+  font-size:12px;
+}
+
+
+/* =========================================================
+   COMPARISON
+   ========================================================= */
+
+.compare-table{
+
+  overflow:hidden;
+
+  border:
+    1px solid rgba(91,145,169,.18);
+
+  border-radius:12px;
+}
+
+.compare-row{
+
+  display:grid;
+
+  grid-template-columns:
+    1.1fr 1fr 1fr;
+
+  border-bottom:
+    1px solid rgba(91,145,169,.13);
+}
+
+.compare-row:last-child{
+  border-bottom:none;
+}
+
+.compare-cell{
+
+  padding:14px;
+
+  color:#b6c9d3;
+
+  font-size:12px;
+}
+
+.compare-cell:first-child{
+
+  color:#e2eef3;
+
+  font-weight:800;
+
+  background:
+    rgba(66,199,237,.035);
+}
+
+.compare-head .compare-cell{
+
+  color:var(--cyan2);
+
+  font-size:11px;
+
+  font-weight:900;
+}
+
+
+/* =========================================================
+   QUIZ
+   ========================================================= */
+
+.quiz-shell{
+
+  overflow:hidden;
+
+  border:
+    1px solid rgba(91,145,169,.18);
+
+  border-radius:16px;
+
+  background:#081a29;
+}
+
+.quiz-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:17px 20px;
+
+  border-bottom:
+    1px solid rgba(91,145,169,.15);
+}
+
+.quiz-label{
+
+  color:var(--cyan);
+
+  font-size:10px;
+
+  font-weight:900;
+
+  letter-spacing:1.7px;
+}
+
+.quiz-progress{
+
+  width:160px;
+
+  height:6px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:#153346;
+}
+
+.quiz-progress span{
+
+  display:block;
+
+  width:0%;
+
+  height:100%;
+
+  background:var(--cyan);
+
+  transition:.3s;
+}
+
+.quiz-body{
+
+  min-height:330px;
+
+  padding:32px;
+}
+
+.quiz-intro{
+
+  max-width:650px;
+
+  margin:auto;
+
+  text-align:center;
+
+  padding:35px 10px;
+}
+
+.quiz-intro .big-icon{
+
+  width:65px;
+  height:65px;
+
+  display:grid;
+
+  place-items:center;
+
+  margin:0 auto 17px;
+
+  border-radius:18px;
+
+  background:
+    rgba(66,199,237,.09);
+
+  border:
+    1px solid rgba(66,199,237,.2);
+
+  font-size:27px;
+}
+
+.quiz-intro h3{
+
+  margin:0 0 7px;
+
+  font-size:24px;
+}
+
+.quiz-intro p{
+
+  color:var(--muted);
+
+  font-size:13px;
+}
+
+.primary-btn{
+
+  cursor:pointer;
+
+  padding:11px 18px;
+
+  border:
+    1px solid rgba(66,199,237,.45);
+
+  border-radius:9px;
+
+  background:
+    rgba(66,199,237,.13);
+
+  color:var(--cyan2);
+
+  font-weight:800;
+
+  transition:.2s;
+}
+
+.primary-btn:hover{
+
+  background:
+    rgba(66,199,237,.2);
+
+  transform:translateY(-1px);
+}
+
+.primary-btn:disabled{
+
+  cursor:not-allowed;
+
+  opacity:.45;
+
+  transform:none;
+}
+
+.secondary-btn{
+
+  cursor:pointer;
+
+  padding:11px 18px;
+
+  border:
+    1px solid rgba(227,167,77,.40);
+
+  border-radius:9px;
+
+  background:
+    rgba(227,167,77,.09);
+
+  color:#eac27e;
+
+  font-weight:800;
+
+  transition:.2s;
+}
+
+.secondary-btn:hover{
+
+  background:
+    rgba(227,167,77,.16);
+
+  transform:translateY(-1px);
+}
+
+.question-meta{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  color:var(--muted2);
+
+  font-size:11px;
+}
+
+.timer{
+
+  color:var(--gold);
+
+  font-weight:900;
+}
+
+.question{
+
+  margin:20px 0;
+
+  font-size:22px;
+
+  font-weight:800;
+
+  line-height:1.35;
+}
+
+.answers{
+
+  display:grid;
+
+  gap:9px;
+}
+
+.answer{
+
+  width:100%;
+
+  padding:13px 15px;
+
+  text-align:left;
+
+  cursor:pointer;
+
+  border:
+    1px solid rgba(91,145,169,.22);
+
+  border-radius:9px;
+
+  background:#0b2334;
+
+  color:#c8d9e1;
+
+  font-size:13px;
+
+  transition:.18s;
+}
+
+.answer:hover{
+
+  border-color:
+    rgba(66,199,237,.5);
+
+  background:#102d40;
+}
+
+.answer:disabled{
+  cursor:default;
+}
+
+.answer.correct{
+
+  border-color:#55c88c;
+
+  background:
+    rgba(85,200,140,.12);
+
+  color:#8ce2b4;
+}
+
+.answer.wrong{
+
+  border-color:#dd6b61;
+
+  background:
+    rgba(221,107,97,.12);
+
+  color:#f29a91;
+}
+
+.quiz-result{
+
+  text-align:center;
+
+  padding:40px 10px;
+}
+
+.score-number{
+
+  font-size:58px;
+
+  font-weight:900;
+
+  color:var(--cyan);
+
+  line-height:1;
+}
+
+.score-label{
+
+  margin-top:7px;
+
+  color:var(--muted);
+}
+
+
+/* =========================================================
+   COMPLETION
+   ========================================================= */
+
+.completion{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  gap:20px;
+
+  align-items:center;
+
+  padding:22px;
+
+  border:
+    1px solid rgba(66,199,237,.18);
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(66,199,237,.07),
+      rgba(227,167,77,.045)
+    );
+}
+
+.completion h3{
+
+  margin:0 0 5px;
+}
+
+.completion p{
+
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:12px;
+}
+
+.progress-area{
+
+  grid-column:1/-1;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:14px;
+
+  padding-top:16px;
+
+  border-top:
+    1px solid rgba(91,145,169,.13);
+}
+
+.progress-box{
+
+  min-width:0;
+}
+
+.progress-head{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:7px;
+
+  color:#a9bfca;
+
+  font-size:10px;
+}
+
+.progress-head strong{
+
+  color:var(--cyan2);
+}
+
+.progress-track{
+
+  height:8px;
+
+  overflow:hidden;
+
+  border-radius:999px;
+
+  background:#153346;
+}
+
+.progress-track span{
+
+  display:block;
+
+  width:0%;
+
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--gold)
+    );
+
+  transition:.4s;
+}
+
+.completed-status{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  margin-top:8px;
+
+  padding:5px 9px;
+
+  border:
+    1px solid rgba(98,197,139,.35);
+
+  border-radius:999px;
+
+  background:
+    rgba(98,197,139,.08);
+
+  color:#82dbaa;
+
+  font-size:10px;
+
+  font-weight:800;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer{
+
+  max-width:1450px;
+
+  margin:auto;
+
+  padding:45px 28px 70px;
+
+  color:#668191;
+
+  font-size:10px;
+
+  text-align:center;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:1100px){
+
+  .atlas-body{
+
+    grid-template-columns:
+      190px
+      minmax(0,1fr);
+  }
+
+  .map-info{
+
+    grid-column:1/-1;
+
+    border-left:none;
+
+    border-top:
+      1px solid rgba(91,145,169,.16);
+  }
+
+  .grid-3{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:800px){
+
+  .topbar{
+    padding:0 15px;
+  }
+
+  .hero,
+  .section{
+
+    padding-left:15px;
+    padding-right:15px;
+  }
+
+  .atlas-body{
+    display:block;
+  }
+
+  .map-tools{
+
+    border-right:none;
+
+    border-bottom:
+      1px solid rgba(91,145,169,.16);
+  }
+
+  #map{
+    height:540px;
+  }
+
+  .map-wrap{
+    min-height:540px;
+  }
+
+  .grid-2{
+    grid-template-columns:1fr;
+  }
+
+  .completion{
+    grid-template-columns:1fr;
+  }
+
+  .progress-area{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:560px){
+
+  .brand-sub{
+    display:none;
+  }
+
+  .brand-title{
+    font-size:10px;
+  }
+
+  .home-btn{
+
+    padding:7px 9px;
+
+    font-size:11px;
+  }
+
+  .hero{
+    padding-top:35px;
+  }
+
+  .hero h1{
+    letter-spacing:-1px;
+  }
+
+  .quiz-body{
+    padding:20px;
+  }
+
+  .question{
+    font-size:18px;
+  }
+
+  .atlas-title{
+    font-size:21px;
+  }
+
+  #map{
+    height:500px;
+  }
+
+}
+
+
+/* =========================================================
+   PROGRESS SUCCESS
+   ========================================================= */
+
+.completion.success{
+
+  border-color:
+    rgba(98,197,139,.35);
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(98,197,139,.08),
+      rgba(66,199,237,.045)
+    );
+}
+
+#finishLesson.completed-button{
+
+  border-color:
+    rgba(98,197,139,.55);
+
+  color:#83dbad;
+
+  background:
+    rgba(98,197,139,.10);
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="topbar">
+
+  <div class="brand">
+
+    <div class="brand-mark">
+      ◈
+    </div>
+
+    <div>
+
+      <div class="brand-title">
+        HỌC LIỆU SỐ 6
+      </div>
+
+      <div class="brand-sub">
+        LỊCH SỬ · KHÁM PHÁ TƯ LIỆU
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <a
+    class="home-btn"
+    href="index.html"
+  >
+    ← Trang chủ
+  </a>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+
+<section class="hero">
+
+  <div class="eyebrow">
+
+    <span class="eyebrow-dot"></span>
+
+    BÀI 10 · LỊCH SỬ 6
+
+  </div>
+
+
+  <h1>
+
+    Hy Lạp và
+
+    <span>
+      La Mã cổ đại
+    </span>
+
+  </h1>
+
+
+  <p>
+
+    Khám phá không gian Địa Trung Hải, các thành bang Hy Lạp,
+    nền dân chủ cổ đại, sự hình thành và mở rộng của La Mã
+    cùng những thành tựu văn hóa có ảnh hưởng lâu dài đến thế giới.
+
+  </p>
+
+
+  <div class="hero-meta">
+
+    <div class="meta">
+      🏛️ Thành bang
+    </div>
+
+    <div class="meta">
+      🌊 Địa Trung Hải
+    </div>
+
+    <div class="meta">
+      ⚖️ Dân chủ & pháp luật
+    </div>
+
+    <div class="meta">
+      📜 Văn hóa cổ đại
+    </div>
+
+    <div class="meta">
+      🗺️ Bản đồ tương tác
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     OBJECTIVES
+     ========================================================= -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        01 · MỤC TIÊU
+      </div>
+
+      <h2>
+        Sau bài học, em có thể...
+      </h2>
+
+    </div>
+
+
+    <div class="section-desc">
+
+      Tập trung vào mối quan hệ giữa điều kiện tự nhiên,
+      tổ chức nhà nước và những thành tựu của hai nền văn minh.
+
+    </div>
+
+  </div>
+
+
+  <div class="grid-3">
+
+
+    <div class="card">
+
+      <div class="card-icon">
+        🌊
+      </div>
+
+      <h3>
+        Giải thích điều kiện tự nhiên
+      </h3>
+
+      <p>
+
+        Nhận biết vị trí của Hy Lạp và La Mã,
+        đồng thời giải thích vai trò của biển,
+        đảo, cảng biển và địa hình đối với đời sống kinh tế.
+
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-icon">
+        🏛️
+      </div>
+
+      <h3>
+        Nhận biết tổ chức nhà nước
+      </h3>
+
+      <p>
+
+        Trình bày những nét chính về thành bang Hy Lạp,
+        nền dân chủ Athens và quá trình hình thành
+        nhà nước đế chế La Mã.
+
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-icon">
+        📜
+      </div>
+
+      <h3>
+        Nhận biết thành tựu văn hóa
+      </h3>
+
+      <p>
+
+        Xác định một số thành tựu tiêu biểu về chữ viết,
+        văn học, khoa học, kiến trúc, luật pháp
+        và đời sống văn hóa.
+
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     ATLAS
+     ========================================================= -->
+
+<section
+  class="section"
+  id="atlas-section"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        02 · ATLAS TƯƠNG TÁC
+      </div>
+
+      <h2>
+        Địa Trung Hải qua các thời kì
+      </h2>
+
+    </div>
+
+
+    <div class="section-desc">
+
+      Bấm vào từng chế độ để thấy rõ khu vực cần học.
+      Toàn bộ không gian địa lí vẫn được giữ lại để học sinh
+      có thể quan sát vị trí tương đối giữa các khu vực.
+
+    </div>
+
+  </div>
+
+
+  <div class="atlas-shell">
+
+
+    <div class="atlas-head">
+
+      <div class="atlas-kicker">
+        ATLAS LỊCH SỬ · ĐỊA LÍ ĐỊA TRUNG HẢI
+      </div>
+
+      <div class="atlas-title">
+        Hy Lạp và La Mã từ cổ đại đến hiện nay
+      </div>
+
+      <div class="atlas-description">
+
+        Bản đồ nền trực tuyến giúp quan sát bờ biển,
+        đảo, quốc gia và các đô thị trong không gian Địa Trung Hải.
+        Các lớp lịch sử được đặt chồng lên nền bản đồ để làm nổi bật
+        nội dung đang học.
+
+      </div>
+
+
+      <div class="map-tabs">
+
+        <button
+          class="map-tab active"
+          data-mode="greece"
+        >
+          HY LẠP CỔ ĐẠI
+        </button>
+
+        <button
+          class="map-tab"
+          data-mode="rome"
+        >
+          LA MÃ · 117 SCN
+        </button>
+
+        <button
+          class="map-tab"
+          data-mode="modern"
+        >
+          HY LẠP · ITALIA HIỆN NAY
+        </button>
+
+        <button
+          class="map-tab"
+          data-mode="compare"
+        >
+          SO SÁNH CỔ – HIỆN ĐẠI
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="atlas-body">
+
+
+      <!-- =====================================================
+           TOOLS
+           ===================================================== -->
+
+      <aside class="map-tools">
+
+        <div class="tool-label">
+          CÔNG CỤ
+        </div>
+
+        <div class="tool-title">
+          Khám phá bản đồ
+        </div>
+
+
+        <label class="layer-item">
+
+          <input
+            type="checkbox"
+            id="layerCountries"
+            checked
+          >
+
+          Nền quốc gia
+
+        </label>
+
+
+        <label class="layer-item">
+
+          <input
+            type="checkbox"
+            id="layerHistory"
+            checked
+          >
+
+          Lớp lịch sử
+
+        </label>
+
+
+        <label class="layer-item">
+
+          <input
+            type="checkbox"
+            id="layerCities"
+            checked
+          >
+
+          Đô thị lịch sử
+
+        </label>
+
+
+        <label class="layer-item">
+
+          <input
+            type="checkbox"
+            id="layerLabels"
+            checked
+          >
+
+          Tên địa danh
+
+        </label>
+
+
+        <label class="layer-item">
+
+          <input
+            type="checkbox"
+            id="layerSea"
+            checked
+          >
+
+          Tên biển
+
+        </label>
+
+
+        <div class="zoom-buttons">
+
+          <button id="zoomIn">
+            +
+          </button>
+
+          <button id="zoomHome">
+            ⌂
+          </button>
+
+          <button id="zoomOut">
+            −
+          </button>
+
+        </div>
+
+
+        <div class="legend">
+
+          <div class="tool-label">
+            CHÚ GIẢI
+          </div>
+
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-greece"></span>
+
+            Không gian Hy Lạp
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-rome"></span>
+
+            La Mã khoảng 117 SCN
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-modern"></span>
+
+            Quốc gia hiện nay
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-neutral"></span>
+
+            Khu vực xung quanh
+
+          </div>
+
+
+        </div>
+
+      </aside>
+
+
+      <!-- =====================================================
+           MAP
+           ===================================================== -->
+
+      <div class="map-wrap">
+
+        <div
+          class="map-status"
+          id="mapStatus"
+        >
+          Đang tải dữ liệu bản đồ...
+        </div>
+
+        <div id="map"></div>
+
+
+        <div class="map-title-overlay">
+
+          <strong id="mapOverlayTitle">
+            Không gian Hy Lạp cổ đại
+          </strong>
+
+          <span id="mapOverlaySub">
+            Địa Trung Hải · Aegean · Balkan
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           RIGHT INFO
+           ===================================================== -->
+
+      <aside class="map-info">
+
+        <div class="info-kicker">
+          HỒ SƠ LỊCH SỬ · ĐỊA LÍ
+        </div>
+
+        <div
+          class="info-icon"
+          id="infoIcon"
+        >
+          🇬🇷
+        </div>
+
+        <h3 id="infoTitle">
+          Hy Lạp cổ đại
+        </h3>
+
+        <p id="infoDescription">
+
+          Không gian Hy Lạp cổ đại gắn với miền nam bán đảo
+          Balkan, các đảo trên biển Aegean và vùng ven biển
+          Tiểu Á.
+
+        </p>
+
+
+        <div class="info-list">
+
+
+          <div class="info-row">
+
+            <span>
+              KHÔNG GIAN
+            </span>
+
+            <strong id="infoSpace">
+              Nam bán đảo Balkan · Aegean · Tiểu Á
+            </strong>
+
+          </div>
+
+
+          <div class="info-row">
+
+            <span>
+              TRUNG TÂM
+            </span>
+
+            <strong id="infoCenter">
+              Athens · Sparta · Corinth
+            </strong>
+
+          </div>
+
+
+          <div class="info-row">
+
+            <span>
+              BIỂN
+            </span>
+
+            <strong id="infoSea">
+              Aegean · Ionian · Địa Trung Hải
+            </strong>
+
+          </div>
+
+
+          <div class="info-row">
+
+            <span>
+              ĐIỂM CẦN NHỚ
+            </span>
+
+            <strong id="infoKey">
+
+              Địa hình chia cắt + nhiều vịnh, đảo, cảng
+              → phát triển hàng hải.
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </aside>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     LESSON 1
+     ========================================================= -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        03 · ĐIỀU KIỆN TỰ NHIÊN
+      </div>
+
+      <h2>
+        Hy Lạp và La Mã hình thành ở đâu?
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="grid-2">
+
+
+    <div class="card">
+
+      <h3>
+        🇬🇷 Hy Lạp
+      </h3>
+
+
+      <div class="content-list">
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Nằm ở phía nam bán đảo Balkan,
+            hướng ra Địa Trung Hải.
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Địa hình nhiều núi và cao nguyên,
+            đồng bằng nhỏ hẹp, bị chia cắt.
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Có nhiều đảo, vịnh và cảng biển thuận lợi
+            cho giao lưu bằng đường biển.
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Điều kiện tự nhiên góp phần thúc đẩy
+            thủ công nghiệp và thương mại hàng hải.
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>
+        🇮🇹 La Mã
+      </h3>
+
+
+      <div class="content-list">
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            La Mã cổ đại hình thành trên bán đảo Italia
+            ở khu vực phía nam châu Âu.
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Bán đảo vươn ra Địa Trung Hải,
+            có nhiều vùng ven biển và cảng.
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Có đồng bằng, đồng cỏ và nguồn khoáng sản
+            thuận lợi cho sản xuất.
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Vị trí trung tâm Địa Trung Hải góp phần
+            tạo điều kiện cho La Mã mở rộng ảnh hưởng.
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     LESSON 2
+     ========================================================= -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        04 · HY LẠP CỔ ĐẠI
+      </div>
+
+      <h2>
+        Thành bang và nền dân chủ
+      </h2>
+
+    </div>
+
+
+    <div class="section-desc">
+
+      Quan sát bản đồ và thử tìm Athens,
+      Sparta, Corinth và Piraeus.
+
+    </div>
+
+  </div>
+
+
+  <div class="grid-2">
+
+
+    <div class="card">
+
+      <h3>
+        Thành bang Hy Lạp
+      </h3>
+
+      <p>
+
+        Do địa hình bị chia cắt, cư dân Hy Lạp cổ đại
+        hình thành nhiều cộng đồng chính trị độc lập.
+        Mỗi cộng đồng có lãnh thổ, chính quyền
+        và đời sống riêng.
+
+      </p>
+
+
+      <div class="content-list">
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+
+            Thành bang tiêu biểu: Athens, Sparta,
+            Corinth...
+
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+
+            Athens nổi bật với hình thức dân chủ
+            cổ đại.
+
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>
+        Dân chủ Athens
+      </h3>
+
+      <p>
+
+        Công dân nam tự do có thể tham gia các hoạt động
+        chính trị và biểu quyết trong đời sống thành bang.
+
+      </p>
+
+
+      <div class="content-list">
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+            Hội nghị công dân giữ vai trò quan trọng.
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+
+            Một số chức vụ được lựa chọn bằng bầu cử
+            hoặc hình thức phù hợp với tổ chức thành bang.
+
+          </p>
+
+        </div>
+
+
+        <div class="content-item">
+
+          <span class="content-bullet"></span>
+
+          <p>
+
+            Tuy nhiên, dân chủ cổ đại chưa dành quyền
+            chính trị cho toàn bộ cư dân.
+
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     LESSON 3
+     ========================================================= -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        05 · LA MÃ CỔ ĐẠI
+      </div>
+
+      <h2>
+        Từ cộng hòa đến đế chế
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="timeline">
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          TK VIII TCN
+        </div>
+
+        <div class="timeline-text">
+
+          Truyền thống La Mã ghi nhận sự hình thành thành Rome
+          trên bán đảo Italia.
+
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          509 TCN
+        </div>
+
+        <div class="timeline-text">
+
+          La Mã chuyển sang thời kì Cộng hòa,
+          các cơ quan chính trị như Viện Nguyên lão
+          giữ vai trò quan trọng.
+
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          27 TCN
+        </div>
+
+        <div class="timeline-text">
+
+          Thời kì Đế chế bắt đầu,
+          quyền lực tập trung mạnh vào hoàng đế.
+
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          117 SCN
+        </div>
+
+        <div class="timeline-text">
+
+          Dưới thời Trajan, Đế chế La Mã đạt phạm vi
+          lãnh thổ rất rộng quanh Địa Trung Hải.
+          Hãy bật lớp “LA MÃ · 117 SCN” trên bản đồ.
+
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          476 SCN
+        </div>
+
+        <div class="timeline-text">
+
+          Tây La Mã sụp đổ, kết thúc thời kì cổ đại
+          của Tây Âu theo cách phân chia truyền thống.
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     CULTURE
+     ========================================================= -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        06 · THÀNH TỰU
+      </div>
+
+      <h2>
+        Di sản Hy Lạp – La Mã
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="grid-3">
+
+
+    <div class="card achievement">
+
+      <h3>
+        📖 Văn học
+      </h3>
+
+      <p>
+
+        Sử thi Iliad và Odyssey gắn với Homer;
+        văn học và sân khấu Hy Lạp để lại ảnh hưởng
+        lâu dài trong văn hóa phương Tây.
+
+      </p>
+
+    </div>
+
+
+    <div class="card achievement">
+
+      <h3>
+        🧮 Khoa học
+      </h3>
+
+      <p>
+
+        Những đóng góp về toán học, thiên văn học,
+        triết học và tư duy khoa học tạo nền tảng
+        cho nhiều lĩnh vực về sau.
+
+      </p>
+
+    </div>
+
+
+    <div class="card achievement">
+
+      <h3>
+        🏛️ Kiến trúc
+      </h3>
+
+      <p>
+
+        Đền Parthenon, đấu trường Colosseum,
+        hệ thống đường sá và cầu dẫn nước là
+        những dấu ấn tiêu biểu.
+
+      </p>
+
+    </div>
+
+
+    <div class="card achievement">
+
+      <h3>
+        ⚖️ Luật pháp
+      </h3>
+
+      <p>
+
+        Luật La Mã có ảnh hưởng sâu rộng đến
+        truyền thống pháp luật của nhiều quốc gia
+        châu Âu sau này.
+
+      </p>
+
+    </div>
+
+
+    <div class="card achievement">
+
+      <h3>
+        🔤 Chữ viết
+      </h3>
+
+      <p>
+
+        Bảng chữ cái Hy Lạp và truyền thống chữ cái
+        La Mã có ảnh hưởng lớn tới hệ thống chữ viết
+        của nhiều ngôn ngữ hiện đại.
+
+      </p>
+
+    </div>
+
+
+    <div class="card achievement">
+
+      <h3>
+        📅 Lịch
+      </h3>
+
+      <p>
+
+        Lịch Julius do La Mã cải cách là một dấu mốc
+        quan trọng trong lịch sử đo đếm thời gian.
+
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     COMPARE
+     ========================================================= -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        07 · SO SÁNH
+      </div>
+
+      <h2>
+        Hy Lạp và La Mã
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="compare-table">
+
+
+    <div class="compare-row compare-head">
+
+      <div class="compare-cell">
+        Tiêu chí
+      </div>
+
+      <div class="compare-cell">
+        Hy Lạp
+      </div>
+
+      <div class="compare-cell">
+        La Mã
+      </div>
+
+    </div>
+
+
+    <div class="compare-row">
+
+      <div class="compare-cell">
+        Không gian
+      </div>
+
+      <div class="compare-cell">
+
+        Nam Balkan, các đảo Aegean,
+        ven biển Tiểu Á
+
+      </div>
+
+      <div class="compare-cell">
+
+        Bán đảo Italia và mở rộng
+        quanh Địa Trung Hải
+
+      </div>
+
+    </div>
+
+
+    <div class="compare-row">
+
+      <div class="compare-cell">
+        Tổ chức chính trị
+      </div>
+
+      <div class="compare-cell">
+        Nhiều thành bang
+      </div>
+
+      <div class="compare-cell">
+        Cộng hòa → Đế chế
+      </div>
+
+    </div>
+
+
+    <div class="compare-row">
+
+      <div class="compare-cell">
+        Điểm nổi bật
+      </div>
+
+      <div class="compare-cell">
+
+        Thành bang, dân chủ Athens,
+        triết học, nghệ thuật
+
+      </div>
+
+      <div class="compare-cell">
+
+        Luật pháp, tổ chức nhà nước,
+        quân sự, kiến trúc
+
+      </div>
+
+    </div>
+
+
+    <div class="compare-row">
+
+      <div class="compare-cell">
+        Không gian biển
+      </div>
+
+      <div class="compare-cell">
+
+        Gắn bó mật thiết với Aegean
+        và Địa Trung Hải
+
+      </div>
+
+      <div class="compare-cell">
+
+        Địa Trung Hải trở thành
+        trung tâm của đế chế
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     QUIZ
+     ========================================================= -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-number">
+        08 · KIỂM TRA NHANH
+      </div>
+
+      <h2>
+        Em đã nắm bài chưa?
+      </h2>
+
+    </div>
+
+
+    <div class="section-desc">
+      10 câu hỏi · mỗi câu có 10 giây.
+    </div>
+
+  </div>
+
+
+  <div class="quiz-shell">
+
+
+    <div class="quiz-top">
+
+      <div class="quiz-label">
+        THỬ THÁCH KIẾN THỨC
+      </div>
+
+      <div class="quiz-progress">
+
+        <span id="quizProgress"></span>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="quiz-body"
+      id="quizBody"
+    >
+
+      <div class="quiz-intro">
+
+        <div class="big-icon">
+          🏛️
+        </div>
+
+        <h3>
+          Sẵn sàng khám phá?
+        </h3>
+
+        <p>
+
+          Hãy trả lời 10 câu hỏi về Hy Lạp và La Mã cổ đại.
+          Mỗi câu có 10 giây để suy nghĩ.
+
+        </p>
+
+        <button
+          class="primary-btn"
+          id="startQuiz"
+        >
+          Bắt đầu
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     COMPLETION & PROGRESS SECTION (Đồng bộ với chuẩn Bài 7)
+     ========================================================= -->
+
+<section class="section">
+  <div class="completion" id="completionBox">
+    <div>
+      <h3>Hoàn thành bài học</h3>
+      <p id="completionText">Sau khi hoàn thành bài kiểm tra nhanh và nắm vững kiến thức, hãy bấm nút bên cạnh để ghi nhận tiến độ.</p>
+      <span class="completed-status" id="lessonStatus" style="display:none;">✓ Đã hoàn thành bài học này</span>
+    </div>
+    <div>
+      <button class="primary-btn" id="finishLesson">Hoàn thành bài học</button>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+
+  HỌC LIỆU SỐ 6 · LỊCH SỬ · BÀI 10
+
+  <br>
+
+  Bản đồ tương tác phục vụ học tập, không dùng cho đo đạc hay
+  xác định ranh giới pháp lý.
+
+</footer>
+
+
+<!-- =========================================================
+     LEAFLET JS
+     ========================================================= -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+<script>
+
+/* =========================================================
+   =========================================================
+   BẢN ĐỒ TƯƠNG TÁC
+   =========================================================
+   ========================================================= */
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+const map = L.map("map",{
+
+  zoomControl:false,
+
+  minZoom:4,
+
+  maxZoom:10,
+
+  zoomSnap:.25,
+
+  preferCanvas:true
+
+});
+
+
+/* =========================================================
+   OPENSTREETMAP
+   ========================================================= */
+
+const osm = L.tileLayer(
+
+  "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+  {
+
+    maxZoom:19,
+
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+
+  }
+
+).addTo(map);
+
+
+/* =========================================================
+   HOME BOUNDS
+   ========================================================= */
+
+const homeBounds = [
+
+  [28,-12],
+
+  [47,42]
+
+];
+
+map.fitBounds(homeBounds);
+
+
+/* =========================================================
+   CITY DATA
+   ========================================================= */
+
+const cityData = [
+
+  {
+
+    name:"Athens",
+
+    lat:37.9838,
+
+    lng:23.7275,
+
+    type:"greece",
+
+    icon:"🇬🇷",
+
+    title:"Athens",
+
+    description:
+      "Một trong những thành bang quan trọng nhất của Hy Lạp cổ đại, nổi tiếng với nền dân chủ cổ đại và đời sống văn hóa.",
+
+    space:"Attica · miền trung Hy Lạp",
+
+    center:"Athens",
+
+    sea:"Biển Aegean",
+
+    key:"Trung tâm chính trị, văn hóa và thương mại quan trọng."
+
+  },
+
+
+  {
+
+    name:"Sparta",
+
+    lat:37.0742,
+
+    lng:22.4300,
+
+    type:"greece",
+
+    icon:"🛡️",
+
+    title:"Sparta",
+
+    description:
+      "Một thành bang nổi tiếng ở vùng Peloponnese, có xã hội và tổ chức quân sự đặc trưng.",
+
+    space:"Peloponnese",
+
+    center:"Sparta",
+
+    sea:"Ionian · Aegean",
+
+    key:"Một trong những thành bang tiêu biểu của Hy Lạp."
+
+  },
+
+
+  {
+
+    name:"Corinth",
+
+    lat:37.9386,
+
+    lng:22.9322,
+
+    type:"greece",
+
+    icon:"⚓",
+
+    title:"Corinth",
+
+    description:
+      "Thành bang nằm ở vị trí chiến lược trên eo đất Corinth, thuận lợi cho giao thương.",
+
+    space:"Eo đất Corinth",
+
+    center:"Corinth",
+
+    sea:"Ionian · Aegean",
+
+    key:"Vị trí giao thông biển và đất liền thuận lợi."
+
+  },
+
+
+  {
+
+    name:"Piraeus",
+
+    lat:37.9475,
+
+    lng:23.6370,
+
+    type:"greece",
+
+    icon:"⚓",
+
+    title:"Piraeus",
+
+    description:
+      "Cảng biển quan trọng gắn với Athens, thể hiện vai trò của biển đối với kinh tế Hy Lạp.",
+
+    space:"Attica",
+
+    center:"Piraeus",
+
+    sea:"Vịnh Saronic",
+
+    key:"Cảng biển quan trọng của Athens."
+
+  },
+
+
+  {
+
+    name:"Rome",
+
+    lat:41.9028,
+
+    lng:12.4964,
+
+    type:"rome",
+
+    icon:"🇮🇹",
+
+    title:"Rome",
+
+    description:
+      "Trung tâm của nhà nước La Mã cổ đại và sau này là trung tâm của một đế chế rộng lớn quanh Địa Trung Hải.",
+
+    space:"Bán đảo Italia",
+
+    center:"Rome",
+
+    sea:"Địa Trung Hải · Tyrrhenian",
+
+    key:"Trung tâm chính trị của La Mã."
+
+  },
+
+
+  {
+
+    name:"Carthage",
+
+    lat:36.8528,
+
+    lng:10.3233,
+
+    type:"rome",
+
+    icon:"⚔️",
+
+    title:"Carthage",
+
+    description:
+      "Đô thị quan trọng ở Bắc Phi, sau các cuộc chiến Punic trở thành một phần của thế giới La Mã.",
+
+    space:"Bắc Phi",
+
+    center:"Carthage",
+
+    sea:"Địa Trung Hải",
+
+    key:"Vị trí chiến lược ở phía nam Địa Trung Hải."
+
+  },
+
+
+  {
+
+    name:"Alexandria",
+
+    lat:31.2001,
+
+    lng:29.9187,
+
+    type:"rome",
+
+    icon:"📚",
+
+    title:"Alexandria",
+
+    description:
+      "Đô thị lớn ở Ai Cập, nằm trong không gian Địa Trung Hải và có vai trò quan trọng dưới thời La Mã.",
+
+    space:"Ai Cập",
+
+    center:"Alexandria",
+
+    sea:"Địa Trung Hải",
+
+    key:"Trung tâm thương mại và tri thức quan trọng."
+
+  }
+
+];
+
+
+/* =========================================================
+   LAYER GROUPS
+   ========================================================= */
+
+const countryLayer =
+  L.layerGroup().addTo(map);
+
+const historyLayer =
+  L.layerGroup().addTo(map);
+
+const cityLayer =
+  L.layerGroup().addTo(map);
+
+const labelLayer =
+  L.layerGroup().addTo(map);
+
+const seaLayer =
+  L.layerGroup().addTo(map);
+
+
+/* =========================================================
+   SEA LABELS
+   ========================================================= */
+
+const seaLabels = [
+
+  {
+    name:"ĐỊA TRUNG HẢI",
+    lat:36.3,
+    lng:15.5,
+    size:14
+  },
+
+  {
+    name:"AEGEAN",
+    lat:38.6,
+    lng:25.0,
+    size:11
+  },
+
+  {
+    name:"IONIAN",
+    lat:38.4,
+    lng:19.5,
+    size:10
+  },
+
+  {
+    name:"TYRRHENIAN",
+    lat:40.2,
+    lng:11.7,
+    size:10
+  },
+
+  {
+    name:"ADRIATIC",
+    lat:43.0,
+    lng:16.3,
+    size:9
+  }
+
+];
+
+
+seaLabels.forEach(item => {
+
+  const icon = L.divIcon({
+
+    className:"",
+
+    html:`
+
+      <div style="
+        color:rgba(143,203,224,.55);
+        font-size:${item.size}px;
+        font-weight:800;
+        letter-spacing:2px;
+        white-space:nowrap;
+        transform:translate(-50%,-50%);
+        text-shadow:0 1px 4px #06131f;
+      ">
+
+        ${item.name}
+
+      </div>
+
+    `,
+
+    iconSize:[1,1],
+
+    iconAnchor:[0,0]
+
+  });
+
+
+  L.marker(
+
+    [item.lat,item.lng],
+
+    {
+
+      icon,
+
+      interactive:false
+
+    }
+
+  ).addTo(seaLayer);
+
+});
+
+
+/* =========================================================
+   COUNTRY GEOJSON
+   ========================================================= */
+
+const countriesURL =
+  "https://raw.githubusercontent.com/tohka/ne/master/GeoJSON/ne_50m_admin_0_countries.geojson";
+
+
+let countryGeoJSON = null;
+
+let countryGeoLayer = null;
+
+
+function getCountryName(feature){
+
+  const p =
+    feature.properties || {};
+
+  return (
+
+    p.ADMIN ||
+
+    p.NAME ||
+
+    p.NAME_LONG ||
+
+    p.name ||
+
+    ""
+
+  ).toLowerCase();
+
+}
+
+
+function isGreece(feature){
+
+  const n =
+    getCountryName(feature);
+
+  return (
+
+    n.includes("greece") ||
+
+    n.includes("hellenic")
+
+  );
+
+}
+
+
+function isItaly(feature){
+
+  const n =
+    getCountryName(feature);
+
+  return n.includes("italy");
+
+}
+
+
+function countryStyle(feature){
+
+  const greece =
+    isGreece(feature);
+
+  const italy =
+    isItaly(feature);
+
+  let fill =
+    "#243d4b";
+
+  let opacity =
+    .28;
+
+
+  if(
+    currentMode === "greece" &&
+    greece
+  ){
+
+    fill =
+      "#1fa9cf";
+
+    opacity =
+      .92;
+
+  }
+
+
+  if(
+    currentMode === "modern" &&
+    (greece || italy)
+  ){
+
+    fill =
+      greece
+        ? "#29b7dc"
+        : "#d69b4e";
+
+    opacity =
+      .95;
+
+  }
+
+
+  if(
+    currentMode === "compare" &&
+    (greece || italy)
+  ){
+
+    fill =
+      greece
+        ? "#29b7dc"
+        : "#d69b4e";
+
+    opacity =
+      .88;
+
+  }
+
+
+  if(currentMode === "rome"){
+
+    fill =
+      "#263f4d";
+
+    opacity =
+      .30;
+
+  }
+
+
+  return {
+
+    color:
+      greece || italy
+        ? "rgba(222,244,250,.95)"
+        : "rgba(135,170,187,.34)",
+
+    weight:
+      greece || italy
+        ? 1.4
+        : .65,
+
+    fillColor:
+      fill,
+
+    fillOpacity:
+      opacity
+
+  };
+
+}
+
+
+function countryPopup(feature){
+
+  const p =
+    feature.properties || {};
+
+  const name =
+
+    p.ADMIN ||
+
+    p.NAME ||
+
+    p.NAME_LONG ||
+
+    p.name ||
+
+    "Khu vực";
+
+
+  let description =
+    "Khu vực nằm trong không gian bản đồ Địa Trung Hải.";
+
+
+  if(isGreece(feature)){
+
+    description =
+      "Hy Lạp hiện nay nằm ở phía nam bán đảo Balkan, " +
+      "gắn với biển Aegean, Ionian và Địa Trung Hải.";
+
+  }
+
+
+  if(isItaly(feature)){
+
+    description =
+      "Italia nằm trên bán đảo Italia, vươn vào trung tâm " +
+      "Địa Trung Hải.";
+
+  }
+
+
+  return `
+
+    <div style="
+      min-width:210px;
+      font-family:Inter,Segoe UI,Arial;
+    ">
+
+      <strong style="
+        font-size:15px;
+        color:#123042;
+      ">
+
+        ${name}
+
+      </strong>
+
+
+      <p style="
+        margin:7px 0 0;
+        color:#516977;
+        font-size:12px;
+        line-height:1.5;
+      ">
+
+        ${description}
+
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   LOAD GEOJSON
+   ========================================================= */
+
+fetch(countriesURL)
+
+  .then(response => {
+
+    if(!response.ok){
+
+      throw new Error(
+        "Không tải được GeoJSON"
+      );
+
+    }
+
+    return response.json();
+
+  })
+
+  .then(data => {
+
+    countryGeoJSON =
+      data;
+
+    drawCountries();
+
+    document
+      .getElementById("mapStatus")
+      .textContent =
+        "Bản đồ trực tuyến · dữ liệu quốc gia đã tải";
+
+  })
+
+  .catch(error => {
+
+    console.error(error);
+
+    document
+      .getElementById("mapStatus")
+      .textContent =
+        "Bản đồ nền vẫn hoạt động · lớp ranh giới chưa tải";
+
+  });
+
+
+function drawCountries(){
+
+  if(countryGeoLayer){
+
+    countryLayer.removeLayer(
+      countryGeoLayer
+    );
+
+  }
+
+
+  countryGeoLayer =
+    L.geoJSON(
+
+      countryGeoJSON,
+
+      {
+
+        style:countryStyle,
+
+
+        onEachFeature:function(
+          feature,
+          layer
+        ){
+
+          layer.bindPopup(
+            countryPopup(feature)
+          );
+
+
+          layer.on({
+
+            mouseover:function(e){
+
+              e.target.setStyle({
+
+                weight:1.8,
+
+                color:"#6dd7ee",
+
+                fillOpacity:
+
+                  isGreece(feature) ||
+                  isItaly(feature)
+
+                    ? .98
+                    : .45
+
+              });
+
+            },
+
+
+            mouseout:function(e){
+
+              countryGeoLayer
+                .resetStyle(e.target);
+
+            }
+
+          });
+
+        }
+
+      }
+
+    ).addTo(countryLayer);
+
+}
+
+
+/* =========================================================
+   HISTORICAL GREECE
+   ========================================================= */
+
+const ancientGreecePolygon = [
+
+  [40.90,19.20],
+
+  [41.70,20.50],
+
+  [41.90,22.80],
+
+  [41.10,24.30],
+
+  [40.00,24.50],
+
+  [39.40,26.00],
+
+  [38.50,26.20],
+
+  [37.50,25.40],
+
+  [36.40,24.80],
+
+  [35.10,24.50],
+
+  [35.00,23.10],
+
+  [36.00,21.70],
+
+  [37.00,20.00],
+
+  [38.20,19.20],
+
+  [39.60,19.00]
+
+];
+
+
+let greekHistorical =
+  L.polygon(
+
+    ancientGreecePolygon,
+
+    {
+
+      color:"#51d4ee",
+
+      weight:2,
+
+      fillColor:"#24b7dc",
+
+      fillOpacity:.22,
+
+      dashArray:"5 5"
+
+    }
+
+  );
+
+
+/* =========================================================
+   ROMAN EMPIRE
+   ========================================================= */
+
+const romanEmpirePolygons = [
+
+  [
+
+    [43.5,-9.0],
+
+    [44.0,3.0],
+
+    [40.0,3.2],
+
+    [36.0,-2.5],
+
+    [36.0,-8.8]
+
+  ],
+
+
+  [
+
+    [51.0,-1.0],
+
+    [50.0,8.0],
+
+    [48.0,14.0],
+
+    [46.0,19.0],
+
+    [43.0,25.0],
+
+    [40.0,28.0],
+
+    [38.0,25.0],
+
+    [37.0,20.0],
+
+    [39.0,15.0],
+
+    [42.0,9.0],
+
+    [44.0,4.0]
+
+  ],
+
+
+  [
+
+    [42.0,26.0],
+
+    [42.0,40.0],
+
+    [36.0,42.0],
+
+    [31.0,37.0],
+
+    [30.0,34.0],
+
+    [34.0,27.0]
+
+  ],
+
+
+  [
+
+    [36.0,-6.0],
+
+    [37.0,10.0],
+
+    [34.0,25.0],
+
+    [30.0,32.0],
+
+    [28.0,24.0],
+
+    [30.0,10.0],
+
+    [31.0,-5.0]
+
+  ]
+
+];
+
+
+const romanGroup =
+  L.layerGroup();
+
+
+romanEmpirePolygons.forEach(
+  coords => {
+
+    L.polygon(
+
+      coords,
+
+      {
+
+        color:"#ee8958",
+
+        weight:1.5,
+
+        fillColor:"#df7449",
+
+        fillOpacity:.20,
+
+        dashArray:"6 4"
+
+      }
+
+    ).addTo(romanGroup);
+
+  }
+);
+
+
+/* =========================================================
+   CITY MARKERS
+   ========================================================= */
+
+function createCityMarker(city){
+
+  const html = `
+
+    <div class="place-marker">
+
+      <span class="place-dot"></span>
+
+      <span class="place-label">
+
+        ${city.name}
+
+      </span>
+
+    </div>
+
+  `;
+
+
+  const icon =
+    L.divIcon({
+
+      className:"city-marker",
+
+      html:html,
+
+      iconSize:[90,25],
+
+      iconAnchor:[4,12]
+
+    });
+
+
+  const marker =
+    L.marker(
+
+      [city.lat,city.lng],
+
+      {
+
+        icon:icon
+
+      }
+
+    );
+
+
+  marker.on(
+    "click",
+    function(){
+
+      updateInfo(city);
+
+    }
+  );
+
+
+  marker.bindTooltip(
+
+    city.name,
+
+    {
+
+      direction:"top",
+
+      opacity:.95
+
+    }
+
+  );
+
+
+  return marker;
+
+}
+
+
+cityData.forEach(
+  city => {
+
+    createCityMarker(city)
+      .addTo(cityLayer);
+
+  }
+);
+
+
+/* =========================================================
+   INFO
+   ========================================================= */
+
+function updateInfo(city){
+
+  document
+    .getElementById("infoIcon")
+    .textContent =
+      city.icon;
+
+
+  document
+    .getElementById("infoTitle")
+    .textContent =
+      city.title;
+
+
+  document
+    .getElementById("infoDescription")
+    .textContent =
+      city.description;
+
+
+  document
+    .getElementById("infoSpace")
+    .textContent =
+      city.space;
+
+
+  document
+    .getElementById("infoCenter")
+    .textContent =
+      city.center;
+
+
+  document
+    .getElementById("infoSea")
+    .textContent =
+      city.sea;
+
+
+  document
+    .getElementById("infoKey")
+    .textContent =
+      city.key;
+
+}
+
+
+/* =========================================================
+   MAP MODES
+   ========================================================= */
+
+let currentMode =
+  "greece";
+
+
+const modeData = {
+
+
+  greece:{
+
+    title:
+      "Không gian Hy Lạp cổ đại",
+
+    sub:
+      "Nam Balkan · Aegean · Tiểu Á",
+
+    icon:"🇬🇷",
+
+    infoTitle:
+      "Hy Lạp cổ đại",
+
+    description:
+      "Không gian Hy Lạp cổ đại gắn với miền nam bán đảo Balkan, " +
+      "các đảo trên biển Aegean và vùng ven biển Tiểu Á.",
+
+    space:
+      "Nam Balkan · Aegean · ven biển Tiểu Á",
+
+    center:
+      "Athens · Sparta · Corinth",
+
+    sea:
+      "Aegean · Ionian · Địa Trung Hải",
+
+    key:
+      "Địa hình chia cắt, nhiều vịnh và đảo → phát triển hàng hải."
+
+  },
+
+
+  rome:{
+
+    title:
+      "La Mã khoảng 117 SCN",
+
+    sub:
+      "Không gian đế chế quanh Địa Trung Hải",
+
+    icon:"🏛️️",
+
+    infoTitle:
+      "Đế chế La Mã",
+
+    description:
+      "Khoảng năm 117 SCN, lãnh thổ La Mã trải rộng quanh Địa Trung Hải, " +
+      "bao gồm nhiều vùng thuộc châu Âu, Bắc Phi và Tây Á.",
+
+    space:
+      "Nam Âu · Bắc Phi · Tây Á",
+
+    center:
+      "Rome",
+
+    sea:
+      "Địa Trung Hải",
+
+    key:
+      "Địa Trung Hải trở thành trung tâm của một đế chế rộng lớn."
+
+  },
+
+
+  modern:{
+
+    title:
+      "Hy Lạp · Italia hiện nay",
+
+    sub:
+      "Ranh giới quốc gia hiện đại",
+
+    icon:"🌍",
+
+    infoTitle:
+      "Hy Lạp và Italia hiện nay",
+
+    description:
+      "Hai quốc gia hiện đại nằm trong không gian Địa Trung Hải. " +
+      "Hy Lạp và Italia được tô màu nổi bật để dễ quan sát vị trí.",
+
+    space:
+      "Hy Lạp · Italia",
+
+    center:
+      "Athens · Rome",
+
+    sea:
+      "Aegean · Ionian · Địa Trung Hải",
+
+    key:
+      "Quan sát sự thay đổi từ không gian cổ đại đến các quốc gia hiện nay."
+
+  },
+
+
+  compare:{
+
+    title:
+      "So sánh cổ đại – hiện đại",
+
+    sub:
+      "Hy Lạp · La Mã · không gian hiện nay",
+
+    icon:"🗺️",
+
+    infoTitle:
+      "So sánh không gian",
+
+    description:
+      "Lớp bản đồ cho phép đối chiếu vị trí của Hy Lạp, Italia " +
+      "với không gian chính trị rộng lớn của La Mã cổ đại.",
+
+    space:
+      "Địa Trung Hải",
+
+    center:
+      "Athens · Rome",
+
+    sea:
+      "Địa Trung Hải",
+
+    key:
+      "Bản đồ giúp nhận ra sự thay đổi về phạm vi chính trị qua thời gian."
+
+  }
+
+};
+
+
+/* =========================================================
+   APPLY MODE
+   ========================================================= */
+
+function applyMode(mode){
+
+  currentMode =
+    mode;
+
+
+  const data =
+    modeData[mode];
+
+
+  document
+    .getElementById("mapOverlayTitle")
+    .textContent =
+      data.title;
+
+
+  document
+    .getElementById("mapOverlaySub")
+    .textContent =
+      data.sub;
+
+
+  document
+    .getElementById("infoIcon")
+    .textContent =
+      data.icon;
+
+
+  document
+    .getElementById("infoTitle")
+    .textContent =
+      data.infoTitle;
+
+
+  document
+    .getElementById("infoDescription")
+    .textContent =
+      data.description;
+
+
+  document
+    .getElementById("infoSpace")
+    .textContent =
+      data.space;
+
+
+  document
+    .getElementById("infoCenter")
+    .textContent =
+      data.center;
+
+
+  document
+    .getElementById("infoSea")
+    .textContent =
+      data.sea;
+
+
+  document
+    .getElementById("infoKey")
+    .textContent =
+      data.key;
+
+
+  /* =======================================================
+     LỊCH SỬ
+     ======================================================= */
+
+  if(mode === "greece"){
+
+    historyLayer.clearLayers();
+
+    greekHistorical
+      .addTo(historyLayer);
+
+  }
+
+
+  if(mode === "rome"){
+
+    historyLayer.clearLayers();
+
+    romanGroup
+      .addTo(historyLayer);
+
+  }
+
+
+  if(mode === "modern"){
+
+    historyLayer.clearLayers();
+
+  }
+
+
+  if(mode === "compare"){
+
+    historyLayer.clearLayers();
+
+    greekHistorical
+      .addTo(historyLayer);
+
+    romanGroup
+      .addTo(historyLayer);
+
+  }
+
+
+  if(countryGeoJSON){
+
+    drawCountries();
+
+  }
+
+
+  /* =======================================================
+     CITIES
+     ======================================================= */
+
+  cityLayer.clearLayers();
+
+
+  cityData.forEach(
+    city => {
+
+      let show = true;
+
+
+      if(mode === "greece"){
+
+        show =
+          city.type === "greece";
+
+      }
+
+
+      if(mode === "rome"){
+
+        show = true;
+
+      }
+
+
+      if(mode === "modern"){
+
+        show =
+
+          city.name === "Athens" ||
+
+          city.name === "Rome";
+
+      }
+
+
+      if(mode === "compare"){
+
+        show = true;
+
+      }
+
+
+      if(show){
+
+        createCityMarker(city)
+          .addTo(cityLayer);
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   MAP TAB EVENTS
+   ========================================================= */
+
+document
+  .querySelectorAll(".map-tab")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      function(){
+
+        document
+          .querySelectorAll(".map-tab")
+          .forEach(btn =>
+
+            btn.classList.remove(
+              "active"
+            )
+
+          );
+
+
+        this.classList.add(
+          "active"
+        );
+
+
+        applyMode(
+          this.dataset.mode
+        );
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   LAYER CONTROLS
+   ========================================================= */
+
+function toggleLayer(
+  checkboxId,
+  layer
+){
+
+  document
+    .getElementById(checkboxId)
+    .addEventListener(
+      "change",
+      function(){
+
+        if(this.checked){
+
+          layer.addTo(map);
+
+        }else{
+
+          map.removeLayer(layer);
+
+        }
+
+      }
+    );
+
+}
+
+
+toggleLayer(
+  "layerCountries",
+  countryLayer
+);
+
+toggleLayer(
+  "layerHistory",
+  historyLayer
+);
+
+toggleLayer(
+  "layerCities",
+  cityLayer
+);
+
+toggleLayer(
+  "layerLabels",
+  labelLayer
+);
+
+toggleLayer(
+  "layerSea",
+  seaLayer
+);
+
+
+/* =========================================================
+   ZOOM
+   ========================================================= */
+
+document
+  .getElementById("zoomIn")
+  .addEventListener(
+    "click",
+    () => map.zoomIn()
+  );
+
+
+document
+  .getElementById("zoomOut")
+  .addEventListener(
+    "click",
+    () => map.zoomOut()
+  );
+
+
+document
+  .getElementById("zoomHome")
+  .addEventListener(
+    "click",
+    () => map.fitBounds(homeBounds)
+  );
+
+
+/* =========================================================
+   INITIAL MODE
+   ========================================================= */
+
+applyMode("greece");
+
+
+
+/* =========================================================
+   =========================================================
+   QUIZ (ĐÃ ĐẢO NGẪU NHIÊN ĐÁP ÁN ĐÚNG KHÔNG CÒN MẶC ĐỊNH LÀ A)
+   =========================================================
+   ========================================================= */
+
+
+/* =========================================================
+   QUESTIONS
+   ========================================================= */
+
+const questions = [
+
+  {
+    q: "Hy Lạp cổ đại nằm chủ yếu ở khu vực nào?",
+    a: [
+      "Bắc Âu và biển Baltic",
+      "Phía nam bán đảo Balkan và vùng biển Aegean",
+      "Trung Á và cao nguyên Iran",
+      "Đông Á và biển Hoa Đông"
+    ],
+    correct: 1
+  },
+
+  {
+    q: "Đặc điểm tự nhiên nào góp phần thúc đẩy hoạt động hàng hải của người Hy Lạp?",
+    a: [
+      "Đồng bằng rộng lớn liên tục",
+      "Khí hậu băng giá quanh năm",
+      "Nhiều vịnh, đảo và cảng biển",
+      "Không có đường bờ biển"
+    ],
+    correct: 2
+  },
+
+  {
+    q: "Nhà nước của người Hy Lạp cổ đại thường được tổ chức thành gì?",
+    a: [
+      "Các thành bang",
+      "Các tỉnh thuộc một đế quốc duy nhất",
+      "Các bộ lạc du mục",
+      "Các vương quốc phong kiến"
+    ],
+    correct: 0
+  },
+
+  {
+    q: "Athens nổi tiếng trong lịch sử Hy Lạp cổ đại bởi điều gì?",
+    a: [
+      "Là thủ đô của Đế chế La Mã",
+      "Nền dân chủ cổ đại",
+      "Là trung tâm của Ai Cập cổ đại",
+      "Là thành phố nằm ở Bắc Phi"
+    ],
+    correct: 1
+  },
+
+  {
+    q: "Thành bang nào sau đây là một thành bang nổi tiếng của Hy Lạp cổ đại?",
+    a: [
+      "Rome",
+      "Carthage",
+      "Sparta",
+      "Alexandria"
+    ],
+    correct: 2
+  },
+
+  {
+    q: "Nhà nước La Mã cổ đại trải qua những hình thức tổ chức chính nào?",
+    a: [
+      "Thành bang → Bộ lạc → Liên minh",
+      "Vương quốc → Cộng hòa → Đế chế",
+      "Cộng hòa → Phong kiến → Xã hội chủ nghĩa",
+      "Đế chế → Thành bang → Bộ lạc"
+    ],
+    correct: 1
+  },
+
+  {
+    q: "Khoảng năm 117 SCN, Đế chế La Mã có đặc điểm nào?",
+    a: [
+      "Chỉ tồn tại trên bán đảo Italia",
+      "Đạt phạm vi lãnh thổ rất rộng quanh Địa Trung Hải",
+      "Chỉ kiểm soát Bắc Phi",
+      "Chỉ kiểm soát vùng Hy Lạp"
+    ],
+    correct: 1
+  },
+
+  {
+    q: "Công trình nào là biểu tượng tiêu biểu của kiến trúc Hy Lạp cổ đại?",
+    a: [
+      "Đấu trường Colosseum",
+      "Vạn Lý Trường Thành",
+      "Đền Parthenon",
+      "Kim tự tháp Giza"
+    ],
+    correct: 2
+  },
+
+  {
+    q: "Đấu trường Colosseum gắn với nền văn minh nào?",
+    a: [
+      "Hy Lạp",
+      "La Mã",
+      "Ai Cập",
+      "Lưỡng Hà"
+    ],
+    correct: 1
+  },
+
+  {
+    q: "Một di sản quan trọng của La Mã cổ đại đối với thế giới sau này là gì?",
+    a: [
+      "Chữ tượng hình Ai Cập",
+      "Kĩ thuật làm giấy của Trung Quốc",
+      "Chữ hình nêm Lưỡng Hà",
+      "Luật pháp La Mã"
+    ],
+    correct: 3
+  }
+
+];
+
+
+/* =========================================================
+   QUIZ STATE
+   ========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let timer = null;
+
+let timeLeft = 10;
+
+let quizStarted = false;
+
+let quizFinished = false;
+
+
+/* =========================================================
+   QUIZ DOM
+   ========================================================= */
+
+const quizBody =
+  document.getElementById(
+    "quizBody"
+  );
+
+
+const quizProgress =
+  document.getElementById(
+    "quizProgress"
+  );
+
+
+const finishLesson =
+  document.getElementById(
+    "finishLesson"
+  );
+
+
+const completionText =
+  document.getElementById(
+    "completionText"
+  );
+
+
+const completionBox =
+  document.getElementById(
+    "completionBox"
+  );
+
+
+const lessonStatus =
+  document.getElementById(
+    "lessonStatus"
+  );
+
+
+document
+  .getElementById("startQuiz")
+  .addEventListener(
+    "click",
+    startQuiz
+  );
+
+
+/* =========================================================
+   START QUIZ
+   ========================================================= */
+
+function startQuiz(){
+
+  clearInterval(timer);
+
+  currentQuestion =
+    0;
+
+  score =
+    0;
+
+  quizStarted =
+    true;
+
+  quizFinished =
+    false;
+
+
+  finishLesson.disabled =
+    true;
+
+
+  finishLesson.textContent =
+    "Hoàn thành bài học";
+
+
+  finishLesson.classList.remove(
+    "completed-button"
+  );
+
+
+  renderQuestion();
+
+}
+
+
+/* =========================================================
+   RENDER QUESTION
+   ========================================================= */
+
+function renderQuestion(){
+
+  clearInterval(timer);
+
+
+  const q =
+    questions[currentQuestion];
+
+
+  const progress =
+
+    (
+
+      currentQuestion /
+      questions.length
+
+    ) * 100;
+
+
+  quizProgress.style.width =
+    progress + "%";
+
+
+  quizBody.innerHTML = `
+
+    <div class="question-meta">
+
+      <span>
+
+        Câu ${currentQuestion + 1}
+        / ${questions.length}
+
+      </span>
+
+
+      <span class="timer">
+
+        ⏱ <b id="timer">10</b>s
+
+      </span>
+
+    </div>
+
+
+    <div class="question">
+
+      ${q.q}
+
+    </div>
+
+
+    <div class="answers">
+
+      ${q.a.map(
+
+        (answer,index) => `
+
+          <button
+
+            class="answer"
+
+            data-index="${index}"
+
+          >
+
+            ${String.fromCharCode(65 + index)}.${answer}
+
+          </button>
+
+        `
+
+      ).join("")}
+
+    </div>
+
+  `;
+
+
+  document
+    .querySelectorAll(".answer")
+    .forEach(button => {
+
+      button.addEventListener(
+
+        "click",
+
+        () => {
+
+          chooseAnswer(
+
+            Number(
+              button.dataset.index
+            )
+
+          );
+
+        }
+
+      );
+
+    });
+
+
+  timeLeft =
+    10;
+
+
+  timer =
+    setInterval(
+      updateTimer,
+      1000
+    );
+
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function updateTimer(){
+
+  timeLeft--;
+
+
+  const timerElement =
+    document.getElementById(
+      "timer"
+    );
+
+
+  if(timerElement){
+
+    timerElement.textContent =
+      timeLeft;
+
+  }
+
+
+  if(timeLeft <= 0){
+
+    clearInterval(timer);
+
+    chooseAnswer(-1);
+
+  }
+
+}
+
+
+/* =========================================================
+   CHOOSE ANSWER
+   ========================================================= */
+
+function chooseAnswer(index){
+
+  clearInterval(timer);
+
+
+  const q =
+    questions[currentQuestion];
+
+
+  const buttons =
+    document.querySelectorAll(
+      ".answer"
+    );
+
+
+  buttons.forEach(button => {
+
+    button.disabled =
+      true;
+
+
+    const i =
+      Number(
+        button.dataset.index
+      );
+
+
+    if(
+      i === q.correct
+    ){
+
+      button.classList.add(
+        "correct"
+      );
+
+    }
+
+
+    if(
+
+      i === index &&
+      i !== q.correct
+
+    ){
+
+      button.classList.add(
+        "wrong"
+      );
+
+    }
+
+  });
+
+
+  if(
+    index === q.correct
+  ){
+
+    score++;
+
+  }
+
+
+  setTimeout(
+
+    () => {
+
+      currentQuestion++;
+
+
+      if(
+
+        currentQuestion >=
+        questions.length
+
+      ){
+
+        showResult();
+
+      }else{
+
+        renderQuestion();
+
+      }
+
+    },
+
+    850
+
+  );
+
+}
+
+
+/* =========================================================
+   SHOW RESULT
+   ========================================================= */
+
+function showResult(){
+
+  quizFinished =
+    true;
+
+
+  quizProgress.style.width =
+    "100%";
+
+
+  const percent =
+
+    Math.round(
+
+      score /
+      questions.length *
+      100
+
+    );
+
+
+  let message =
+    "Cố gắng thêm một chút nữa nhé!";
+
+
+  if(percent >= 80){
+
+    message =
+      "Rất tốt! Em đã nắm khá chắc nội dung bài học.";
+
+  }else if(percent >= 60){
+
+    message =
+      "Khá tốt! Hãy xem lại một vài nội dung còn nhầm.";
+
+  }
+
+
+  quizBody.innerHTML = `
+
+    <div class="quiz-result">
+
+
+      <div class="score-number">
+
+        ${score}/${questions.length}
+
+      </div>
+
+
+      <div class="score-label">
+
+        ${percent}% · ${message}
+
+      </div>
+
+
+      <div style="
+
+        margin-top:22px;
+
+        display:flex;
+
+        justify-content:center;
+
+        gap:8px;
+
+        flex-wrap:wrap;
+
+      ">
+
+
+        <!-- NÚT 1 -->
+
+        <button
+
+          class="secondary-btn"
+
+          id="restartQuiz"
+
+        >
+
+          🔄 Làm lại
+
+        </button>
+
+
+        <!-- NÚT 2 -->
+
+        <button
+
+          class="primary-btn"
+
+          id="resultFinish"
+
+        >
+
+          ✓ Hoàn thành bài học
+
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+  `;
+
+
+  finishLesson.disabled =
+    false;
+
+
+  document
+    .getElementById(
+      "restartQuiz"
+    )
+    .addEventListener(
+      "click",
+      startQuiz
+    );
+
+
+  document
+    .getElementById(
+      "resultFinish"
+    )
+    .addEventListener(
+      "click",
+      completeLesson
+    );
+
+}
+
+
+
+/* =========================================================
+   TIẾN ĐỘ & STORAGE (CHUẨN H07)
+========================================================= */
+
+const PROGRESS_KEY = 'hoclieu6_progress_v1';
+const LESSON_ID = 'h10';
+
+
+/* =========================================================
+   KIỂM TRA TRẠNG THÁI BÀI 10
+========================================================= */
+
+function checkLessonProgress(){
+
+  const progress = JSON.parse(
+    localStorage.getItem(PROGRESS_KEY) || '{}'
+  );
+
+  if(progress[LESSON_ID] === true){
+
+    lessonStatus.style.display =
+      "inline-flex";
+
+    finishLesson.disabled =
+      true;
+
+    finishLesson.textContent =
+      "✓ Đã hoàn thành";
+
+    finishLesson.classList.add(
+      "completed-button"
+    );
+
+    completionBox.classList.add(
+      "success"
+    );
+
+    completionText.textContent =
+      "Bài 10 đã được lưu vào tiến độ học tập. " +
+      "Tiến độ Tổng và Lịch sử đã được cập nhật.";
+
+  }
+
+}
+
+
+/* =========================================================
+   HOÀN THÀNH BÀI 10
+========================================================= */
+
+function completeLesson(){
+
+  if(!quizFinished){
+
+    return;
+
+  }
+
+  const progress = JSON.parse(
+    localStorage.getItem(PROGRESS_KEY) || '{}'
+  );
+
+  progress[LESSON_ID] = true;
+
+  localStorage.setItem(
+    PROGRESS_KEY,
+    JSON.stringify(progress)
+  );
+
+  lessonStatus.style.display =
+    "inline-flex";
+
+  finishLesson.disabled =
+    true;
+
+  finishLesson.textContent =
+    "✓ Đã hoàn thành";
+
+  finishLesson.classList.add(
+    "completed-button"
+  );
+
+  completionBox.classList.add(
+    "success"
+  );
+
+  completionText.textContent =
+    "✓ Đã lưu Bài 10 vào tiến độ học tập. " +
+    "Tiến độ Tổng 50 bài và Lịch sử 20 bài đã được cập nhật.";
+
+}
+
+
+/* =========================================================
+   NÚT HOÀN THÀNH Ở CUỐI TRANG
+========================================================= */
+
+finishLesson.addEventListener(
+  "click",
+  completeLesson
+);
+
+
+/* =========================================================
+   KIỂM TRA TIẾN ĐỘ KHI MỞ TRANG
+========================================================= */
+
+checkLessonProgress();
+
+
+/* =========================================================
+   RESIZE MAP
+   ========================================================= */
+
+window.addEventListener(
+
+  "resize",
+
+  () => {
+
+    setTimeout(
+
+      () => {
+
+        map.invalidateSize();
+
+      },
+
+      100
+
+    );
+
+  }
+
+);
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("h10");</script>
+</body>
+</html>

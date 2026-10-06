@@ -1,0 +1,3100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô phỏng thực vật trên lục địa</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    min-height:100%;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#031018;
+    color:#eefaff;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    padding:13px 20px;
+    background:rgba(3,15,25,.94);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(93,220,173,.16);
+}
+
+.header-inner{
+    max-width:1450px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-icon{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    background:linear-gradient(135deg,#174f3a,#217c52);
+    box-shadow:0 0 24px rgba(51,208,139,.16);
+}
+
+.logo-text h1{
+    font-size:17px;
+    line-height:1.2;
+}
+
+.logo-text p{
+    margin-top:3px;
+    color:#8bb8aa;
+    font-size:12px;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:#eafff7;
+    padding:10px 15px;
+    border-radius:12px;
+    border:1px solid rgba(89,219,165,.25);
+    background:rgba(14,57,43,.7);
+    transition:.2s;
+    font-size:14px;
+}
+
+.home-btn:hover{
+    background:#176044;
+    transform:translateY(-1px);
+}
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page{
+    width:min(1450px,94%);
+    margin:auto;
+    padding:25px 0 50px;
+}
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:35px;
+    border-radius:26px;
+    border:1px solid rgba(78,212,157,.16);
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(56,205,144,.15),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 15% 80%,
+            rgba(20,108,71,.22),
+            transparent 40%
+        ),
+        linear-gradient(145deg,#07271d,#031310 72%);
+
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    margin-bottom:22px;
+}
+
+.hero-tag{
+    display:inline-flex;
+    padding:7px 12px;
+    border-radius:20px;
+    background:rgba(52,191,135,.11);
+    border:1px solid rgba(92,225,172,.2);
+    color:#69e3ad;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.hero h2{
+    font-size:clamp(28px,4vw,48px);
+    line-height:1.12;
+    margin-bottom:13px;
+}
+
+.hero h2 span{
+    color:#54dfa5;
+}
+
+.hero p{
+    max-width:900px;
+    color:#a9c9bc;
+    font-size:15px;
+    line-height:1.7;
+}
+
+/* =========================================
+   CONTROLS
+========================================= */
+
+.control-panel{
+    margin-top:24px;
+    padding:18px;
+    border-radius:18px;
+    border:1px solid rgba(80,213,157,.15);
+    background:rgba(3,25,18,.84);
+}
+
+.control-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+}
+
+.control-btn{
+    min-height:42px;
+    padding:10px 15px;
+    border-radius:11px;
+    border:1px solid rgba(84,218,163,.25);
+    background:#0a3427;
+    color:#eafff5;
+    cursor:pointer;
+    font-size:14px;
+    transition:.2s;
+}
+
+.control-btn:hover{
+    background:#145d43;
+    transform:translateY(-1px);
+}
+
+.control-btn.primary{
+    background:linear-gradient(135deg,#188456,#126443);
+}
+
+.climate-box{
+    flex:1 1 350px;
+    min-width:280px;
+}
+
+.climate-title{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:8px;
+    color:#9fc2b4;
+    font-size:13px;
+}
+
+.climate-title strong{
+    color:#61e2ac;
+    font-size:16px;
+}
+
+input[type="range"]{
+    width:100%;
+    accent-color:#38d99b;
+    cursor:pointer;
+}
+
+/* =========================================
+   SIMULATION
+========================================= */
+
+.sim-wrapper{
+    overflow:hidden;
+    border-radius:25px;
+    border:1px solid rgba(85,218,167,.2);
+    background:#031a13;
+    box-shadow:0 20px 70px rgba(0,0,0,.4);
+}
+
+.sim-topbar{
+    padding:14px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    border-bottom:1px solid rgba(83,216,166,.14);
+    background:rgba(4,27,20,.95);
+}
+
+.sim-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-weight:700;
+}
+
+.live-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#39dfa1;
+    box-shadow:0 0 12px #39dfa1;
+}
+
+.sim-status{
+    color:#8ebbae;
+    font-size:13px;
+}
+
+/* =========================================
+   LANDSCAPE
+========================================= */
+
+.landscape{
+    position:relative;
+    width:100%;
+    height:min(73vh,760px);
+    min-height:540px;
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #74bde2 0%,
+            #9ed3df 32%,
+            #c2ddcf 55%,
+            #8ab56c 75%,
+            #52753c 100%
+        );
+}
+
+#landCanvas{
+    display:block;
+    width:100%;
+    height:100%;
+}
+
+/* sunlight */
+
+.sun{
+    position:absolute;
+    width:78px;
+    height:78px;
+    border-radius:50%;
+    right:8%;
+    top:7%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff5a8 0%,
+            #ffd95d 48%,
+            rgba(255,205,55,.15) 72%,
+            transparent 73%
+        );
+
+    filter:drop-shadow(0 0 22px rgba(255,221,81,.5));
+
+    pointer-events:none;
+}
+
+/* cloud */
+
+.cloud{
+    position:absolute;
+    left:12%;
+    top:10%;
+    width:130px;
+    height:35px;
+    border-radius:40px;
+    background:rgba(247,252,250,.67);
+    filter:blur(.2px);
+    pointer-events:none;
+}
+
+.cloud::before,
+.cloud::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:rgba(247,252,250,.72);
+}
+
+.cloud::before{
+    width:55px;
+    height:55px;
+    left:20px;
+    top:-24px;
+}
+
+.cloud::after{
+    width:70px;
+    height:70px;
+    right:15px;
+    top:-35px;
+}
+
+/* zone indicator */
+
+.zone-indicator{
+    position:absolute;
+    top:17px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:10;
+
+    padding:8px 15px;
+    border-radius:20px;
+
+    background:rgba(2,27,19,.6);
+    border:1px solid rgba(225,255,240,.18);
+
+    color:#e8fff4;
+    font-size:13px;
+
+    backdrop-filter:blur(8px);
+
+    pointer-events:none;
+}
+
+/* rain */
+
+.rain-label{
+    position:absolute;
+    right:20px;
+    top:18px;
+
+    padding:7px 11px;
+    border-radius:10px;
+
+    background:rgba(4,30,22,.52);
+    color:#c8eee0;
+
+    font-size:11px;
+
+    pointer-events:none;
+}
+
+/* =========================================
+   INFO PANEL
+========================================= */
+
+.info-panel{
+    position:absolute;
+    z-index:30;
+
+    left:22px;
+    bottom:22px;
+
+    width:min(370px,calc(100% - 44px));
+
+    padding:19px;
+
+    border-radius:18px;
+
+    background:rgba(2,20,14,.91);
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(87,219,166,.26);
+
+    box-shadow:0 15px 45px rgba(0,0,0,.38);
+
+    opacity:0;
+    transform:translateY(12px);
+
+    pointer-events:none;
+
+    transition:.25s;
+}
+
+.info-panel.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.info-icon{
+    width:52px;
+    height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:rgba(52,193,135,.13);
+
+    font-size:30px;
+
+    margin-bottom:10px;
+}
+
+.info-panel h3{
+    font-size:20px;
+    margin-bottom:6px;
+}
+
+.info-type{
+    color:#61dfa8;
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+.info-panel p{
+    color:#b2d0c2;
+    line-height:1.6;
+    font-size:13px;
+}
+
+.info-feature{
+    margin-top:12px;
+    padding:9px 11px;
+
+    border-radius:9px;
+
+    background:rgba(52,188,132,.08);
+
+    color:#9fe3c4;
+
+    font-size:12px;
+}
+
+/* =========================================
+   LABEL
+========================================= */
+
+.click-hint{
+    position:absolute;
+    right:20px;
+    bottom:20px;
+
+    padding:10px 13px;
+    border-radius:11px;
+
+    background:rgba(2,23,16,.6);
+
+    color:#b3d4c5;
+
+    font-size:12px;
+
+    z-index:20;
+}
+
+/* =========================================
+   LEGEND
+========================================= */
+
+.legend{
+    padding:18px;
+    background:#041c14;
+    border-top:1px solid rgba(77,207,155,.13);
+}
+
+.legend-title{
+    margin-bottom:12px;
+    font-weight:700;
+}
+
+.legend-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+.legend-item{
+    padding:10px;
+    border-radius:10px;
+    background:rgba(255,255,255,.025);
+    color:#a9c9ba;
+    font-size:12px;
+}
+
+.legend-item strong{
+    display:block;
+    color:#dff9ed;
+    margin-bottom:3px;
+}
+
+/* =========================================
+   COMPARISON
+========================================= */
+
+.comparison{
+    margin-top:22px;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    gap:15px;
+}
+
+.compare-card{
+    padding:20px;
+    border-radius:18px;
+
+    border:1px solid rgba(85,211,161,.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            #06271c,
+            #03150f
+        );
+}
+
+.compare-icon{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.compare-card h3{
+    margin-bottom:6px;
+    font-size:18px;
+}
+
+.compare-card .sub{
+    color:#62dfa9;
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+.compare-card p{
+    color:#aac8bb;
+    line-height:1.6;
+    font-size:13px;
+}
+
+.compare-card ul{
+    margin:10px 0 0 18px;
+    color:#aac8bb;
+    line-height:1.7;
+    font-size:13px;
+}
+
+/* =========================================
+   LEARNING BOX
+========================================= */
+
+.learning{
+    margin-top:22px;
+
+    display:grid;
+    grid-template-columns:1.25fr 1fr;
+
+    gap:18px;
+}
+
+.learn-card{
+    padding:22px;
+    border-radius:19px;
+
+    border:1px solid rgba(80,211,160,.14);
+
+    background:linear-gradient(
+        145deg,
+        #06251a,
+        #03150f
+    );
+}
+
+.learn-card h3{
+    margin-bottom:12px;
+    font-size:18px;
+}
+
+.learn-card p{
+    color:#abc9bb;
+    line-height:1.65;
+    font-size:14px;
+}
+
+.learn-card ul{
+    margin:12px 0 0 20px;
+    color:#abc9bb;
+    line-height:1.8;
+    font-size:14px;
+}
+
+.highlight{
+    color:#61dfa9;
+    font-weight:600;
+}
+
+/* =========================================
+   BACK
+========================================= */
+
+.back-section{
+    margin-top:22px;
+    text-align:center;
+}
+
+.back-btn{
+    display:inline-flex;
+    text-decoration:none;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    color:#eafff5;
+
+    background:linear-gradient(
+        135deg,
+        #116347,
+        #0b4935
+    );
+
+    border:1px solid rgba(93,219,169,.25);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:950px){
+
+    .comparison{
+        grid-template-columns:1fr;
+    }
+
+    .learning{
+        grid-template-columns:1fr;
+    }
+
+    .legend-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:620px){
+
+    .page{
+        width:96%;
+    }
+
+    .hero{
+        padding:24px 18px;
+    }
+
+    .logo-text p{
+        display:none;
+    }
+
+    .logo-text h1{
+        font-size:14px;
+    }
+
+    .home-btn{
+        font-size:12px;
+        padding:8px 10px;
+    }
+
+    .landscape{
+        min-height:570px;
+        height:630px;
+    }
+
+    .click-hint{
+        display:none;
+    }
+
+    .info-panel{
+        left:10px;
+        bottom:10px;
+        width:calc(100% - 20px);
+    }
+
+    .sun{
+        width:55px;
+        height:55px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌱
+            </div>
+
+            <div class="logo-text">
+
+                <h1>
+                    HỌC LIỆU SỐ LỊCH SỬ & ĐỊA LÍ 6
+                </h1>
+
+                <p>
+                    Mô phỏng tương tác • Bài 23
+                </p>
+
+            </div>
+
+        </div>
+
+        <a
+            href="g23.html"
+            class="home-btn"
+        >
+            ← Quay lại Bài 23
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+<!-- =========================================
+     HERO
+========================================= -->
+
+<section class="hero">
+
+    <div class="hero-tag">
+        🌱 ĐỊA LÍ 6 • BÀI 23
+    </div>
+
+    <h2>
+        Sự đa dạng của thực vật
+        <span>trên lục địa</span>
+    </h2>
+
+    <p>
+        Hãy khám phá sự thay đổi của thảm thực vật từ
+        <strong>đới nóng → đới ôn hòa → đới lạnh</strong>.
+        Kéo thanh khí hậu và quan sát cảnh quan,
+        cây cối, lượng mưa và điều kiện tự nhiên thay đổi như thế nào.
+    </p>
+
+
+    <div class="control-panel">
+
+        <div class="control-row">
+
+            <button
+                class="control-btn primary"
+                id="autoBtn"
+            >
+                ▶ Tự động khám phá
+            </button>
+
+            <button
+                class="control-btn"
+                id="pauseBtn"
+            >
+                ⏸ Tạm dừng
+            </button>
+
+            <button
+                class="control-btn"
+                id="resetBtn"
+            >
+                ↺ Đặt lại
+            </button>
+
+
+            <div class="climate-box">
+
+                <div class="climate-title">
+
+                    <span>
+                        🌡️ Khám phá sự thay đổi khí hậu
+                    </span>
+
+                    <strong id="climateValue">
+                        Đới nóng
+                    </strong>
+
+                </div>
+
+                <input
+                    type="range"
+                    id="climateSlider"
+                    min="0"
+                    max="100"
+                    value="15"
+                    step="1"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     SIMULATION
+========================================= -->
+
+<section class="sim-wrapper">
+
+    <div class="sim-topbar">
+
+        <div class="sim-title">
+
+            <span class="live-dot"></span>
+
+            MÔ PHỎNG THẢM THỰC VẬT TRÊN LỤC ĐỊA
+
+        </div>
+
+        <div
+            class="sim-status"
+            id="statusText"
+        >
+            Hãy bấm vào một kiểu thảm thực vật
+        </div>
+
+    </div>
+
+
+    <div class="landscape">
+
+        <canvas id="landCanvas"></canvas>
+
+
+        <div class="sun"></div>
+
+        <div class="cloud"></div>
+
+
+        <div
+            class="zone-indicator"
+            id="zoneIndicator"
+        >
+            🌴 ĐỚI NÓNG
+        </div>
+
+
+        <div
+            class="rain-label"
+            id="rainLabel"
+        >
+            🌧️ Mưa: rất nhiều
+        </div>
+
+
+        <!-- INFO PANEL -->
+
+        <div
+            class="info-panel"
+            id="infoPanel"
+        >
+
+            <div
+                class="info-icon"
+                id="infoIcon"
+            >
+                🌴
+            </div>
+
+            <h3 id="infoName">
+                Rừng mưa nhiệt đới
+            </h3>
+
+            <div
+                class="info-type"
+                id="infoType"
+            >
+                Đới nóng
+            </div>
+
+            <p id="infoDescription">
+                Hãy bấm vào thảm thực vật để khám phá.
+            </p>
+
+            <div
+                class="info-feature"
+                id="infoFeature"
+            >
+                🌿 Đặc điểm nổi bật
+            </div>
+
+        </div>
+
+
+        <div class="click-hint">
+            🖱️ Bấm vào thảm thực vật để xem thông tin
+        </div>
+
+    </div>
+
+
+    <!-- LEGEND -->
+
+    <div class="legend">
+
+        <div class="legend-title">
+            📚 Các kiểu thảm thực vật tiêu biểu
+        </div>
+
+        <div class="legend-grid">
+
+            <div class="legend-item">
+
+                <strong>🌴 Đới nóng</strong>
+
+                Rừng mưa nhiệt đới •
+                Rừng nhiệt đới gió mùa • Xa-van
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <strong>🌳 Đới ôn hòa</strong>
+
+                Rừng lá rộng •
+                Rừng lá kim • Thảo nguyên • Rừng cận nhiệt
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <strong>❄️ Đới lạnh</strong>
+
+                Đài nguyên
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     COMPARISON
+========================================= -->
+
+<section class="comparison">
+
+    <div class="compare-card">
+
+        <div class="compare-icon">
+            🌴
+        </div>
+
+        <h3>
+            Đới nóng
+        </h3>
+
+        <div class="sub">
+            Nhiệt độ cao • Nhiều ánh sáng
+        </div>
+
+        <p>
+            Thực vật phát triển phong phú và đa dạng.
+        </p>
+
+        <ul>
+            <li>Rừng mưa nhiệt đới</li>
+            <li>Rừng nhiệt đới gió mùa</li>
+            <li>Xa-van</li>
+        </ul>
+
+    </div>
+
+
+    <div class="compare-card">
+
+        <div class="compare-icon">
+            🌳
+        </div>
+
+        <h3>
+            Đới ôn hòa
+        </h3>
+
+        <div class="sub">
+            Nhiệt độ vừa phải • Có mùa rõ rệt
+        </div>
+
+        <p>
+            Thảm thực vật đa dạng, thay đổi theo
+            điều kiện khí hậu.
+        </p>
+
+        <ul>
+            <li>Rừng lá rộng</li>
+            <li>Rừng lá kim</li>
+            <li>Thảo nguyên</li>
+            <li>Rừng cận nhiệt</li>
+        </ul>
+
+    </div>
+
+
+    <div class="compare-card">
+
+        <div class="compare-icon">
+            ❄️
+        </div>
+
+        <h3>
+            Đới lạnh
+        </h3>
+
+        <div class="sub">
+            Nhiệt độ thấp • Mùa sinh trưởng ngắn
+        </div>
+
+        <p>
+            Thực vật nghèo nàn hơn và chủ yếu là
+            những loài thấp.
+        </p>
+
+        <ul>
+            <li>Đài nguyên</li>
+            <li>Cỏ thấp</li>
+            <li>Rêu</li>
+            <li>Địa y</li>
+        </ul>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     LEARNING
+========================================= -->
+
+<section class="learning">
+
+    <div class="learn-card">
+
+        <h3>
+            🔎 Quan sát sự thay đổi
+        </h3>
+
+        <p>
+            Khi kéo thanh khí hậu từ trái sang phải,
+            hãy chú ý sự thay đổi của
+            <span class="highlight">
+                nhiệt độ, lượng mưa và thảm thực vật
+            </span>.
+        </p>
+
+        <ul>
+
+            <li>
+                Đới nóng có thực vật như thế nào?
+            </li>
+
+            <li>
+                Vì sao rừng lá kim có ít loài hơn
+                rừng mưa nhiệt đới?
+            </li>
+
+            <li>
+                Vì sao đài nguyên hầu như không có
+                cây gỗ lớn?
+            </li>
+
+            <li>
+                Khí hậu ảnh hưởng như thế nào đến
+                sự phân bố thực vật?
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <div class="learn-card">
+
+        <h3>
+            🧠 Điều cần nhớ
+        </h3>
+
+        <p>
+            Thực vật trên lục địa rất phong phú và
+            đa dạng, có sự khác biệt rõ rệt theo
+            các đới khí hậu.
+        </p>
+
+        <ul>
+
+            <li>
+                🌴 Nóng → rừng nhiệt đới, xa-van
+            </li>
+
+            <li>
+                🌳 Ôn hòa → rừng lá rộng, lá kim,
+                thảo nguyên...
+            </li>
+
+            <li>
+                ❄️ Lạnh → đài nguyên
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
+
+
+<div class="back-section">
+
+    <a
+        href="g23.html"
+        class="back-btn"
+    >
+        ← Quay lại nội dung Bài 23
+    </a>
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+const canvas =
+    document.getElementById("landCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let W = 1000;
+let H = 650;
+
+function resizeCanvas(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    W = Math.max(600,rect.width);
+    H = Math.max(500,rect.height);
+
+    const dpr =
+        Math.min(window.devicePixelRatio || 1,2);
+
+    canvas.width =
+        W*dpr;
+
+    canvas.height =
+        H*dpr;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const vegetation = [
+
+    {
+        id:"rainforest",
+
+        name:"Rừng mưa nhiệt đới",
+
+        icon:"🌴",
+
+        x:.12,
+
+        zone:"Đới nóng",
+
+        range:[0,25],
+
+        description:
+        "Rừng mưa nhiệt đới có thảm thực vật xanh tốt quanh năm, cây cối cao lớn, nhiều tầng và rất phong phú về loài.",
+
+        feature:
+        "🌿 Nhiều tầng cây • xanh quanh năm • rất đa dạng"
+    },
+
+
+    {
+        id:"monsoon",
+
+        name:"Rừng nhiệt đới gió mùa",
+
+        icon:"🌳",
+
+        x:.29,
+
+        zone:"Đới nóng",
+
+        range:[15,35],
+
+        description:
+        "Rừng nhiệt đới gió mùa phát triển ở nơi có mùa mưa và mùa khô tương đối rõ rệt. Một số loài cây có thể rụng lá vào mùa khô.",
+
+        feature:
+        "🌧️ Mưa theo mùa • có mùa khô"
+    },
+
+
+    {
+        id:"savanna",
+
+        name:"Xa-van",
+
+        icon:"🌾",
+
+        x:.45,
+
+        zone:"Đới nóng",
+
+        range:[25,42],
+
+        description:
+        "Xa-van là kiểu thảm thực vật gồm cỏ là chủ yếu, xen với cây bụi và cây gỗ thưa.",
+
+        feature:
+        "🌾 Cỏ nhiều • cây gỗ thưa"
+    },
+
+
+    {
+        id:"broadleaf",
+
+        name:"Rừng lá rộng",
+
+        icon:"🌳",
+
+        x:.58,
+
+        zone:"Đới ôn hòa",
+
+        range:[40,65],
+
+        description:
+        "Rừng lá rộng là một kiểu thảm thực vật phổ biến ở đới ôn hòa. Nhiều loài cây có lá rộng và thay đổi theo mùa.",
+
+        feature:
+        "🍂 Lá rộng • thay đổi theo mùa"
+    },
+
+
+    {
+        id:"conifer",
+
+        name:"Rừng lá kim",
+
+        icon:"🌲",
+
+        x:.70,
+
+        zone:"Đới ôn hòa",
+
+        range:[52,76],
+
+        description:
+        "Rừng lá kim gồm chủ yếu các loài cây gỗ có lá hình kim. So với rừng mưa nhiệt đới, số lượng loài thường ít hơn.",
+
+        feature:
+        "🌲 Cây gỗ • lá kim • ít loài hơn"
+    },
+
+
+    {
+        id:"steppe",
+
+        name:"Thảo nguyên",
+
+        icon:"🌾",
+
+        x:.82,
+
+        zone:"Đới ôn hòa",
+
+        range:[60,80],
+
+        description:
+        "Thảo nguyên là khu vực mà cỏ chiếm ưu thế, thường phát triển ở những nơi lượng mưa không đủ để hình thành rừng.",
+
+        feature:
+        "🌾 Cỏ chiếm ưu thế"
+    },
+
+
+    {
+        id:"tundra",
+
+        name:"Đài nguyên",
+
+        icon:"❄️",
+
+        x:.91,
+
+        zone:"Đới lạnh",
+
+        range:[78,100],
+
+        description:
+        "Đài nguyên là kiểu thảm thực vật đặc trưng của vùng lạnh. Cây gỗ hầu như không phát triển; chủ yếu là cỏ thấp, rêu và địa y.",
+
+        feature:
+        "❄️ Cỏ thấp • rêu • địa y • không có cây gỗ lớn"
+    }
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let climate =
+    15;
+
+let time =
+    0;
+
+let paused =
+    false;
+
+let autoMode =
+    false;
+
+let selectedVegetation =
+    null;
+
+const climateSlider =
+    document.getElementById(
+        "climateSlider"
+    );
+
+const climateValue =
+    document.getElementById(
+        "climateValue"
+    );
+
+const zoneIndicator =
+    document.getElementById(
+        "zoneIndicator"
+    );
+
+const rainLabel =
+    document.getElementById(
+        "rainLabel"
+    );
+
+const statusText =
+    document.getElementById(
+        "statusText"
+    );
+
+const autoBtn =
+    document.getElementById(
+        "autoBtn"
+    );
+
+const pauseBtn =
+    document.getElementById(
+        "pauseBtn"
+    );
+
+const resetBtn =
+    document.getElementById(
+        "resetBtn"
+    );
+
+const infoPanel =
+    document.getElementById(
+        "infoPanel"
+    );
+
+const infoIcon =
+    document.getElementById(
+        "infoIcon"
+    );
+
+const infoName =
+    document.getElementById(
+        "infoName"
+    );
+
+const infoType =
+    document.getElementById(
+        "infoType"
+    );
+
+const infoDescription =
+    document.getElementById(
+        "infoDescription"
+    );
+
+const infoFeature =
+    document.getElementById(
+        "infoFeature"
+    );
+
+
+/* =========================================================
+   CLIMATE ZONE
+========================================================= */
+
+function getZone(){
+
+    if(climate < 38){
+
+        return {
+            name:"Đới nóng",
+            icon:"🌴"
+        };
+
+    }
+
+    if(climate < 78){
+
+        return {
+            name:"Đới ôn hòa",
+            icon:"🌳"
+        };
+
+    }
+
+    return {
+        name:"Đới lạnh",
+        icon:"❄️"
+    };
+
+}
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+function getRain(){
+
+    if(climate < 25)
+        return "🌧️ Mưa: rất nhiều";
+
+    if(climate < 42)
+        return "🌦️ Mưa: theo mùa";
+
+    if(climate < 65)
+        return "🌦️ Mưa: vừa phải";
+
+    if(climate < 80)
+        return "🌤️ Mưa: ít hơn";
+
+    return "❄️ Mưa: ít • tuyết";
+}
+
+
+/* =========================================================
+   UPDATE CLIMATE
+========================================================= */
+
+function updateClimate(value){
+
+    climate =
+        Number(value);
+
+    const zone =
+        getZone();
+
+    climateValue.textContent =
+        zone.name;
+
+    zoneIndicator.textContent =
+        zone.icon +
+        " " +
+        zone.name.toUpperCase();
+
+    rainLabel.textContent =
+        getRain();
+
+    statusText.textContent =
+        "Đang khám phá " +
+        zone.name.toLowerCase();
+
+}
+
+climateSlider.addEventListener(
+    "input",
+    ()=>{
+        updateClimate(
+            climateSlider.value
+        );
+    }
+);
+
+
+/* =========================================================
+   DRAW SKY
+========================================================= */
+
+function drawSky(){
+
+    let topColor;
+    let bottomColor;
+
+    if(climate < 38){
+
+        topColor="#68bfe0";
+        bottomColor="#b8d99d";
+
+    }
+    else if(climate < 78){
+
+        topColor="#7da9bd";
+        bottomColor="#b2bda0";
+
+    }
+    else{
+
+        topColor="#7e9bab";
+        bottomColor="#c7d1ce";
+
+    }
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+    gradient.addColorStop(
+        0,
+        topColor
+    );
+
+    gradient.addColorStop(
+        .55,
+        bottomColor
+    );
+
+    gradient.addColorStop(
+        1,
+        "#506b48"
+    );
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+}
+
+
+/* =========================================================
+   MOUNTAINS
+========================================================= */
+
+function drawMountains(){
+
+    ctx.save();
+
+    /*
+       xa
+    */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        H*.56
+    );
+
+    for(
+        let x=0;
+        x<=W;
+        x+=45
+    ){
+
+        const y =
+            H*.46 +
+            Math.sin(x*.009)*35 +
+            Math.sin(x*.022)*20;
+
+        ctx.lineTo(
+            x,
+            y
+        );
+
+    }
+
+    ctx.lineTo(
+        W,
+        H*.73
+    );
+
+    ctx.lineTo(
+        0,
+        H*.73
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle =
+        climate > 78
+        ? "#71858a"
+        : "#53715b";
+
+    ctx.fill();
+
+
+    /*
+       núi xa
+    */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        H*.48
+    );
+
+    for(
+        let x=0;
+        x<=W;
+        x+=65
+    ){
+
+        const y =
+            H*.39 +
+            Math.sin(x*.013+2)*30;
+
+        ctx.lineTo(
+            x,
+            y
+        );
+
+    }
+
+    ctx.lineTo(
+        W,
+        H*.63
+    );
+
+    ctx.lineTo(
+        0,
+        H*.63
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle =
+        climate > 75
+        ? "#687c82"
+        : "#66836c";
+
+    ctx.globalAlpha=.7;
+
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   GROUND
+========================================================= */
+
+function drawGround(){
+
+    const groundY =
+        H*.69;
+
+    ctx.save();
+
+    const groundGradient =
+        ctx.createLinearGradient(
+            0,
+            groundY,
+            0,
+            H
+        );
+
+    if(climate < 38){
+
+        groundGradient.addColorStop(
+            0,
+            "#5d914c"
+        );
+
+        groundGradient.addColorStop(
+            1,
+            "#263f24"
+        );
+
+    }
+    else if(climate < 78){
+
+        groundGradient.addColorStop(
+            0,
+            "#7e9759"
+        );
+
+        groundGradient.addColorStop(
+            1,
+            "#3e5132"
+        );
+
+    }
+    else{
+
+        groundGradient.addColorStop(
+            0,
+            "#a7b4a4"
+        );
+
+        groundGradient.addColorStop(
+            1,
+            "#596762"
+        );
+
+    }
+
+    ctx.fillStyle =
+        groundGradient;
+
+    ctx.fillRect(
+        0,
+        groundY,
+        W,
+        H-groundY
+    );
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   GRASS
+========================================================= */
+
+function drawGrass(){
+
+    const groundY =
+        H*.70;
+
+    ctx.save();
+
+    let grassCount;
+
+    if(climate < 38)
+        grassCount=100;
+
+    else if(climate < 78)
+        grassCount=80;
+
+    else
+        grassCount=45;
+
+
+    for(let i=0;i<grassCount;i++){
+
+        const x =
+            (i/grassCount)*W+
+            Math.sin(i*5)*5;
+
+        const height =
+            climate>78
+            ? 8+Math.random()*9
+            : 10+Math.random()*15;
+
+        const sway =
+            Math.sin(
+                time*.003+
+                i
+            )*3;
+
+        ctx.strokeStyle =
+            climate>78
+            ? "rgba(92,116,92,.65)"
+            : "rgba(40,104,50,.7)";
+
+        ctx.lineWidth=1.4;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            groundY
+        );
+
+        ctx.quadraticCurveTo(
+            x+sway,
+            groundY-height*.55,
+            x+sway*1.5,
+            groundY-height
+        );
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DRAW TREE
+========================================================= */
+
+function drawTree(
+    x,
+    groundY,
+    scale,
+    type,
+    index
+){
+
+    let sway =
+        Math.sin(
+            time*.002+
+            index
+        )*2.5;
+
+    ctx.save();
+
+    ctx.translate(
+        x,
+        groundY
+    );
+
+    /*
+       thân
+    */
+
+    ctx.strokeStyle =
+        type==="conifer"
+        ? "#4d3928"
+        : "#553a29";
+
+    ctx.lineWidth =
+        6*scale;
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,0);
+
+    ctx.lineTo(
+        sway,
+        -80*scale
+    );
+
+    ctx.stroke();
+
+
+    if(type==="conifer"){
+
+        /*
+           cây lá kim
+        */
+
+        ctx.fillStyle =
+            "#244d37";
+
+        for(
+            let i=0;
+            i<4;
+            i++
+        ){
+
+            const y =
+                -45*scale -
+                i*18*scale;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                sway,
+                y-45*scale
+            );
+
+            ctx.lineTo(
+                sway-27*scale,
+                y+8*scale
+            );
+
+            ctx.lineTo(
+                sway+27*scale,
+                y+8*scale
+            );
+
+            ctx.closePath();
+
+            ctx.fill();
+
+        }
+
+    }
+    else{
+
+        /*
+           tán cây
+        */
+
+        ctx.fillStyle =
+            climate < 38
+            ? "#12623d"
+            : "#3e713e";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            sway,
+            -90*scale,
+            34*scale,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        ctx.beginPath();
+
+        ctx.arc(
+            sway-28*scale,
+            -75*scale,
+            25*scale,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        ctx.beginPath();
+
+        ctx.arc(
+            sway+27*scale,
+            -74*scale,
+            25*scale,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   TROPICAL FOREST
+========================================================= */
+
+function drawTropicalForest(){
+
+    const groundY =
+        H*.72;
+
+    const count =
+        10;
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const x =
+            W*.04+
+            (i/(count-1))*W*.44;
+
+        const scale =
+            .65+
+            (i%4)*.12;
+
+        drawTree(
+            x,
+            groundY,
+            scale,
+            "broad",
+            i
+        );
+
+    }
+
+    /*
+       dây leo
+    */
+
+    ctx.save();
+
+    ctx.strokeStyle=
+        "rgba(22,115,65,.7)";
+
+    ctx.lineWidth=2;
+
+    for(let i=0;i<9;i++){
+
+        const x=
+            W*.08+
+            i*35;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            H*.51
+        );
+
+        ctx.quadraticCurveTo(
+            x+20,
+            H*.61,
+            x+5,
+            H*.73
+        );
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   MONSOON FOREST
+========================================================= */
+
+function drawMonsoonForest(){
+
+    const groundY =
+        H*.72;
+
+    for(let i=0;i<8;i++){
+
+        const x =
+            W*.08+
+            i*45;
+
+        drawTree(
+            x,
+            groundY,
+            .65+(i%3)*.13,
+            "broad",
+            i
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVANNA
+========================================================= */
+
+function drawSavanna(){
+
+    const groundY =
+        H*.72;
+
+    for(let i=0;i<5;i++){
+
+        const x=
+            W*.05+
+            i*90;
+
+        drawTree(
+            x,
+            groundY,
+            .48,
+            "broad",
+            i
+        );
+
+    }
+
+    drawGrass();
+
+}
+
+
+/* =========================================================
+   TEMPERATE FOREST
+========================================================= */
+
+function drawTemperate(){
+
+    const groundY =
+        H*.72;
+
+    for(let i=0;i<8;i++){
+
+        const x =
+            W*.05+
+            i*75;
+
+        drawTree(
+            x,
+            groundY,
+            .65+(i%3)*.1,
+            "broad",
+            i
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CONIFER FOREST
+========================================================= */
+
+function drawConifer(){
+
+    const groundY =
+        H*.72;
+
+    for(let i=0;i<10;i++){
+
+        const x =
+            W*.04+
+            i*65;
+
+        drawTree(
+            x,
+            groundY,
+            .6+(i%4)*.08,
+            "conifer",
+            i
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   STEPPE
+========================================================= */
+
+function drawSteppe(){
+
+    drawGrass();
+
+    const groundY =
+        H*.71;
+
+    /*
+       vài bụi cây thấp
+    */
+
+    for(let i=0;i<5;i++){
+
+        const x =
+            W*.12+
+            i*140;
+
+        ctx.fillStyle="#466b3d";
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            x,
+            groundY-9,
+            25,
+            9,
+            0,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+}
+
+
+/* =========================================================
+   TUNDRA
+========================================================= */
+
+function drawTundra(){
+
+    const groundY =
+        H*.71;
+
+    /*
+       tuyết
+    */
+
+    ctx.save();
+
+    ctx.fillStyle =
+        "rgba(224,237,235,.48)";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        groundY
+    );
+
+    for(
+        let x=0;
+        x<=W;
+        x+=45
+    ){
+
+        ctx.lineTo(
+            x,
+            groundY+
+            Math.sin(x*.02)*8
+        );
+
+    }
+
+    ctx.lineTo(
+        W,
+        H
+    );
+
+    ctx.lineTo(
+        0,
+        H
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.restore();
+
+
+    /*
+       rêu / địa y / cỏ thấp
+    */
+
+    ctx.save();
+
+    for(let i=0;i<55;i++){
+
+        const x=
+            Math.random()*W;
+
+        const h=
+            4+
+            Math.random()*7;
+
+        ctx.strokeStyle=
+            "rgba(95,120,104,.7)";
+
+        ctx.lineWidth=2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            groundY+3
+        );
+
+        ctx.lineTo(
+            x+
+            Math.sin(i)*3,
+            groundY-h
+        );
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DRAW VEGETATION
+========================================================= */
+
+function drawVegetation(){
+
+    /*
+       clear scene
+    */
+
+    if(climate < 12){
+
+        drawTropicalForest();
+
+    }
+    else if(climate < 25){
+
+        drawTropicalForest();
+
+    }
+    else if(climate < 38){
+
+        drawSavanna();
+
+    }
+    else if(climate < 58){
+
+        drawTemperate();
+
+    }
+    else if(climate < 76){
+
+        drawConifer();
+
+    }
+    else if(climate < 88){
+
+        drawSteppe();
+
+    }
+    else{
+
+        drawTundra();
+
+    }
+
+}
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+const rainDrops=[];
+
+for(let i=0;i<100;i++){
+
+    rainDrops.push({
+
+        x:Math.random(),
+        y:Math.random(),
+        speed:.003+
+            Math.random()*.005,
+
+        length:
+            7+
+            Math.random()*12
+
+    });
+
+}
+
+
+function drawRain(){
+
+    let intensity=0;
+
+    if(climate<25)
+        intensity=1;
+
+    else if(climate<42)
+        intensity=.65;
+
+    else if(climate<65)
+        intensity=.42;
+
+    else if(climate<80)
+        intensity=.22;
+
+    else
+        intensity=.08;
+
+
+    ctx.save();
+
+    rainDrops.forEach((r,i)=>{
+
+        if(!paused){
+
+            r.y +=
+                r.speed*
+                intensity;
+
+            if(r.y>1){
+
+                r.y=
+                    Math.random()*.15;
+
+                r.x=
+                    Math.random();
+            }
+
+        }
+
+        if(
+            intensity>.03
+        ){
+
+            const x=
+                r.x*W;
+
+            const y=
+                r.y*H*.55;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+            ctx.lineTo(
+                x-2,
+                y+r.length
+            );
+
+            ctx.strokeStyle=
+                `rgba(221,248,255,${
+                    .10+
+                    intensity*.20
+                })`;
+
+            ctx.lineWidth=1;
+
+            ctx.stroke();
+
+        }
+
+    });
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   SNOW
+========================================================= */
+
+const snowflakes=[];
+
+for(let i=0;i<70;i++){
+
+    snowflakes.push({
+
+        x:Math.random(),
+        y:Math.random(),
+
+        speed:
+            .001+
+            Math.random()*.002,
+
+        size:
+            1+
+            Math.random()*3
+
+    });
+
+}
+
+
+function drawSnow(){
+
+    if(climate<82)
+        return;
+
+    ctx.save();
+
+    snowflakes.forEach(s=>{
+
+        if(!paused){
+
+            s.y+=s.speed;
+
+            if(s.y>1){
+
+                s.y=0;
+                s.x=Math.random();
+
+            }
+
+        }
+
+        ctx.beginPath();
+
+        ctx.arc(
+            s.x*W,
+            s.y*H*.75,
+            s.size,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle=
+            "rgba(244,252,255,.72)";
+
+        ctx.fill();
+
+    });
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   VEGETATION LABELS
+========================================================= */
+
+function drawVegetationLabels(){
+
+    vegetation.forEach((v,i)=>{
+
+        let visible=false;
+
+        /*
+           Hiện label khi khí hậu gần
+           khoảng thích hợp của kiểu thực vật
+        */
+
+        if(
+            climate>=v.range[0]-
+            7 &&
+            climate<=v.range[1]+7
+        ){
+
+            visible=true;
+
+        }
+
+        if(
+            selectedVegetation===v
+        ){
+
+            visible=true;
+
+        }
+
+        if(!visible)
+            return;
+
+
+        /*
+           lấy vị trí
+        */
+
+        let x =
+            v.x*W;
+
+        let y =
+            H*.57;
+
+        if(
+            v.id==="tundra"
+        ){
+
+            y=
+                H*.62;
+
+        }
+
+
+        ctx.save();
+
+        ctx.font=
+            "600 12px Segoe UI";
+
+        ctx.textAlign=
+            "center";
+
+        const text=
+            v.name;
+
+        const width=
+            ctx.measureText(text).width;
+
+        ctx.fillStyle=
+            "rgba(2,22,15,.78)";
+
+        ctx.beginPath();
+
+        ctx.roundRect(
+            x-width/2-8,
+            y-14,
+            width+16,
+            24,
+            7
+        );
+
+        ctx.fill();
+
+        ctx.fillStyle=
+            "#effff7";
+
+        ctx.fillText(
+            text,
+            x,
+            y+2
+        );
+
+        ctx.restore();
+
+    });
+
+}
+
+
+/* =========================================================
+   HIGHLIGHT
+========================================================= */
+
+function drawSelection(){
+
+    if(!selectedVegetation)
+        return;
+
+    const v=
+        selectedVegetation;
+
+    const x=
+        v.x*W;
+
+    const y=
+        H*.55;
+
+    ctx.save();
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        46+
+        Math.sin(time*.004)*4,
+        0,
+        Math.PI*2
+    );
+
+    ctx.strokeStyle=
+        "rgba(82,231,167,.8)";
+
+    ctx.lineWidth=2;
+
+    ctx.setLineDash([
+        7,
+        6
+    ]);
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   MAIN DRAW
+========================================================= */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    drawSky();
+
+    drawMountains();
+
+    drawGround();
+
+    drawVegetation();
+
+    drawGrass();
+
+    drawRain();
+
+    drawSnow();
+
+    drawVegetationLabels();
+
+    drawSelection();
+
+
+    if(!paused){
+
+        time+=16;
+
+        if(autoMode){
+
+            let value=
+                Number(
+                    climateSlider.value
+                );
+
+            value+=.22;
+
+            if(value>100)
+                value=0;
+
+            climateSlider.value=
+                value;
+
+            updateClimate(value);
+
+        }
+
+    }
+
+    requestAnimationFrame(draw);
+
+}
+
+draw();
+
+
+/* =========================================================
+   CLICK DETECTION
+========================================================= */
+
+canvas.addEventListener(
+    "click",
+    event=>{
+
+        const rect=
+            canvas.getBoundingClientRect();
+
+        const scaleX=
+            W/rect.width;
+
+        const scaleY=
+            H/rect.height;
+
+        const mouseX=
+            (event.clientX-
+            rect.left)*
+            scaleX;
+
+        const mouseY=
+            (event.clientY-
+            rect.top)*
+            scaleY;
+
+
+        let found=null;
+
+        for(
+            let i=
+            vegetation.length-1;
+            i>=0;
+            i--
+        ){
+
+            const v=
+                vegetation[i];
+
+            const x=
+                v.x*W;
+
+            let y=
+                H*.55;
+
+            if(
+                v.id==="tundra"
+            ){
+
+                y=
+                    H*.62;
+
+            }
+
+            const distance=
+                Math.sqrt(
+                    Math.pow(
+                        mouseX-x,
+                        2
+                    )+
+                    Math.pow(
+                        mouseY-y,
+                        2
+                    )
+                );
+
+            if(
+                distance<65
+            ){
+
+                found=v;
+
+                break;
+
+            }
+
+        }
+
+
+        if(found){
+
+            selectedVegetation=
+                found;
+
+            showInfo(found);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SHOW INFO
+========================================================= */
+
+function showInfo(v){
+
+    infoPanel.classList.add(
+        "show"
+    );
+
+    infoIcon.textContent=
+        v.icon;
+
+    infoName.textContent=
+        v.name;
+
+    infoType.textContent=
+        v.zone;
+
+    infoDescription.textContent=
+        v.description;
+
+    infoFeature.textContent=
+        v.feature;
+
+    statusText.textContent=
+        "Đang khám phá: " +
+        v.name;
+
+}
+
+
+/* =========================================================
+   AUTO
+========================================================= */
+
+autoBtn.addEventListener(
+    "click",
+    ()=>{
+
+        autoMode=
+            !autoMode;
+
+        if(autoMode){
+
+            autoBtn.textContent=
+                "⏹ Dừng tự động";
+
+            autoBtn.classList.add(
+                "primary"
+            );
+
+            paused=false;
+
+            pauseBtn.textContent=
+                "⏸ Tạm dừng";
+
+            statusText.textContent=
+                "Đang tự động đi qua các đới khí hậu";
+
+        }
+        else{
+
+            autoBtn.textContent=
+                "▶ Tự động khám phá";
+
+            statusText.textContent=
+                "Đang khám phá " +
+                getZone().name.toLowerCase();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+pauseBtn.addEventListener(
+    "click",
+    ()=>{
+
+        paused=
+            !paused;
+
+        if(paused){
+
+            pauseBtn.textContent=
+                "▶ Tiếp tục";
+
+            statusText.textContent=
+                "Mô phỏng đang tạm dừng";
+
+        }
+        else{
+
+            pauseBtn.textContent=
+                "⏸ Tạm dừng";
+
+            statusText.textContent=
+                "Đang khám phá " +
+                getZone().name.toLowerCase();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+resetBtn.addEventListener(
+    "click",
+    ()=>{
+
+        paused=false;
+
+        autoMode=false;
+
+        selectedVegetation=
+            null;
+
+        climateSlider.value=
+            15;
+
+        updateClimate(15);
+
+        autoBtn.textContent=
+            "▶ Tự động khám phá";
+
+        pauseBtn.textContent=
+            "⏸ Tạm dừng";
+
+        infoPanel.classList.remove(
+            "show"
+        );
+
+        statusText.textContent=
+            "Hãy bấm vào một kiểu thảm thực vật";
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key===" "){
+
+            event.preventDefault();
+
+            paused=
+                !paused;
+
+            pauseBtn.textContent=
+                paused
+                ? "▶ Tiếp tục"
+                : "⏸ Tạm dừng";
+
+        }
+
+        if(event.key==="Escape"){
+
+            selectedVegetation=
+                null;
+
+            infoPanel.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateClimate(15);
+
+</script>
+
+</body>
+</html>

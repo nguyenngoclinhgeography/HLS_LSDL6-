@@ -1,0 +1,3884 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô phỏng hình thành nước ngầm</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#06111f;
+    --panel:#0b1b2e;
+    --panel2:#10253d;
+    --border:#24445f;
+    --text:#eaf7ff;
+    --muted:#9eb7ca;
+    --cyan:#3cddff;
+    --blue:#168fff;
+    --green:#4be3a4;
+    --yellow:#ffd85a;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+    color:var(--text);
+
+    background:
+        radial-gradient(
+            circle at 50% -15%,
+            #143b5d 0%,
+            #081727 42%,
+            #030a12 100%
+        );
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:30;
+
+    background:rgba(4,14,26,.95);
+    border-bottom:1px solid #1c3952;
+
+    backdrop-filter:blur(12px);
+}
+
+.header-inner{
+    max-width:1450px;
+    margin:auto;
+
+    padding:14px 22px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+
+    border-radius:13px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #12c8ff,
+            #1468ff
+        );
+
+    box-shadow:
+        0 0 25px
+        rgba(31,202,255,.25);
+}
+
+.brand h1{
+    font-size:20px;
+}
+
+.brand p{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.back-btn{
+    text-decoration:none;
+    color:#dff8ff;
+
+    background:#0c2238;
+
+    border:1px solid #2b5875;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    transition:.2s;
+}
+
+.back-btn:hover{
+    background:#12344f;
+    border-color:#3edfff;
+}
+
+main{
+    max-width:1450px;
+    margin:auto;
+
+    padding:25px 22px 55px;
+}
+
+.hero{
+    text-align:center;
+    padding:18px 10px 25px;
+}
+
+.tag{
+    display:inline-block;
+
+    padding:7px 14px;
+
+    border-radius:999px;
+
+    color:#7cecff;
+
+    background:rgba(31,201,255,.08);
+
+    border:1px solid #21546e;
+
+    font-size:13px;
+
+    margin-bottom:13px;
+}
+
+.hero h2{
+    font-size:clamp(28px,4vw,44px);
+    margin-bottom:10px;
+}
+
+.hero p{
+    max-width:880px;
+    margin:auto;
+
+    color:var(--muted);
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   BỐ CỤC
+========================================================= */
+
+.sim-layout{
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1.85fr)
+        minmax(310px,.75fr);
+
+    gap:18px;
+
+    align-items:start;
+}
+
+.sim-card,
+.info-card{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,35,57,.98),
+            rgba(6,20,34,.98)
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 18px 50px
+        rgba(0,0,0,.3);
+}
+
+.sim-head{
+    padding:15px 18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:10px;
+
+    border-bottom:1px solid #1c3953;
+}
+
+.sim-head strong{
+    font-size:16px;
+}
+
+.status{
+    padding:6px 10px;
+
+    border-radius:999px;
+
+    color:#7cecff;
+
+    background:#082c3d;
+
+    border:1px solid #17566f;
+
+    font-size:12px;
+}
+
+.canvas-wrap{
+    position:relative;
+
+    background:#071321;
+}
+
+canvas{
+    width:100%;
+    height:auto;
+
+    display:block;
+
+    cursor:pointer;
+}
+
+.canvas-hint{
+    position:absolute;
+
+    left:14px;
+    bottom:13px;
+
+    padding:8px 11px;
+
+    border-radius:9px;
+
+    color:#c5deea;
+
+    background:rgba(3,13,23,.76);
+
+    border:1px solid rgba(90,185,220,.25);
+
+    font-size:12px;
+
+    backdrop-filter:blur(8px);
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   CONTROL
+========================================================= */
+
+.controls{
+    padding:15px;
+
+    border-top:1px solid #1c3953;
+
+    display:flex;
+    flex-wrap:wrap;
+
+    align-items:center;
+
+    gap:9px;
+}
+
+button{
+    color:#e9f8ff;
+
+    background:#12324b;
+
+    border:1px solid #2a5672;
+
+    padding:10px 13px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    transition:.18s;
+}
+
+button:hover{
+    background:#174360;
+    border-color:#3a9bc4;
+}
+
+button.primary{
+    background:
+        linear-gradient(
+            135deg,
+            #087fa9,
+            #145ec5
+        );
+
+    border-color:#35cfff;
+}
+
+button.active{
+    background:#0c5d56;
+    border-color:#45e4c1;
+}
+
+.control-group{
+    display:flex;
+    align-items:center;
+
+    gap:8px;
+
+    color:#adc5d6;
+
+    font-size:12px;
+
+    margin-left:auto;
+}
+
+input[type=range]{
+    width:145px;
+    accent-color:#35d8ff;
+}
+
+
+/* =========================================================
+   THÔNG TIN
+========================================================= */
+
+.info-card{
+    padding:18px;
+}
+
+.info-card h3{
+    font-size:18px;
+    margin-bottom:7px;
+}
+
+.info-card>p{
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    margin-bottom:15px;
+}
+
+.region-info{
+    min-height:190px;
+
+    padding:15px;
+
+    border-radius:13px;
+
+    background:#081827;
+
+    border:1px solid #1d3c56;
+}
+
+.region-info .icon{
+    font-size:30px;
+    margin-bottom:7px;
+}
+
+.region-info h4{
+    color:#65e4ff;
+    margin-bottom:7px;
+}
+
+.region-info p{
+    color:#b5cbd9;
+
+    font-size:13px;
+
+    line-height:1.65;
+}
+
+
+/* =========================================================
+   CÁC BƯỚC
+========================================================= */
+
+.steps{
+    margin-top:18px;
+
+    display:grid;
+
+    gap:9px;
+}
+
+.step{
+    display:grid;
+
+    grid-template-columns:36px 1fr;
+
+    gap:10px;
+
+    padding:10px;
+
+    border-radius:11px;
+
+    background:#091a2b;
+
+    border:1px solid #1c3a54;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.step:hover{
+    background:#0b2235;
+}
+
+.step.active{
+    background:#0b283b;
+
+    border-color:#31c9f4;
+
+    box-shadow:
+        0 0 18px
+        rgba(42,205,255,.08);
+}
+
+.step-number{
+    width:32px;
+    height:32px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:#103651;
+
+    color:#72e8ff;
+
+    font-weight:bold;
+}
+
+.step strong{
+    display:block;
+
+    font-size:13px;
+
+    margin-bottom:3px;
+}
+
+.step span{
+    color:#8faabd;
+
+    font-size:11px;
+
+    line-height:1.5;
+}
+
+
+/* =========================================================
+   THẺ DƯỚI
+========================================================= */
+
+.bottom-grid{
+    margin-top:18px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+.fact{
+    background:#091a2b;
+
+    border:1px solid #1d3b55;
+
+    border-radius:14px;
+
+    padding:16px;
+}
+
+.fact .emoji{
+    font-size:27px;
+
+    margin-bottom:7px;
+}
+
+.fact h4{
+    margin-bottom:6px;
+}
+
+.fact p{
+    color:#9eb6c7;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+
+@media(max-width:1000px){
+
+    .sim-layout{
+        grid-template-columns:1fr;
+    }
+
+    .control-group{
+        width:100%;
+        margin-left:0;
+    }
+
+}
+
+@media(max-width:650px){
+
+    main{
+        padding:15px 12px 35px;
+    }
+
+    .header-inner{
+        padding:12px;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .brand p{
+        display:none;
+    }
+
+    .bottom-grid{
+        grid-template-columns:1fr;
+    }
+
+    .controls button{
+        flex:1 1 auto;
+    }
+
+    input[type=range]{
+        flex:1;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<header>
+
+<div class="header-inner">
+
+    <div class="brand">
+
+        <div class="logo">
+            💧
+        </div>
+
+        <div>
+
+            <h1>
+                Hình thành nước ngầm
+            </h1>
+
+            <p>
+                Mô phỏng trực quan – Địa lí 6
+            </p>
+
+        </div>
+
+    </div>
+
+    <a
+        href="g20.html"
+        class="back-btn"
+    >
+        ← Quay lại Bài 20
+    </a>
+
+</div>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+    <div class="tag">
+        🌧️ NƯỚC MƯA → NGẤM → TẦNG NƯỚC NGẦM → BIỂN
+    </div>
+
+    <h2>
+        Mô phỏng quá trình hình thành nước ngầm
+    </h2>
+
+    <p>
+        Quan sát nước mưa rơi xuống địa hình,
+        từ từ ngấm qua các tầng đất đá,
+        tích tụ thành nước ngầm và di chuyển
+        trong lòng đất theo hướng dòng chảy.
+    </p>
+
+</section>
+
+
+<section class="sim-layout">
+
+
+<!-- =====================================================
+     KHUNG MÔ PHỎNG
+===================================================== -->
+
+<div class="sim-card">
+
+    <div class="sim-head">
+
+        <strong>
+            🔬 Sơ đồ mặt cắt địa chất
+        </strong>
+
+        <span
+            class="status"
+            id="statusText"
+        >
+            ▶ Đang mô phỏng
+        </span>
+
+    </div>
+
+
+    <div class="canvas-wrap">
+
+        <canvas
+            id="waterCanvas"
+            width="1100"
+            height="680"
+        ></canvas>
+
+        <div class="canvas-hint">
+            🖱️ Bấm vào từng khu vực để khám phá
+        </div>
+
+    </div>
+
+
+    <div class="controls">
+
+        <button
+            id="pauseBtn"
+            class="primary"
+        >
+            ⏸ Tạm dừng
+        </button>
+
+        <button
+            id="rainBtn"
+            class="active"
+        >
+            🌧️ Mưa: BẬT
+        </button>
+
+        <button
+            id="flowBtn"
+            class="active"
+        >
+            🌊 Dòng ngầm: BẬT
+        </button>
+
+        <button id="resetBtn">
+            ↻ Đặt lại
+        </button>
+
+
+        <div class="control-group">
+
+            <span>
+                🌧️ Cường độ mưa
+            </span>
+
+            <input
+                id="rainSlider"
+                type="range"
+                min="20"
+                max="100"
+                value="82"
+            >
+
+            <span id="rainValue">
+                82%
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     THÔNG TIN
+===================================================== -->
+
+<aside class="info-card">
+
+    <h3>
+        💧 Quá trình đang diễn ra
+    </h3>
+
+    <p>
+        Hãy quan sát các giọt nước:
+        từ trên cao rơi xuống,
+        ngấm dần qua đất đá,
+        sau đó đi vào tầng chứa nước
+        và tiếp tục di chuyển theo dòng nước ngầm.
+    </p>
+
+
+    <div
+        class="region-info"
+        id="regionInfo"
+    >
+
+        <div class="icon">
+            🌧️
+        </div>
+
+        <h4>
+            Nước mưa
+        </h4>
+
+        <p>
+            Nước mưa rơi xuống bề mặt địa hình.
+            Một phần chảy trên mặt đất,
+            một phần ngấm xuống lòng đất.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div
+            class="step active"
+            data-step="1"
+        >
+
+            <div class="step-number">
+                1
+            </div>
+
+            <div>
+
+                <strong>
+                    🌧️ Nước mưa
+                </strong>
+
+                <span>
+                    Nước từ khí quyển rơi xuống
+                    bề mặt đất.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="2"
+        >
+
+            <div class="step-number">
+                2
+            </div>
+
+            <div>
+
+                <strong>
+                    💧 Ngấm xuống đất
+                </strong>
+
+                <span>
+                    Nước từ từ đi qua
+                    các khe hở trong đất.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="3"
+        >
+
+            <div class="step-number">
+                3
+            </div>
+
+            <div>
+
+                <strong>
+                    🪨 Tầng thấm nước
+                </strong>
+
+                <span>
+                    Nước tiếp tục đi xuống
+                    qua lớp đất đá thấm nước.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="4"
+        >
+
+            <div class="step-number">
+                4
+            </div>
+
+            <div>
+
+                <strong>
+                    🌊 Tầng nước ngầm
+                </strong>
+
+                <span>
+                    Nước tích tụ phía trên
+                    lớp đá không thấm nước.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="step"
+            data-step="5"
+        >
+
+            <div class="step-number">
+                5
+            </div>
+
+            <div>
+
+                <strong>
+                    ↔️ Dòng chảy ngầm
+                </strong>
+
+                <span>
+                    Nước ngầm di chuyển chậm
+                    trong lòng đất về phía thấp hơn.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+</section>
+
+
+<!-- =====================================================
+     KIẾN THỨC
+===================================================== -->
+
+<section class="bottom-grid">
+
+    <div class="fact">
+
+        <div class="emoji">
+            🌧️
+        </div>
+
+        <h4>
+            Nước ngấm
+        </h4>
+
+        <p>
+            Một phần nước mưa thấm xuống
+            qua các khe hở của đất và đá.
+        </p>
+
+    </div>
+
+
+    <div class="fact">
+
+        <div class="emoji">
+            🌊
+        </div>
+
+        <h4>
+            Tầng nước ngầm
+        </h4>
+
+        <p>
+            Nước tích tụ trong các khoảng rỗng
+            của tầng đất đá chứa nước.
+        </p>
+
+    </div>
+
+
+    <div class="fact">
+
+        <div class="emoji">
+            ↔️
+        </div>
+
+        <h4>
+            Dòng chảy ngầm
+        </h4>
+
+        <p>
+            Nước ngầm có thể di chuyển chậm
+            trong lòng đất và bổ sung cho sông,
+            hồ hoặc biển.
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+const canvas =
+    document.getElementById("waterCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+const W = canvas.width;
+const H = canvas.height;
+
+
+/* =========================================================
+   TRẠNG THÁI
+========================================================= */
+
+let running = true;
+
+let rainEnabled = true;
+
+let flowEnabled = true;
+
+let rainIntensity = .82;
+
+let lastTime = performance.now();
+
+let rainDrops = [];
+
+let infiltratingDrops = [];
+
+let groundwaterDrops = [];
+
+let surfaceFlowDrops = [];
+
+let spawnTimer = 0;
+
+let groundwaterSpawnTimer = 0;
+
+
+/* =========================================================
+   THÔNG TIN
+========================================================= */
+
+const regions = {
+
+    rain:{
+        icon:"🌧️",
+        title:"Nước mưa",
+        text:
+        "Nước mưa rơi xuống địa hình. Một phần nước chảy trên bề mặt, một phần ngấm xuống đất qua các khe hở."
+    },
+
+    soil:{
+        icon:"💧",
+        title:"Nước ngấm",
+        text:
+        "Nước mưa từ từ thấm xuống đất nhờ trọng lực. Tốc độ ngấm phụ thuộc vào đặc điểm đất đá và lượng nước cung cấp."
+    },
+
+    permeable:{
+        icon:"🪨",
+        title:"Tầng thấm nước",
+        text:
+        "Là lớp đất đá có khả năng cho nước đi qua. Nước tiếp tục thấm xuống phía dưới."
+    },
+
+    aquifer:{
+        icon:"🌊",
+        title:"Tầng nước ngầm",
+        text:
+        "Nước tích tụ trong các khoảng rỗng của đất đá tạo thành tầng nước ngầm. Nước ngầm có thể di chuyển chậm trong lòng đất."
+    },
+
+    impermeable:{
+        icon:"🪨",
+        title:"Tầng không thấm nước",
+        text:
+        "Lớp đất đá khó cho nước đi qua. Nước có xu hướng tích tụ phía trên lớp này."
+    },
+
+    groundwater:{
+        icon:"↔️",
+        title:"Dòng chảy nước ngầm",
+        text:
+        "Nước ngầm di chuyển chậm theo hướng địa hình và điều kiện địa chất, thường từ nơi cao hơn về nơi thấp hơn."
+    },
+
+    sea:{
+        icon:"🌊",
+        title:"Biển",
+        text:
+        "Nước ngầm có thể góp phần bổ sung nước cho các dòng chảy và vùng biển ven bờ."
+    }
+
+};
+
+
+/* =========================================================
+   HÀM HỖ TRỢ
+========================================================= */
+
+function random(min,max){
+    return Math.random()*(max-min)+min;
+}
+
+function clamp(v,min,max){
+    return Math.max(min,Math.min(max,v));
+}
+
+
+/* =========================================================
+   ĐỊA HÌNH
+========================================================= */
+
+/*
+   Mô phỏng gần sơ đồ bạn gửi:
+
+   núi
+      ↓
+   sườn dốc
+          ↓
+   đồng bằng
+                  biển
+*/
+
+function surfaceY(x){
+
+    const nx=x/W;
+
+    let y;
+
+    if(nx<.30){
+
+        /*
+           vùng núi
+        */
+
+        const t=nx/.30;
+
+        y=
+            250
+            -125*Math.sin(t*Math.PI)
+            -40*Math.sin(t*Math.PI*2.4);
+
+    }
+
+    else if(nx<.58){
+
+        /*
+           sườn dốc
+        */
+
+        const t=(nx-.30)/.28;
+
+        y=
+            205+
+            80*t+
+            13*Math.sin(t*Math.PI*3);
+
+    }
+
+    else if(nx<.76){
+
+        /*
+           đồng bằng
+        */
+
+        const t=(nx-.58)/.18;
+
+        y=
+            285+
+            15*Math.sin(t*Math.PI*2);
+
+    }
+
+    else{
+
+        /*
+           bờ biển
+        */
+
+        y=
+            300+
+            8*Math.sin(nx*30);
+
+    }
+
+    return y;
+}
+
+
+/* =========================================================
+   MỰC NƯỚC NGẦM
+========================================================= */
+
+function waterTableY(x){
+
+    const nx=x/W;
+
+    /*
+       Mực nước ngầm hơi dốc
+       theo hướng ra biển.
+    */
+
+    return (
+        430
+        -55*nx
+        +8*Math.sin(nx*Math.PI*2)
+    );
+}
+
+
+/* =========================================================
+   ĐÁY TẦNG KHÔNG THẤM
+========================================================= */
+
+function impermeableTopY(x){
+
+    const nx=x/W;
+
+    return (
+        565
+        +20*Math.sin(nx*Math.PI*2.2)
+    );
+}
+
+
+/* =========================================================
+   MÂY
+========================================================= */
+
+function drawCloud(x,y,s=1){
+
+    ctx.save();
+
+    ctx.fillStyle="#e5f2f8";
+
+    ctx.globalAlpha=.9;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        25*s,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x+28*s,
+        y-14*s,
+        34*s,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x+65*s,
+        y,
+        28*s,
+        0,
+        Math.PI*2
+    );
+
+    ctx.rect(
+        x-4*s,
+        y,
+        75*s,
+        25*s
+    );
+
+    ctx.fill();
+
+    /*
+       viền mây
+    */
+
+    ctx.strokeStyle="#b6ccd7";
+
+    ctx.lineWidth=2;
+
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+
+/* =========================================================
+   BẦU TRỜI
+========================================================= */
+
+function drawSky(){
+
+    const g =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            310
+        );
+
+    g.addColorStop(
+        0,
+        "#061a32"
+    );
+
+    g.addColorStop(
+        .55,
+        "#0c3655"
+    );
+
+    g.addColorStop(
+        1,
+        "#1b5774"
+    );
+
+    ctx.fillStyle=g;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        315
+    );
+
+
+    /*
+       mặt trời
+    */
+
+    const sunX=865;
+    const sunY=90;
+
+    const glow=
+        ctx.createRadialGradient(
+            sunX,
+            sunY,
+            5,
+            sunX,
+            sunY,
+            85
+        );
+
+    glow.addColorStop(
+        0,
+        "rgba(255,238,150,.85)"
+    );
+
+    glow.addColorStop(
+        1,
+        "rgba(255,220,100,0)"
+    );
+
+    ctx.fillStyle=glow;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        sunX,
+        sunY,
+        85,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle="#ffe28b";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        sunX,
+        sunY,
+        28,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /*
+       mây
+    */
+
+    drawCloud(70,95,1.05);
+
+    drawCloud(300,80,.9);
+
+    drawCloud(470,120,.75);
+
+}
+
+
+/* =========================================================
+   ĐẤT VÀ ĐỊA HÌNH
+========================================================= */
+
+function drawTerrain(){
+
+    /*
+       nền đất
+    */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        surfaceY(0)
+    );
+
+    for(
+        let x=0;
+        x<=W;
+        x+=7
+    ){
+
+        ctx.lineTo(
+            x,
+            surfaceY(x)
+        );
+
+    }
+
+    ctx.lineTo(W,H);
+
+    ctx.lineTo(0,H);
+
+    ctx.closePath();
+
+
+    const soil =
+        ctx.createLinearGradient(
+            0,
+            250,
+            0,
+            H
+        );
+
+    soil.addColorStop(
+        0,
+        "#6d5138"
+    );
+
+    soil.addColorStop(
+        .35,
+        "#806044"
+    );
+
+    soil.addColorStop(
+        .62,
+        "#62503e"
+    );
+
+    soil.addColorStop(
+        1,
+        "#292c2e"
+    );
+
+    ctx.fillStyle=soil;
+
+    ctx.fill();
+
+
+    /*
+       lớp đất thấm
+    */
+
+    ctx.save();
+
+    ctx.globalAlpha=.28;
+
+    ctx.fillStyle="#c99a60";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        surfaceY(0)+72
+    );
+
+    for(
+        let x=0;
+        x<=W;
+        x+=7
+    ){
+
+        ctx.lineTo(
+            x,
+            surfaceY(x)+72
+        );
+
+    }
+
+    for(
+        let x=W;
+        x>=0;
+        x-=7
+    ){
+
+        ctx.lineTo(
+            x,
+            surfaceY(x)+160
+        );
+
+    }
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.restore();
+
+
+    /*
+       đá vụn
+    */
+
+    for(let i=0;i<320;i++){
+
+        const x=
+            (i*83)%W;
+
+        const y=
+            320+
+            (i*37)%240;
+
+        ctx.fillStyle=
+            i%4===0
+            ? "rgba(35,27,21,.28)"
+            : "rgba(238,205,163,.12)";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            1+(i%4),
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    /*
+       đường mặt đất
+    */
+
+    ctx.beginPath();
+
+    for(
+        let x=0;
+        x<=W;
+        x+=7
+    ){
+
+        if(x===0){
+
+            ctx.moveTo(
+                x,
+                surfaceY(x)
+            );
+
+        }else{
+
+            ctx.lineTo(
+                x,
+                surfaceY(x)
+            );
+
+        }
+
+    }
+
+    ctx.strokeStyle="#b79267";
+
+    ctx.lineWidth=4;
+
+    ctx.stroke();
+
+}
+
+
+/* =========================================================
+   BIỂN
+========================================================= */
+
+function drawSea(){
+
+    /*
+       Phần bên phải là biển.
+    */
+
+    const seaStart=W*.75;
+
+    ctx.save();
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        seaStart,
+        surfaceY(seaStart)
+    );
+
+    ctx.lineTo(
+        W,
+        surfaceY(W)
+    );
+
+    ctx.lineTo(
+        W,
+        565
+    );
+
+    ctx.lineTo(
+        seaStart,
+        565
+    );
+
+    ctx.closePath();
+
+
+    const sea =
+        ctx.createLinearGradient(
+            0,
+            285,
+            0,
+            565
+        );
+
+    sea.addColorStop(
+        0,
+        "rgba(28,154,211,.9)"
+    );
+
+    sea.addColorStop(
+        1,
+        "rgba(8,77,126,.95)"
+    );
+
+    ctx.fillStyle=sea;
+
+    ctx.fill();
+
+
+    /*
+       sóng
+    */
+
+    ctx.strokeStyle=
+        "rgba(155,235,255,.35)";
+
+    ctx.lineWidth=2;
+
+    for(let y=325;y<540;y+=32){
+
+        ctx.beginPath();
+
+        for(
+            let x=seaStart;
+            x<W;
+            x+=10
+        ){
+
+            const yy=
+                y+
+                Math.sin(
+                    x*.04+
+                    y*.02
+                )*3;
+
+            if(x===seaStart)
+                ctx.moveTo(x,yy);
+            else
+                ctx.lineTo(x,yy);
+
+        }
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.restore();
+
+
+    /*
+       nhãn biển
+    */
+
+    ctx.fillStyle="#dffaff";
+
+    ctx.font="italic 17px Arial";
+
+    ctx.fillText(
+        "Biển",
+        910,
+        390
+    );
+
+}
+
+
+/* =========================================================
+   TẦNG NƯỚC NGẦM
+========================================================= */
+
+function drawAquifer(){
+
+    /*
+       vùng nước ngầm
+       nằm giữa mực nước và đáy.
+    */
+
+    ctx.beginPath();
+
+    for(
+        let x=0;
+        x<=W;
+        x+=7
+    ){
+
+        if(x===0){
+
+            ctx.moveTo(
+                x,
+                waterTableY(x)
+            );
+
+        }else{
+
+            ctx.lineTo(
+                x,
+                waterTableY(x)
+            );
+
+        }
+
+    }
+
+    for(
+        let x=W;
+        x>=0;
+        x-=7
+    ){
+
+        ctx.lineTo(
+            x,
+            impermeableTopY(x)
+        );
+
+    }
+
+    ctx.closePath();
+
+
+    const water =
+        ctx.createLinearGradient(
+            0,
+            400,
+            0,
+            570
+        );
+
+    water.addColorStop(
+        0,
+        "rgba(20,157,205,.78)"
+    );
+
+    water.addColorStop(
+        .45,
+        "rgba(15,112,164,.78)"
+    );
+
+    water.addColorStop(
+        1,
+        "rgba(7,62,105,.9)"
+    );
+
+    ctx.fillStyle=water;
+
+    ctx.fill();
+
+
+    /*
+       mực nước ngầm
+    */
+
+    ctx.beginPath();
+
+    for(
+        let x=0;
+        x<=W;
+        x+=7
+    ){
+
+        if(x===0){
+
+            ctx.moveTo(
+                x,
+                waterTableY(x)
+            );
+
+        }else{
+
+            ctx.lineTo(
+                x,
+                waterTableY(x)
+            );
+
+        }
+
+    }
+
+    ctx.strokeStyle="#64e8ff";
+
+    ctx.lineWidth=3;
+
+    ctx.setLineDash([
+        12,
+        8
+    ]);
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+
+    /*
+       ánh sáng trong nước
+    */
+
+    ctx.fillStyle=
+        "rgba(105,231,255,.07)";
+
+    ctx.fillRect(
+        0,
+        480,
+        W,
+        70
+    );
+
+}
+
+
+/* =========================================================
+   TẦNG KHÔNG THẤM
+========================================================= */
+
+function drawImpermeable(){
+
+    ctx.beginPath();
+
+    for(
+        let x=0;
+        x<=W;
+        x+=7
+    ){
+
+        if(x===0){
+
+            ctx.moveTo(
+                x,
+                impermeableTopY(x)
+            );
+
+        }else{
+
+            ctx.lineTo(
+                x,
+                impermeableTopY(x)
+            );
+
+        }
+
+    }
+
+    ctx.lineTo(
+        W,
+        H
+    );
+
+    ctx.lineTo(
+        0,
+        H
+    );
+
+    ctx.closePath();
+
+
+    const rock =
+        ctx.createLinearGradient(
+            0,
+            560,
+            0,
+            H
+        );
+
+    rock.addColorStop(
+        0,
+        "#46494b"
+    );
+
+    rock.addColorStop(
+        1,
+        "#1b2024"
+    );
+
+    ctx.fillStyle=rock;
+
+    ctx.fill();
+
+
+    /*
+       vân đá
+    */
+
+    ctx.strokeStyle=
+        "rgba(200,210,215,.13)";
+
+    ctx.lineWidth=1.5;
+
+    for(let i=0;i<40;i++){
+
+        const y=
+            575+
+            i*5;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            y+Math.sin(i)*6
+        );
+
+        ctx.lineTo(
+            W,
+            y+Math.cos(i)*6
+        );
+
+        ctx.stroke();
+
+    }
+
+}
+
+
+/* =========================================================
+   DÒNG NƯỚC MẶT
+========================================================= */
+
+function drawSurfaceFlow(){
+
+    /*
+       Dòng nước từ núi
+       chảy xuống vùng thấp.
+    */
+
+    ctx.strokeStyle=
+        "rgba(60,213,255,.55)";
+
+    ctx.lineWidth=4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        280,
+        surfaceY(280)+4
+    );
+
+    ctx.quadraticCurveTo(
+        390,
+        300,
+        500,
+        surfaceY(500)+5
+    );
+
+    ctx.quadraticCurveTo(
+        610,
+        320,
+        760,
+        surfaceY(760)+5
+    );
+
+    ctx.stroke();
+
+}
+
+
+/* =========================================================
+   MŨI TÊN THẤM
+========================================================= */
+
+function drawInfiltrationArrows(){
+
+    ctx.strokeStyle=
+        "rgba(90,224,255,.38)";
+
+    ctx.fillStyle=
+        "rgba(90,224,255,.48)";
+
+    ctx.lineWidth=2;
+
+    const xs=[
+        145,
+        205,
+        265,
+        335,
+        410
+    ];
+
+    for(const x of xs){
+
+        const start=
+            surfaceY(x)+10;
+
+        const end=
+            waterTableY(x)-15;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            start
+        );
+
+        ctx.lineTo(
+            x-4,
+            end
+        );
+
+        ctx.stroke();
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x-4,
+            end
+        );
+
+        ctx.lineTo(
+            x-10,
+            end-11
+        );
+
+        ctx.lineTo(
+            x+3,
+            end-8
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+    }
+
+}
+
+
+/* =========================================================
+   MŨI TÊN DÒNG NƯỚC NGẦM
+========================================================= */
+
+function drawGroundwaterArrows(){
+
+    if(!flowEnabled)
+        return;
+
+    /*
+       Đây là phần được nâng cấp mạnh:
+       các mũi tên chạy từ trái → phải,
+       giống hướng trong sơ đồ SGK.
+    */
+
+    ctx.strokeStyle=
+        "rgba(75,229,255,.7)";
+
+    ctx.fillStyle=
+        "rgba(75,229,255,.8)";
+
+    ctx.lineWidth=3;
+
+    const arrows=[
+        {x:90,y:510},
+        {x:275,y:525},
+        {x:455,y:515},
+        {x:625,y:500}
+    ];
+
+    for(const a of arrows){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            a.x,
+            a.y
+        );
+
+        ctx.lineTo(
+            a.x+75,
+            a.y-3
+        );
+
+        ctx.stroke();
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            a.x+75,
+            a.y-3
+        );
+
+        ctx.lineTo(
+            a.x+60,
+            a.y-11
+        );
+
+        ctx.lineTo(
+            a.x+63,
+            a.y+7
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+    }
+
+}
+
+
+/* =========================================================
+   GIẾNG
+========================================================= */
+
+function drawWell(){
+
+    const x=850;
+
+    /*
+       thân giếng
+    */
+
+    ctx.fillStyle="#89979d";
+
+    ctx.fillRect(
+        x-17,
+        255,
+        34,
+        275
+    );
+
+
+    /*
+       miệng
+    */
+
+    ctx.fillStyle="#bac7cc";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        255,
+        25,
+        9,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle="#17252d";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        255,
+        15,
+        5,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /*
+       ống xuống tầng nước
+    */
+
+    ctx.strokeStyle="#d7e6ec";
+
+    ctx.lineWidth=3;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x,
+        262
+    );
+
+    ctx.lineTo(
+        x,
+        waterTableY(x)
+    );
+
+    ctx.stroke();
+
+
+    ctx.fillStyle="#eaf8ff";
+
+    ctx.font="bold 14px Arial";
+
+    ctx.fillText(
+        "GIẾNG",
+        x-27,
+        240
+    );
+
+}
+
+
+/* =========================================================
+   NHÃN
+========================================================= */
+
+function label(text,x,y,color){
+
+    ctx.font="bold 15px Arial";
+
+    const width=
+        ctx.measureText(text).width;
+
+    ctx.fillStyle=
+        "rgba(3,13,22,.70)";
+
+    roundRect(
+        ctx,
+        x-7,
+        y-18,
+        width+14,
+        27,
+        7
+    );
+
+    ctx.fill();
+
+    ctx.fillStyle=color;
+
+    ctx.fillText(
+        text,
+        x,
+        y
+    );
+}
+
+
+function drawLabels(){
+
+    label(
+        "Ngấm",
+        115,
+        270,
+        "#d9f8ff"
+    );
+
+
+    label(
+        "Tầng thấm nước",
+        100,
+        370,
+        "#ffe0a8"
+    );
+
+
+    label(
+        "TẦNG NƯỚC NGẦM",
+        350,
+        505,
+        "#72eaff"
+    );
+
+
+    label(
+        "Tầng không thấm nước",
+        320,
+        630,
+        "#d6dde1"
+    );
+
+
+    label(
+        "Mực nước ngầm",
+        650,
+        waterTableY(650)-12,
+        "#72eaff"
+    );
+
+}
+
+
+/* =========================================================
+   MƯA
+========================================================= */
+
+function spawnRain(){
+
+    if(!rainEnabled)
+        return;
+
+    /*
+       Mưa nhiều hơn bản cũ.
+       Tập trung nhiều ở vùng núi,
+       giống hình tham khảo.
+    */
+
+    const count=
+        Math.ceil(
+            rainIntensity*2.3
+        );
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        let x;
+
+        /*
+           65% lượng mưa rơi ở vùng núi
+        */
+
+        if(Math.random()<.65){
+
+            x=random(
+                60,
+                500
+            );
+
+        }else{
+
+            x=random(
+                120,
+                800
+            );
+
+        }
+
+
+        rainDrops.push({
+
+            x:x,
+
+            y:random(
+                55,
+                145
+            ),
+
+            speed:random(
+                250,
+                380
+            ),
+
+            length:random(
+                10,
+                19
+            ),
+
+            alpha:random(
+                .45,
+                .9
+            )
+
+        });
+
+    }
+
+
+    if(rainDrops.length>260){
+
+        rainDrops.splice(
+            0,
+            rainDrops.length-260
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TẠO GIỌT THẤM
+========================================================= */
+
+function spawnInfiltration(){
+
+    if(!rainEnabled)
+        return;
+
+
+    /*
+       Tăng số lượng giọt thấm
+       nhưng vẫn giữ tốc độ chậm.
+    */
+
+    if(
+        Math.random()<
+        rainIntensity*.055
+    ){
+
+        const x=random(
+            75,
+            510
+        );
+
+        const surface=
+            surfaceY(x);
+
+        infiltratingDrops.push({
+
+            x:x,
+
+            y:
+                surface+4,
+
+            startY:
+                surface+4,
+
+            speed:
+                random(
+                    16,
+                    28
+                ),
+
+            size:
+                random(
+                    2.4,
+                    4.1
+                ),
+
+            phase:
+                Math.random()*
+                Math.PI*2,
+
+            wobble:
+                random(
+                    .7,
+                    1.7
+                ),
+
+            life:0
+
+        });
+
+    }
+
+
+    if(
+        infiltratingDrops.length>105
+    ){
+
+        infiltratingDrops.splice(
+            0,
+            infiltratingDrops.length-105
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TẠO HẠT NƯỚC NGẦM
+========================================================= */
+
+function createGroundwater(
+    x,
+    y
+){
+
+    groundwaterDrops.push({
+
+        x:x,
+
+        y:y,
+
+        /*
+           Hướng dòng chảy chính
+           từ trái → phải.
+        */
+
+        vx:random(
+            18,
+            32
+        ),
+
+        vy:random(
+            -.8,
+            .8
+        ),
+
+        size:random(
+            2.3,
+            4
+        ),
+
+        alpha:random(
+            .55,
+            .95
+        ),
+
+        life:0,
+
+        maxLife:random(
+            8,
+            14
+        )
+
+    });
+
+
+    if(
+        groundwaterDrops.length>210
+    ){
+
+        groundwaterDrops.splice(
+            0,
+            groundwaterDrops.length-210
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TẠO DÒNG NƯỚC NGẦM LIÊN TỤC
+========================================================= */
+
+function spawnGroundwaterFlow(){
+
+    if(!flowEnabled)
+        return;
+
+
+    /*
+       Các hạt nền chạy liên tục
+       trong tầng nước ngầm.
+    */
+
+    const x=
+        random(
+            30,
+            200
+        );
+
+    const y=
+        waterTableY(x)+
+        random(
+            20,
+            80
+        );
+
+
+    /*
+       Không để hạt nằm dưới đáy tầng.
+    */
+
+    if(
+        y<
+        impermeableTopY(x)-10
+    ){
+
+        createGroundwater(
+            x,
+            y
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE MƯA
+========================================================= */
+
+function updateRain(dt){
+
+    for(
+        let i=rainDrops.length-1;
+        i>=0;
+        i--
+    ){
+
+        const d=
+            rainDrops[i];
+
+        d.y+=
+            d.speed*dt;
+
+
+        const surface=
+            surfaceY(d.x);
+
+
+        if(
+            d.y>=surface
+        ){
+
+            /*
+               70% giọt có cơ hội ngấm.
+            */
+
+            if(
+                Math.random()<.72
+            ){
+
+                infiltratingDrops.push({
+
+                    x:d.x,
+
+                    y:surface+4,
+
+                    startY:surface+4,
+
+                    speed:random(
+                        16,
+                        28
+                    ),
+
+                    size:random(
+                        2.4,
+                        4
+                    ),
+
+                    phase:
+                        Math.random()*
+                        Math.PI*2,
+
+                    wobble:
+                        random(.7,1.7),
+
+                    life:0
+
+                });
+
+            }
+
+
+            /*
+               Một phần tạo dòng chảy mặt.
+            */
+
+            else{
+
+                surfaceFlowDrops.push({
+
+                    x:d.x,
+
+                    y:surface+3,
+
+                    life:0
+
+                });
+
+            }
+
+
+            rainDrops.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE GIỌT THẤM
+========================================================= */
+
+function updateInfiltration(dt){
+
+    for(
+        let i=infiltratingDrops.length-1;
+        i>=0;
+        i--
+    ){
+
+        const d=
+            infiltratingDrops[i];
+
+
+        d.life+=dt;
+
+
+        /*
+           Chuyển động xuống rất chậm.
+        */
+
+        d.y+=
+            d.speed*dt;
+
+
+        /*
+           Dao động nhẹ.
+        */
+
+        d.x+=
+            Math.sin(
+                d.life*2.1+
+                d.phase
+            )*
+            d.wobble*
+            dt*
+            4;
+
+
+        d.x=
+            clamp(
+                d.x,
+                25,
+                560
+            );
+
+
+        const surface=
+            surfaceY(d.x);
+
+
+        if(
+            d.y<
+            surface+4
+        ){
+
+            d.y=
+                surface+4;
+
+        }
+
+
+        /*
+           Khi chạm mực nước ngầm
+        */
+
+        const table=
+            waterTableY(d.x);
+
+
+        if(
+            d.y>=table
+        ){
+
+            /*
+               Tạo nhiều hạt nhỏ
+               khi giọt hòa vào tầng nước.
+            */
+
+            for(
+                let k=0;
+                k<3;
+                k++
+            ){
+
+                createGroundwater(
+
+                    d.x+
+                    random(-3,3),
+
+                    table+
+                    random(5,30)
+
+                );
+
+            }
+
+
+            infiltratingDrops.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE NƯỚC NGẦM
+========================================================= */
+
+function updateGroundwater(dt){
+
+    for(
+        let i=groundwaterDrops.length-1;
+        i>=0;
+        i--
+    ){
+
+        const d=
+            groundwaterDrops[i];
+
+
+        d.life+=dt;
+
+
+        if(flowEnabled){
+
+            /*
+               Dòng chảy ngang rõ ràng.
+            */
+
+            d.x+=
+                d.vx*dt;
+
+
+            /*
+               Chuyển động lên xuống rất nhẹ
+               theo địa hình.
+            */
+
+            d.y+=
+                d.vy*dt;
+
+
+            const table=
+                waterTableY(
+                    clamp(
+                        d.x,
+                        0,
+                        W
+                    )
+                );
+
+
+            const bottom=
+                impermeableTopY(
+                    clamp(
+                        d.x,
+                        0,
+                        W
+                    )
+                );
+
+
+            /*
+               Giữ hạt trong tầng nước.
+            */
+
+            d.y=
+                clamp(
+                    d.y,
+                    table+6,
+                    bottom-8
+                );
+
+        }
+
+
+        /*
+           Hạt biến mất khi ra biển.
+        */
+
+        if(
+            d.x>W*.76
+        ){
+
+            /*
+               Có thể tiếp tục tạo
+               hạt mới ở đầu dòng.
+            */
+
+            groundwaterDrops.splice(
+                i,
+                1
+            );
+
+            continue;
+
+        }
+
+
+        /*
+           Hết tuổi.
+        */
+
+        if(
+            d.life>d.maxLife
+        ){
+
+            groundwaterDrops.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE DÒNG MẶT
+========================================================= */
+
+function updateSurfaceFlow(dt){
+
+    for(
+        let i=surfaceFlowDrops.length-1;
+        i>=0;
+        i--
+    ){
+
+        const d=
+            surfaceFlowDrops[i];
+
+        d.x+=
+            35*dt;
+
+        d.y=
+            surfaceY(
+                clamp(
+                    d.x,
+                    0,
+                    W
+                )
+            )+3;
+
+        d.life+=dt;
+
+
+        if(
+            d.x>W*.78 ||
+            d.life>9
+        ){
+
+            surfaceFlowDrops.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   VẼ MƯA
+========================================================= */
+
+function drawRain(){
+
+    ctx.lineWidth=2;
+
+    for(
+        const d of rainDrops
+    ){
+
+        ctx.strokeStyle=
+            `rgba(
+                112,
+                221,
+                255,
+                ${d.alpha}
+            )`;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            d.x,
+            d.y
+        );
+
+        ctx.lineTo(
+            d.x-2,
+            d.y+d.length
+        );
+
+        ctx.stroke();
+
+    }
+
+}
+
+
+/* =========================================================
+   VẼ GIỌT NGẤM
+========================================================= */
+
+function drawInfiltration(){
+
+    for(
+        const d of infiltratingDrops
+    ){
+
+        /*
+           quầng sáng
+        */
+
+        const glow=
+            ctx.createRadialGradient(
+                d.x,
+                d.y,
+                0,
+                d.x,
+                d.y,
+                d.size*5
+            );
+
+        glow.addColorStop(
+            0,
+            "rgba(76,221,255,.62)"
+        );
+
+        glow.addColorStop(
+            1,
+            "rgba(76,221,255,0)"
+        );
+
+        ctx.fillStyle=glow;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            d.x,
+            d.y,
+            d.size*5,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /*
+           giọt
+        */
+
+        ctx.fillStyle="#5be2ff";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            d.x,
+            d.y,
+            d.size,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /*
+           ánh sáng
+        */
+
+        ctx.fillStyle="#e1fbff";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            d.x-d.size*.35,
+            d.y-d.size*.35,
+            d.size*.32,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+}
+
+
+/* =========================================================
+   VẼ NƯỚC NGẦM
+========================================================= */
+
+function drawGroundwater(){
+
+    for(
+        const d of groundwaterDrops
+    ){
+
+        const alpha=
+            Math.max(
+                .2,
+                d.alpha*
+                (1-d.life/d.maxLife*.55)
+            );
+
+
+        /*
+           vệt chuyển động phía sau
+        */
+
+        ctx.strokeStyle=
+            `rgba(
+                77,
+                225,
+                255,
+                ${alpha*.45}
+            )`;
+
+        ctx.lineWidth=2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            d.x-20,
+            d.y
+        );
+
+        ctx.lineTo(
+            d.x-3,
+            d.y
+        );
+
+        ctx.stroke();
+
+
+        /*
+           hạt nước
+        */
+
+        ctx.fillStyle=
+            `rgba(
+                91,
+                229,
+                255,
+                ${alpha}
+            )`;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            d.x,
+            d.y,
+            d.size,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        /*
+           highlight
+        */
+
+        ctx.fillStyle=
+            `rgba(
+                220,
+                250,
+                255,
+                ${alpha*.85}
+            )`;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            d.x-d.size*.3,
+            d.y-d.size*.3,
+            d.size*.3,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+}
+
+
+/* =========================================================
+   DÒNG MẶT
+========================================================= */
+
+function drawSurfaceFlowParticles(){
+
+    for(
+        const d of surfaceFlowDrops
+    ){
+
+        ctx.fillStyle=
+            "rgba(100,225,255,.8)";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            d.x,
+            d.y,
+            3,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW
+========================================================= */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    drawSky();
+
+    drawTerrain();
+
+    drawSea();
+
+    drawAquifer();
+
+    drawImpermeable();
+
+    drawSurfaceFlow();
+
+    drawInfiltrationArrows();
+
+    drawGroundwaterArrows();
+
+    drawRain();
+
+    drawSurfaceFlowParticles();
+
+    drawInfiltration();
+
+    drawGroundwater();
+
+    drawWell();
+
+    drawLabels();
+
+}
+
+
+/* =========================================================
+   UPDATE
+========================================================= */
+
+function update(dt){
+
+    if(!running)
+        return;
+
+
+    /*
+       Mưa nhiều.
+    */
+
+    spawnRain();
+
+
+    /*
+       Nước ngấm liên tục.
+    */
+
+    spawnTimer+=dt;
+
+    if(
+        spawnTimer>.11
+    ){
+
+        spawnInfiltration();
+
+        spawnTimer=0;
+
+    }
+
+
+    /*
+       Dòng nước ngầm liên tục.
+    */
+
+    groundwaterSpawnTimer+=dt;
+
+    if(
+        groundwaterSpawnTimer>.13
+    ){
+
+        spawnGroundwaterFlow();
+
+        groundwaterSpawnTimer=0;
+
+    }
+
+
+    updateRain(dt);
+
+    updateInfiltration(dt);
+
+    updateGroundwater(dt);
+
+    updateSurfaceFlow(dt);
+
+    updateActiveStep();
+
+}
+
+
+/* =========================================================
+   TỰ ĐỘNG CHỌN BƯỚC
+========================================================= */
+
+function updateActiveStep(){
+
+    let step=1;
+
+
+    if(
+        infiltratingDrops.length>0
+    ){
+
+        step=2;
+
+    }
+
+
+    if(
+        infiltratingDrops.some(
+            d=>d.y>360
+        )
+    ){
+
+        step=3;
+
+    }
+
+
+    if(
+        groundwaterDrops.length>10
+    ){
+
+        step=4;
+
+    }
+
+
+    if(
+        groundwaterDrops.some(
+            d=>d.x>350
+        )
+    ){
+
+        step=5;
+
+    }
+
+
+    document
+    .querySelectorAll(".step")
+    .forEach(el=>{
+
+        el.classList.toggle(
+            "active",
+            Number(
+                el.dataset.step
+            )===step
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+function animate(now){
+
+    const dt=
+        Math.min(
+            .035,
+            (now-lastTime)/1000
+        );
+
+    lastTime=now;
+
+
+    update(dt);
+
+    draw();
+
+
+    requestAnimationFrame(
+        animate
+    );
+
+}
+
+requestAnimationFrame(
+    animate
+);
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+document
+.getElementById("pauseBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        running=!running;
+
+
+        this.textContent=
+            running
+            ? "⏸ Tạm dừng"
+            : "▶ Tiếp tục";
+
+
+        document
+        .getElementById("statusText")
+        .textContent=
+            running
+            ? "▶ Đang mô phỏng"
+            : "⏸ Đã tạm dừng";
+
+    }
+);
+
+
+/* =========================================================
+   MƯA
+========================================================= */
+
+document
+.getElementById("rainBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        rainEnabled=
+            !rainEnabled;
+
+
+        this.classList.toggle(
+            "active",
+            rainEnabled
+        );
+
+
+        this.textContent=
+            rainEnabled
+            ? "🌧️ Mưa: BẬT"
+            : "☀️ Mưa: TẮT";
+
+    }
+);
+
+
+/* =========================================================
+   DÒNG NGẦM
+========================================================= */
+
+document
+.getElementById("flowBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        flowEnabled=
+            !flowEnabled;
+
+
+        this.classList.toggle(
+            "active",
+            flowEnabled
+        );
+
+
+        this.textContent=
+            flowEnabled
+            ? "🌊 Dòng ngầm: BẬT"
+            : "⏸ Dòng ngầm: TẮT";
+
+    }
+);
+
+
+/* =========================================================
+   SLIDER MƯA
+========================================================= */
+
+document
+.getElementById("rainSlider")
+.addEventListener(
+    "input",
+    function(){
+
+        rainIntensity=
+            Number(
+                this.value
+            )/100;
+
+
+        document
+        .getElementById("rainValue")
+        .textContent=
+            this.value+"%";
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+document
+.getElementById("resetBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        rainDrops=[];
+
+        infiltratingDrops=[];
+
+        groundwaterDrops=[];
+
+        surfaceFlowDrops=[];
+
+
+        rainEnabled=true;
+
+        flowEnabled=true;
+
+        running=true;
+
+
+        rainIntensity=.82;
+
+
+        document
+        .getElementById("rainSlider")
+        .value=82;
+
+
+        document
+        .getElementById("rainValue")
+        .textContent="82%";
+
+
+        document
+        .getElementById("rainBtn")
+        .classList.add("active");
+
+
+        document
+        .getElementById("flowBtn")
+        .classList.add("active");
+
+
+        document
+        .getElementById("rainBtn")
+        .textContent=
+            "🌧️ Mưa: BẬT";
+
+
+        document
+        .getElementById("flowBtn")
+        .textContent=
+            "🌊 Dòng ngầm: BẬT";
+
+
+        document
+        .getElementById("pauseBtn")
+        .textContent=
+            "⏸ Tạm dừng";
+
+
+        document
+        .getElementById("statusText")
+        .textContent=
+            "▶ Đang mô phỏng";
+
+    }
+);
+
+
+/* =========================================================
+   HIỂN THỊ THÔNG TIN
+========================================================= */
+
+function showRegion(name){
+
+    const data=
+        regions[name];
+
+
+    document
+    .getElementById("regionInfo")
+    .innerHTML=`
+
+        <div class="icon">
+            ${data.icon}
+        </div>
+
+        <h4>
+            ${data.title}
+        </h4>
+
+        <p>
+            ${data.text}
+        </p>
+
+    `;
+
+}
+
+
+/* =========================================================
+   CLICK CANVAS
+========================================================= */
+
+canvas.addEventListener(
+    "click",
+    function(e){
+
+        const rect=
+            canvas.getBoundingClientRect();
+
+
+        const x=
+            (e.clientX-rect.left)*
+            W/
+            rect.width;
+
+
+        const y=
+            (e.clientY-rect.top)*
+            H/
+            rect.height;
+
+
+        /*
+           biển
+        */
+
+        if(
+            x>W*.75 &&
+            y>surfaceY(x)
+        ){
+
+            showRegion("sea");
+
+            return;
+
+        }
+
+
+        /*
+           tầng không thấm
+        */
+
+        if(
+            y>
+            impermeableTopY(x)
+        ){
+
+            showRegion(
+                "impermeable"
+            );
+
+            return;
+
+        }
+
+
+        /*
+           tầng nước ngầm
+        */
+
+        if(
+            y>=waterTableY(x) &&
+            y<=impermeableTopY(x)
+        ){
+
+            showRegion(
+                "groundwater"
+            );
+
+            return;
+
+        }
+
+
+        /*
+           đất
+        */
+
+        if(
+            y>surfaceY(x)
+        ){
+
+            if(
+                y>surfaceY(x)+70
+            ){
+
+                showRegion(
+                    "permeable"
+                );
+
+            }else{
+
+                showRegion(
+                    "soil"
+                );
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+           bầu trời
+        */
+
+        showRegion("rain");
+
+    }
+);
+
+
+/* =========================================================
+   CLICK CÁC BƯỚC
+========================================================= */
+
+document
+.querySelectorAll(".step")
+.forEach(
+    step=>{
+
+        step.addEventListener(
+            "click",
+            function(){
+
+                const number=
+                    Number(
+                        this.dataset.step
+                    );
+
+
+                const map={
+
+                    1:"rain",
+
+                    2:"soil",
+
+                    3:"permeable",
+
+                    4:"aquifer",
+
+                    5:"groundwater"
+
+                };
+
+
+                showRegion(
+                    map[number]
+                );
+
+
+                document
+                .querySelectorAll(
+                    ".step"
+                )
+                .forEach(
+                    s=>
+                    s.classList.remove(
+                        "active"
+                    )
+                );
+
+
+                this.classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ROUND RECT
+========================================================= */
+
+function roundRect(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius
+){
+
+    radius=
+        Math.min(
+            radius,
+            width/2,
+            height/2
+        );
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        x+radius,
+        y
+    );
+
+
+    ctx.arcTo(
+        x+width,
+        y,
+        x+width,
+        y+height,
+        radius
+    );
+
+
+    ctx.arcTo(
+        x+width,
+        y+height,
+        x,
+        y+height,
+        radius
+    );
+
+
+    ctx.arcTo(
+        x,
+        y+height,
+        x,
+        y,
+        radius
+    );
+
+
+    ctx.arcTo(
+        x,
+        y,
+        x+width,
+        y,
+        radius
+    );
+
+
+    ctx.closePath();
+
+}
+
+
+/* =========================================================
+   KHỞI TẠO
+========================================================= */
+
+showRegion("rain");
+
+</script>
+
+</body>
+</html>

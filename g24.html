@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bài 24 - Rừng nhiệt đới</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#031117;
+    color:#edfaff;
+    line-height:1.6;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(3,16,23,.95);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(79,196,142,.16);
+}
+
+.header-inner{
+    width:min(1250px,94%);
+    margin:auto;
+    min-height:68px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:23px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #14563f,
+            #238061
+        );
+
+    box-shadow:
+        0 0 25px rgba(49,181,123,.18);
+}
+
+.logo-text h1{
+    font-size:16px;
+    line-height:1.2;
+}
+
+.logo-text p{
+    color:#83aaa0;
+    font-size:11px;
+    margin-top:2px;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:#eafff7;
+
+    padding:9px 14px;
+
+    border-radius:11px;
+
+    border:1px solid rgba(80,202,153,.24);
+
+    background:rgba(13,53,43,.72);
+
+    transition:.2s;
+
+    font-size:13px;
+}
+
+.home-btn:hover{
+    background:#17624b;
+    transform:translateY(-1px);
+}
+
+/* ================= PAGE ================= */
+
+.page{
+    width:min(1250px,94%);
+    margin:auto;
+    padding:26px 0 55px;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+
+    padding:34px;
+
+    border-radius:25px;
+
+    border:1px solid rgba(71,190,139,.18);
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(40,173,116,.16),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 15% 90%,
+            rgba(20,100,73,.18),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            #06251f,
+            #031417 75%
+        );
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.32);
+
+    margin-bottom:22px;
+}
+
+.hero-tag{
+    display:inline-flex;
+
+    padding:6px 11px;
+
+    border-radius:20px;
+
+    color:#5ce1ad;
+
+    background:rgba(53,194,139,.10);
+
+    border:1px solid rgba(83,211,157,.18);
+
+    font-size:12px;
+
+    margin-bottom:14px;
+}
+
+.hero h2{
+    font-size:clamp(29px,4vw,48px);
+    line-height:1.12;
+
+    margin-bottom:12px;
+}
+
+.hero h2 span{
+    color:#56dba9;
+}
+
+.hero p{
+    max-width:900px;
+
+    color:#a8c9c0;
+
+    font-size:15px;
+}
+
+.hero-note{
+    margin-top:18px;
+
+    padding:12px 14px;
+
+    border-left:3px solid #38c58e;
+
+    border-radius:9px;
+
+    background:rgba(49,181,125,.07);
+
+    color:#afd1c5;
+
+    font-size:13px;
+}
+
+/* ================= OBJECTIVES ================= */
+
+.objectives{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:15px;
+
+    margin-bottom:22px;
+}
+
+.objective{
+    padding:18px;
+
+    border-radius:17px;
+
+    border:
+        1px solid
+        rgba(80,201,151,.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            #06241e,
+            #04171a
+        );
+
+    display:flex;
+
+    gap:13px;
+
+    align-items:flex-start;
+}
+
+.objective-icon{
+    width:42px;
+    height:42px;
+
+    flex:0 0 42px;
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(49,181,125,.10);
+
+    font-size:21px;
+}
+
+.objective h3{
+    font-size:15px;
+    margin-bottom:4px;
+}
+
+.objective p{
+    color:#9fbbb4;
+    font-size:13px;
+}
+
+/* ================= SECTION ================= */
+
+.section{
+    margin-top:23px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:14px;
+}
+
+.section-number{
+    width:34px;
+    height:34px;
+
+    border-radius:10px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#13583f;
+
+    color:#6ee4b4;
+
+    font-weight:800;
+}
+
+.section-title h2{
+    font-size:22px;
+}
+
+/* ================= CLIMATE STATS ================= */
+
+.stats{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+.stat{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:21px;
+
+    min-height:145px;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        rgba(80,204,153,.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            #072b24,
+            #04181a
+        );
+}
+
+.stat-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.stat strong{
+    display:block;
+
+    font-size:22px;
+
+    color:#5fe0ad;
+
+    margin-bottom:3px;
+}
+
+.stat span{
+    color:#a4c3ba;
+
+    font-size:13px;
+}
+
+/* ================= DISTRIBUTION ================= */
+
+.distribution{
+    margin-top:15px;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    background:#061f1d;
+
+    border:
+        1px solid
+        rgba(78,202,150,.13);
+}
+
+.distribution h3{
+    font-size:17px;
+    margin-bottom:12px;
+}
+
+.climate-band{
+    position:relative;
+
+    height:55px;
+
+    border-radius:13px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    margin-bottom:12px;
+}
+
+.band-hot{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#8c6943;
+
+    color:#fff4dc;
+
+    font-weight:700;
+    font-size:13px;
+}
+
+.band-equator{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#28744e;
+
+    color:#eafff4;
+
+    font-weight:700;
+    font-size:13px;
+}
+
+.band-hot2{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#8c6943;
+
+    color:#fff4dc;
+
+    font-weight:700;
+    font-size:13px;
+}
+
+.distribution-note{
+    color:#9ebdb4;
+    font-size:13px;
+}
+
+/* ================= FOREST TYPES ================= */
+
+.forest-types{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:17px;
+}
+
+.forest-card{
+    overflow:hidden;
+
+    border-radius:20px;
+
+    border:
+        1px solid
+        rgba(76,200,150,.15);
+
+    background:
+        linear-gradient(
+            145deg,
+            #072a23,
+            #04181b
+        );
+}
+
+.forest-visual{
+    height:180px;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+/* rain forest */
+
+.rainforest{
+    background:
+        linear-gradient(
+            to bottom,
+            #4a91a0 0%,
+            #69a97a 28%,
+            #286f4d 60%,
+            #102f28 100%
+        );
+}
+
+.rainforest::before{
+    content:"";
+
+    position:absolute;
+
+    left:8%;
+    bottom:-18px;
+
+    width:75px;
+    height:215px;
+
+    border-radius:50% 50% 0 0;
+
+    background:#174e39;
+
+    box-shadow:
+        90px 20px 0 #226442,
+        175px -15px 0 #174b36,
+        265px 15px 0 #285e3e,
+        350px -12px 0 #184d39;
+}
+
+.rainforest::after{
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 48px,
+            rgba(13,53,38,.28) 49px 53px
+        );
+}
+
+/* monsoon */
+
+.monsoon{
+    background:
+        linear-gradient(
+            to bottom,
+            #9ac3cc,
+            #b7b37a 55%,
+            #617044 100%
+        );
+}
+
+.monsoon::before{
+    content:"";
+
+    position:absolute;
+
+    bottom:-15px;
+    left:0;
+
+    width:100%;
+    height:125px;
+
+    background:
+        linear-gradient(
+            145deg,
+            transparent 0 10%,
+            #557243 11% 19%,
+            transparent 20% 30%,
+            #687e4a 31% 40%,
+            transparent 41% 54%,
+            #526a40 55% 66%,
+            transparent 67%
+        );
+}
+
+.monsoon::after{
+    content:"";
+
+    position:absolute;
+
+    top:28px;
+    left:12%;
+
+    width:72px;
+    height:22px;
+
+    border-radius:30px;
+
+    background:rgba(239,246,244,.55);
+
+    box-shadow:
+        25px -13px 0 8px rgba(239,246,244,.48),
+        60px 2px 0 4px rgba(239,246,244,.42);
+}
+
+.forest-content{
+    padding:20px;
+}
+
+.forest-content h3{
+    font-size:19px;
+    margin-bottom:6px;
+}
+
+.forest-label{
+    display:inline-block;
+
+    padding:4px 9px;
+
+    border-radius:20px;
+
+    color:#63dfad;
+
+    background:rgba(50,187,132,.09);
+
+    font-size:11px;
+
+    margin-bottom:10px;
+}
+
+.forest-content p{
+    color:#a8c6bd;
+
+    font-size:13px;
+
+    margin-bottom:12px;
+}
+
+.forest-content ul{
+    margin-left:18px;
+
+    color:#a8c6bd;
+
+    font-size:13px;
+
+    line-height:1.8;
+}
+
+/* ================= COMPARISON ================= */
+
+.compare{
+    overflow:hidden;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        rgba(81,201,151,.14);
+
+    background:#061e1c;
+}
+
+.compare table{
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+.compare th,
+.compare td{
+    padding:13px 15px;
+
+    border-bottom:
+        1px solid
+        rgba(100,180,155,.10);
+
+    text-align:left;
+
+    font-size:13px;
+
+    vertical-align:top;
+}
+
+.compare th{
+    background:#0a3028;
+
+    color:#62dfad;
+}
+
+.compare td{
+    color:#aac7bf;
+}
+
+.compare tr:last-child td{
+    border-bottom:none;
+}
+
+/* ================= LAYERS ================= */
+
+.layers-section{
+    margin-top:18px;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1.15fr;
+
+    gap:17px;
+}
+
+.layer-visual{
+    position:relative;
+
+    min-height:390px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(82,204,153,.15);
+
+    background:
+        linear-gradient(
+            to bottom,
+            #73a7ad 0%,
+            #497c58 21%,
+            #2f6843 40%,
+            #205334 61%,
+            #163d2c 100%
+        );
+}
+
+.layer-sky{
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:95px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #5598ae,
+            #91c3b1
+        );
+}
+
+.layer{
+    position:absolute;
+
+    left:0;
+    right:0;
+
+    display:flex;
+
+    align-items:center;
+
+    padding-left:18px;
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+.layer1{
+    top:95px;
+    height:55px;
+    background:#4f814c;
+}
+
+.layer2{
+    top:150px;
+    height:70px;
+    background:#397040;
+}
+
+.layer3{
+    top:220px;
+    height:80px;
+    background:#285b37;
+}
+
+.layer4{
+    top:300px;
+    height:90px;
+    background:#1b432f;
+}
+
+.layer-caption{
+    position:absolute;
+
+    top:16px;
+    left:18px;
+
+    padding:6px 9px;
+
+    border-radius:9px;
+
+    background:rgba(2,22,28,.45);
+
+    font-size:12px;
+}
+
+.layer-info{
+    padding:24px;
+
+    border-radius:20px;
+
+    border:
+        1px solid
+        rgba(80,201,152,.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            #062620,
+            #041719
+        );
+}
+
+.layer-info h3{
+    font-size:19px;
+    margin-bottom:10px;
+}
+
+.layer-info p{
+    color:#a6c4bb;
+
+    font-size:14px;
+
+    margin-bottom:13px;
+}
+
+.layer-points{
+    display:grid;
+
+    gap:9px;
+}
+
+.layer-point{
+    padding:11px 12px;
+
+    border-radius:11px;
+
+    background:
+        rgba(55,188,135,.07);
+
+    color:#a9c8bf;
+
+    font-size:13px;
+}
+
+.layer-point strong{
+    color:#64dfad;
+}
+
+/* ================= PROTECTION ================= */
+
+.protection{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+.protection-card{
+    padding:19px;
+
+    border-radius:17px;
+
+    border:
+        1px solid
+        rgba(80,202,153,.13);
+
+    background:
+        linear-gradient(
+            145deg,
+            #06251f,
+            #04181a
+        );
+}
+
+.protection-icon{
+    font-size:29px;
+    margin-bottom:8px;
+}
+
+.protection-card h3{
+    font-size:16px;
+    margin-bottom:7px;
+}
+
+.protection-card p{
+    color:#a6c4bb;
+    font-size:13px;
+}
+
+.action-list{
+    margin-top:14px;
+
+    display:grid;
+
+    gap:8px;
+}
+
+.action{
+    padding:10px 12px;
+
+    border-radius:10px;
+
+    background:
+        rgba(58,190,137,.07);
+
+    color:#a9c8be;
+
+    font-size:13px;
+}
+
+/* ================= MEMORY ================= */
+
+.memory{
+    margin-top:22px;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    border:
+        1px solid
+        rgba(80,203,152,.16);
+
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(49,180,125,.13),
+            transparent 30%
+        ),
+        #061e1b;
+}
+
+.memory h3{
+    margin-bottom:14px;
+}
+
+.memory-flow{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+}
+
+.memory-box{
+    padding:11px 14px;
+
+    border-radius:11px;
+
+    background:#0a3028;
+
+    color:#c6eee0;
+
+    font-size:13px;
+
+    border:1px solid rgba(77,202,151,.14);
+}
+
+.memory-arrow{
+    color:#51d8a6;
+    font-weight:bold;
+}
+
+/* ================= QUIZ ================= */
+
+.quiz{
+    margin-top:22px;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    border:
+        1px solid
+        rgba(80,203,152,.15);
+
+    background:
+        linear-gradient(
+            145deg,
+            #06241f,
+            #041719
+        );
+}
+
+.quiz-head{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:15px;
+}
+
+.quiz-head h3{
+    font-size:19px;
+}
+
+.quiz-badge{
+    padding:6px 10px;
+
+    border-radius:20px;
+
+    background:rgba(59,194,143,.10);
+
+    color:#63dfad;
+
+    font-size:12px;
+}
+
+.quiz-question{
+    font-size:16px;
+
+    font-weight:700;
+
+    margin-bottom:13px;
+}
+
+.quiz-options{
+    display:grid;
+
+    gap:8px;
+}
+
+.option{
+    width:100%;
+
+    padding:12px 14px;
+
+    border-radius:11px;
+
+    border:
+        1px solid
+        rgba(94,190,160,.14);
+
+    background:#071f1e;
+
+    color:#c2d9d3;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:.18s;
+
+    font-size:13px;
+}
+
+.option:hover{
+    background:#0b3029;
+    border-color:rgba(89,218,165,.35);
+}
+
+.option.correct{
+    background:#0e4936;
+    border-color:#36c98f;
+    color:#e5fff5;
+}
+
+.option.wrong{
+    background:#4a2525;
+    border-color:#d76a6a;
+    color:#ffecec;
+}
+
+.quiz-feedback{
+    min-height:25px;
+
+    margin-top:11px;
+
+    color:#a7c7bd;
+
+    font-size:13px;
+}
+
+.quiz-controls{
+    margin-top:15px;
+
+    display:flex;
+
+    gap:9px;
+
+    flex-wrap:wrap;
+}
+
+.quiz-btn{
+    border:none;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    background:#125b45;
+
+    color:#edfff8;
+
+    cursor:pointer;
+
+    font-size:13px;
+}
+
+.quiz-btn:hover{
+    background:#197359;
+}
+
+.quiz-result{
+    display:none;
+
+    text-align:center;
+
+    padding:20px;
+}
+
+.score{
+    font-size:38px;
+
+    font-weight:800;
+
+    color:#5fe0ad;
+
+    margin:7px 0;
+}
+
+.finish-btn{
+    margin-top:13px;
+
+    padding:11px 17px;
+
+    border:none;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #16815e,
+            #116249
+        );
+
+    color:white;
+
+    cursor:pointer;
+}
+
+/* ================= FOOTER ================= */
+
+.back{
+    text-align:center;
+
+    margin-top:25px;
+}
+
+.back a{
+    display:inline-flex;
+
+    padding:11px 18px;
+
+    border-radius:11px;
+
+    text-decoration:none;
+
+    color:#eafff6;
+
+    background:
+        linear-gradient(
+            135deg,
+            #126149,
+            #0d4a3a
+        );
+
+    border:
+        1px solid
+        rgba(89,215,164,.23);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .forest-types{
+        grid-template-columns:1fr;
+    }
+
+    .layers-section{
+        grid-template-columns:1fr;
+    }
+
+    .protection{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:650px){
+
+    .page{
+        width:95%;
+    }
+
+    .hero{
+        padding:25px 19px;
+    }
+
+    .objectives{
+        grid-template-columns:1fr;
+    }
+
+    .compare{
+        overflow-x:auto;
+    }
+
+    .compare table{
+        min-width:650px;
+    }
+
+    .hero h2{
+        font-size:30px;
+    }
+
+    .header-inner{
+        min-height:60px;
+    }
+
+    .logo-text p{
+        display:none;
+    }
+
+}
+
+</style>
+    <script src="js/hls6-core.js"></script>
+</head>
+
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌳
+            </div>
+
+            <div class="logo-text">
+
+                <h1>
+                    HỌC LIỆU SỐ LỊCH SỬ & ĐỊA LÍ 6
+                </h1>
+
+                <p>
+                    Địa lí 6 • Kết nối tri thức
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="home-btn"
+        >
+            🏠 Trang chủ
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-tag">
+        🌳 ĐỊA LÍ 6 • BÀI 24
+    </div>
+
+    <h2>
+        Rừng <span>nhiệt đới</span>
+    </h2>
+
+    <p>
+        Rừng nhiệt đới là một trong những thảm thực vật
+        quan trọng của đới nóng, có sự phong phú về thực vật
+        và động vật. Cùng tìm hiểu đặc điểm của rừng nhiệt đới
+        và những việc cần làm để bảo vệ rừng.
+    </p>
+
+    <div class="hero-note">
+        💡 <strong>Câu hỏi mở đầu:</strong>
+        Rừng nhiệt đới có đặc điểm gì?
+        Chúng ta cần làm gì để bảo vệ rừng nhiệt đới?
+    </div>
+
+</section>
+
+
+<!-- ================= OBJECTIVES ================= -->
+
+<section class="objectives">
+
+    <div class="objective">
+
+        <div class="objective-icon">
+            📚
+        </div>
+
+        <div>
+
+            <h3>
+                Kiến thức
+            </h3>
+
+            <p>
+                Trình bày được đặc điểm của
+                rừng nhiệt đới.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="objective">
+
+        <div class="objective-icon">
+            🌱
+        </div>
+
+        <div>
+
+            <h3>
+                Phẩm chất
+            </h3>
+
+            <p>
+                Có ý thức bảo vệ rừng và
+                sử dụng hợp lí các sản phẩm
+                có nguồn gốc từ rừng.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     1. ĐẶC ĐIỂM
+================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="section-number">
+            1
+        </div>
+
+        <h2>
+            Đặc điểm rừng nhiệt đới
+        </h2>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                📍
+            </div>
+
+            <strong>
+                Xích đạo → nhiệt đới
+            </strong>
+
+            <span>
+                Trải từ vùng Xích đạo đến hết
+                vành đai nhiệt đới ở cả bán cầu
+                Bắc và bán cầu Nam.
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🌡️
+            </div>
+
+            <strong>
+                &gt; 21°C
+            </strong>
+
+            <span>
+                Nhiệt độ trung bình năm
+                của khu vực rừng nhiệt đới.
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🌧️
+            </div>
+
+            <strong>
+                &gt; 1700 mm
+            </strong>
+
+            <span>
+                Lượng mưa trung bình năm.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="distribution">
+
+        <h3>
+            🌍 Phạm vi phân bố
+        </h3>
+
+        <div class="climate-band">
+
+            <div class="band-hot">
+                Bán cầu Bắc
+            </div>
+
+            <div class="band-equator">
+                🌳 Xích đạo
+            </div>
+
+            <div class="band-hot2">
+                Bán cầu Nam
+            </div>
+
+        </div>
+
+        <p class="distribution-note">
+            Rừng nhiệt đới phân bố từ vùng Xích đạo
+            đến hết vành đai nhiệt đới ở cả hai bán cầu.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SINH VẬT ================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="section-number">
+            🌿
+        </div>
+
+        <h2>
+            Sinh vật trong rừng nhiệt đới
+        </h2>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🌳
+            </div>
+
+            <strong>
+                Nhiều tầng cây
+            </strong>
+
+            <span>
+                Rừng có cấu trúc nhiều tầng,
+                tạo nên môi trường sống phong phú.
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🌿
+            </div>
+
+            <strong>
+                Thực vật phong phú
+            </strong>
+
+            <span>
+                Có nhiều cây thân gỗ, dây leo,
+                phong lan, tầm gửi, địa y.
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🐒
+            </div>
+
+            <strong>
+                Động vật đa dạng
+            </strong>
+
+            <span>
+                Nhiều loài sống trên cây,
+                leo trèo giỏi như khỉ, vượn;
+                nhiều loài chim ăn quả.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- LAYERS -->
+
+    <div class="layers-section">
+
+        <div class="layer-visual">
+
+            <div class="layer-sky"></div>
+
+            <div class="layer-caption">
+                🌳 Cấu trúc nhiều tầng của rừng nhiệt đới
+            </div>
+
+            <div class="layer layer1">
+                🌤️ Tầng vượt tán
+            </div>
+
+            <div class="layer layer2">
+                🌳 Tầng tán rừng
+            </div>
+
+            <div class="layer layer3">
+                🌿 Tầng dưới tán
+            </div>
+
+            <div class="layer layer4">
+                🍃 Tầng cây bụi & thảm thực vật
+            </div>
+
+        </div>
+
+
+        <div class="layer-info">
+
+            <h3>
+                🌿 Vì sao rừng có nhiều tầng?
+            </h3>
+
+            <p>
+                Trong rừng nhiệt đới có nhiều loài cây
+                với chiều cao khác nhau. Các loài thực vật
+                phân bố ở những tầng khác nhau, cùng với
+                dây leo và các loài sống bám trên cây,
+                tạo nên cấu trúc rừng nhiều tầng.
+            </p>
+
+            <div class="layer-points">
+
+                <div class="layer-point">
+                    <strong>🌳 Cây thân gỗ:</strong>
+                    nhiều kích thước và chiều cao.
+                </div>
+
+                <div class="layer-point">
+                    <strong>🌿 Dây leo:</strong>
+                    phát triển và bám vào cây.
+                </div>
+
+                <div class="layer-point">
+                    <strong>🌺 Phong lan:</strong>
+                    sống bám trên thân, cành cây.
+                </div>
+
+                <div class="layer-point">
+                    <strong>🍃 Tầm gửi, địa y:</strong>
+                    bám trên thân cây.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     2 KIỂU RỪNG
+================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="section-number">
+            2
+        </div>
+
+        <h2>
+            Hai kiểu rừng nhiệt đới
+        </h2>
+
+    </div>
+
+
+    <div class="forest-types">
+
+
+        <!-- RỪNG MƯA -->
+
+        <article class="forest-card">
+
+            <div class="forest-visual rainforest"></div>
+
+            <div class="forest-content">
+
+                <span class="forest-label">
+                    🌧️ MƯA NHIỀU QUANH NĂM
+                </span>
+
+                <h3>
+                    Rừng mưa nhiệt đới
+                </h3>
+
+                <p>
+                    Hình thành ở nơi có khí hậu nóng,
+                    ẩm và mưa nhiều quanh năm.
+                    Rừng phát triển rậm rạp.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Có khoảng 4–5 tầng cây.
+                    </li>
+
+                    <li>
+                        Rừng rậm rạp, xanh tốt.
+                    </li>
+
+                    <li>
+                        Phân bố tiêu biểu ở lưu vực
+                        sông A-ma-dôn, sông Công-gô
+                        và một phần Đông Nam Á.
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </article>
+
+
+        <!-- GIÓ MÙA -->
+
+        <article class="forest-card">
+
+            <div class="forest-visual monsoon"></div>
+
+            <div class="forest-content">
+
+                <span class="forest-label">
+                    🌦️ MƯA – KHÔ RÕ RỆT
+                </span>
+
+                <h3>
+                    Rừng nhiệt đới gió mùa
+                </h3>
+
+                <p>
+                    Phát triển ở nơi có một mùa mưa
+                    và một mùa khô rõ rệt.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Ít tầng hơn rừng mưa nhiệt đới.
+                    </li>
+
+                    <li>
+                        Phần lớn cây rụng lá vào mùa khô.
+                    </li>
+
+                    <li>
+                        Rừng thoáng và không ẩm ướt
+                        bằng rừng mưa nhiệt đới.
+                    </li>
+
+                    <li>
+                        Phân bố ở Đông Nam Á,
+                        Đông Ấn Độ,...
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- ================= COMPARISON ================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="section-number">
+            ⚖️
+        </div>
+
+        <h2>
+            So sánh hai kiểu rừng
+        </h2>
+
+    </div>
+
+
+    <div class="compare">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Đặc điểm
+                    </th>
+
+                    <th>
+                        🌧️ Rừng mưa nhiệt đới
+                    </th>
+
+                    <th>
+                        🌦️ Rừng nhiệt đới gió mùa
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Khí hậu
+                    </td>
+
+                    <td>
+                        Nóng, ẩm, mưa nhiều
+                        quanh năm.
+                    </td>
+
+                    <td>
+                        Có một mùa mưa và
+                        một mùa khô rõ rệt.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Cấu trúc
+                    </td>
+
+                    <td>
+                        Rừng rậm rạp,
+                        khoảng 4–5 tầng.
+                    </td>
+
+                    <td>
+                        Ít tầng hơn,
+                        rừng thấp và thoáng hơn.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Thực vật
+                    </td>
+
+                    <td>
+                        Xanh tốt, nhiều cây
+                        thân gỗ và dây leo.
+                    </td>
+
+                    <td>
+                        Phần lớn cây rụng lá
+                        vào mùa khô.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Phân bố
+                    </td>
+
+                    <td>
+                        A-ma-dôn, Công-gô,
+                        một phần Đông Nam Á.
+                    </td>
+
+                    <td>
+                        Đông Nam Á,
+                        Đông Ấn Độ,...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     BẢO VỆ RỪNG
+================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="section-number">
+            🌱
+        </div>
+
+        <h2>
+            Bảo vệ rừng nhiệt đới
+        </h2>
+
+    </div>
+
+
+    <div class="protection">
+
+
+        <div class="protection-card">
+
+            <div class="protection-icon">
+                🌍
+            </div>
+
+            <h3>
+                Vai trò
+            </h3>
+
+            <p>
+                Rừng nhiệt đới có vai trò hết sức
+                quan trọng đối với môi trường
+                và con người.
+            </p>
+
+            <div class="action-list">
+
+                <div class="action">
+                    🌡️ Góp phần ổn định khí hậu Trái Đất
+                </div>
+
+                <div class="action">
+                    🐾 Bảo tồn đa dạng sinh học
+                </div>
+
+                <div class="action">
+                    🌿 Cung cấp nguồn dược liệu,
+                    thực phẩm và gỗ
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="protection-card">
+
+            <div class="protection-icon">
+                ⚠️
+            </div>
+
+            <h3>
+                Những vấn đề
+            </h3>
+
+            <p>
+                Diện tích rừng nhiệt đới đang
+                suy giảm đáng báo động.
+            </p>
+
+            <div class="action-list">
+
+                <div class="action">
+                    🔥 Cháy rừng
+                </div>
+
+                <div class="action">
+                    🪓 Khai thác rừng và các hoạt động
+                    của con người
+                </div>
+
+                <div class="action">
+                    🌳 Suy giảm diện tích rừng
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="protection-card">
+
+            <div class="protection-icon">
+                🌱
+            </div>
+
+            <h3>
+                Việc cần làm
+            </h3>
+
+            <p>
+                Bảo vệ và phát triển rừng cần
+                sự tham gia của Nhà nước,
+                cộng đồng và mỗi cá nhân.
+            </p>
+
+            <div class="action-list">
+
+                <div class="action">
+                    🌳 Tăng cường trồng và bảo vệ rừng
+                </div>
+
+                <div class="action">
+                    ♻️ Sử dụng sản phẩm từ rừng
+                    tiết kiệm, hợp lí
+                </div>
+
+                <div class="action">
+                    📢 Nâng cao ý thức bảo vệ rừng
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MEMORY ================= -->
+
+<section class="memory">
+
+    <h3>
+        🧠 Sơ đồ ghi nhớ nhanh
+    </h3>
+
+    <div class="memory-flow">
+
+        <div class="memory-box">
+            🌍 Phân bố
+            <br>
+            Xích đạo → nhiệt đới
+        </div>
+
+        <div class="memory-arrow">
+            →
+        </div>
+
+        <div class="memory-box">
+            🌡️ &gt;21°C
+            <br>
+            🌧️ &gt;1700 mm
+        </div>
+
+        <div class="memory-arrow">
+            →
+        </div>
+
+        <div class="memory-box">
+            🌳 Nhiều tầng
+            <br>
+            🐾 Sinh vật phong phú
+        </div>
+
+        <div class="memory-arrow">
+            →
+        </div>
+
+        <div class="memory-box">
+            🌧️ Rừng mưa
+            <br>
+            🌦️ Rừng gió mùa
+        </div>
+
+        <div class="memory-arrow">
+            →
+        </div>
+
+        <div class="memory-box">
+            🌱 Bảo vệ rừng
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     QUIZ
+================================================== -->
+
+<section class="quiz">
+
+    <div class="quiz-head">
+
+        <h3>
+            🎯 Kiểm tra nhanh
+        </h3>
+
+        <div
+            class="quiz-badge"
+            id="quizBadge"
+        >
+            Câu 1 / 10
+        </div>
+
+    </div>
+
+
+    <div id="quizArea">
+
+        <div
+            class="quiz-question"
+            id="quizQuestion"
+        ></div>
+
+
+        <div
+            class="quiz-options"
+            id="quizOptions"
+        ></div>
+
+
+        <div
+            class="quiz-feedback"
+            id="quizFeedback"
+        ></div>
+
+
+        <div class="quiz-controls">
+
+            <button
+                class="quiz-btn"
+                id="nextBtn"
+                style="display:none"
+            >
+                Câu tiếp theo →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="quiz-result"
+        id="quizResult"
+    >
+
+        <div>
+            🎉 Hoàn thành!
+        </div>
+
+        <div
+            class="score"
+            id="score"
+        >
+            0/10
+        </div>
+
+        <div id="resultText"></div>
+
+
+        <button
+            class="quiz-btn"
+            id="retryBtn"
+        >
+            🔄 Làm lại
+        </button>
+
+
+        <br>
+
+
+        <button
+            class="finish-btn"
+            id="finishBtn"
+        >
+            ✅ Hoàn thành bài học
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= BACK ================= -->
+
+<div class="back">
+
+    <a href="index.html">
+        ← Quay lại trang chủ học liệu
+    </a>
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const questions = [
+
+    {
+        q:
+        "Rừng nhiệt đới phân bố chủ yếu ở đâu?",
+
+        options:[
+            "Từ vùng Xích đạo đến hết vành đai nhiệt đới ở hai bán cầu",
+            "Chỉ ở vùng cực Bắc",
+            "Chỉ ở đới ôn hòa",
+            "Chỉ ở châu Âu"
+        ],
+
+        answer:0,
+
+        explain:
+        "Rừng nhiệt đới trải từ vùng Xích đạo đến hết vành đai nhiệt đới ở cả bán cầu Bắc và bán cầu Nam."
+    },
+
+
+    {
+        q:
+        "Nhiệt độ trung bình năm ở khu vực rừng nhiệt đới thường như thế nào?",
+
+        options:[
+            "Dưới 5°C",
+            "Trên 21°C",
+            "Khoảng 10°C",
+            "Dưới 0°C"
+        ],
+
+        answer:1,
+
+        explain:
+        "Nhiệt độ trung bình năm của khu vực rừng nhiệt đới trên 21°C."
+    },
+
+
+    {
+        q:
+        "Lượng mưa trung bình năm của khu vực rừng nhiệt đới thường:",
+
+        options:[
+            "Dưới 200 mm",
+            "Khoảng 500 mm",
+            "Trên 1700 mm",
+            "Khoảng 100 mm"
+        ],
+
+        answer:2,
+
+        explain:
+        "Rừng nhiệt đới có lượng mưa trung bình năm trên 1700 mm."
+    },
+
+
+    {
+        q:
+        "Đặc điểm nổi bật của thực vật rừng nhiệt đới là gì?",
+
+        options:[
+            "Chỉ có cỏ thấp",
+            "Rừng gồm nhiều tầng, nhiều cây thân gỗ và dây leo",
+            "Không có cây thân gỗ",
+            "Chỉ có cây lá kim"
+        ],
+
+        answer:1,
+
+        explain:
+        "Rừng nhiệt đới có nhiều tầng, nhiều cây thân gỗ, dây leo; ngoài ra còn có phong lan, tầm gửi, địa y."
+    },
+
+
+    {
+        q:
+        "Rừng mưa nhiệt đới hình thành ở nơi nào?",
+
+        options:[
+            "Mưa nhiều quanh năm",
+            "Khô hạn quanh năm",
+            "Có mùa đông rất lạnh",
+            "Có băng tuyết quanh năm"
+        ],
+
+        answer:0,
+
+        explain:
+        "Rừng mưa nhiệt đới hình thành ở những nơi có mưa nhiều quanh năm."
+    },
+
+
+    {
+        q:
+        "Rừng mưa nhiệt đới thường có khoảng bao nhiêu tầng cây?",
+
+        options:[
+            "1 tầng",
+            "2 tầng",
+            "4–5 tầng",
+            "10–12 tầng"
+        ],
+
+        answer:2,
+
+        explain:
+        "Rừng mưa nhiệt đới rậm rạp và thường có khoảng 4–5 tầng cây."
+    },
+
+
+    {
+        q:
+        "Điểm khác biệt nổi bật của rừng nhiệt đới gió mùa là:",
+
+        options:[
+            "Không có động vật",
+            "Có một mùa mưa và một mùa khô rõ rệt",
+            "Có băng tuyết quanh năm",
+            "Mưa nhiều quanh năm"
+        ],
+
+        answer:1,
+
+        explain:
+        "Rừng nhiệt đới gió mùa phát triển ở nơi có một mùa mưa và một mùa khô rõ rệt."
+    },
+
+
+    {
+        q:
+        "Phần lớn cây trong rừng nhiệt đới gió mùa thường như thế nào vào mùa khô?",
+
+        options:[
+            "Rụng lá",
+            "Đóng băng",
+            "Không thay đổi",
+            "Biến thành cây lá kim"
+        ],
+
+        answer:0,
+
+        explain:
+        "Phần lớn cây trong rừng nhiệt đới gió mùa rụng lá vào mùa khô."
+    },
+
+
+    {
+        q:
+        "Vai trò quan trọng của rừng nhiệt đới là gì?",
+
+        options:[
+            "Chỉ cung cấp gỗ",
+            "Ổn định khí hậu và bảo tồn đa dạng sinh học",
+            "Chỉ phục vụ giao thông",
+            "Chỉ cung cấp đất nông nghiệp"
+        ],
+
+        answer:1,
+
+        explain:
+        "Rừng nhiệt đới có vai trò quan trọng đối với việc ổn định khí hậu Trái Đất và bảo tồn đa dạng sinh học."
+    },
+
+
+    {
+        q:
+        "Việc làm nào góp phần bảo vệ rừng nhiệt đới?",
+
+        options:[
+            "Khai thác rừng tùy ý",
+            "Đốt rừng làm nương rẫy",
+            "Sử dụng sản phẩm từ rừng tiết kiệm, hợp lí và tăng cường trồng rừng",
+            "Chặt cây trong rừng đặc dụng"
+        ],
+
+        answer:2,
+
+        explain:
+        "Cần sử dụng sản phẩm có nguồn gốc từ rừng tiết kiệm, hợp lí; tăng cường trồng, bảo vệ và phát triển rừng."
+    }
+
+];
+
+
+let currentQuestion=0;
+
+let score=0;
+
+let answered=false;
+
+
+const quizQuestion=
+    document.getElementById(
+        "quizQuestion"
+    );
+
+const quizOptions=
+    document.getElementById(
+        "quizOptions"
+    );
+
+const quizFeedback=
+    document.getElementById(
+        "quizFeedback"
+    );
+
+const nextBtn=
+    document.getElementById(
+        "nextBtn"
+    );
+
+const quizBadge=
+    document.getElementById(
+        "quizBadge"
+    );
+
+const quizArea=
+    document.getElementById(
+        "quizArea"
+    );
+
+const quizResult=
+    document.getElementById(
+        "quizResult"
+    );
+
+const scoreEl=
+    document.getElementById(
+        "score"
+    );
+
+const resultText=
+    document.getElementById(
+        "resultText"
+    );
+
+const retryBtn=
+    document.getElementById(
+        "retryBtn"
+    );
+
+const finishBtn=
+    document.getElementById(
+        "finishBtn"
+    );
+
+
+function loadQuestion(){
+
+    answered=false;
+
+    nextBtn.style.display="none";
+
+    quizFeedback.textContent="";
+
+    const q=
+        questions[currentQuestion];
+
+
+    quizBadge.textContent=
+        "Câu "+
+        (currentQuestion+1)+
+        " / "+
+        questions.length;
+
+
+    quizQuestion.textContent=
+        q.q;
+
+
+    quizOptions.innerHTML="";
+
+
+    q.options.forEach(
+        (option,index)=>{
+
+            const button=
+                document.createElement(
+                    "button"
+                );
+
+            button.className=
+                "option";
+
+            button.textContent=
+                option;
+
+
+            button.addEventListener(
+                "click",
+                ()=>{
+                    answerQuestion(
+                        index,
+                        button
+                    );
+                }
+            );
+
+
+            quizOptions.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+function answerQuestion(
+    selected,
+    clickedButton
+){
+
+    if(answered)
+        return;
+
+    answered=true;
+
+    const q=
+        questions[currentQuestion];
+
+    const buttons=
+        quizOptions.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        (button,index)=>{
+
+            button.disabled=true;
+
+            if(
+                index===q.answer
+            ){
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
+
+        }
+    );
+
+
+    if(
+        selected===q.answer
+    ){
+
+        score++;
+
+        quizFeedback.innerHTML=
+            "✅ <strong>Chính xác!</strong> "+
+            q.explain;
+
+    }
+    else{
+
+        clickedButton.classList.add(
+            "wrong"
+        );
+
+        quizFeedback.innerHTML=
+            "❌ <strong>Chưa chính xác.</strong> "+
+            q.explain;
+
+    }
+
+
+    nextBtn.style.display=
+        "inline-block";
+
+
+    if(
+        currentQuestion===
+        questions.length-1
+    ){
+
+        nextBtn.textContent=
+            "🏁 Xem kết quả";
+
+    }
+
+}
+
+
+nextBtn.addEventListener(
+    "click",
+    ()=>{
+
+        currentQuestion++;
+
+
+        if(
+            currentQuestion>=
+            questions.length
+        ){
+
+            showResult();
+
+            return;
+
+        }
+
+
+        loadQuestion();
+
+    }
+);
+
+
+function showResult(){
+
+    quizArea.style.display=
+        "none";
+
+    quizResult.style.display=
+        "block";
+
+
+    scoreEl.textContent=
+        score+
+        "/"+
+        questions.length;
+
+
+    let message="";
+
+    if(score>=9){
+
+        message=
+            "🌟 Xuất sắc! Bạn đã nắm rất chắc kiến thức về rừng nhiệt đới.";
+
+    }
+    else if(score>=7){
+
+        message=
+            "👏 Rất tốt! Bạn đã hiểu phần lớn nội dung bài học.";
+
+    }
+    else if(score>=5){
+
+        message=
+            "👍 Đạt yêu cầu. Hãy xem lại phần so sánh hai kiểu rừng.";
+
+    }
+    else{
+
+        message=
+            "🌱 Hãy đọc lại nội dung bài học và thử lại nhé!";
+
+    }
+
+
+    resultText.textContent=
+        message;
+
+}
+
+
+retryBtn.addEventListener(
+    "click",
+    ()=>{
+
+        currentQuestion=0;
+
+        score=0;
+
+        quizArea.style.display=
+            "block";
+
+        quizResult.style.display=
+            "none";
+
+        loadQuestion();
+
+    }
+);
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+const PROGRESS_KEY=
+    "hoclieu6_progress_v1";
+
+
+function finishLesson(){
+
+    const progress=
+        JSON.parse(
+            localStorage.getItem(
+                PROGRESS_KEY
+            ) ||
+            "{}"
+        );
+
+
+    progress.g24=true;
+
+
+    localStorage.setItem(
+        PROGRESS_KEY,
+        JSON.stringify(progress)
+    );
+
+
+    finishBtn.textContent=
+        "✅ Đã hoàn thành bài 24";
+
+
+    finishBtn.disabled=true;
+
+}
+
+
+finishBtn.addEventListener(
+    "click",
+    finishLesson
+);
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+loadQuestion();
+
+</script>
+
+<script>if(window.HLS6) HLS6.bindLessonPage("g24");</script>
+</body>
+</html>

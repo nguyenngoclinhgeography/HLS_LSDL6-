@@ -1,0 +1,3430 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô phỏng động vật trên lục địa - Bài 23</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    min-height:100%;
+}
+
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#031018;
+    color:#eefaff;
+    overflow-x:hidden;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    padding:13px 20px;
+
+    background:rgba(3,15,25,.95);
+    backdrop-filter:blur(12px);
+
+    border-bottom:1px solid rgba(86,192,222,.16);
+}
+
+.header-inner{
+    max-width:1450px;
+    margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-icon{
+    width:44px;
+    height:44px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    font-size:25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #174968,
+            #217c88
+        );
+
+    box-shadow:
+        0 0 24px
+        rgba(48,191,220,.16);
+}
+
+.logo-text h1{
+    font-size:17px;
+    line-height:1.2;
+}
+
+.logo-text p{
+    margin-top:3px;
+
+    color:#8eb8c3;
+
+    font-size:12px;
+}
+
+.home-btn{
+    text-decoration:none;
+
+    color:#eaffff;
+
+    padding:10px 15px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(88,206,229,.25);
+
+    background:rgba(14,55,68,.72);
+
+    transition:.2s;
+
+    font-size:14px;
+}
+
+.home-btn:hover{
+    background:#176073;
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+    width:min(1450px,94%);
+    margin:auto;
+
+    padding:25px 0 50px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:35px;
+
+    border-radius:26px;
+
+    border:1px solid rgba(77,197,221,.16);
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(52,188,220,.15),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 15% 80%,
+            rgba(20,91,120,.20),
+            transparent 40%
+        ),
+        linear-gradient(
+            145deg,
+            #072330,
+            #031217 72%
+        );
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.35);
+
+    margin-bottom:22px;
+}
+
+.hero-tag{
+    display:inline-flex;
+
+    padding:7px 12px;
+
+    border-radius:20px;
+
+    background:
+        rgba(55,184,216,.10);
+
+    border:
+        1px solid
+        rgba(93,210,233,.20);
+
+    color:#66d8ec;
+
+    font-size:13px;
+
+    margin-bottom:15px;
+}
+
+.hero h2{
+    font-size:
+        clamp(28px,4vw,48px);
+
+    line-height:1.12;
+
+    margin-bottom:13px;
+}
+
+.hero h2 span{
+    color:#57d7ea;
+}
+
+.hero p{
+    max-width:930px;
+
+    color:#a8c7cf;
+
+    font-size:15px;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   CONTROL
+========================================================= */
+
+.control-panel{
+    margin-top:24px;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        rgba(82,198,221,.15);
+
+    background:
+        rgba(3,25,34,.84);
+}
+
+.control-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+
+    gap:10px;
+}
+
+.control-btn{
+    min-height:42px;
+
+    padding:10px 15px;
+
+    border-radius:11px;
+
+    border:
+        1px solid
+        rgba(82,203,226,.25);
+
+    background:#0a3341;
+
+    color:#eaffff;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    transition:.2s;
+}
+
+.control-btn:hover{
+    background:#145d70;
+
+    transform:translateY(-1px);
+}
+
+.control-btn.primary{
+    background:
+        linear-gradient(
+            135deg,
+            #18819c,
+            #126074
+        );
+}
+
+.climate-box{
+    flex:1 1 350px;
+
+    min-width:280px;
+}
+
+.climate-title{
+    display:flex;
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-bottom:8px;
+
+    color:#9dbbc3;
+
+    font-size:13px;
+}
+
+.climate-title strong{
+    color:#61dced;
+
+    font-size:16px;
+}
+
+input[type="range"]{
+    width:100%;
+
+    accent-color:#36cde6;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   SIMULATION
+========================================================= */
+
+.sim-wrapper{
+    overflow:hidden;
+
+    border-radius:25px;
+
+    border:
+        1px solid
+        rgba(85,205,229,.20);
+
+    background:#031a23;
+
+    box-shadow:
+        0 20px 70px
+        rgba(0,0,0,.4);
+}
+
+.sim-topbar{
+    padding:14px 18px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    border-bottom:
+        1px solid
+        rgba(83,205,228,.14);
+
+    background:
+        rgba(4,27,36,.95);
+}
+
+.sim-title{
+    display:flex;
+    align-items:center;
+
+    gap:9px;
+
+    font-weight:700;
+}
+
+.live-dot{
+    width:9px;
+    height:9px;
+
+    border-radius:50%;
+
+    background:#39dced;
+
+    box-shadow:
+        0 0 12px
+        #39dced;
+}
+
+.sim-status{
+    color:#8eb8c1;
+    font-size:13px;
+}
+
+
+/* =========================================================
+   LANDSCAPE
+========================================================= */
+
+.landscape{
+    position:relative;
+
+    width:100%;
+
+    height:min(73vh,760px);
+
+    min-height:540px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #65b8d5 0%,
+            #a3d2d6 32%,
+            #c5d8c1 56%,
+            #769e64 77%,
+            #405d3d 100%
+        );
+}
+
+#animalCanvas{
+    display:block;
+
+    width:100%;
+    height:100%;
+}
+
+
+/* =========================================================
+   SUN
+========================================================= */
+
+.sun{
+    position:absolute;
+
+    width:78px;
+    height:78px;
+
+    right:8%;
+    top:7%;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff5a8 0%,
+            #ffd95d 48%,
+            rgba(255,205,55,.15) 72%,
+            transparent 73%
+        );
+
+    filter:
+        drop-shadow(
+            0 0 22px
+            rgba(255,221,81,.5)
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   CLOUD
+========================================================= */
+
+.cloud{
+    position:absolute;
+
+    left:12%;
+    top:10%;
+
+    width:130px;
+    height:35px;
+
+    border-radius:40px;
+
+    background:
+        rgba(247,252,250,.67);
+
+    pointer-events:none;
+}
+
+.cloud::before,
+.cloud::after{
+    content:"";
+
+    position:absolute;
+
+    border-radius:50%;
+
+    background:
+        rgba(247,252,250,.72);
+}
+
+.cloud::before{
+    width:55px;
+    height:55px;
+
+    left:20px;
+    top:-24px;
+}
+
+.cloud::after{
+    width:70px;
+    height:70px;
+
+    right:15px;
+    top:-35px;
+}
+
+
+/* =========================================================
+   ZONE
+========================================================= */
+
+.zone-indicator{
+    position:absolute;
+
+    top:17px;
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:10;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    background:
+        rgba(2,27,34,.63);
+
+    border:
+        1px solid
+        rgba(225,255,255,.18);
+
+    color:#e8fcff;
+
+    font-size:13px;
+
+    backdrop-filter:blur(8px);
+
+    pointer-events:none;
+}
+
+.environment-label{
+    position:absolute;
+
+    right:20px;
+    top:18px;
+
+    padding:7px 11px;
+
+    border-radius:10px;
+
+    background:
+        rgba(4,30,36,.52);
+
+    color:#c8e8ee;
+
+    font-size:11px;
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   INFO PANEL
+========================================================= */
+
+.info-panel{
+    position:absolute;
+
+    z-index:30;
+
+    left:22px;
+    bottom:22px;
+
+    width:
+        min(
+            390px,
+            calc(100% - 44px)
+        );
+
+    padding:19px;
+
+    border-radius:18px;
+
+    background:
+        rgba(2,20,27,.92);
+
+    backdrop-filter:blur(14px);
+
+    border:
+        1px solid
+        rgba(87,211,234,.27);
+
+    box-shadow:
+        0 15px 45px
+        rgba(0,0,0,.38);
+
+    opacity:0;
+
+    transform:
+        translateY(12px);
+
+    pointer-events:none;
+
+    transition:.25s;
+}
+
+.info-panel.show{
+    opacity:1;
+
+    transform:
+        translateY(0);
+}
+
+.info-icon{
+    width:52px;
+    height:52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:
+        rgba(52,193,220,.13);
+
+    font-size:30px;
+
+    margin-bottom:10px;
+}
+
+.info-panel h3{
+    font-size:20px;
+
+    margin-bottom:6px;
+}
+
+.info-type{
+    color:#61d9ea;
+
+    font-size:12px;
+
+    margin-bottom:10px;
+}
+
+.info-panel p{
+    color:#b2cdd3;
+
+    line-height:1.6;
+
+    font-size:13px;
+}
+
+.info-feature{
+    margin-top:12px;
+
+    padding:9px 11px;
+
+    border-radius:9px;
+
+    background:
+        rgba(52,188,220,.08);
+
+    color:#9fe1ec;
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   CLICK HINT
+========================================================= */
+
+.click-hint{
+    position:absolute;
+
+    right:20px;
+    bottom:20px;
+
+    padding:10px 13px;
+
+    border-radius:11px;
+
+    background:
+        rgba(2,23,29,.62);
+
+    color:#b3d4db;
+
+    font-size:12px;
+
+    z-index:20;
+}
+
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.legend{
+    padding:18px;
+
+    background:#041c25;
+
+    border-top:
+        1px solid
+        rgba(77,201,225,.13);
+}
+
+.legend-title{
+    margin-bottom:12px;
+
+    font-weight:700;
+}
+
+.legend-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:9px;
+}
+
+.legend-item{
+    padding:10px;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color:#a9c9d0;
+
+    font-size:12px;
+}
+
+.legend-item strong{
+    display:block;
+
+    color:#dff9ff;
+
+    margin-bottom:3px;
+}
+
+
+/* =========================================================
+   ANIMAL GROUP CARDS
+========================================================= */
+
+.animal-groups{
+    margin-top:22px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+.group-card{
+    padding:20px;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        rgba(85,205,229,.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            #062732,
+            #03151c
+        );
+}
+
+.group-icon{
+    font-size:35px;
+
+    margin-bottom:10px;
+}
+
+.group-card h3{
+    margin-bottom:6px;
+
+    font-size:18px;
+}
+
+.group-card .sub{
+    color:#62d9ea;
+
+    font-size:12px;
+
+    margin-bottom:10px;
+}
+
+.group-card p{
+    color:#aac8cf;
+
+    line-height:1.6;
+
+    font-size:13px;
+}
+
+.group-card ul{
+    margin:
+        10px 0 0 18px;
+
+    color:#aac8cf;
+
+    line-height:1.7;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   LEARNING
+========================================================= */
+
+.learning{
+    margin-top:22px;
+
+    display:grid;
+
+    grid-template-columns:
+        1.25fr 1fr;
+
+    gap:18px;
+}
+
+.learn-card{
+    padding:22px;
+
+    border-radius:19px;
+
+    border:
+        1px solid
+        rgba(80,204,227,.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            #062631,
+            #03151c
+        );
+}
+
+.learn-card h3{
+    margin-bottom:12px;
+
+    font-size:18px;
+}
+
+.learn-card p{
+    color:#abc9d0;
+
+    line-height:1.65;
+
+    font-size:14px;
+}
+
+.learn-card ul{
+    margin:
+        12px 0 0 20px;
+
+    color:#abc9d0;
+
+    line-height:1.8;
+
+    font-size:14px;
+}
+
+.highlight{
+    color:#61d9ea;
+
+    font-weight:600;
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+.back-section{
+    margin-top:22px;
+
+    text-align:center;
+}
+
+.back-btn{
+    display:inline-flex;
+
+    text-decoration:none;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    color:#eaffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #116278,
+            #0b4859
+        );
+
+    border:
+        1px solid
+        rgba(93,219,239,.25);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:950px){
+
+    .animal-groups{
+        grid-template-columns:1fr;
+    }
+
+    .learning{
+        grid-template-columns:1fr;
+    }
+
+    .legend-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:620px){
+
+    .page{
+        width:96%;
+    }
+
+    .hero{
+        padding:24px 18px;
+    }
+
+    .logo-text p{
+        display:none;
+    }
+
+    .logo-text h1{
+        font-size:14px;
+    }
+
+    .home-btn{
+        font-size:12px;
+        padding:8px 10px;
+    }
+
+    .landscape{
+        min-height:570px;
+        height:630px;
+    }
+
+    .click-hint{
+        display:none;
+    }
+
+    .info-panel{
+        left:10px;
+        bottom:10px;
+
+        width:
+            calc(100% - 20px);
+    }
+
+    .sun{
+        width:55px;
+        height:55px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ========================================================
+     HEADER
+======================================================== -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🐾
+            </div>
+
+            <div class="logo-text">
+
+                <h1>
+                    HỌC LIỆU SỐ LỊCH SỬ & ĐỊA LÍ 6
+                </h1>
+
+                <p>
+                    Mô phỏng tương tác • Bài 23
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="g23.html"
+            class="home-btn"
+        >
+            ← Quay lại Bài 23
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<main class="page">
+
+
+<!-- ========================================================
+     HERO
+======================================================== -->
+
+<section class="hero">
+
+    <div class="hero-tag">
+        🐾 ĐỊA LÍ 6 • BÀI 23
+    </div>
+
+    <h2>
+        Sự đa dạng của động vật
+        <span>trên lục địa</span>
+    </h2>
+
+    <p>
+        Khám phá sự phong phú của thế giới động vật
+        trên lục địa. Hãy kéo thanh khí hậu từ
+        <strong>đới nóng → đới ôn hòa → đới lạnh</strong>
+        và quan sát cách các loài động vật thích nghi
+        với những môi trường sống khác nhau.
+    </p>
+
+
+    <div class="control-panel">
+
+        <div class="control-row">
+
+            <button
+                class="control-btn primary"
+                id="autoBtn"
+            >
+                ▶ Tự động khám phá
+            </button>
+
+
+            <button
+                class="control-btn"
+                id="pauseBtn"
+            >
+                ⏸ Tạm dừng
+            </button>
+
+
+            <button
+                class="control-btn"
+                id="resetBtn"
+            >
+                ↺ Đặt lại
+            </button>
+
+
+            <div class="climate-box">
+
+                <div class="climate-title">
+
+                    <span>
+                        🌡️ Thay đổi điều kiện khí hậu
+                    </span>
+
+                    <strong id="climateValue">
+                        Đới nóng
+                    </strong>
+
+                </div>
+
+
+                <input
+                    type="range"
+                    id="climateSlider"
+                    min="0"
+                    max="100"
+                    value="18"
+                    step="1"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================================
+     SIMULATION
+======================================================== -->
+
+<section class="sim-wrapper">
+
+    <div class="sim-topbar">
+
+        <div class="sim-title">
+
+            <span class="live-dot"></span>
+
+            MÔ PHỎNG ĐỘNG VẬT TRÊN LỤC ĐỊA
+
+        </div>
+
+
+        <div
+            class="sim-status"
+            id="statusText"
+        >
+            Hãy bấm vào một loài động vật
+        </div>
+
+    </div>
+
+
+    <div class="landscape">
+
+        <canvas id="animalCanvas"></canvas>
+
+
+        <div class="sun"></div>
+
+        <div class="cloud"></div>
+
+
+        <div
+            class="zone-indicator"
+            id="zoneIndicator"
+        >
+            🌴 ĐỚI NÓNG
+        </div>
+
+
+        <div
+            class="environment-label"
+            id="environmentLabel"
+        >
+            🌿 Rừng nhiệt đới
+        </div>
+
+
+        <!-- INFO -->
+
+        <div
+            class="info-panel"
+            id="infoPanel"
+        >
+
+            <div
+                class="info-icon"
+                id="infoIcon"
+            >
+                🐒
+            </div>
+
+
+            <h3 id="infoName">
+                Khỉ
+            </h3>
+
+
+            <div
+                class="info-type"
+                id="infoType"
+            >
+                Động vật đới nóng
+            </div>
+
+
+            <p id="infoDescription">
+                Hãy bấm vào một loài động vật
+                để xem thông tin.
+            </p>
+
+
+            <div
+                class="info-feature"
+                id="infoFeature"
+            >
+                🌿 Đặc điểm nổi bật
+            </div>
+
+        </div>
+
+
+        <div class="click-hint">
+            🖱️ Bấm vào con vật để khám phá
+        </div>
+
+    </div>
+
+
+    <!-- LEGEND -->
+
+    <div class="legend">
+
+        <div class="legend-title">
+            📚 Một số động vật tiêu biểu
+        </div>
+
+
+        <div class="legend-grid">
+
+            <div class="legend-item">
+
+                <strong>🌴 Đới nóng</strong>
+
+                Khỉ • vượn • sóc • cá sấu • hổ
+                • báo • ngựa • hươu • voi • chim
+                • côn trùng...
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <strong>🌳 Đới ôn hòa</strong>
+
+                Gấu nâu • tuần lộc • cáo bạc
+                • hươu • các loài chim...
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <strong>❄️ Đới lạnh</strong>
+
+                Gấu trắng • ngỗng • các loài
+                thích nghi với môi trường lạnh
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================================
+     GROUP CARDS
+======================================================== -->
+
+<section class="animal-groups">
+
+
+    <div class="group-card">
+
+        <div class="group-icon">
+            🐒
+        </div>
+
+        <h3>
+            Động vật đới nóng
+        </h3>
+
+        <div class="sub">
+            Khí hậu nóng • sinh vật phong phú
+        </div>
+
+        <p>
+            Đới nóng có sự đa dạng động vật rất lớn,
+            đặc biệt ở những khu vực rừng nhiệt đới.
+        </p>
+
+        <ul>
+            <li>Khỉ, vượn, sóc</li>
+            <li>Hổ, báo, voi</li>
+            <li>Cá sấu, hươu, ngựa</li>
+            <li>Chim và côn trùng</li>
+        </ul>
+
+    </div>
+
+
+    <div class="group-card">
+
+        <div class="group-icon">
+            🐻
+        </div>
+
+        <h3>
+            Động vật đới ôn hòa
+        </h3>
+
+        <div class="sub">
+            Khí hậu thay đổi theo mùa
+        </div>
+
+        <p>
+            Động vật đới ôn hòa đa dạng và có nhiều
+            loài thích nghi với sự thay đổi nhiệt độ
+            theo mùa.
+        </p>
+
+        <ul>
+            <li>Gấu nâu</li>
+            <li>Tuần lộc</li>
+            <li>Cáo bạc</li>
+            <li>Hươu và nhiều loài chim</li>
+        </ul>
+
+    </div>
+
+
+    <div class="group-card">
+
+        <div class="group-icon">
+            🐻‍❄️
+        </div>
+
+        <h3>
+            Động vật đới lạnh
+        </h3>
+
+        <div class="sub">
+            Nhiệt độ rất thấp
+        </div>
+
+        <p>
+            Động vật ở vùng lạnh có những đặc điểm
+            thích nghi với nhiệt độ thấp và điều kiện
+            khắc nghiệt.
+        </p>
+
+        <ul>
+            <li>Gấu trắng</li>
+            <li>Ngỗng</li>
+            <li>Các loài chim di cư</li>
+            <li>Động vật thích nghi với giá lạnh</li>
+        </ul>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================================
+     LEARNING
+======================================================== -->
+
+<section class="learning">
+
+
+    <div class="learn-card">
+
+        <h3>
+            🔎 Quan sát và khám phá
+        </h3>
+
+        <p>
+            Khi thay đổi khí hậu, hãy chú ý đến
+            sự thay đổi của môi trường sống và
+            thành phần động vật.
+        </p>
+
+        <ul>
+
+            <li>
+                Vì sao đới nóng có nhiều loài động vật?
+            </li>
+
+            <li>
+                Những loài động vật nào thích nghi
+                với môi trường ôn hòa?
+            </li>
+
+            <li>
+                Gấu trắng có đặc điểm gì giúp chúng
+                sống ở vùng lạnh?
+            </li>
+
+            <li>
+                Vì sao sự phân hóa động vật theo
+                khí hậu thường không rõ bằng thực vật?
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <div class="learn-card">
+
+        <h3>
+            🧠 Điều cần nhớ
+        </h3>
+
+        <p>
+            Động vật trên lục địa rất phong phú
+            và đa dạng. Sự phân bố của chúng
+            chịu ảnh hưởng của khí hậu và môi trường
+            sống.
+        </p>
+
+        <ul>
+
+            <li>
+                🌴 Đới nóng → rất đa dạng
+            </li>
+
+            <li>
+                🌳 Đới ôn hòa → nhiều loài thích nghi
+                theo mùa
+            </li>
+
+            <li>
+                ❄️ Đới lạnh → ít loài hơn,
+                thích nghi với giá lạnh
+            </li>
+
+            <li>
+                🐾 Động vật có khả năng di chuyển
+                nên ảnh hưởng của khí hậu không
+                thể hiện rõ như ở thực vật.
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
+
+
+
+<div class="back-section">
+
+    <a
+        href="g23.html"
+        class="back-btn"
+    >
+        ← Quay lại nội dung Bài 23
+    </a>
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+/* =========================================================
+   CANVAS SETUP
+========================================================= */
+
+const canvas =
+    document.getElementById(
+        "animalCanvas"
+    );
+
+const ctx =
+    canvas.getContext("2d");
+
+let W = 1000;
+let H = 650;
+
+
+function resizeCanvas(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    W =
+        Math.max(
+            600,
+            rect.width
+        );
+
+    H =
+        Math.max(
+            500,
+            rect.height
+        );
+
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+    canvas.width =
+        W*dpr;
+
+    canvas.height =
+        H*dpr;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+
+
+/* =========================================================
+   ANIMAL DATA
+========================================================= */
+
+const animals = [
+
+    /* -------------------------------
+       ĐỚI NÓNG
+    -------------------------------- */
+
+    {
+        id:"monkey",
+
+        name:"Khỉ",
+
+        icon:"🐒",
+
+        type:"Động vật đới nóng",
+
+        zone:"Đới nóng",
+
+        x:.12,
+        y:.56,
+
+        range:[0,34],
+
+        speed:.0009,
+
+        size:30,
+
+        description:
+        "Khỉ là nhóm động vật phổ biến ở nhiều khu vực rừng nhiệt đới. Chúng có khả năng leo trèo và thường sống trên cây.",
+
+        feature:
+        "🌴 Thích nghi tốt với môi trường rừng nhiệt đới"
+    },
+
+
+    {
+        id:"elephant",
+
+        name:"Voi",
+
+        icon:"🐘",
+
+        type:"Động vật đới nóng",
+
+        zone:"Đới nóng",
+
+        x:.25,
+        y:.69,
+
+        range:[0,38],
+
+        speed:.00035,
+
+        size:39,
+
+        description:
+        "Voi là động vật có kích thước lớn, thường sống ở các khu vực nhiệt đới và cận nhiệt. Chúng ăn thực vật và cần lượng thức ăn, nước uống lớn.",
+
+        feature:
+        "🌿 Động vật ăn thực vật • kích thước lớn"
+    },
+
+
+    {
+        id:"tiger",
+
+        name:"Hổ",
+
+        icon:"🐅",
+
+        type:"Động vật đới nóng",
+
+        zone:"Đới nóng",
+
+        x:.38,
+        y:.67,
+
+        range:[5,40],
+
+        speed:.00075,
+
+        size:34,
+
+        description:
+        "Hổ là loài thú ăn thịt lớn, phân bố chủ yếu ở châu Á. Hổ thích nghi với nhiều môi trường sống, trong đó có rừng.",
+
+        feature:
+        "🐾 Động vật ăn thịt • thích nghi với nhiều môi trường"
+    },
+
+
+    {
+        id:"crocodile",
+
+        name:"Cá sấu",
+
+        icon:"🐊",
+
+        type:"Động vật đới nóng",
+
+        zone:"Đới nóng",
+
+        x:.49,
+        y:.73,
+
+        range:[0,38],
+
+        speed:.00025,
+
+        size:33,
+
+        description:
+        "Cá sấu thường sống ở sông, hồ và vùng đất ngập nước thuộc khu vực nhiệt đới, cận nhiệt.",
+
+        feature:
+        "💧 Gắn với sông, hồ và vùng đất ngập nước"
+    },
+
+
+    {
+        id:"giraffe",
+
+        name:"Hươu cao cổ",
+
+        icon:"🦒",
+
+        type:"Động vật đới nóng",
+
+        zone:"Đới nóng",
+
+        x:.60,
+        y:.66,
+
+        range:[8,43],
+
+        speed:.00042,
+
+        size:37,
+
+        description:
+        "Hươu cao cổ là động vật tiêu biểu của châu Phi, đặc biệt ở các môi trường xa-van. Chúng ăn lá cây và có chiếc cổ dài giúp lấy thức ăn trên cao.",
+
+        feature:
+        "🌾 Tiêu biểu cho môi trường xa-van"
+    },
+
+
+    /* -------------------------------
+       ĐỚI ÔN HÒA
+    -------------------------------- */
+
+    {
+        id:"brownbear",
+
+        name:"Gấu nâu",
+
+        icon:"🐻",
+
+        type:"Động vật đới ôn hòa",
+
+        zone:"Đới ôn hòa",
+
+        x:.22,
+        y:.67,
+
+        range:[40,72],
+
+        speed:.00038,
+
+        size:38,
+
+        description:
+        "Gấu nâu phân bố ở nhiều khu vực thuộc đới ôn hòa. Chúng có thể ăn cả thực vật và động vật.",
+
+        feature:
+        "🌳 Thích nghi với khí hậu ôn hòa"
+    },
+
+
+    {
+        id:"deer",
+
+        name:"Hươu",
+
+        icon:"🦌",
+
+        type:"Động vật đới ôn hòa",
+
+        zone:"Đới ôn hòa",
+
+        x:.40,
+        y:.68,
+
+        range:[40,75],
+
+        speed:.00065,
+
+        size:34,
+
+        description:
+        "Hươu là nhóm động vật ăn thực vật phổ biến ở nhiều khu vực ôn hòa. Chúng thường sống ở rừng và đồng cỏ.",
+
+        feature:
+        "🌿 Ăn thực vật • sống ở rừng và đồng cỏ"
+    },
+
+
+    {
+        id:"fox",
+
+        name:"Cáo bạc",
+
+        icon:"🦊",
+
+        type:"Động vật đới ôn hòa",
+
+        zone:"Đới ôn hòa",
+
+        x:.57,
+        y:.69,
+
+        range:[50,82],
+
+        speed:.00085,
+
+        size:30,
+
+        description:
+        "Cáo bạc là dạng cáo có bộ lông màu xám bạc. Các loài cáo có khả năng thích nghi với nhiều môi trường sống khác nhau.",
+
+        feature:
+        "🦊 Có khả năng thích nghi với môi trường đa dạng"
+    },
+
+
+    {
+        id:"reindeer",
+
+        name:"Tuần lộc",
+
+        icon:"🦌",
+
+        type:"Động vật ôn hòa và vùng lạnh",
+
+        zone:"Ôn hòa → lạnh",
+
+        x:.72,
+        y:.66,
+
+        range:[64,94],
+
+        speed:.00055,
+
+        size:34,
+
+        description:
+        "Tuần lộc có khả năng thích nghi với khí hậu lạnh. Chúng phân bố ở khu vực phía bắc của Bắc Mỹ, châu Âu và châu Á.",
+
+        feature:
+        "❄️ Có khả năng chịu lạnh tốt"
+    },
+
+
+    /* -------------------------------
+       ĐỚI LẠNH
+    -------------------------------- */
+
+    {
+        id:"polarbear",
+
+        name:"Gấu trắng",
+
+        icon:"🐻‍❄️",
+
+        type:"Động vật đới lạnh",
+
+        zone:"Đới lạnh",
+
+        x:.25,
+        y:.65,
+
+        range:[80,100],
+
+        speed:.0003,
+
+        size:38,
+
+        description:
+        "Gấu trắng là loài động vật tiêu biểu của vùng Bắc Cực. Bộ lông dày và lớp mỡ giúp chúng giữ nhiệt trong môi trường rất lạnh.",
+
+        feature:
+        "❄️ Bộ lông và lớp mỡ giúp giữ nhiệt"
+    },
+
+
+    {
+        id:"goose",
+
+        name:"Ngỗng",
+
+        icon:"🪿",
+
+        type:"Động vật vùng lạnh",
+
+        zone:"Đới lạnh",
+
+        x:.46,
+        y:.55,
+
+        range:[76,100],
+
+        speed:.0011,
+
+        size:29,
+
+        description:
+        "Một số loài ngỗng sinh sống hoặc di cư đến các khu vực lạnh vào những thời điểm nhất định trong năm.",
+
+        feature:
+        "🪽 Có khả năng di chuyển, di cư theo mùa"
+    },
+
+
+    {
+        id:"arcticfox",
+
+        name:"Cáo Bắc Cực",
+
+        icon:"🦊",
+
+        type:"Động vật đới lạnh",
+
+        zone:"Đới lạnh",
+
+        x:.66,
+        y:.68,
+
+        range:[80,100],
+
+        speed:.00072,
+
+        size:31,
+
+        description:
+        "Cáo Bắc Cực thích nghi với môi trường lạnh giá. Bộ lông dày giúp giữ ấm và có thể thay đổi màu theo mùa.",
+
+        feature:
+        "❄️ Bộ lông dày • thích nghi với giá lạnh"
+    }
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let climate = 18;
+
+let time = 0;
+
+let paused = false;
+
+let autoMode = false;
+
+let selectedAnimal = null;
+
+
+const climateSlider =
+    document.getElementById(
+        "climateSlider"
+    );
+
+const climateValue =
+    document.getElementById(
+        "climateValue"
+    );
+
+const zoneIndicator =
+    document.getElementById(
+        "zoneIndicator"
+    );
+
+const environmentLabel =
+    document.getElementById(
+        "environmentLabel"
+    );
+
+const statusText =
+    document.getElementById(
+        "statusText"
+    );
+
+const autoBtn =
+    document.getElementById(
+        "autoBtn"
+    );
+
+const pauseBtn =
+    document.getElementById(
+        "pauseBtn"
+    );
+
+const resetBtn =
+    document.getElementById(
+        "resetBtn"
+    );
+
+const infoPanel =
+    document.getElementById(
+        "infoPanel"
+    );
+
+const infoIcon =
+    document.getElementById(
+        "infoIcon"
+    );
+
+const infoName =
+    document.getElementById(
+        "infoName"
+    );
+
+const infoType =
+    document.getElementById(
+        "infoType"
+    );
+
+const infoDescription =
+    document.getElementById(
+        "infoDescription"
+    );
+
+const infoFeature =
+    document.getElementById(
+        "infoFeature"
+    );
+
+
+/* =========================================================
+   ZONE
+========================================================= */
+
+function getZone(){
+
+    if(climate < 40){
+
+        return {
+            name:"Đới nóng",
+            icon:"🌴"
+        };
+
+    }
+
+    if(climate < 78){
+
+        return {
+            name:"Đới ôn hòa",
+            icon:"🌳"
+        };
+
+    }
+
+    return {
+        name:"Đới lạnh",
+        icon:"❄️"
+    };
+
+}
+
+
+/* =========================================================
+   ENVIRONMENT
+========================================================= */
+
+function getEnvironment(){
+
+    if(climate < 20)
+        return "🌴 Rừng mưa nhiệt đới";
+
+    if(climate < 34)
+        return "🌾 Xa-van";
+
+    if(climate < 55)
+        return "🌳 Rừng lá rộng";
+
+    if(climate < 72)
+        return "🌲 Rừng lá kim";
+
+    if(climate < 82)
+        return "🌾 Thảo nguyên";
+
+    return "❄️ Đài nguyên";
+
+}
+
+
+/* =========================================================
+   UPDATE CLIMATE
+========================================================= */
+
+function updateClimate(value){
+
+    climate =
+        Number(value);
+
+    const zone =
+        getZone();
+
+    climateValue.textContent =
+        zone.name;
+
+    zoneIndicator.textContent =
+        zone.icon +
+        " " +
+        zone.name.toUpperCase();
+
+    environmentLabel.textContent =
+        getEnvironment();
+
+    statusText.textContent =
+        "Đang khám phá " +
+        zone.name.toLowerCase();
+
+}
+
+climateSlider.addEventListener(
+    "input",
+    ()=>{
+        updateClimate(
+            climateSlider.value
+        );
+    }
+);
+
+
+/* =========================================================
+   SKY
+========================================================= */
+
+function drawSky(){
+
+    let topColor;
+    let bottomColor;
+
+    if(climate < 40){
+
+        topColor="#65b9d8";
+        bottomColor="#bad8a2";
+
+    }
+    else if(climate < 78){
+
+        topColor="#789eaf";
+        bottomColor="#b9c6ae";
+
+    }
+    else{
+
+        topColor="#819aa8";
+        bottomColor="#ccd5d0";
+
+    }
+
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+    gradient.addColorStop(
+        0,
+        topColor
+    );
+
+    gradient.addColorStop(
+        .58,
+        bottomColor
+    );
+
+    gradient.addColorStop(
+        1,
+        "#536b4a"
+    );
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+}
+
+
+/* =========================================================
+   MOUNTAINS
+========================================================= */
+
+function drawMountains(){
+
+    ctx.save();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        H*.56
+    );
+
+    for(
+        let x=0;
+        x<=W;
+        x+=45
+    ){
+
+        const y =
+            H*.46 +
+            Math.sin(x*.009)*35 +
+            Math.sin(x*.022)*20;
+
+        ctx.lineTo(
+            x,
+            y
+        );
+
+    }
+
+    ctx.lineTo(
+        W,
+        H*.73
+    );
+
+    ctx.lineTo(
+        0,
+        H*.73
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle =
+        climate>78
+        ? "#71868b"
+        : "#52715c";
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        H*.48
+    );
+
+    for(
+        let x=0;
+        x<=W;
+        x+=65
+    ){
+
+        const y =
+            H*.39+
+            Math.sin(
+                x*.013+2
+            )*30;
+
+        ctx.lineTo(
+            x,
+            y
+        );
+
+    }
+
+    ctx.lineTo(
+        W,
+        H*.63
+    );
+
+    ctx.lineTo(
+        0,
+        H*.63
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle =
+        climate>75
+        ? "#687c82"
+        : "#65826a";
+
+    ctx.globalAlpha=.7;
+
+    ctx.fill();
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   GROUND
+========================================================= */
+
+function drawGround(){
+
+    const groundY =
+        H*.69;
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            groundY,
+            0,
+            H
+        );
+
+
+    if(climate < 40){
+
+        gradient.addColorStop(
+            0,
+            "#5d914d"
+        );
+
+        gradient.addColorStop(
+            1,
+            "#263f25"
+        );
+
+    }
+    else if(climate < 78){
+
+        gradient.addColorStop(
+            0,
+            "#80965d"
+        );
+
+        gradient.addColorStop(
+            1,
+            "#3f5335"
+        );
+
+    }
+    else{
+
+        gradient.addColorStop(
+            0,
+            "#a9b6ad"
+        );
+
+        gradient.addColorStop(
+            1,
+            "#5b6863"
+        );
+
+    }
+
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        groundY,
+        W,
+        H-groundY
+    );
+
+}
+
+
+/* =========================================================
+   GRASS
+========================================================= */
+
+function drawGrass(){
+
+    const groundY =
+        H*.70;
+
+    const count =
+        climate>80
+        ? 45
+        : 100;
+
+
+    ctx.save();
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const x =
+            (i/count)*W+
+            Math.sin(i*5)*5;
+
+        const height =
+            climate>80
+            ? 7+Math.random()*8
+            : 10+Math.random()*15;
+
+        const sway =
+            Math.sin(
+                time*.003+i
+            )*3;
+
+        ctx.strokeStyle =
+            climate>80
+            ? "rgba(88,112,94,.65)"
+            : "rgba(39,101,51,.65)";
+
+        ctx.lineWidth=1.4;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            groundY
+        );
+
+        ctx.quadraticCurveTo(
+            x+sway,
+            groundY-height*.55,
+            x+sway*1.5,
+            groundY-height
+        );
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   TREES
+========================================================= */
+
+function drawTrees(){
+
+    if(
+        climate>80
+    )
+        return;
+
+
+    const groundY =
+        H*.71;
+
+    const count =
+        climate<40
+        ? 9
+        : 7;
+
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const x =
+            W*.03+
+            i*
+            (W*.94/count);
+
+        const scale =
+            .55+
+            (i%4)*.12;
+
+        let sway =
+            Math.sin(
+                time*.002+i
+            )*2.5;
+
+
+        ctx.save();
+
+        ctx.translate(
+            x,
+            groundY
+        );
+
+
+        ctx.strokeStyle=
+            "#523a2b";
+
+        ctx.lineWidth=
+            6*scale;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            0
+        );
+
+        ctx.lineTo(
+            sway,
+            -80*scale
+        );
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+            climate<40
+            ? "#14633f"
+            : "#426e43";
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            sway,
+            -90*scale,
+            34*scale,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            sway-28*scale,
+            -75*scale,
+            24*scale,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            sway+27*scale,
+            -74*scale,
+            24*scale,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        ctx.restore();
+
+    }
+
+}
+
+
+/* =========================================================
+   SNOW
+========================================================= */
+
+const snowflakes=[];
+
+for(
+    let i=0;
+    i<80;
+    i++
+){
+
+    snowflakes.push({
+
+        x:Math.random(),
+
+        y:Math.random(),
+
+        speed:
+            .001+
+            Math.random()*.002,
+
+        size:
+            1+
+            Math.random()*3
+
+    });
+
+}
+
+
+function drawSnow(){
+
+    if(climate<82)
+        return;
+
+
+    ctx.save();
+
+    snowflakes.forEach(
+        s=>{
+
+            if(!paused){
+
+                s.y+=s.speed;
+
+                if(s.y>1){
+
+                    s.y=0;
+
+                    s.x=
+                        Math.random();
+
+                }
+
+            }
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                s.x*W,
+                s.y*H*.72,
+                s.size,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fillStyle=
+                "rgba(244,252,255,.75)";
+
+            ctx.fill();
+
+        }
+    );
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   ANIMAL POSITION
+========================================================= */
+
+function getAnimalPosition(
+    animal
+){
+
+    /*
+       animal di chuyển nhẹ theo thời gian.
+    */
+
+    let movement =
+        Math.sin(
+            time*
+            animal.speed
+        )*45;
+
+
+    /*
+       một số loài di chuyển
+       theo chiều ngang nhiều hơn
+    */
+
+    let x =
+        animal.x*W+
+        movement;
+
+
+    /*
+       giới hạn trong khung
+    */
+
+    const margin=45;
+
+    x=
+        Math.max(
+            margin,
+            Math.min(
+                W-margin,
+                x
+            )
+        );
+
+
+    let y =
+        animal.y*H;
+
+    /*
+       chuyển động lên xuống nhẹ
+    */
+
+    y +=
+        Math.sin(
+            time*.0015+
+            animal.x*10
+        )*7;
+
+
+    return {
+        x,
+        y
+    };
+
+}
+
+
+/* =========================================================
+   DRAW ANIMAL
+========================================================= */
+
+function drawAnimal(
+    animal,
+    index
+){
+
+    const position =
+        getAnimalPosition(
+            animal
+        );
+
+    const x =
+        position.x;
+
+    const y =
+        position.y;
+
+    const visible =
+        climate>=
+        animal.range[0]-5 &&
+        climate<=
+        animal.range[1]+5;
+
+
+    /*
+       chỉ hiển thị loài phù hợp
+       với khí hậu hiện tại
+    */
+
+    if(!visible)
+        return;
+
+
+    ctx.save();
+
+
+    /*
+       selected glow
+    */
+
+    if(
+        selectedAnimal===animal
+    ){
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            animal.size+
+            17+
+            Math.sin(
+                time*.004
+            )*3,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle=
+            "rgba(76,220,239,.13)";
+
+        ctx.fill();
+
+        ctx.strokeStyle=
+            "rgba(87,226,241,.85)";
+
+        ctx.lineWidth=2;
+
+        ctx.setLineDash([
+            6,
+            5
+        ]);
+
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+    }
+
+
+    /*
+       bóng
+    */
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        y+animal.size*.72,
+        animal.size*.85,
+        animal.size*.22,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        "rgba(0,0,0,.25)";
+
+    ctx.fill();
+
+
+    /*
+       emoji
+    */
+
+    ctx.font =
+        animal.size+
+        "px Segoe UI Emoji";
+
+    ctx.textAlign="center";
+
+    ctx.textBaseline="middle";
+
+    ctx.fillText(
+        animal.icon,
+        x,
+        y
+    );
+
+
+    /*
+       label
+    */
+
+    ctx.font=
+        "600 12px Segoe UI";
+
+    const label=
+        animal.name;
+
+    const labelWidth=
+        ctx.measureText(
+            label
+        ).width;
+
+
+    ctx.fillStyle=
+        "rgba(2,22,29,.76)";
+
+    ctx.beginPath();
+
+    roundedRect(
+        ctx,
+        x-labelWidth/2-8,
+        y+animal.size*.62,
+        labelWidth+16,
+        24,
+        7
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle=
+        "#effcff";
+
+    ctx.fillText(
+        label,
+        x,
+        y+animal.size*.62+12
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   ROUNDED RECT
+========================================================= */
+
+function roundedRect(
+    context,
+    x,
+    y,
+    width,
+    height,
+    radius
+){
+
+    context.beginPath();
+
+    context.moveTo(
+        x+radius,
+        y
+    );
+
+    context.lineTo(
+        x+width-radius,
+        y
+    );
+
+    context.quadraticCurveTo(
+        x+width,
+        y,
+        x+width,
+        y+radius
+    );
+
+    context.lineTo(
+        x+width,
+        y+height-radius
+    );
+
+    context.quadraticCurveTo(
+        x+width,
+        y+height,
+        x+width-radius,
+        y+height
+    );
+
+    context.lineTo(
+        x+radius,
+        y+height
+    );
+
+    context.quadraticCurveTo(
+        x,
+        y+height,
+        x,
+        y+height-radius
+    );
+
+    context.lineTo(
+        x,
+        y+radius
+    );
+
+    context.quadraticCurveTo(
+        x,
+        y,
+        x+radius,
+        y
+    );
+
+    context.closePath();
+
+}
+
+
+/* =========================================================
+   DRAW ALL ANIMALS
+========================================================= */
+
+function drawAnimals(){
+
+    animals.forEach(
+        (animal,index)=>{
+
+            drawAnimal(
+                animal,
+                index
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   BIRDS
+========================================================= */
+
+const birds=[];
+
+for(
+    let i=0;
+    i<8;
+    i++
+){
+
+    birds.push({
+
+        x:
+            Math.random()*W,
+
+        y:
+            H*.25+
+            Math.random()*H*.20,
+
+        speed:
+            .35+
+            Math.random()*.45
+
+    });
+
+}
+
+
+function drawBirds(){
+
+    if(
+        climate>80
+    )
+        return;
+
+
+    ctx.save();
+
+    birds.forEach(
+        bird=>{
+
+            if(!paused){
+
+                bird.x+=
+                    bird.speed;
+
+                if(
+                    bird.x>
+                    W+40
+                ){
+
+                    bird.x=-40;
+
+                }
+
+            }
+
+
+            ctx.strokeStyle=
+                "rgba(24,58,65,.7)";
+
+            ctx.lineWidth=1.5;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                bird.x,
+                bird.y,
+                6,
+                Math.PI,
+                Math.PI*2
+            );
+
+            ctx.stroke();
+
+        }
+    );
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   MAIN DRAW
+========================================================= */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    drawSky();
+
+    drawMountains();
+
+    drawGround();
+
+    drawGrass();
+
+    drawTrees();
+
+    drawBirds();
+
+    drawSnow();
+
+    drawAnimals();
+
+
+    if(
+        !paused
+    ){
+
+        time+=16;
+
+
+        if(
+            autoMode
+        ){
+
+            let value=
+                Number(
+                    climateSlider.value
+                );
+
+            value+=.20;
+
+            if(
+                value>100
+            )
+                value=0;
+
+
+            climateSlider.value=
+                value;
+
+            updateClimate(
+                value
+            );
+
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        draw
+    );
+
+}
+
+draw();
+
+
+/* =========================================================
+   CLICK ANIMAL
+========================================================= */
+
+canvas.addEventListener(
+    "click",
+    event=>{
+
+        const rect=
+            canvas.getBoundingClientRect();
+
+
+        const scaleX=
+            W/rect.width;
+
+        const scaleY=
+            H/rect.height;
+
+
+        const mouseX=
+            (
+                event.clientX-
+                rect.left
+            )*
+            scaleX;
+
+
+        const mouseY=
+            (
+                event.clientY-
+                rect.top
+            )*
+            scaleY;
+
+
+        let found=null;
+
+
+        /*
+           kiểm tra từ con gần nhất
+           đến xa hơn
+        */
+
+        for(
+            let i=
+            animals.length-1;
+            i>=0;
+            i--
+        ){
+
+            const animal=
+                animals[i];
+
+
+            const visible =
+                climate>=
+                animal.range[0]-5 &&
+                climate<=
+                animal.range[1]+5;
+
+
+            if(
+                !visible
+            )
+                continue;
+
+
+            const pos=
+                getAnimalPosition(
+                    animal
+                );
+
+
+            const distance=
+                Math.sqrt(
+                    Math.pow(
+                        mouseX-pos.x,
+                        2
+                    )+
+                    Math.pow(
+                        mouseY-pos.y,
+                        2
+                    )
+                );
+
+
+            if(
+                distance<
+                animal.size+25
+            ){
+
+                found=
+                    animal;
+
+                break;
+
+            }
+
+        }
+
+
+        if(found){
+
+            selectedAnimal=
+                found;
+
+            showInfo(
+                found
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SHOW INFO
+========================================================= */
+
+function showInfo(
+    animal
+){
+
+    infoPanel.classList.add(
+        "show"
+    );
+
+
+    infoIcon.textContent=
+        animal.icon;
+
+
+    infoName.textContent=
+        animal.name;
+
+
+    infoType.textContent=
+        animal.type;
+
+
+    infoDescription.textContent=
+        animal.description;
+
+
+    infoFeature.textContent=
+        animal.feature;
+
+
+    statusText.textContent=
+        "Đang khám phá: " +
+        animal.name;
+
+}
+
+
+/* =========================================================
+   AUTO
+========================================================= */
+
+autoBtn.addEventListener(
+    "click",
+    ()=>{
+
+        autoMode=
+            !autoMode;
+
+
+        if(
+            autoMode
+        ){
+
+            autoBtn.textContent=
+                "⏹ Dừng tự động";
+
+
+            autoBtn.classList.add(
+                "primary"
+            );
+
+
+            paused=false;
+
+
+            pauseBtn.textContent=
+                "⏸ Tạm dừng";
+
+
+            statusText.textContent=
+                "Đang tự động khám phá các đới khí hậu";
+
+        }
+        else{
+
+            autoBtn.textContent=
+                "▶ Tự động khám phá";
+
+
+            statusText.textContent=
+                "Đang khám phá " +
+                getZone().name.toLowerCase();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+pauseBtn.addEventListener(
+    "click",
+    ()=>{
+
+        paused=
+            !paused;
+
+
+        if(
+            paused
+        ){
+
+            pauseBtn.textContent=
+                "▶ Tiếp tục";
+
+
+            statusText.textContent=
+                "Mô phỏng đang tạm dừng";
+
+        }
+        else{
+
+            pauseBtn.textContent=
+                "⏸ Tạm dừng";
+
+
+            statusText.textContent=
+                "Đang khám phá " +
+                getZone().name.toLowerCase();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+resetBtn.addEventListener(
+    "click",
+    ()=>{
+
+        paused=false;
+
+        autoMode=false;
+
+        selectedAnimal=null;
+
+
+        climateSlider.value=
+            18;
+
+
+        updateClimate(
+            18
+        );
+
+
+        autoBtn.textContent=
+            "▶ Tự động khám phá";
+
+
+        pauseBtn.textContent=
+            "⏸ Tạm dừng";
+
+
+        infoPanel.classList.remove(
+            "show"
+        );
+
+
+        statusText.textContent=
+            "Hãy bấm vào một loài động vật";
+
+    }
+);
+
+
+/* =========================================================
+   ESC
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            event.key==="Escape"
+        ){
+
+            selectedAnimal=null;
+
+            infoPanel.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        if(
+            event.key===" "
+        ){
+
+            event.preventDefault();
+
+            paused=
+                !paused;
+
+
+            pauseBtn.textContent=
+                paused
+                ? "▶ Tiếp tục"
+                : "⏸ Tạm dừng";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateClimate(
+    18
+);
+
+</script>
+
+</body>
+</html>
